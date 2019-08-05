@@ -1,5 +1,5 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "src/App.tsx",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,15 +9,20 @@
   },
   "dependencies": {
     "expo": "^33.0.0",
+    "expo-location": "^5.0.1",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-    "react-native-web": "^0.11.4"
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.0",
+    "tslint": "^5.18.0"
   },
   "devDependencies": {
     "@types/react": "^16.8.19",
     "@types/react-native": "^0.57.60",
     "babel-preset-expo": "^5.1.1",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-react": "^4.0.0",
     "typescript": "^3.4.5"
   },
   "private": true
