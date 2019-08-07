@@ -8,8 +8,7 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
-      "@components/*": ["components/*"],
-      "@styles/*": ["styles/*"]
+      "@src/*": ["*"],
     }
   }
 }

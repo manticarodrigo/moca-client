@@ -1,18 +1,25 @@
 import React, { ComponentClass } from 'react';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { registerRootComponent } from 'expo';
 import { activateKeepAwake } from 'expo-keep-awake';
 
-import CareSearch from '@components/CareSearch';
+import DashboardScreen from '@src/screens/DashboardScreen';
+import ChatScreen from '@src/screens/ChatScreen';
 
-const App = () => {
-
-  return (
-    <CareSearch />
-  );
-};
+const AppNavigator = createStackNavigator(
+  {
+    Dashboard: DashboardScreen,
+    Chat: ChatScreen,
+  },
+  {
+    initialRouteName: 'Dashboard',
+  },
+);
 
 if (__DEV__) {
   activateKeepAwake();
 }
 
-registerRootComponent(App as unknown as ComponentClass<any>);
+const AppContainer = createAppContainer(AppNavigator);
+
+registerRootComponent(AppContainer as ComponentClass<any>);
