@@ -11,6 +11,14 @@
       "check-format",
       "allow-pascal-case"
     ],
-    "jsx-no-multiline-js": false
+    "align": [
+      true,
+      "parameters",
+      "statements",
+      "members",
+      "elements"
+    ],
+    "jsx-no-multiline-js": false,
+    "jsx-boolean-value": false
   }
 }

@@ -14,19 +14,15 @@ const DashboardContainer = styled.View(props => css`
 const DashboardScreen = () => {
   const navigation = useNavigation();
 
-  const handleButtonPress = () => navigation.navigate('Chat');
+  const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
     <DashboardContainer>
-      <Button margin="10" onPress={handleButtonPress}>
+      <Button onPress={handleButtonPress}>
         Go to chat
       </Button>
     </DashboardContainer>
   );
-};
-
-DashboardScreen.navigationOptions = {
-  title: 'Dashboard',
 };
 
 export default DashboardScreen;

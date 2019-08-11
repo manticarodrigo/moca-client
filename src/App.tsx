@@ -1,25 +1,23 @@
-import React, { ComponentClass } from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import React, { Component, ComponentClass } from 'react';
 import { registerRootComponent } from 'expo';
 import { activateKeepAwake } from 'expo-keep-awake';
+import { ThemeProvider } from 'styled-components/native';
 
-import DashboardScreen from '@src/screens/DashboardScreen';
-import ChatScreen from '@src/screens/ChatScreen';
+import { theme } from '@src/theme';
+import NavigatioProvider from '@src/Navigator';
 
-const AppNavigator = createStackNavigator(
-  {
-    Dashboard: DashboardScreen,
-    Chat: ChatScreen,
-  },
-  {
-    initialRouteName: 'Dashboard',
-  },
-);
+class App extends Component {
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <NavigatioProvider />
+      </ThemeProvider>
+    );
+  }
+}
 
 if (__DEV__) {
   activateKeepAwake();
 }
 
-const AppContainer = createAppContainer(AppNavigator);
-
-registerRootComponent(AppContainer as ComponentClass<any>);
+registerRootComponent(App as ComponentClass<any>);
