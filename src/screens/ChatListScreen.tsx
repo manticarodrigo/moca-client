@@ -21,7 +21,7 @@ const ChatListScreen = () => {
   }, []);
 
   return (
-    <Flex padding={1} bgColor="grey">
+    <Flex padding={3} bg="grey">
       {chats.map((chat, index) => (
         <ChatCard key={index} chat={chat} navigation={navigation} />
       ))}

@@ -3,9 +3,9 @@ import styled from 'styled-components/native';
 import { format } from 'date-fns';
 
 import { Chat, Navigation } from '@src/types';
-import { userImgSrc } from '@src/constants/urls';
+import { placeholderImgSrc } from '@src/constants/urls';
 import Card from '@src/components/Card';
-import RoundImage from '@src/components/RoundImage';
+import Image from '@src/components/Image';
 
 type ChatCardProps = {
   chat: Chat;
@@ -49,7 +49,7 @@ const ChatCard = ({ chat, navigation }: ChatCardProps) => {
   return (
     <Card onPress={handleCardPress}>
       <ChatCardHeader>
-        <RoundImage size={60} url={userImgSrc} />
+        <Image size={60} borderRadius={30} source={{ uri: placeholderImgSrc }} />
         <ChatCardHeaderMeta>
           <ChatCardHeaderMetaNameText>{name}</ChatCardHeaderMetaNameText>
           <ChatCardHeaderMetaTimeText>{time}</ChatCardHeaderMetaTimeText>

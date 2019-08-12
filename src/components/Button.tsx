@@ -1,43 +1,25 @@
 import React, { ReactChild } from 'react';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
+import { space, color, SpaceProps, ColorProps } from 'styled-system';
 
-import { ThemeProps } from '@src/types';
 import Text from '@src/components/Text';
 
-type ButtonTouchableProps = {
-  margin?: number;
-  padding?: number;
-  secondary?: boolean;
-};
-
-type ButtonTextProps = {
-  fontSize?: number;
-};
-
-type ButtonProps = ButtonTouchableProps & ButtonTextProps & {
+type ButtonProps = SpaceProps & ColorProps & {
   onPress: () => void;
   children?: ReactChild;
 };
 
-const ButtonTouchable = styled.TouchableHighlight<ButtonTouchableProps & ThemeProps>(
-  ({ margin = 1, padding = 1, secondary, theme }) => css`
-    margin: ${theme.margin * margin}px;
-    padding: ${(theme.padding / 2) * padding}px ${theme.padding * padding}px;
-    backgroundColor: ${secondary ? theme.colors.secondary : theme.colors.primary};
-  `);
+const TouchableHighlight = styled.TouchableHighlight(
+  space,
+  color,
+);
 
-const ButtonText = styled.Text<ButtonTextProps & ThemeProps>(
-  ({ fontSize = 1, theme }) => css`
-    color: #fff
-    fontSize: ${theme.fonts.md * fontSize};
-  `);
-
-const Button = ({ onPress, children, ...props }: ButtonProps) => (
-  <ButtonTouchable {...props}>
-    <ButtonText {...props}>
+const Button = ({ children, ...props }: ButtonProps) => (
+  <TouchableHighlight {...props}>
+    <Text fontSize={3} color="white">
       {children}
-    </ButtonText>
-  </ButtonTouchable>
+    </Text>
+  </TouchableHighlight>
 );
 
 export default Button;

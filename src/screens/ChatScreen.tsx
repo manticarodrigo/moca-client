@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components/native';
 import api from '@src/services/api';
 import useNavigation from '@src/hooks/useNavigation';
 import { MessagePage } from '@src/types';
-import { userImgSrc } from '@src/constants/urls';
+import { placeholderImgSrc } from '@src/constants/urls';
 
-import SafeAreaFlex from '@src/components/SafeAreaFlex';
+import Flex from '@src/components/Flex';
 import MessageBubble from '@src/components/MessageBubble';
 import ChatHeader from '@src/components/ChatHeader';
 
@@ -74,7 +74,7 @@ const ChatScreen = () => {
           .filter(({ id }) => id !== currentUserId)
           .map(({ username }) => username)
           .join(', '),
-        img: userImgSrc,
+        img: placeholderImgSrc,
       });
     }
   }, [page]);
@@ -83,7 +83,7 @@ const ChatScreen = () => {
   const handlePressSend = () => setText('');
 
   return (
-    <SafeAreaFlex bgColor="white">
+    <Flex bg="white" safeArea>
       <ChatMessageList>
         {page.messages.map((message, index) => (
           <MessageBubble key={index} alignRight={message.user === currentUserId}>
@@ -101,7 +101,7 @@ const ChatScreen = () => {
           <ChatSendButtonText>Send</ChatSendButtonText>
         </ChatSendButton>
       </ChatActions>
-    </SafeAreaFlex>
+    </Flex>
   );
 };
 

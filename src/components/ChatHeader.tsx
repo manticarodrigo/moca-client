@@ -1,26 +1,15 @@
 import React from 'react';
-import styled from 'styled-components/native';
 
-import { userImgSrc } from '@src/constants/urls';
-import RoundImage from '@src/components/RoundImage';
+import Flex from '@src/components/Flex';
+import Text from '@src/components/Text';
+import Image from '@src/components/Image';
+import { placeholderImgSrc } from '@src/constants/urls';
 
-const HeaderView = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0 20px;
-`;
-
-const HeaderText = styled.Text`
-  margin-left: 10px;
-  font-size: 20px;
-`;
-
-const ChatHeader = ({ params: { img = userImgSrc, title = '' } }) => (
-  <HeaderView>
-    <RoundImage size={41} url={img} />
-    <HeaderText>{title}</HeaderText>
-  </HeaderView>
+const ChatHeader = ({ params: { img = '', title = '' } }) => (
+  <Flex flexDirection="row" alignItems="center" px={3}>
+    <Image size={40} borderRadius={20} source={{ uri: img || placeholderImgSrc }} />
+    <Text ml={2} fontSize={3}>{title}</Text>
+  </Flex>
 );
 
 export default ChatHeader;

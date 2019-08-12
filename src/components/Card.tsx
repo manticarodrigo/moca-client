@@ -17,10 +17,10 @@ type CardProps = TouchableOpacityProps & CardTouchableProps & {
 
 const CardTouchable = styled.TouchableOpacity<CardTouchableProps & ThemeProps>(
   ({ borderRadius, padding, width, backgroundColor, theme }) => css`
-    borderRadius: ${borderRadius || theme.borderRadius}px;
-    padding: ${padding || theme.padding}px;
+    borderRadius: ${borderRadius || 10}px;
+    padding: ${padding || 20}px;
     width: ${width || '100%'};
-    backgroundColor: ${backgroundColor || theme.colors.white};
+    backgroundColor: ${backgroundColor || theme.colors['white']};
   `);
 
 const Card = ({ children, ...props }: CardProps) => (
