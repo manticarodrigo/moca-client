@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components/native';
 
 import api from '@src/services/api';
 import useNavigation from '@src/hooks/useNavigation';
@@ -7,47 +6,11 @@ import { MessagePage } from '@src/types';
 import { placeholderImgSrc } from '@src/constants/urls';
 
 import Flex from '@src/components/Flex';
-import MessageBubble from '@src/components/MessageBubble';
-import ChatHeader from '@src/components/ChatHeader';
+import TextInput from '@src/components/TextInput';
+import Button from '@src/components/Button';
 
-const ChatMessageList = styled.View`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: #f2f2f2;
-`;
-
-const ChatActions = styled.View`
-  display: flex;
-  flex-direction: row;
-  height: 60px;
-  width: 100%;
-  border-top-color: #ddd;
-  border-top-width: 1px;
-  background-color: #fff;
-`;
-
-const ChatTextInput = styled.TextInput`
-  flex: 1;
-  height: 100%;
-  padding: 10px 15px;
-  background-color: #fff;
-`;
-
-const ChatSendButton = styled.TouchableOpacity`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 80px;
-  background-color: #fff;
-`;
-
-const ChatSendButtonText = styled.Text`
-  color: #ddd;
-  font-weight: 700;
-`;
+import ChatMessage from './ChatMessage';
+import ChatHeader from './ChatHeader';
 
 const currentUserId = 1;
 
@@ -83,24 +46,50 @@ const ChatScreen = () => {
   const handlePressSend = () => setText('');
 
   return (
-    <Flex bg="white" safeArea>
-      <ChatMessageList>
+    <Flex flex="1" flexDirection="column" bg="white" safeArea>
+      <Flex flex="1" flexDirection="column" p={3} bg="grey">
         {page.messages.map((message, index) => (
-          <MessageBubble key={index} alignRight={message.user === currentUserId}>
-            {message.text}
-          </MessageBubble>
+          <ChatMessage
+            key={index}
+            alignRight={message.user === currentUserId}
+            text={message.text}
+          />
         ))}
-      </ChatMessageList>
-      <ChatActions>
-        <ChatTextInput
+      </Flex>
+      <Flex
+        style={{
+          borderTopWidth: 1,
+          borderTopColor: '#ddd',
+        }}
+        flexDirection="row"
+        height={60}
+        width="100%"
+        bg="white"
+      >
+        <TextInput
+          flex="1"
+          height="100%"
+          py={2}
+          px={3}
+          bg="white"
           onChangeText={handleChangeText}
           placeholder="Type a message..."
           value={text}
         />
-        <ChatSendButton onPress={handlePressSend}>
-          <ChatSendButtonText>Send</ChatSendButtonText>
-        </ChatSendButton>
-      </ChatActions>
+        <Button
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          width="80px"
+          bg="white"
+          underlayColor="#ddd"
+          textProps={{ fontWeight: 400, color: 'text' }}
+          onPress={handlePressSend}
+        >
+          Send
+        </Button>
+      </Flex>
     </Flex>
   );
 };

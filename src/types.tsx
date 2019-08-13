@@ -1,17 +1,3 @@
-import { NavigationScreenProp, NavigationRoute, NavigationParams } from 'react-navigation';
-import { theme } from '@src/theme';
-
-export type Navigation = NavigationScreenProp<NavigationRoute, NavigationParams>;
-
-type Theme = typeof theme;
-type Colors = typeof theme.colors;
-
-export type ThemeProps = {
-  theme: Theme;
-};
-
-export type ThemeColors = keyof Colors;
-
 type User = {
   id: number;
   username: string;

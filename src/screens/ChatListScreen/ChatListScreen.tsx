@@ -5,7 +5,8 @@ import useNavigation from '@src/hooks/useNavigation';
 import { Chat } from '@src/types';
 
 import Flex from '@src/components/Flex';
-import ChatCard from '@src/components/ChatCard';
+
+import ChatListCard from './ChatListCard';
 
 const ChatListScreen = () => {
   const [chats, setChats] = useState<Chat[]>([]);
@@ -20,10 +21,12 @@ const ChatListScreen = () => {
     fetchChats();
   }, []);
 
+  const handleCardPress = (id: string) => navigation.push('ChatScreen', { id });
+
   return (
-    <Flex padding={3} bg="grey">
+    <Flex flex="1" padding={3} bg="grey">
       {chats.map((chat, index) => (
-        <ChatCard key={index} chat={chat} navigation={navigation} />
+        <ChatListCard key={index} chat={chat} onPress={handleCardPress} />
       ))}
     </Flex>
   );

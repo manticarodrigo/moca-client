@@ -20,9 +20,10 @@ export const getHeaderTheme = (title: string): StackNavigatorConfig => ({
 
 export const theme: Theme = {
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
-  sizes: [0, 10, 40, 70, 100, 130, 160, 190],
-  radii: [0, 10, 40, 70, 100, 130, 160, 190],
-  fontSizes: [0, 12, 14, 16, 18, 20, 22, 24, 28],
+  fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 72],
+  radii: [0, 4, 8, 16, 32, 64, 128, 256, 512],
+  breakpoints: ['40em', '52em', '64em'],
+  shadows: ['0 1px 2px rgba(0,0,0,0.25)'],
   colors: {
     white: '#fff',
     primary: '#223063',
@@ -30,5 +31,4 @@ export const theme: Theme = {
     grey: '#f2f2f2',
     text: '#000',
   },
-  shadows: ['0 1px 2px rgba(0,0,0,0.25)'],
 };

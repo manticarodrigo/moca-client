@@ -1,37 +1,39 @@
 import React, { ReactChild } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import {
+  compose,
   flexbox,
   space,
+  border,
   layout,
   color,
   FlexboxProps,
   SpaceProps,
+  BorderProps,
   LayoutProps,
   ColorProps,
 } from 'styled-system';
 
-type FlexProps = FlexboxProps & SpaceProps & LayoutProps & ColorProps & {
+type FlexProps = FlexboxProps & SpaceProps & BorderProps & LayoutProps & ColorProps & {
+  style?: StyleProp<ViewStyle>;
   safeArea?: boolean;
   children: ReactChild | ReactChild[];
 };
 
-const FlexView = styled.View(
+const composed = compose(
   flexbox,
   space,
+  border,
   layout,
   color,
 );
 
-const FlexSafeAreaView = styled.SafeAreaView(
-  flexbox,
-  space,
-  layout,
-  color,
-);
+const FlexView = styled.View(composed);
+
+const FlexSafeAreaView = styled.SafeAreaView(composed);
 
 const baseProps = {
-  flex: 1,
   display: 'flex',
 };
 

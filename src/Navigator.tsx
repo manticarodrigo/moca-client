@@ -7,9 +7,9 @@ import {
 
 import { getHeaderTheme } from '@src/theme';
 
-import ChatListScreen from '@src/screens/ChatListScreen';
-import ChatScreen from '@src/screens/ChatScreen';
-import DashboardScreen from '@src/screens/DashboardScreen';
+import ChatListScreen from '@src/screens/ChatListScreen/ChatListScreen';
+import ChatScreen from '@src/screens/ChatScreen/ChatScreen';
+import DashboardScreen from '@src/screens/DashboardScreen/DashboardScreen';
 
 const stackConfig = {
   ChatTab: {

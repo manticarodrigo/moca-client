@@ -1,32 +1,49 @@
 import React, { ReactNode } from 'react';
-import { View, TouchableOpacityProps } from 'react-native';
-import styled, { css } from 'styled-components/native';
+import { TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
+import {
+  compose,
+  space,
+  border,
+  layout,
+  color,
+  shadow,
+  SpaceProps,
+  BorderProps,
+  LayoutProps,
+  ColorProps,
+  ShadowProps,
+} from 'styled-system';
 
-import { ThemeProps } from '@src/types';
+type ViewProps = SpaceProps & BorderProps & LayoutProps & ColorProps & ShadowProps;
 
-type CardTouchableProps = {
-  borderRadius?: string;
-  padding?: string;
-  width?: string;
-  backgroundColor?: string;
+type CardProps = ViewProps & {
+  onPress: () => void;
+  children?: ReactNode | ReactNode[];
 };
 
-type CardProps = TouchableOpacityProps & CardTouchableProps & {
-  children?: ReactNode;
+const View = styled.View<ViewProps>(
+  compose(
+    space,
+    border,
+    layout,
+    color,
+    shadow,
+  ),
+);
+
+View.defaultProps = {
+  borderRadius: 2,
+  padding: 3,
+  width: '100%',
+  backgroundColor: 'white',
+  boxShadow: 0,
 };
 
-const CardTouchable = styled.TouchableOpacity<CardTouchableProps & ThemeProps>(
-  ({ borderRadius, padding, width, backgroundColor, theme }) => css`
-    borderRadius: ${borderRadius || 10}px;
-    padding: ${padding || 20}px;
-    width: ${width || '100%'};
-    backgroundColor: ${backgroundColor || theme.colors['white']};
-  `);
-
-const Card = ({ children, ...props }: CardProps) => (
-  <CardTouchable {...props}>
-    <View>{children}</View>
-  </CardTouchable>
+const Card = ({ onPress, children, ...props }: CardProps) => (
+  <TouchableOpacity onPress={onPress}>
+    <View {...props}>{children}</View>
+  </TouchableOpacity>
 );
 
 export default Card;
