@@ -27,4 +27,5 @@ export type Chat = {
   id: string;
   otherParticipants: User[];
   latestMessage: MessageMeta;
+  createdAt: string;
 };

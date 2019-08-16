@@ -12,6 +12,8 @@ const ChatMessage = ({ text, alignRight }: ChatMessageProps) => (
   <View
     alignSelf={alignRight ? 'flex-end' : 'flex-start'}
     marginTop={2}
+    marginRight={alignRight ? 0 : 4}
+    marginLeft={alignRight ? 4 : 0}
     padding={2}
     height="auto"
     backgroundColor={alignRight ? 'primary' : 'white'}

@@ -30,7 +30,9 @@ const ChatCard = ({ chat, onPress }: ChatCardProps) => {
           <Text fontSize={2} fontWeight={100}>{time}</Text>
         </Flex>
       </Flex>
-      <Text mt={2} fontSize={2} fontWeight={100}>{chat.latestMessage.text}</Text>
+      <Text mt={2} fontSize={2} fontWeight={100} numberOfLines={1}>
+        {chat.latestMessage.text}
+      </Text>
     </Card>
   );
 };
