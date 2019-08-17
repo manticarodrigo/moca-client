@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import api from '@src/services/api';
+import { fetchChat } from '@src/services/api';
 import useNavigation from '@src/hooks/useNavigation';
 import { MessagePage } from '@src/types';
 import { placeholderImgSrc } from '@src/constants/urls';
@@ -20,14 +20,12 @@ const ChatScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchChat = async () => {
+    const onMount = async () => {
       const { params: { id } } = navigation.state;
-      const { data } = await api.get(`chat/${id}/`);
-
-      setPage(data);
+      setPage(await fetchChat(id));
     };
 
-    fetchChat();
+    onMount();
   }, []);
 
   useEffect(() => {

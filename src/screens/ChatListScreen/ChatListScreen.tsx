@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { format, distanceInWordsToNow } from 'date-fns';
 
-import api from '@src/services/api';
+import { fetchChats } from '@src/services/api';
 import useNavigation from '@src/hooks/useNavigation';
 import { Chat } from '@src/types';
 
@@ -14,30 +14,14 @@ const ChatListScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchChats = async () => {
-      const { data } = await api.get('chat/');
-      setChats(data);
+    const onMount = async () => {
+      setChats(await fetchChats());
     };
 
-    fetchChats();
+    onMount();
   }, []);
 
   const handleCardPress = (id: string) => navigation.push('ChatScreen', { id });
-
-  const sections = useMemo(() => {
-    return chats.reduce((map, chat) => {
-      const date = format(chat.createdAt, 'DD.MM.YYYY');
-      const distance = distanceInWordsToNow(chat.createdAt, { addSuffix: true });
-      const section = map[date] || {};
-
-      map[date] = {
-        title: section.title || distance,
-        data: Array.isArray(section.data) ? section.data.push(chat) : [chat],
-      };
-
-      return map;
-    }, {});
-  }, [chats]);
 
   const renderItem = ({ item, index }) => (
     <ChatListCard key={index} chat={item} onPress={handleCardPress} />
@@ -46,6 +30,21 @@ const ChatListScreen = () => {
   const renderSectionHeader = ({ section }) => (
     <Text mb={2} style={{ textTransform: 'uppercase' }}>{section.title}</Text>
   );
+
+  const sections = useMemo(() => {
+    return chats.reduce((map, chat) => {
+      const dateStr = chat.latestMessage.createdAt;
+      const sectionKey = format(dateStr, 'MM-DD-YYYY');
+      const section = map[sectionKey] || {};
+
+      map[sectionKey] = {
+        title: section.title || distanceInWordsToNow(dateStr, { addSuffix: true }),
+        data: Array.isArray(section.data) ? section.data.push(chat) : [chat],
+      };
+
+      return map;
+    }, {});
+  }, [chats]);
 
   return (
     <SectionList

@@ -36,7 +36,7 @@ const tabMap = Object
     [stackName]: createStackNavigator(
       Object
         .entries(screens)
-        .reduce((acc, [name, component]) => ({ ...acc, [name]: component }), {}),
+        .reduce((acc, [screenName, component]) => ({ ...acc, [screenName]: component }), {}),
       {
         initialRouteName,
         ...getHeaderTheme(title),
