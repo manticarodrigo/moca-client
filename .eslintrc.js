@@ -21,6 +21,7 @@ module.exports =  {
   rules:  {
     'object-curly-newline': 'off',
     'no-confusing-arrow': 'off',
+    'no-underscore-dangle': 'off',
     'no-param-reassign': 'off',
     'no-param-reassign-allow-reduce/allow-reduce': 2,
     'no-param-reassign-allow-reduce/no-reduce-identifiers': 2,

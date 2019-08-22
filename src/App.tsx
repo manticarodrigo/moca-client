@@ -5,11 +5,11 @@ import { activateKeepAwake } from 'expo-keep-awake'; // eslint-disable-line impo
 import { ThemeProvider } from 'styled-components/native';
 
 import { theme } from '@src/theme/theme';
-import NavigationProvider from '@src/navigator';
+import NavProvider from '@src/NavProvider';
 
 const App = () => (
   <ThemeProvider theme={theme}>
-    <NavigationProvider />
+    <NavProvider />
   </ThemeProvider>
 );
 
