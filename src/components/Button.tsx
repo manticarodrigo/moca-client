@@ -6,6 +6,7 @@ import { TouchableHighlight, Text } from '@src/theme/components';
 
 const variantProps = {
   primary: {
+    borderRadius: 2,
     backgroundColor: 'primary',
     padding: 3,
     textProps: {},

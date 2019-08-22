@@ -42,11 +42,13 @@ const composed = compose(
 
 export const View = styled.View<ComposedProps>(composed);
 
-export const SafeAreaView = styled.SafeAreaView(composed);
+export const SafeAreaView = styled.SafeAreaView<ComposedProps>(composed);
 
 export const SectionList = styled(RNSectionList)<ComposedProps>(composed);
 
 export const TouchableHighlight = styled.TouchableHighlight<ComposedProps>(composed);
+
+export const TouchableOpacity = styled.TouchableOpacity<ComposedProps>(composed);
 
 export const TextInput = styled.TextInput<ComposedProps>(composed);
 

@@ -23,9 +23,9 @@ const ChatCard = ({ chat, onPress }: ChatCardProps) => {
 
   return (
     <Card onPress={handleCardPress}>
-      <Flex flexDirection="row">
+      <Flex>
         <Image size={60} borderRadius={30} source={{ uri: placeholderImgSrc }} />
-        <Flex flexDirection="column" pl={3}>
+        <Flex direction="column" padding="pl">
           <Text fontSize={3} fontWeight={600}>{name}</Text>
           <Text fontSize={2} fontWeight={100}>{time}</Text>
         </Flex>

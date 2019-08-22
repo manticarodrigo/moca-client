@@ -1,44 +1,88 @@
 import React, { ReactChild } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import styled from 'styled-components/native';
-import {
-  compose,
-  flexbox,
-  space,
-  border,
-  layout,
-  color,
-  FlexboxProps,
-  SpaceProps,
-  BorderProps,
-  LayoutProps,
-  ColorProps,
-} from 'styled-system';
 
-type FlexProps = FlexboxProps & SpaceProps & BorderProps & LayoutProps & ColorProps & {
-  style?: StyleProp<ViewStyle>;
+import { View, SafeAreaView } from '@src/theme/components';
+
+const variantProps = {
+  bottomInput: {
+    style: {
+      borderTopWidth: 1,
+      borderTopColor: '#ddd',
+      height: 60,
+    },
+  },
+};
+
+const centerProps = {
+  x: {
+    justifyContent: 'center',
+  },
+  y: {
+    alignItems: 'center',
+  },
+  xy: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+};
+
+const paddingProps = {
+  true: {
+    padding: 3,
+  },
+  px: {
+    px: 3,
+  },
+  pl: {
+    pl: 3,
+  },
+};
+
+type FlexVariant = 'bottomInput'
+
+type FlexDirection = 'row' | 'column';
+
+type FlexCenter = keyof typeof centerProps;
+
+type FlexPadding = keyof typeof paddingProps | boolean;
+
+type FlexBg = 'white' | 'grey';
+
+type FlexProps = {
+  variant?: FlexVariant;
+  flex?: boolean;
   safeArea?: boolean;
+  direction?: FlexDirection;
+  center?: FlexCenter;
+  padding?: FlexPadding;
+  bg?: FlexBg;
   children: ReactChild | ReactChild[];
 };
 
-const composed = compose(
-  flexbox,
-  space,
-  border,
-  layout,
-  color,
-);
+const Flex = ({
+  variant,
+  flex,
+  safeArea,
+  direction = 'row',
+  center,
+  padding = false,
+  bg = 'white',
+  children,
+}: FlexProps) => {
+  const FlexView = safeArea ? SafeAreaView : View;
 
-const FlexView = styled.View(composed);
-
-const FlexSafeAreaView = styled.SafeAreaView(composed);
-
-const baseProps = {
-  display: 'flex',
+  return (
+    <FlexView
+      display="flex"
+      flex={flex ? '1' : undefined}
+      flexDirection={direction}
+      backgroundColor={bg}
+      {...variantProps[variant]}
+      {...centerProps[center]}
+      {...paddingProps[padding.toString()]}
+    >
+      {children}
+    </FlexView>
+  );
 };
-
-const Flex = ({ safeArea, ...props }: FlexProps) => safeArea
-  ? <FlexSafeAreaView {...baseProps} {...props} />
-  : <FlexView {...baseProps} {...props} />;
 
 export default Flex;

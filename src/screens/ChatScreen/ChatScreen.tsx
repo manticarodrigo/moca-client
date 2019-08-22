@@ -44,8 +44,8 @@ const ChatScreen = () => {
   const handlePressSend = () => setText('');
 
   return (
-    <Flex flex="1" flexDirection="column" bg="white" safeArea>
-      <Flex flex="1" flexDirection="column" p={3} bg="grey">
+    <Flex flex safeArea direction="column">
+      <Flex flex padding direction="column" bg="grey">
         {page.messages.map((message) => (
           <ChatMessage
             key={message.createdAt}
@@ -54,16 +54,7 @@ const ChatScreen = () => {
           />
         ))}
       </Flex>
-      <Flex
-        style={{
-          borderTopWidth: 1,
-          borderTopColor: '#ddd',
-        }}
-        flexDirection="row"
-        height={60}
-        width="100%"
-        bg="white"
-      >
+      <Flex variant="bottomInput">
         <TextInput
           flex="1"
           height="100%"
