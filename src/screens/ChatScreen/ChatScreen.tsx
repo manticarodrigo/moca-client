@@ -12,7 +12,7 @@ import Button from '@src/components/Button';
 import ChatMessage from './ChatMessage';
 import ChatHeader from './ChatHeader';
 
-const currentUserId = 1;
+const currentUserId = 2;
 
 const ChatScreen = () => {
   const [page, setPage] = useState<MessagePage>({ messages: [], participants: [] });
@@ -20,16 +20,16 @@ const ChatScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const onMount = async () => {
+    const onParamsChange = async () => {
       const { params: { id } } = navigation.state;
       setPage(await fetchChat(id));
     };
 
-    onMount();
-  }, []);
+    onParamsChange();
+  }, [navigation.state]);
 
   useEffect(() => {
-    if (page.participants.length) {
+    if (page.participants.length && navigation) {
       navigation.setParams({
         title: page.participants
           .filter(({ id }) => id !== currentUserId)
@@ -38,7 +38,7 @@ const ChatScreen = () => {
         img: placeholderImgSrc,
       });
     }
-  }, [page]);
+  }, [page, navigation]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
@@ -46,9 +46,9 @@ const ChatScreen = () => {
   return (
     <Flex flex="1" flexDirection="column" bg="white" safeArea>
       <Flex flex="1" flexDirection="column" p={3} bg="grey">
-        {page.messages.map((message, index) => (
+        {page.messages.map((message) => (
           <ChatMessage
-            key={index}
+            key={message.createdAt}
             alignRight={message.user === currentUserId}
             text={message.text}
           />

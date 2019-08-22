@@ -17,7 +17,7 @@ const ChatCard = ({ chat, onPress }: ChatCardProps) => {
   const handleCardPress = () => onPress(chat.id);
 
   const { name, time } = useMemo(() => ({
-    name: chat.otherParticipants.map(p => p.username).join(','),
+    name: chat.otherParticipants.map((user) => user.username).join(','),
     time: format(chat.latestMessage.createdAt, 'h:mm a / DD.MM.YYYY'),
   }), [chat]);
 
