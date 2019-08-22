@@ -74,19 +74,7 @@ const ChatScreen = () => {
           placeholder="Type a message..."
           value={text}
         />
-        <Button
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          width="80px"
-          bg="white"
-          underlayColor="#ddd"
-          textProps={{ fontWeight: 400, color: 'text' }}
-          onPress={handlePressSend}
-        >
-          Send
-        </Button>
+        <Button text="Send" variant="text" onPress={handlePressSend} />
       </Flex>
     </Flex>
   );

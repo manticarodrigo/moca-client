@@ -11,9 +11,7 @@ const DashboardScreen = () => {
 
   return (
     <Flex flex="1" justifyContent="center" alignItems="center" bg="grey">
-      <Button bg="primary" p={3} onPress={handleButtonPress}>
-        Go to chat
-      </Button>
+      <Button text="Go to Chat" onPress={handleButtonPress} />
     </Flex>
   );
 };

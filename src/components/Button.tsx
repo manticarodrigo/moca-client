@@ -1,55 +1,46 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { TouchableHighlightProps } from 'react-native';
-import styled from 'styled-components/native';
-import {
-  compose,
-  display,
-  flexbox,
-  space,
-  layout,
-  color,
-  DisplayProps,
-  FlexboxProps,
-  SpaceProps,
-  LayoutProps,
-  ColorProps,
-  TypographyProps,
-} from 'styled-system';
 
-import Text from '@src/components/Text';
+import { TouchableHighlight, Text } from '@src/theme/components';
 
-type ButtonProps =
-  & TouchableHighlightProps
-  & DisplayProps
-  & FlexboxProps
-  & SpaceProps
-  & LayoutProps
-  & ColorProps
-  & {
-    textProps?: TypographyProps & ColorProps;
-    onPress: () => void;
-    children: ReactNode;
-  };
 
-const TouchableHighlight = styled.TouchableHighlight(
-  compose(
-    display,
-    flexbox,
-    space,
-    layout,
-    color,
-  ),
-);
+const variantProps = {
+  primary: {
+    backgroundColor: 'primary',
+    padding: 3,
+    textProps: {},
+  },
+  text: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '80px',
+    bg: 'white',
+    underlayColor: '#ddd',
+    textProps: {
+      color: 'text',
+    },
+  },
+};
 
-const Button = ({ textProps = {}, children, ...props }: ButtonProps) => (
-  <TouchableHighlight {...props}>
+type ButtonProps = TouchableHighlightProps & {
+  text: string;
+  variant?: keyof typeof variantProps;
+};
+
+const Button = ({ text, variant = 'primary', onPress }: ButtonProps) => (
+  <TouchableHighlight
+    onPress={onPress}
+    {...variantProps[variant]}
+  >
     <Text
-      fontSize={textProps.fontSize || 3}
-      fontWeight={textProps.fontWeight || 400}
-      color={textProps.color || 'white'}
-      {...textProps}
+      fontSize={3}
+      fontWeight={400}
+      color="white"
+      {...variantProps[variant].textProps}
     >
-      {children}
+      {text}
     </Text>
   </TouchableHighlight>
 );
