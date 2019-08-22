@@ -20,16 +20,16 @@ const ChatScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const onParamsChange = async () => {
+    const onMount = async () => {
       const { params: { id } } = navigation.state;
       setPage(await fetchChat(id));
     };
 
-    onParamsChange();
-  }, [navigation.state]);
+    onMount();
+  }, []);
 
   useEffect(() => {
-    if (page.participants.length && navigation) {
+    if (page.participants.length) {
       navigation.setParams({
         title: page.participants
           .filter(({ id }) => id !== currentUserId)
@@ -38,7 +38,7 @@ const ChatScreen = () => {
         img: placeholderImgSrc,
       });
     }
-  }, [page, navigation]);
+  }, [page]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
