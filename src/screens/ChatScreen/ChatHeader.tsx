@@ -2,12 +2,12 @@ import React from 'react';
 
 import Flex from '@src/components/Flex';
 import Text from '@src/components/Text';
-import Image from '@src/components/Image';
-import { placeholderImgSrc } from '@src/constants/urls';
+import Avatar from '@src/components/Avatar';
+import { mockImg } from '@src/services/mock';
 
-const ChatHeader = ({ params: { img = '', title = '' } }) => (
+const ChatHeader = ({ params: { img = mockImg, title = '' } }) => (
   <Flex flex center="y" padding="px">
-    <Image size={40} borderRadius={20} source={{ uri: img || placeholderImgSrc }} />
+    <Avatar size={40} borderRadius={20} uri={img} />
     <Text ml={2} fontSize={3} fontWeight={600}>{title}</Text>
   </Flex>
 );

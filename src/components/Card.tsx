@@ -12,13 +12,27 @@ const variantProps = {
   },
 };
 
+const marginProps = {
+  mt: {
+    marginTop: 3,
+  },
+  mb: {
+    marginBottom: 3,
+  },
+};
+
 type CardProps = TouchableOpacityProps & {
   variant?: keyof typeof variantProps;
+  margin?: keyof typeof marginProps;
   children?: ReactNode | ReactNode[];
 };
 
-const Card = ({ variant = 'primary', onPress, children }: CardProps) => (
-  <TouchableOpacity {...variantProps[variant]} onPress={onPress}>
+const Card = ({ variant = 'primary', margin, onPress, children }: CardProps) => (
+  <TouchableOpacity
+    onPress={onPress}
+    {...variantProps[variant]}
+    {...marginProps[margin]}
+  >
     {children}
   </TouchableOpacity>
 );

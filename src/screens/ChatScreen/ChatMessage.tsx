@@ -1,7 +1,6 @@
 
 import React from 'react';
-import View from '@src/components/View';
-import Text from '@src/components/Text';
+import { View, Text } from '@src/theme/components';
 
 type ChatMessageProps = {
   text?: string;

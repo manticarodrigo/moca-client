@@ -25,6 +25,7 @@ module.exports =  {
     'no-param-reassign': 'off',
     'no-param-reassign-allow-reduce/allow-reduce': 2,
     'no-param-reassign-allow-reduce/no-reduce-identifiers': 2,
+    'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/prop-types': 'off', // TODO: Find a way to autogenerate prop types from TypeScript definitions
     'react/jsx-filename-extension': [1, { 'extensions': ['.tsx'] }],

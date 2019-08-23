@@ -1,61 +1,45 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { SectionListData } from 'react-native';
-import { format, distanceInWordsToNow } from 'date-fns';
 
 import { Chat } from '@src/types';
-import { fetchChats } from '@src/services/api';
+import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
+import { getChats } from '@src/store/actions/ChatActions';
 
 import { SectionList } from '@src/theme/components';
 import Text from '@src/components/Text';
+
+import useSections from './useSections';
 import ChatListCard from './ChatListCard';
 
 type SectionHeaderProps = {
   section: SectionListData<{ title: string; data: Chat[] }>;
 };
 
-type SectionMap = {
-  [key: string]: SectionListData<{ title?: string; data: Chat[] }>;
-};
-
 const ChatListScreen = () => {
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [{ authState, chatState }, dispatch] = useStore();
   const navigation = useNavigation();
+  const sections = useSections(chatState.chats);
 
   useEffect(() => {
-    const onMount = async () => {
-      setChats(await fetchChats());
-    };
+    if (authState.user) {
+      dispatch(getChats(authState.user));
+    }
+  }, [authState.user]);
 
-    onMount();
-  }, []);
-
-  const handleCardPress = (id: string) => navigation.push('ChatScreen', { id });
+  const handleCardPress = (chat: Chat) => navigation.push('ChatScreen', { chat });
 
   const renderItem = ({ item }: { item: Chat }) => (
-    <ChatListCard chat={item} onPress={handleCardPress} />
+    <ChatListCard currentUser={authState.user} chat={item} onPress={handleCardPress} />
   );
 
   const renderSectionHeader = ({ section }: SectionHeaderProps) => (
-    <Text mb={2} uppercase>
+    <Text my={2} uppercase>
       {section.title}
     </Text>
   );
 
-  const keyExtractor = (item: Chat) => item.id;
-
-  const sections = useMemo(() => Object.values(chats.reduce<SectionMap>((map, chat) => {
-    const dateStr = chat.latestMessage.createdAt;
-    const key = format(dateStr, 'MM-DD-YYYY');
-    const { title = undefined, data = undefined } = map[key] || {};
-
-    map[key] = {
-      title: title || distanceInWordsToNow(dateStr, { addSuffix: true }),
-      data: Array.isArray(data) ? data.concat([chat]) : [chat],
-    };
-
-    return map;
-  }, {})), [chats]);
+  const keyExtractor = (item: Chat) => item.id.toString();
 
   return (
     <SectionList

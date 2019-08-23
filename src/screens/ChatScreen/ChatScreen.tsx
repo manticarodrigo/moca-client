@@ -1,44 +1,46 @@
 import React, { useState, useEffect } from 'react';
 
-import { fetchChat } from '@src/services/api';
+import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
-import { MessagePage } from '@src/types';
-import { placeholderImgSrc } from '@src/constants/urls';
+import { Chat } from '@src/types';
 
+import { TextInput } from '@src/theme/components';
 import Flex from '@src/components/Flex';
-import TextInput from '@src/components/TextInput';
 import Button from '@src/components/Button';
 
 import ChatMessage from './ChatMessage';
 import ChatHeader from './ChatHeader';
 
-const currentUserId = 2;
-
 const ChatScreen = () => {
-  const [page, setPage] = useState<MessagePage>({ messages: [], participants: [] });
+  const [{ authState }] = useStore();
   const [text, setText] = useState('');
   const navigation = useNavigation();
+  const [chat, setChat] = useState<Chat>({
+    id: undefined,
+    messages: [],
+    participants: [],
+  });
+
 
   useEffect(() => {
     const onMount = async () => {
-      const { params: { id } } = navigation.state;
-      setPage(await fetchChat(id));
+      const { params } = navigation.state;
+      setChat(params.chat);
     };
 
     onMount();
   }, []);
 
   useEffect(() => {
-    if (page.participants.length) {
+    if (chat.participants.length) {
+      const otherParticipant = chat.participants.find(({ id }) => id !== authState.user.id);
+
       navigation.setParams({
-        title: page.participants
-          .filter(({ id }) => id !== currentUserId)
-          .map(({ username }) => username)
-          .join(', '),
-        img: placeholderImgSrc,
+        title: otherParticipant.username,
+        img: otherParticipant.imageUrl,
       });
     }
-  }, [page]);
+  }, [chat]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
@@ -46,10 +48,10 @@ const ChatScreen = () => {
   return (
     <Flex flex safeArea direction="column">
       <Flex flex padding direction="column" bg="grey">
-        {page.messages.map((message) => (
+        {chat.messages.map((message) => (
           <ChatMessage
-            key={message.createdAt}
-            alignRight={message.user === currentUserId}
+            key={message.id}
+            alignRight={message.userId === authState.user.id}
             text={message.text}
           />
         ))}

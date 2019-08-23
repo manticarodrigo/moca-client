@@ -1,30 +1,18 @@
-type User = {
-  id: number;
+export type User = {
+  id: string;
   username: string;
+  imageUrl: string;
 };
 
-type Message = {
+export type Message = {
+  id: string;
   text: string;
-  user: number;
+  userId: string;
   createdAt: string;
-};
-
-type MessageMeta = {
-  text: string;
-  user: number;
-  createdAt: string;
-};
-
-export type MessagePage = {
-  next?: string;
-  previous?: string;
-  count?: number;
-  messages: Message[];
-  participants: User[];
 };
 
 export type Chat = {
   id: string;
-  otherParticipants: User[];
-  latestMessage: MessageMeta;
+  participants: User[];
+  messages: Message[];
 };
