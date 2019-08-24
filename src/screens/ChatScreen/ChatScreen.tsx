@@ -24,8 +24,11 @@ const ChatScreen = () => {
 
   useEffect(() => {
     const onMount = async () => {
-      const { params } = navigation.state;
-      setChat(params.chat);
+      const { params = {} } = navigation.state;
+
+      if (params.chat) {
+        setChat(params.chat);
+      }
     };
 
     onMount();
