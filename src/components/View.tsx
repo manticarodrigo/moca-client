@@ -7,12 +7,14 @@ import {
   layout,
   color,
   shadow,
+  position,
   FlexboxProps,
   BorderProps,
   SpaceProps,
   LayoutProps,
   ColorProps,
   ShadowProps,
+  PositionProps,
 } from 'styled-system';
 
 export type ViewProps =
@@ -21,7 +23,8 @@ export type ViewProps =
   & SpaceProps
   & LayoutProps
   & ColorProps
-  & ShadowProps;
+  & ShadowProps
+  & PositionProps;
 
 const View = styled.View<ViewProps>(
   compose(
@@ -31,6 +34,7 @@ const View = styled.View<ViewProps>(
     layout,
     color,
     shadow,
+    position,
   ),
 );
 
