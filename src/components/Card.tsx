@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-import { Spacing, Cards } from '@src/styles';
-import { SpacingProp } from '@src/styles/spacing';
+import { Spacing, SpacingProp, Cards } from '@src/styles';
 
 type CardProps = TouchableOpacityProps & {
   variant?: keyof typeof Cards;

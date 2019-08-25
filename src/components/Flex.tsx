@@ -1,26 +1,16 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 
-import { theme } from '@src/theme';
-import { Spacing, Alignment } from '@src/styles';
-import { SpacingProp } from '@src/styles/spacing';
-
-const Variant = {
-  chatInputContainer: {
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
-    height: 60,
-  },
-};
+import { Views, Spacing, SpacingProp, Alignment, Colors } from '@src/styles';
 
 type FlexProps = {
   flex?: boolean;
   safeArea?: boolean;
   direction?: 'row' | 'column';
-  variant?: keyof typeof Variant;
+  variant?: keyof typeof Views;
   alignment?: keyof typeof Alignment;
   spacing?: SpacingProp;
-  background?: keyof typeof theme.colors;
+  background?: keyof typeof Colors;
   children: JSX.Element | JSX.Element[];
 };
 
@@ -39,12 +29,12 @@ const Flex = ({
     flex: {
       display: 'flex',
       flexDirection: direction,
-      backgroundColor: theme.colors[background],
-      ...Variant[variant],
+      backgroundColor: Colors[background],
+      ...Views[variant],
       ...Alignment[alignment],
       ...Spacing.get(spacing),
     },
-  }), [variant, alignment, spacing]);
+  }), [variant, direction, alignment, spacing, background]);
 
   return (
     <FlexView style={styles.flex}>

@@ -1,6 +1,6 @@
 import { ViewStyle } from 'react-native';
 
-import { theme } from '@src/theme';
+export const space = [0, 4, 8, 16, 32, 64, 128, 256, 512];
 
 const aliases = {
   m: 'margin',
@@ -26,7 +26,7 @@ type SpacingKey = keyof typeof aliases | keyof typeof compositions;
 type SpacingTuple = [SpacingKey, number];
 
 const _space = (key: SpacingKey, multiplier: number): ViewStyle => {
-  const size = theme.space[multiplier];
+  const size = space[multiplier];
 
   if (!aliases[key]) {
     return compositions[key].reduce((acc, style) => {
@@ -36,7 +36,7 @@ const _space = (key: SpacingKey, multiplier: number): ViewStyle => {
     }, {});
   }
 
-  return { [aliases[key]]: theme.space[multiplier] };
+  return { [aliases[key]]: size };
 };
 
 const _spaces = (arr: SpacingTuple[]): ViewStyle => arr

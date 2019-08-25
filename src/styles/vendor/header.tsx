@@ -1,16 +1,17 @@
 import { ViewStyle, TextStyle } from 'react-native';
 import { StackNavigatorConfig } from 'react-navigation';
 
-import { theme } from '@src/theme';
+import * as Typography from '../global/typography';
+import * as Colors from '../global/colors';
 
 const headerStyles: ViewStyle = {
-  backgroundColor: theme.colors.grey,
+  backgroundColor: Colors.grey,
   height: 60,
   borderBottomWidth: 0,
 };
 
 const titleStyles: TextStyle = {
-  fontSize: theme.fontSizes[5],
+  fontSize: Typography.fontSizes[5],
   fontWeight: 'bold',
 };
 
@@ -21,7 +22,7 @@ export const getBase = (title: string): StackNavigatorConfig => ({
     headerStyle: {
       ...headerStyles,
     },
-    headerTintColor: theme.colors.text,
+    headerTintColor: Colors.text,
     headerTitleStyle: {
       ...titleStyles,
     },

@@ -1,19 +1,35 @@
-import * as Spacing from './spacing';
-import * as Alignment from './alignment';
-import * as Typography from './typography';
-import * as Shadows from './shadows';
-import * as Header from './header';
-import * as Buttons from './buttons';
-import * as Cards from './cards';
-import * as Slides from './slides';
+// globals
+import { get, SpacingProp } from './global/spacing';
+import * as Alignment from './global/alignment';
+import * as Typography from './global/typography';
+import * as Colors from './global/colors';
+import * as Shadows from './global/shadows';
+
+// variants
+import * as Views from './variants/views';
+import * as Lists from './variants/lists';
+import * as Buttons from './variants/buttons';
+import * as Cards from './variants/cards';
+
+// vendor
+import * as Header from './vendor/header';
+import * as Slides from './vendor/slides';
+
+const Spacing = {
+  get, // hack for bundling SpacingProp
+};
 
 export {
   Spacing,
+  SpacingProp,
   Alignment,
   Typography,
+  Colors,
   Shadows,
-  Header,
+  Views,
+  Lists,
   Buttons,
   Cards,
+  Header,
   Slides,
 };

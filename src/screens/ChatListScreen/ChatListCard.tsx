@@ -26,7 +26,7 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
       time: format(latestMessage.createdAt, 'h:mm a / DD.MM.YYYY'),
       text: latestMessage.text,
     };
-  }, [chat]);
+  }, [chat, currentUser.id]);
 
   return (
     <Card spacing={['mb', 3]} onPress={handleCardPress}>

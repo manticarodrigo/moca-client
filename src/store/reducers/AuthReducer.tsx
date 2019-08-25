@@ -2,7 +2,7 @@ import { User } from '@src/types';
 import { AuthAction } from '@src/store/actions/AuthActions';
 
 export type AuthState = {
-  user?: User;
+  currentUser?: User;
 };
 
 const reducer = (state: AuthState = {}, action: AuthAction) => {
@@ -10,7 +10,7 @@ const reducer = (state: AuthState = {}, action: AuthAction) => {
     case 'LOGIN':
       return {
         ...state,
-        user: action.payload,
+        currentUser: action.payload,
       };
     default:
       return state;

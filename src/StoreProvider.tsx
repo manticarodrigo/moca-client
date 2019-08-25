@@ -7,7 +7,7 @@ import chatReducer, { ChatState } from '@src/store/reducers/ChatReducer';
 
 import { mockImg } from './services/mock';
 
-type StoreState = {
+export type StoreState = {
   authState: AuthState;
   chatState: ChatState;
 };
@@ -16,7 +16,7 @@ type StoreAction = AuthAction | ChatAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
 type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>) => void;
-type ProviderDispatch = (action: StoreAction | ProviderAsyncAction) => void;
+export type ProviderDispatch = (action: StoreAction | ProviderAsyncAction) => void;
 type ProviderValue = [StoreState, ProviderDispatch];
 
 type AsyncReducer = (
@@ -41,7 +41,7 @@ const rootReducer: StoreReducer = (state: StoreState, action: StoreAction) => ({
 
 const initialState: StoreState = {
   authState: {
-    user: {
+    currentUser: {
       id: '0',
       username: 'John Doe',
       imageUrl: mockImg,

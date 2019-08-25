@@ -10,22 +10,17 @@ type ButtonProps = TouchableHighlightProps & {
 const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
   const styles = useMemo(() => StyleSheet.create({
     button: {
-      ...Buttons[variant],
+      ...Buttons[variant].style,
     },
     text: {
       ...Typography.button[variant],
     },
   }), [variant]);
 
-  const underlay = {
-    primary: undefined,
-    text: '#ddd',
-  };
-
   return (
     <TouchableHighlight
       style={styles.button}
-      underlayColor={underlay[variant]}
+      underlayColor={Buttons[variant].underlayColor}
       onPress={onPress}
     >
       <Text style={styles.text}>

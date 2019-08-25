@@ -2,8 +2,8 @@ import { subDays } from 'date-fns';
 
 import { User, Chat, Message } from '@src/types';
 
-const mockUsernames = ['Adam Smith', 'David Hume', 'Ayn Rand', 'Jeremy Bentham'];
-const mockMessages = ['Hey!', 'How are you?', 'Doing well, and you?', 'Doing great!'];
+const mockUsernames = ['Adam Smith', 'David Hume', 'Ayn Rand', 'Jeremy Bentham', 'Michel Foucault'];
+const mockMessages = ['Hey!', 'How are you?', 'Doing well, and you?', 'Doing great!', 'Good to hear.'];
 export const mockImg = 'https://www.chaarat.com/wp-content/uploads/2017/08/placeholder-user.png';
 
 
@@ -33,9 +33,9 @@ const _genChat = (username: string, currentUser: User): Chat => {
   ];
 
   const participantIds = participants.map((user) => user.id);
-  const randomId = participantIds[_genRandomInt(participants.length - 1)];
+  const _getRandomId = () => participantIds[_genRandomInt(participants.length)];
 
-  const messages = mockMessages.map((message) => _genMessage(message, randomId));
+  const messages = mockMessages.map((message) => _genMessage(message, _getRandomId()));
 
   return {
     id: _genId(),

@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
 
-import { Typography, Spacing } from '@src/styles';
-import { SpacingProp } from '@src/styles/spacing';
+import { Typography, Spacing, SpacingProp } from '@src/styles';
 
 type TextProps = RNTextProps & {
   variant?: keyof typeof Typography.text;
@@ -16,7 +15,7 @@ const Text = ({ variant, spacing, children, ...textProps }: TextProps) => {
       ...Typography.text[variant],
       ...Spacing.get(spacing),
     },
-  }), [variant]);
+  }), [variant, spacing]);
 
   return (
     <RNText style={styles.text} {...textProps}>

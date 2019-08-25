@@ -12,15 +12,14 @@ import ChatMessage from './ChatMessage';
 import ChatHeader from './ChatHeader';
 
 const ChatScreen = () => {
-  const [{ authState }] = useStore();
+  const [{ authState: { currentUser } }] = useStore();
+  const { setParams, ...navigation } = useNavigation();
   const [text, setText] = useState('');
-  const navigation = useNavigation();
   const [chat, setChat] = useState<Chat>({
     id: undefined,
     messages: [],
     participants: [],
   });
-
 
   useEffect(() => {
     const onMount = async () => {
@@ -32,36 +31,36 @@ const ChatScreen = () => {
     };
 
     onMount();
-  }, []);
+  }, [navigation.state]);
 
   useEffect(() => {
     if (chat.participants.length) {
-      const otherParticipant = chat.participants.find(({ id }) => id !== authState.user.id);
+      const otherParticipant = chat.participants.find(({ id }) => id !== currentUser.id);
 
-      navigation.setParams({
+      setParams({
         title: otherParticipant.username,
         img: otherParticipant.imageUrl,
       });
     }
-  }, [chat]);
+  }, [chat, currentUser.id, setParams]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
 
   return (
-    <Flex alignment="fill" safeArea direction="column">
-      <Flex alignment="fill" spacing={['p', 3]} direction="column" background="grey">
+    <Flex alignment="flex" safeArea direction="column">
+      <Flex alignment="flex" spacing={['p', 3]} direction="column" background="grey">
         {chat.messages.map((message) => (
           <ChatMessage
             key={message.id}
-            alignRight={message.userId === authState.user.id}
+            alignRight={message.userId === currentUser.id}
             text={message.text}
           />
         ))}
       </Flex>
       <Flex variant="chatInputContainer">
         <TextInput
-          alignment="fill"
+          alignment="flex"
           spacing={[['py', 2], ['px', 3]]}
           onChangeText={handleChangeText}
           placeholder="Type a message..."

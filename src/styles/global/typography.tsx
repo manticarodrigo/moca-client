@@ -1,22 +1,23 @@
 import { TextStyle } from 'react-native';
 
-import { theme } from '@src/theme';
+import * as Colors from '@src/styles/global/colors';
 
+export const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
 
 const colorText: TextStyle = {
-  color: theme.colors.text,
+  color: Colors.text,
 };
 
 const colorWhite: TextStyle = {
-  color: theme.colors.white,
+  color: Colors.white,
 };
 
 const sizeSmall: TextStyle = {
-  fontSize: theme.fontSizes[2],
+  fontSize: fontSizes[2],
 };
 
 const sizeMedium: TextStyle = {
-  fontSize: theme.fontSizes[3],
+  fontSize: fontSizes[3],
 };
 
 const weightLight: TextStyle = {
