@@ -1,26 +1,41 @@
 
-import React from 'react';
-import { View, Text } from '@src/theme/components';
+import React, { useMemo } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { theme } from '@src/theme';
+import { Shadows } from '@src/styles';
 
 type ChatMessageProps = {
-  text?: string;
-  alignRight?: boolean;
+  text: string;
+  alignRight: boolean;
 };
 
-const ChatMessage = ({ text, alignRight }: ChatMessageProps) => (
-  <View
-    alignSelf={alignRight ? 'flex-end' : 'flex-start'}
-    marginTop={2}
-    marginRight={alignRight ? 0 : 4}
-    marginLeft={alignRight ? 4 : 0}
-    padding={2}
-    height="auto"
-    backgroundColor={alignRight ? 'primary' : 'white'}
-    borderRadius={2}
-    boxShadow={0}
-  >
-    {text && <Text color={alignRight ? 'white' : 'text'}>{text}</Text>}
-  </View>
-);
+const styles = StyleSheet.create({
+  base: {
+    borderRadius: theme.radii[2],
+    marginTop: theme.space[2],
+    padding: theme.space[2],
+    height: 'auto',
+    ...Shadows.primary,
+  },
+});
+
+const ChatMessage = ({ text, alignRight }: ChatMessageProps) => {
+  const propStyles = useMemo(() => StyleSheet.create({
+    view: {
+      alignSelf: alignRight ? 'flex-end' : 'flex-start',
+      backgroundColor: alignRight ? theme.colors.primary : theme.colors.white,
+      [alignRight ? 'marginLeft' : 'marginRight']: theme.space[4],
+    },
+    text: {
+      color: alignRight ? theme.colors.white : theme.colors.text,
+    },
+  }), [alignRight]);
+
+  return (
+    <View style={[styles.base, propStyles.view]}>
+      <Text style={propStyles.text}>{text}</Text>
+    </View>
+  );
+};
 
 export default ChatMessage;

@@ -1,19 +1,44 @@
 import React from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
-import Button from '@src/components/Button';
-import Flex from '@src/components/Flex';
 
-const DashboardScreen = () => {
+import Flex from '@src/components/Flex';
+import Slider from '@src/components/Slider';
+import Button from '@src/components/Button';
+
+const OnboardingScreen = () => {
   const navigation = useNavigation();
+
+  const slides = [
+    {
+      title: 'Reliable',
+      text: 'Certified Physical Therapists.',
+    },
+    {
+      title: 'Hassle - Free',
+      text: 'Fixed costs, no hidden fees, no insurance needed.',
+    },
+    {
+      title: 'Personalized',
+      text: 'Direct medical access at your most convenient location.',
+    },
+  ];
 
   const handleButtonPress = () => navigation.navigate('Tab');
 
   return (
-    <Flex flex center="xy" bg="grey">
-      <Button text="Go to Tabs" onPress={handleButtonPress} />
+    <Flex safeArea direction="column" alignment="fillXY" background="grey">
+      <Slider slides={slides} />
+      <Button onPress={handleButtonPress}>
+        Go to Tabs
+      </Button>
     </Flex>
   );
 };
 
-export default DashboardScreen;
+
+OnboardingScreen.navigationOptions = {
+  header: null,
+};
+
+export default OnboardingScreen;

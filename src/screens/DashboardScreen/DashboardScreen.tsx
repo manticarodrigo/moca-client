@@ -10,8 +10,10 @@ const DashboardScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <Flex flex center="xy" bg="grey">
-      <Button text="Go to Chat" onPress={handleButtonPress} />
+    <Flex alignment="fillXY" background="grey">
+      <Button onPress={handleButtonPress}>
+        Go to Chat
+      </Button>
     </Flex>
   );
 };

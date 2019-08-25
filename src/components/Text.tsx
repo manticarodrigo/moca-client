@@ -1,13 +1,28 @@
-import styled from 'styled-components/native';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
 
-import { Text as StyledText } from '@src/theme/components';
+import { Typography, Spacing } from '@src/styles';
+import { SpacingProp } from '@src/styles/spacing';
 
-type TextProps = {
-  uppercase?: boolean;
+type TextProps = RNTextProps & {
+  variant?: keyof typeof Typography.text;
+  spacing?: SpacingProp;
+  children: string;
 };
 
-const Text = styled(StyledText)<TextProps>`
-  textTransform: ${({ uppercase }) => (uppercase ? 'uppercase' : 'none')}
-`;
+const Text = ({ variant, spacing, children, ...textProps }: TextProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    text: {
+      ...Typography.text[variant],
+      ...Spacing.get(spacing),
+    },
+  }), [variant]);
+
+  return (
+    <RNText style={styles.text} {...textProps}>
+      {children}
+    </RNText>
+  );
+};
 
 export default Text;

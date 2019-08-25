@@ -29,15 +29,15 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
   }, [chat]);
 
   return (
-    <Card margin="mb" onPress={handleCardPress}>
+    <Card spacing={['mb', 3]} onPress={handleCardPress}>
       <Flex>
-        <Avatar size={60} borderRadius={30} uri={imageUrl} />
-        <Flex direction="column" padding="pl">
-          <Text fontSize={3} fontWeight={600}>{username}</Text>
-          <Text fontSize={2} fontWeight={100}>{time}</Text>
+        <Avatar size={60} uri={imageUrl} />
+        <Flex direction="column" spacing={['pl', 3]}>
+          <Text variant="bold">{username}</Text>
+          <Text variant="smallLight">{time}</Text>
         </Flex>
       </Flex>
-      <Text mt={2} fontSize={2} fontWeight={100} numberOfLines={1}>
+      <Text variant="smallLight" spacing={['mt', 3]} numberOfLines={1}>
         {text}
       </Text>
     </Card>

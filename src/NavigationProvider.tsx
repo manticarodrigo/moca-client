@@ -7,7 +7,7 @@ import {
   createAppContainer,
 } from 'react-navigation';
 
-import { getHeaderTheme } from '@src/theme/theme';
+import { Header } from '@src/styles';
 
 import ChatListScreen from '@src/screens/ChatListScreen/ChatListScreen';
 import ChatScreen from '@src/screens/ChatScreen/ChatScreen';
@@ -76,7 +76,7 @@ const _createStack = (tabName, initialRouteName, screens) => createStackNavigato
   ),
   {
     initialRouteName,
-    ...getHeaderTheme(tabName),
+    ...Header.getBase(tabName),
   },
 );
 
@@ -105,7 +105,7 @@ const AuthStack = createStackNavigator(
   },
   {
     initialRouteName: 'SitemapScreen',
-    ...getHeaderTheme('Sitemap'),
+    ...Header.getBase('Sitemap'),
   },
 );
 

@@ -1,85 +1,53 @@
-import React, { ReactChild } from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 
-import { View, SafeAreaView } from '@src/theme/components';
+import { theme } from '@src/theme';
+import { Spacing, Alignment } from '@src/styles';
+import { SpacingProp } from '@src/styles/spacing';
 
-const variantProps = {
-  bottomInput: {
-    style: {
-      borderTopWidth: 1,
-      borderTopColor: '#ddd',
-      height: 60,
-    },
+const Variant = {
+  chatInputContainer: {
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    height: 60,
   },
 };
-
-const centerProps = {
-  x: {
-    justifyContent: 'center',
-  },
-  y: {
-    alignItems: 'center',
-  },
-  xy: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-};
-
-const paddingProps = {
-  true: {
-    padding: 3,
-  },
-  px: {
-    px: 3,
-  },
-  pl: {
-    pl: 3,
-  },
-};
-
-type FlexVariant = 'bottomInput'
-
-type FlexDirection = 'row' | 'column';
-
-type FlexCenter = keyof typeof centerProps;
-
-type FlexPadding = keyof typeof paddingProps | boolean;
-
-type FlexBg = 'white' | 'grey';
 
 type FlexProps = {
-  variant?: FlexVariant;
   flex?: boolean;
   safeArea?: boolean;
-  direction?: FlexDirection;
-  center?: FlexCenter;
-  padding?: FlexPadding;
-  bg?: FlexBg;
-  children: ReactChild | ReactChild[];
+  direction?: 'row' | 'column';
+  variant?: keyof typeof Variant;
+  alignment?: keyof typeof Alignment;
+  spacing?: SpacingProp;
+  background?: keyof typeof theme.colors;
+  children: JSX.Element | JSX.Element[];
 };
 
 const Flex = ({
-  variant,
-  flex,
   safeArea,
+  variant,
   direction = 'row',
-  center,
-  padding = false,
-  bg = 'white',
+  alignment,
+  spacing,
+  background = 'white',
   children,
 }: FlexProps) => {
-  const FlexView = safeArea ? SafeAreaView : View;
+  const FlexView = useMemo(() => safeArea ? SafeAreaView : View, [safeArea]);
+
+  const styles = useMemo(() => StyleSheet.create({
+    flex: {
+      display: 'flex',
+      flexDirection: direction,
+      backgroundColor: theme.colors[background],
+      ...Variant[variant],
+      ...Alignment[alignment],
+      ...Spacing.get(spacing),
+    },
+  }), [variant, alignment, spacing]);
 
   return (
-    <FlexView
-      display="flex"
-      flex={flex ? '1' : undefined}
-      flexDirection={direction}
-      backgroundColor={bg}
-      {...variantProps[variant]}
-      {...centerProps[center]}
-      {...paddingProps[padding.toString()]}
-    >
+    <FlexView style={styles.flex}>
       {children}
     </FlexView>
   );

@@ -4,8 +4,8 @@ import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 import { Chat } from '@src/types';
 
-import { TextInput } from '@src/theme/components';
 import Flex from '@src/components/Flex';
+import TextInput from '@src/components/TextInput';
 import Button from '@src/components/Button';
 
 import ChatMessage from './ChatMessage';
@@ -49,8 +49,8 @@ const ChatScreen = () => {
   const handlePressSend = () => setText('');
 
   return (
-    <Flex flex safeArea direction="column">
-      <Flex flex padding direction="column" bg="grey">
+    <Flex alignment="fill" safeArea direction="column">
+      <Flex alignment="fill" spacing={['p', 3]} direction="column" background="grey">
         {chat.messages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -59,18 +59,15 @@ const ChatScreen = () => {
           />
         ))}
       </Flex>
-      <Flex variant="bottomInput">
+      <Flex variant="chatInputContainer">
         <TextInput
-          flex="1"
-          height="100%"
-          py={2}
-          px={3}
-          bg="white"
+          alignment="fill"
+          spacing={[['py', 2], ['px', 3]]}
           onChangeText={handleChangeText}
           placeholder="Type a message..."
           value={text}
         />
-        <Button text="Send" variant="text" onPress={handlePressSend} />
+        <Button variant="text" onPress={handlePressSend}>Send</Button>
       </Flex>
     </Flex>
   );

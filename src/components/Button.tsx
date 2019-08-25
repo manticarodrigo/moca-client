@@ -1,49 +1,38 @@
-import React from 'react';
-import { TouchableHighlightProps } from 'react-native';
-
-import { TouchableHighlight, Text } from '@src/theme/components';
-
-
-const variantProps = {
-  primary: {
-    borderRadius: 2,
-    backgroundColor: 'primary',
-    padding: 3,
-    textProps: {},
-  },
-  text: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    width: '80px',
-    bg: 'white',
-    underlayColor: '#ddd',
-    textProps: {
-      color: 'text',
-    },
-  },
-};
+import React, { useMemo } from 'react';
+import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'react-native';
+import { Buttons, Typography } from '@src/styles';
 
 type ButtonProps = TouchableHighlightProps & {
-  text: string;
-  variant?: keyof typeof variantProps;
+  variant?: keyof typeof Buttons;
+  children: string;
 };
 
-const Button = ({ text, variant = 'primary', onPress }: ButtonProps) => (
-  <TouchableHighlight
-    onPress={onPress}
-    {...variantProps[variant]}
-  >
-    <Text
-      fontSize={3}
-      fontWeight={400}
-      color="white"
-      {...variantProps[variant].textProps}
+const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    button: {
+      ...Buttons[variant],
+    },
+    text: {
+      ...Typography.button[variant],
+    },
+  }), [variant]);
+
+  const underlay = {
+    primary: undefined,
+    text: '#ddd',
+  };
+
+  return (
+    <TouchableHighlight
+      style={styles.button}
+      underlayColor={underlay[variant]}
+      onPress={onPress}
     >
-      {text}
-    </Text>
-  </TouchableHighlight>
-);
+      <Text style={styles.text}>
+        {children}
+      </Text>
+    </TouchableHighlight>
+  );
+};
 
 export default Button;

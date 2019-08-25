@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
-import { SectionListData } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { StyleSheet, SectionList, SectionListData } from 'react-native';
 
 import { Chat } from '@src/types';
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 import { getChats } from '@src/store/actions/ChatActions';
 
-import { SectionList } from '@src/theme/components';
+import { theme } from '@src/theme';
+import { Alignment, Spacing } from '@src/styles';
 import Text from '@src/components/Text';
 
 import useSections from './useSections';
@@ -34,18 +35,24 @@ const ChatListScreen = () => {
   );
 
   const renderSectionHeader = ({ section }: SectionHeaderProps) => (
-    <Text my={2} uppercase>
+    <Text variant="uppercase" spacing={['my', 3]}>
       {section.title}
     </Text>
   );
 
   const keyExtractor = (item: Chat) => item.id.toString();
 
+  const styles = useMemo(() => StyleSheet.create({
+    list: {
+      backgroundColor: theme.colors.grey,
+      ...Alignment.fill,
+      ...Spacing.get(['p', 3]),
+    },
+  }), []);
+
   return (
     <SectionList
-      flex="1"
-      padding={3}
-      bg="grey"
+      style={styles.list}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       keyExtractor={keyExtractor}

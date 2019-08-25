@@ -1,40 +1,28 @@
-import React, { ReactNode } from 'react';
-import { TouchableOpacityProps } from 'react-native';
-import { TouchableOpacity } from '@src/theme/components';
+import React, { useMemo } from 'react';
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-const variantProps = {
-  primary: {
-    borderRadius: 2,
-    padding: 3,
-    width: '100%',
-    backgroundColor: 'white',
-    boxShadow: 0,
-  },
-};
-
-const marginProps = {
-  mt: {
-    marginTop: 3,
-  },
-  mb: {
-    marginBottom: 3,
-  },
-};
+import { Spacing, Cards } from '@src/styles';
+import { SpacingProp } from '@src/styles/spacing';
 
 type CardProps = TouchableOpacityProps & {
-  variant?: keyof typeof variantProps;
-  margin?: keyof typeof marginProps;
-  children?: ReactNode | ReactNode[];
+  variant?: keyof typeof Cards;
+  spacing?: SpacingProp;
+  children?: JSX.Element | JSX.Element[];
 };
 
-const Card = ({ variant = 'primary', margin, onPress, children }: CardProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    {...variantProps[variant]}
-    {...marginProps[margin]}
-  >
-    {children}
-  </TouchableOpacity>
-);
+const Card = ({ variant = 'primary', spacing, onPress, children }: CardProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      ...Cards[variant],
+      ...Spacing.get(spacing),
+    },
+  }), [variant, spacing]);
+
+  return (
+    <TouchableOpacity style={styles.card} onPress={onPress}>
+      {children}
+    </TouchableOpacity>
+  );
+};
 
 export default Card;
