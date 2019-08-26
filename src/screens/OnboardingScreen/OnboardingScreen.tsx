@@ -27,7 +27,7 @@ const OnboardingScreen = () => {
   const handleButtonPress = () => navigation.navigate('Tab');
 
   return (
-    <Flex safeArea direction="column" alignment="flexCenterXY" background="grey">
+    <Flex safeArea direction="column" alignment={['flex', 'centerXY']} background="grey">
       <Slider slides={slides} />
       <Button onPress={handleButtonPress}>
         Go to Tabs
@@ -35,7 +35,6 @@ const OnboardingScreen = () => {
     </Flex>
   );
 };
-
 
 OnboardingScreen.navigationOptions = {
   header: null,

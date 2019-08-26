@@ -49,13 +49,13 @@ const _spaces = (arr: SpacingTuple[]): ViewStyle => arr
 export type SpacingProp = SpacingTuple | SpacingTuple[];
 
 export const get = (prop?: SpacingProp) => {
-  const isMultiDim = (arr: SpacingProp): arr is SpacingTuple[] => arr[0] instanceof Array;
+  const isMultiDimArr = (arr: SpacingProp): arr is SpacingTuple[] => arr[0] instanceof Array;
 
   if (!prop) {
     return null;
   }
 
-  if (isMultiDim(prop)) {
+  if (isMultiDimArr(prop)) {
     return _spaces(prop);
   }
 

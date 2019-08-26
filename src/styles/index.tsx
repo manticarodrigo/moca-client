@@ -1,5 +1,5 @@
 // globals
-import { get, SpacingProp } from './global/spacing';
+import * as Spacing from './global/spacing';
 import * as Alignment from './global/alignment';
 import * as Typography from './global/typography';
 import * as Colors from './global/colors';
@@ -15,13 +15,12 @@ import * as Cards from './variants/cards';
 import * as Header from './vendor/header';
 import * as Slides from './vendor/slides';
 
-const Spacing = {
-  get, // hack for bundling SpacingProp
-};
+// props
+export { SpacingProp } from './global/spacing';
+export { AlignmentProp } from './global/alignment';
 
 export {
   Spacing,
-  SpacingProp,
   Alignment,
   Typography,
   Colors,

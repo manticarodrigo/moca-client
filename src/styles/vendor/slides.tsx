@@ -11,7 +11,7 @@ export const activeDotStyle = {
 };
 
 export const slide = {
-  ...Alignment.flexCenterXY,
+  ...Alignment.get(['flex', 'centerXY']),
   backgroundColor: '#fff',
 };
 
