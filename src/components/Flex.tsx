@@ -1,44 +1,46 @@
-import React, { ReactChild } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import styled from 'styled-components/native';
-import {
-  compose,
-  flexbox,
-  space,
-  border,
-  layout,
-  color,
-  FlexboxProps,
-  SpaceProps,
-  BorderProps,
-  LayoutProps,
-  ColorProps,
-} from 'styled-system';
+import React, { useMemo } from 'react';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 
-type FlexProps = FlexboxProps & SpaceProps & BorderProps & LayoutProps & ColorProps & {
-  style?: StyleProp<ViewStyle>;
+import { Views, Spacing, SpacingProp, Alignment, AlignmentProp, Colors } from '@src/styles';
+
+type FlexProps = {
+  flex?: boolean;
   safeArea?: boolean;
-  children: ReactChild | ReactChild[];
+  direction?: 'row' | 'column';
+  variant?: keyof typeof Views;
+  alignment?: AlignmentProp;
+  spacing?: SpacingProp;
+  background?: keyof typeof Colors;
+  children: JSX.Element | JSX.Element[];
 };
 
-const composed = compose(
-  flexbox,
-  space,
-  border,
-  layout,
-  color,
-);
+const Flex = ({
+  safeArea,
+  variant,
+  direction = 'row',
+  alignment,
+  spacing,
+  background = 'white',
+  children,
+}: FlexProps) => {
+  const FlexView = useMemo(() => safeArea ? SafeAreaView : View, [safeArea]);
 
-const FlexView = styled.View(composed);
+  const styles = useMemo(() => StyleSheet.create({
+    flex: {
+      display: 'flex',
+      flexDirection: direction,
+      backgroundColor: Colors[background],
+      ...Views[variant],
+      ...Alignment.get(alignment),
+      ...Spacing.get(spacing),
+    },
+  }), [variant, direction, alignment, spacing, background]);
 
-const FlexSafeAreaView = styled.SafeAreaView(composed);
-
-const baseProps = {
-  display: 'flex',
+  return (
+    <FlexView style={styles.flex}>
+      {children}
+    </FlexView>
+  );
 };
-
-const Flex = ({ safeArea, ...props }: FlexProps) => safeArea
-  ? <FlexSafeAreaView {...baseProps} {...props} />
-  : <FlexView {...baseProps} {...props} />;
 
 export default Flex;

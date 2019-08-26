@@ -1,12 +1,27 @@
-import styled from 'styled-components/native';
-import { space, color, typography, SpaceProps, ColorProps, TypographyProps } from 'styled-system';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
 
-type TextProps = SpaceProps & ColorProps & TypographyProps;
+import { Typography, Spacing, SpacingProp } from '@src/styles';
 
-const Text = styled.Text<TextProps>(
-  space,
-  color,
-  typography,
-);
+type TextProps = RNTextProps & {
+  variant?: keyof typeof Typography.text;
+  spacing?: SpacingProp;
+  children: string;
+};
+
+const Text = ({ variant, spacing, children, ...textProps }: TextProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    text: {
+      ...Typography.text[variant],
+      ...Spacing.get(spacing),
+    },
+  }), [variant, spacing]);
+
+  return (
+    <RNText style={styles.text} {...textProps}>
+      {children}
+    </RNText>
+  );
+};
 
 export default Text;

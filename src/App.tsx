@@ -1,23 +1,19 @@
-import React, { Component, ComponentClass } from 'react';
+import React, { ComponentClass } from 'react';
 import { registerRootComponent } from 'expo';
-import { activateKeepAwake } from 'expo-keep-awake';
-import { ThemeProvider } from 'styled-components/native';
+import { InitialProps } from 'expo/build/launch/withExpoRoot.types';
+import { activateKeepAwake } from 'expo-keep-awake'; // eslint-disable-line import/no-extraneous-dependencies
 
-import { theme } from '@src/theme';
-import NavigatioProvider from '@src/Navigator';
+import StoreProvider from '@src/StoreProvider';
+import NavigationProvider from '@src/NavigationProvider';
 
-class App extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <NavigatioProvider />
-      </ThemeProvider>
-    );
-  }
-}
+const App = () => (
+  <StoreProvider>
+    <NavigationProvider />
+  </StoreProvider>
+);
 
-if (__DEV__) {
+if (__DEV__) { // eslint-disable-line no-undef
   activateKeepAwake();
 }
 
-registerRootComponent(App as ComponentClass<any>);
+registerRootComponent(App as unknown as ComponentClass<InitialProps, {}>);
