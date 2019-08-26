@@ -1,57 +1,33 @@
-import React, { ReactNode } from 'react';
-import { TouchableHighlightProps } from 'react-native';
-import styled from 'styled-components/native';
-import {
-  compose,
-  display,
-  flexbox,
-  space,
-  layout,
-  color,
-  DisplayProps,
-  FlexboxProps,
-  SpaceProps,
-  LayoutProps,
-  ColorProps,
-  TypographyProps,
-} from 'styled-system';
+import React, { useMemo } from 'react';
+import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'react-native';
+import { Buttons, Typography } from '@src/styles';
 
-import Text from '@src/components/Text';
+type ButtonProps = TouchableHighlightProps & {
+  variant?: keyof typeof Buttons;
+  children: string;
+};
 
-type ButtonProps =
-  & TouchableHighlightProps
-  & DisplayProps
-  & FlexboxProps
-  & SpaceProps
-  & LayoutProps
-  & ColorProps
-  & {
-    textProps?: TypographyProps & ColorProps;
-    onPress: () => void;
-    children: ReactNode;
-  };
+const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    button: {
+      ...Buttons[variant].style,
+    },
+    text: {
+      ...Typography.button[variant],
+    },
+  }), [variant]);
 
-const TouchableHighlight = styled.TouchableHighlight(
-  compose(
-    display,
-    flexbox,
-    space,
-    layout,
-    color,
-  ),
-);
-
-const Button = ({ textProps = {}, children, ...props }: ButtonProps) => (
-  <TouchableHighlight {...props}>
-    <Text
-      fontSize={textProps.fontSize || 3}
-      fontWeight={textProps.fontWeight || 400}
-      color={textProps.color || 'white'}
-      {...textProps}
+  return (
+    <TouchableHighlight
+      style={styles.button}
+      underlayColor={Buttons[variant].underlayColor}
+      onPress={onPress}
     >
-      {children}
-    </Text>
-  </TouchableHighlight>
-);
+      <Text style={styles.text}>
+        {children}
+      </Text>
+    </TouchableHighlight>
+  );
+};
 
 export default Button;

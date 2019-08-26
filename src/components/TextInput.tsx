@@ -1,25 +1,30 @@
-import styled from 'styled-components/native';
-import {
-  compose,
-  flexbox,
-  space,
-  layout,
-  color,
-  FlexboxProps,
-  SpaceProps,
-  LayoutProps,
-  ColorProps,
-} from 'styled-system';
+import React, { useMemo } from 'react';
+import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProps } from 'react-native';
 
-type TextInputProps = FlexboxProps & SpaceProps & LayoutProps & ColorProps;
+import { Alignment, AlignmentProp, Spacing, SpacingProp, Typography } from '@src/styles';
 
-const TextInput = styled.TextInput<TextInputProps>(
-  compose(
-    flexbox,
-    space,
-    layout,
-    color,
-  ),
-);
+const variants = {
+  primary: {},
+};
 
-export default TextInput;
+type TextInputProps = RNTextInputProps & {
+  variant?: keyof typeof variants;
+  text?: keyof typeof Typography.text;
+  alignment?: AlignmentProp;
+  spacing?: SpacingProp;
+};
+
+const Text = ({ variant, text, spacing, alignment, ...textProps }: TextInputProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    text: {
+      ...variants[variant],
+      ...Typography.text[text],
+      ...Alignment.get(alignment),
+      ...Spacing.get(spacing),
+    },
+  }), [variant, text, alignment, spacing]);
+
+  return <RNTextInput style={styles.text} {...textProps} />;
+};
+
+export default Text;

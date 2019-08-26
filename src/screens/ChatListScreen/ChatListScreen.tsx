@@ -1,59 +1,52 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { format, distanceInWordsToNow } from 'date-fns';
+import React, { useEffect } from 'react';
+import { SectionListData } from 'react-native';
 
-import { fetchChats } from '@src/services/api';
-import useNavigation from '@src/hooks/useNavigation';
 import { Chat } from '@src/types';
+import useStore from '@src/hooks/useStore';
+import useNavigation from '@src/hooks/useNavigation';
+import { getChats } from '@src/store/actions/ChatActions';
 
-import SectionList from '@src/components/SectionList';
 import Text from '@src/components/Text';
+import SectionList from '@src/components/SectionList';
+
+import useSections from './useSections';
 import ChatListCard from './ChatListCard';
 
+type SectionHeaderProps = {
+  section: SectionListData<{ title: string; data: Chat[] }>;
+};
+
 const ChatListScreen = () => {
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [{ authState: { currentUser }, chatState }, dispatch] = useStore();
   const navigation = useNavigation();
+  const sections = useSections(chatState.chats);
 
   useEffect(() => {
-    const onMount = async () => {
-      setChats(await fetchChats());
-    };
+    if (currentUser) {
+      dispatch(getChats(currentUser));
+    }
+  }, [currentUser, dispatch]);
 
-    onMount();
-  }, []);
+  const handleCardPress = (chat: Chat) => navigation.push('ChatScreen', { chat });
 
-  const handleCardPress = (id: string) => navigation.push('ChatScreen', { id });
-
-  const renderItem = ({ item, index }) => (
-    <ChatListCard key={index} chat={item} onPress={handleCardPress} />
+  const renderItem = ({ item }: { item: Chat }) => (
+    <ChatListCard currentUser={currentUser} chat={item} onPress={handleCardPress} />
   );
 
-  const renderSectionHeader = ({ section }) => (
-    <Text mb={2} style={{ textTransform: 'uppercase' }}>{section.title}</Text>
+  const renderSectionHeader = ({ section }: SectionHeaderProps) => (
+    <Text variant="uppercase" spacing={['my', 3]}>
+      {section.title}
+    </Text>
   );
 
-  const sections = useMemo(() => {
-    return chats.reduce((map, chat) => {
-      const dateStr = chat.latestMessage.createdAt;
-      const sectionKey = format(dateStr, 'MM-DD-YYYY');
-      const section = map[sectionKey] || {};
-
-      map[sectionKey] = {
-        title: section.title || distanceInWordsToNow(dateStr, { addSuffix: true }),
-        data: Array.isArray(section.data) ? section.data.push(chat) : [chat],
-      };
-
-      return map;
-    }, {});
-  }, [chats]);
+  const keyExtractor = (item: Chat) => item.id.toString();
 
   return (
     <SectionList
-      flex="1"
-      padding={3}
-      bg="grey"
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
-      sections={Object.values(sections)}
+      keyExtractor={keyExtractor}
+      sections={sections}
     />
   );
 };

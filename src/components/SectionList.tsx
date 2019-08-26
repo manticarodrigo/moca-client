@@ -1,23 +1,25 @@
-import { SectionList as RNSectionList } from 'react-native';
-import styled from 'styled-components/native';
-import {
-  flexbox,
-  space,
-  layout,
-  color,
-  FlexboxProps,
-  SpaceProps,
-  LayoutProps,
-  ColorProps,
-} from 'styled-system';
+import React, { useMemo } from 'react';
+import { StyleSheet, SectionList as RNSectionList, SectionListProps as RNSectionListProps } from 'react-native';
 
-type SectionListProps = FlexboxProps & SpaceProps & LayoutProps & ColorProps;
+import { Lists } from '@src/styles';
 
-const SectionList = styled(RNSectionList)<SectionListProps>(
-  flexbox,
-  space,
-  layout,
-  color,
-);
+type SectionListProps = RNSectionListProps<any> & {
+  variant?: keyof typeof Lists;
+};
+
+const SectionList = ({ variant = 'primary', ...nativeProps }: SectionListProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    list: {
+      ...Lists[variant],
+    },
+  }), [variant]);
+
+  return (
+    <RNSectionList
+      style={styles.list}
+      {...nativeProps}
+    />
+  );
+};
 
 export default SectionList;

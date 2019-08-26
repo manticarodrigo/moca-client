@@ -1,49 +1,27 @@
-import React, { ReactNode } from 'react';
-import { TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
-import {
-  compose,
-  space,
-  border,
-  layout,
-  color,
-  shadow,
-  SpaceProps,
-  BorderProps,
-  LayoutProps,
-  ColorProps,
-  ShadowProps,
-} from 'styled-system';
+import React, { useMemo } from 'react';
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-type ViewProps = SpaceProps & BorderProps & LayoutProps & ColorProps & ShadowProps;
+import { Spacing, SpacingProp, Cards } from '@src/styles';
 
-type CardProps = ViewProps & {
-  onPress: () => void;
-  children?: ReactNode | ReactNode[];
+type CardProps = TouchableOpacityProps & {
+  variant?: keyof typeof Cards;
+  spacing?: SpacingProp;
+  children?: JSX.Element | JSX.Element[];
 };
 
-const View = styled.View<ViewProps>(
-  compose(
-    space,
-    border,
-    layout,
-    color,
-    shadow,
-  ),
-);
+const Card = ({ variant = 'primary', spacing, onPress, children }: CardProps) => {
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      ...Cards[variant],
+      ...Spacing.get(spacing),
+    },
+  }), [variant, spacing]);
 
-View.defaultProps = {
-  borderRadius: 2,
-  padding: 3,
-  width: '100%',
-  backgroundColor: 'white',
-  boxShadow: 0,
+  return (
+    <TouchableOpacity style={styles.card} onPress={onPress}>
+      {children}
+    </TouchableOpacity>
+  );
 };
-
-const Card = ({ onPress, children, ...props }: CardProps) => (
-  <TouchableOpacity onPress={onPress}>
-    <View {...props}>{children}</View>
-  </TouchableOpacity>
-);
 
 export default Card;

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { fetchChat } from '@src/services/api';
+import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
-import { MessagePage } from '@src/types';
-import { placeholderImgSrc } from '@src/constants/urls';
+import { Chat } from '@src/types';
 
 import Flex from '@src/components/Flex';
 import TextInput from '@src/components/TextInput';
@@ -12,81 +11,62 @@ import Button from '@src/components/Button';
 import ChatMessage from './ChatMessage';
 import ChatHeader from './ChatHeader';
 
-const currentUserId = 1;
-
 const ChatScreen = () => {
-  const [page, setPage] = useState<MessagePage>({ messages: [], participants: [] });
+  const [{ authState: { currentUser } }] = useStore();
+  const { setParams, ...navigation } = useNavigation();
   const [text, setText] = useState('');
-  const navigation = useNavigation();
+  const [chat, setChat] = useState<Chat>({
+    id: undefined,
+    messages: [],
+    participants: [],
+  });
 
   useEffect(() => {
     const onMount = async () => {
-      const { params: { id } } = navigation.state;
-      setPage(await fetchChat(id));
+      const { params = {} } = navigation.state;
+
+      if (params.chat) {
+        setChat(params.chat);
+      }
     };
 
     onMount();
-  }, []);
+  }, [navigation.state]);
 
   useEffect(() => {
-    if (page.participants.length) {
-      navigation.setParams({
-        title: page.participants
-          .filter(({ id }) => id !== currentUserId)
-          .map(({ username }) => username)
-          .join(', '),
-        img: placeholderImgSrc,
+    if (chat.participants.length) {
+      const otherParticipant = chat.participants.find(({ id }) => id !== currentUser.id);
+
+      setParams({
+        title: otherParticipant.username,
+        img: otherParticipant.imageUrl,
       });
     }
-  }, [page]);
+  }, [chat, currentUser.id, setParams]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
 
   return (
-    <Flex flex="1" flexDirection="column" bg="white" safeArea>
-      <Flex flex="1" flexDirection="column" p={3} bg="grey">
-        {page.messages.map((message, index) => (
+    <Flex alignment="flex" safeArea direction="column">
+      <Flex alignment="flex" spacing={['p', 3]} direction="column" background="grey">
+        {chat.messages.map((message) => (
           <ChatMessage
-            key={index}
-            alignRight={message.user === currentUserId}
+            key={message.id}
+            alignRight={message.userId === currentUser.id}
             text={message.text}
           />
         ))}
       </Flex>
-      <Flex
-        style={{
-          borderTopWidth: 1,
-          borderTopColor: '#ddd',
-        }}
-        flexDirection="row"
-        height={60}
-        width="100%"
-        bg="white"
-      >
+      <Flex variant="chatInputContainer">
         <TextInput
-          flex="1"
-          height="100%"
-          py={2}
-          px={3}
-          bg="white"
+          alignment="flex"
+          spacing={[['py', 2], ['px', 3]]}
           onChangeText={handleChangeText}
           placeholder="Type a message..."
           value={text}
         />
-        <Button
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          width="80px"
-          bg="white"
-          underlayColor="#ddd"
-          textProps={{ fontWeight: 400, color: 'text' }}
-          onPress={handlePressSend}
-        >
-          Send
-        </Button>
+        <Button variant="text" onPress={handlePressSend}>Send</Button>
       </Flex>
     </Flex>
   );
