@@ -7,13 +7,21 @@ const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
 type TypographyColor = { color?: keyof typeof Colors };
 type TypographySize = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
 type TypographyWeight = { weight?: TextStyle['fontWeight'] };
+type TypographyAlign = { align?: TextStyle['textAlign'] };
 type TypographyTransform = { transform?: TextStyle['textTransform'] };
-type TypographyObject = TypographySize & TypographyWeight & TypographyTransform & TypographyColor;
 
-const _typography = ({ color, size, weight, transform }: TypographyObject): TextStyle => ({
+type TypographyObject =
+  & TypographySize
+  & TypographyWeight
+  & TypographyAlign
+  & TypographyTransform
+  & TypographyColor;
+
+const _typography = ({ color, size, weight, align, transform }: TypographyObject): TextStyle => ({
   color: Colors[color],
   fontSize: fontSizes[size],
   fontWeight: weight,
+  textAlign: align,
   textTransform: transform,
 });
 
