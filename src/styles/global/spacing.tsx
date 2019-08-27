@@ -48,7 +48,9 @@ export const get = (prop?: SpacingProp): ViewStyle => {
     return null;
   }
 
-  return Object
-    .entries(prop)
-    .reduce((styles, [key, size]) => ({ ...styles, ..._spacing(key, size) }), {});
+  const styles = {};
+
+  Object.entries(prop).forEach(([key, size]) => Object.assign(styles, _spacing(key, size)));
+
+  return styles;
 };

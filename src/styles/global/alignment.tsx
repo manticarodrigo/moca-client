@@ -18,10 +18,14 @@ type AlignmentKey = keyof typeof aliases | keyof typeof compositions;
 
 const _alignment = (key: AlignmentKey): ViewStyle => {
   if (!aliases[key]) {
-    return compositions[key].reduce((styles, style) => ({ ...styles, ...style }), {});
+    const styles = {};
+
+    compositions[key].forEach((style) => Object.assign(styles, style));
+
+    return styles;
   }
 
-  return { ...aliases[key] };
+  return aliases[key];
 };
 
 export type AlignmentProp = AlignmentKey | AlignmentKey[];
@@ -32,7 +36,11 @@ export const get = (prop: AlignmentProp): ViewStyle => {
   }
 
   if (prop instanceof Array) {
-    return prop.reduce((styles, key) => ({ ...styles, ..._alignment(key) }), {});
+    const styles = {};
+
+    prop.forEach((key) => Object.assign(styles, _alignment(key)));
+
+    return styles;
   }
 
   return _alignment(prop);

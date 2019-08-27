@@ -34,7 +34,11 @@ export const get = (prop?: TypographyProp): TextStyle => {
   }
 
   if (prop instanceof Array) {
-    return prop.reduce((acc, object) => ({ ...acc, ..._typography(object) }), {});
+    const styles = {};
+
+    prop.forEach((object) => Object.assign(styles, _typography(object)));
+
+    return styles;
   }
 
   return _typography(prop);

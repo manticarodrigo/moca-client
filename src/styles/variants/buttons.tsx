@@ -18,9 +18,7 @@ const primary: ButtonVariant = {
     ...Borders.primary,
     backgroundColor: Colors.primary,
   },
-  text: {
-    ...Typography.get({ color: 'white', size: 3 }),
-  },
+  text: { ...Typography.get({ color: 'white', size: 3 }) },
   underlayColor: undefined,
 };
 
@@ -31,9 +29,7 @@ const text: ButtonVariant = {
     height: '100%',
     width: 80,
   },
-  text: {
-    ...Typography.get({ color: 'text', size: 3 }),
-  },
+  text: { ...Typography.get({ color: 'text', size: 3 }) },
   underlayColor: Colors.grey,
 };
 
