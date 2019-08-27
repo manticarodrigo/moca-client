@@ -4,7 +4,7 @@ import { Buttons, Typography } from '@src/styles';
 
 type ButtonProps = TouchableHighlightProps & {
   variant?: keyof typeof Buttons;
-  children: string;
+  children?: string;
 };
 
 const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {

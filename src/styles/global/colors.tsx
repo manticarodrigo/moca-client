@@ -5,3 +5,4 @@ export const teal = '#57B0CC';
 export const tealLight = '#BBE4F2';
 export const grey = '#f2f2f2';
 export const text = '#000';
+export const lightBlack = 'rgba(0,0,0,0.8)';

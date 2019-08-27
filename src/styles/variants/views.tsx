@@ -32,3 +32,12 @@ export const chatInputContainer: ViewStyle = {
   borderTopColor: '#ddd',
   height: 60,
 };
+
+export const backDropView: ViewStyle = {
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  borderRadius: Spacing.space[3],
+  backgroundColor: Colors.white,
+  padding: Spacing.space[2],
+}

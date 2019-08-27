@@ -27,3 +27,12 @@ export const text: ButtonVariant = {
   },
   underlayColor: '#ddd',
 };
+
+export const backDrop: ButtonVariant = {
+  style: {
+    backgroundColor: Colors.lightBlack,
+    height: '100%',
+    width: '100%'
+  },
+  underlayColor: undefined,
+};

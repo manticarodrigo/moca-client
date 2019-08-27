@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 
-import { Views, Spacing, SpacingProp, Alignment, AlignmentProp, Colors } from '@src/styles';
+import { Views, Spacing, Position, SpacingProp, Alignment, AlignmentProp, PositionProp, Colors } from '@src/styles';
 
 type FlexProps = {
   flex?: boolean;
   safeArea?: boolean;
   direction?: 'row' | 'column';
+  position?: PositionProp;
   variant?: keyof typeof Views;
   alignment?: AlignmentProp;
   spacing?: SpacingProp;
@@ -20,6 +21,7 @@ const Flex = ({
   direction = 'row',
   alignment,
   spacing,
+  position,
   background = 'white',
   children,
 }: FlexProps) => {
@@ -33,8 +35,9 @@ const Flex = ({
       ...Views[variant],
       ...Alignment.get(alignment),
       ...Spacing.get(spacing),
+      ...Position.get(position),
     },
-  }), [variant, direction, alignment, spacing, background]);
+  }), [variant, direction, alignment, spacing, position, background]);
 
   return (
     <FlexView style={styles.flex}>
