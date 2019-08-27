@@ -1,7 +1,5 @@
 import { ViewStyle } from 'react-native';
 
-export const space = [0, 4, 8, 16, 32, 64, 128, 256, 512];
-
 const aliases = {
   m: 'margin',
   mt: 'marginTop',
@@ -22,43 +20,35 @@ const compositions = {
   py: [aliases.pt, aliases.pb],
 };
 
-type SpacingKey = keyof typeof aliases | keyof typeof compositions;
-type SpacingTuple = [SpacingKey, number];
+const spaceSize = [0, 4, 8, 16, 32, 64, 128, 256, 512];
 
-const _space = (key: SpacingKey, multiplier: number): ViewStyle => {
-  const size = space[multiplier];
+type SpacingSizeIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+type SpacingKey = keyof typeof aliases | keyof typeof compositions;
+
+const _spacing = (key: string, multiplier: SpacingSizeIndex): ViewStyle => {
+  const size = spaceSize[multiplier];
 
   if (!aliases[key]) {
-    return compositions[key].reduce((styles, style) => {
-      styles[style] = size;
+    const styles = {};
 
-      return styles;
-    }, {});
+    compositions[key].forEach((styleName) => {
+      styles[styleName] = spaceSize[size];
+    });
+
+    return styles;
   }
 
   return { [aliases[key]]: size };
 };
 
-const _spaces = (arr: SpacingTuple[]): ViewStyle => arr
-  .reduce((styles, [key, size]) => ({
-    ...styles,
-    ..._space(key, size),
-  }), {});
+export type SpacingProp = { [key in SpacingKey]?: SpacingSizeIndex };
 
-
-export type SpacingProp = SpacingTuple | SpacingTuple[];
-
-export const get = (prop: SpacingProp) => {
-  const isMultiDimArr = (arr: SpacingProp): arr is SpacingTuple[] => arr[0] instanceof Array;
-
+export const get = (prop?: SpacingProp): ViewStyle => {
   if (!prop) {
     return null;
   }
 
-  if (isMultiDimArr(prop)) {
-    return _spaces(prop);
-  }
-
-  const [key, size] = prop;
-  return _space(key, size);
+  return Object
+    .entries(prop)
+    .reduce((styles, [key, size]) => ({ ...styles, ..._spacing(key, size) }), {});
 };

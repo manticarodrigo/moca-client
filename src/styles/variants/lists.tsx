@@ -5,5 +5,5 @@ import * as Colors from '../global/colors';
 export const primary = {
   backgroundColor: Colors.grey,
   ...Alignment.get('fill'),
-  ...Spacing.get(['px', 3]),
+  ...Spacing.get({ px: 3 }),
 };

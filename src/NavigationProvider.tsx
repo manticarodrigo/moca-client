@@ -61,7 +61,7 @@ const SitemapCard = ({ name, onPress }) => {
   const handleCardPress = () => onPress(name);
 
   return (
-    <View spacing={['p', 3]}>
+    <View spacing={{ p: 3 }}>
       <Card key={name} onPress={handleCardPress}>
         <Text>{name}</Text>
       </Card>

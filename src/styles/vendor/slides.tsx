@@ -13,7 +13,7 @@ export const activeDotStyle = {
 
 export const slide = {
   ...Alignment.get(['fill', 'centerXY']),
-  ...Spacing.get(['p', 2]),
+  ...Spacing.get({ p: 2 }),
   backgroundColor: '#fff',
 };
 

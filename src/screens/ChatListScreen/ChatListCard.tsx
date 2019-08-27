@@ -29,15 +29,15 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
   }, [chat, currentUser.id]);
 
   return (
-    <Card spacing={['mb', 3]} onPress={handleCardPress}>
+    <Card spacing={{ mb: 3 }} onPress={handleCardPress}>
       <View alignment="row">
         <Avatar size={60} uri={imageUrl} />
-        <View alignment="column" spacing={['pl', 3]}>
+        <View alignment="column" spacing={{ pl: 3 }}>
           <Text typography={{ size: 3, weight: '700' }}>{username}</Text>
           <Text typography={{ size: 2, weight: '100' }}>{time}</Text>
         </View>
       </View>
-      <Text typography={{ size: 2, weight: '200' }} spacing={['mt', 3]} numberOfLines={1}>
+      <Text typography={{ size: 2, weight: '200' }} spacing={{ mt: 3 }} numberOfLines={1}>
         {text}
       </Text>
     </Card>

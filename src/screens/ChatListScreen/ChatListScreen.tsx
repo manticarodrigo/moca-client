@@ -34,7 +34,7 @@ const ChatListScreen = () => {
   );
 
   const renderSectionHeader = ({ section }: SectionHeaderProps) => (
-    <Text typography={{ size: 1, transform: 'uppercase' }} spacing={['my', 3]}>
+    <Text typography={{ size: 1, transform: 'uppercase' }} spacing={{ my: 3 }}>
       {section.title}
     </Text>
   );

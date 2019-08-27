@@ -49,7 +49,7 @@ const ChatScreen = () => {
 
   return (
     <View safeArea alignment={['fill', 'column']}>
-      <View alignment={['fill', 'column']} spacing={['p', 3]} background="grey">
+      <View alignment={['fill', 'column']} spacing={{ p: 3 }} background="grey">
         {chat.messages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -61,7 +61,7 @@ const ChatScreen = () => {
       <View variant="chatInputContainer">
         <TextInput
           alignment="fill"
-          spacing={[['py', 2], ['px', 3]]}
+          spacing={{ py: 2, px: 3 }}
           onChangeText={handleChangeText}
           placeholder="Type a message..."
           value={text}

@@ -2,6 +2,7 @@ import { ViewStyle, TextStyle } from 'react-native';
 
 import * as Alignment from '../global/alignment';
 import * as Spacing from '../global/spacing';
+import * as Borders from '../global/borders';
 import * as Typography from '../global/typography';
 import * as Colors from '../global/colors';
 
@@ -13,8 +14,8 @@ type ButtonVariant = {
 
 const primary: ButtonVariant = {
   view: {
-    ...Spacing.get(['p', 3]),
-    borderRadius: Spacing.space[2],
+    ...Spacing.get({ p: 3 }),
+    ...Borders.primary,
     backgroundColor: Colors.primary,
   },
   text: {
