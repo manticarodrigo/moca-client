@@ -11,12 +11,8 @@ type ChatMessageProps = {
 
 const ChatMessage = ({ text, alignRight }: ChatMessageProps) => {
   const styles = useMemo(() => StyleSheet.create({
-    view: {
-      ...(alignRight ? Views.msgBubbleRight : Views.msgBubbleLeft),
-    },
-    text: {
-      color: alignRight ? Colors.white : Colors.text,
-    },
+    view: { ...(alignRight ? Views.msgBubbleRight : Views.msgBubbleLeft) },
+    text: { color: alignRight ? Colors.white : Colors.text },
   }), [alignRight]);
 
   return (

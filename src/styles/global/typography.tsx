@@ -1,66 +1,32 @@
 import { TextStyle } from 'react-native';
 
-import * as Colors from '@src/styles/global/colors';
+import * as Colors from './colors';
 
-export const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
+const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
 
-const colorText: TextStyle = {
-  color: Colors.text,
-};
+type TypographyColor = { color?: keyof typeof Colors };
+type TypographySize = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
+type TypographyWeight = { weight?: TextStyle['fontWeight'] };
+type TypographyTransform = { transform?: TextStyle['textTransform'] };
+type TypographyObject = TypographySize & TypographyWeight & TypographyTransform & TypographyColor;
 
-const colorWhite: TextStyle = {
-  color: Colors.white,
-};
+const _typography = ({ color, size, weight, transform }: TypographyObject): TextStyle => ({
+  color: Colors[color],
+  fontSize: fontSizes[size],
+  fontWeight: weight,
+  textTransform: transform,
+});
 
-const sizeSmall: TextStyle = {
-  fontSize: fontSizes[2],
-};
+export type TypographyProp = TypographyObject | TypographyObject[];
 
-const sizeMedium: TextStyle = {
-  fontSize: fontSizes[3],
-};
+export const get = (prop: TypographyProp): TextStyle => {
+  if (!prop) {
+    return null;
+  }
 
-const weightLight: TextStyle = {
-  fontWeight: '100',
-};
+  if (prop instanceof Array) {
+    return prop.reduce((acc, object) => ({ ...acc, ..._typography(object) }), {});
+  }
 
-const weightBold: TextStyle = {
-  fontWeight: '700',
-};
-
-const transformUppercase: TextStyle = {
-  textTransform: 'uppercase',
-};
-
-const base = {
-  ...colorText,
-  ...sizeMedium,
-};
-
-export const text = {
-  base: {
-    ...base,
-  },
-  smallLight: {
-    ...base,
-    ...sizeSmall,
-    ...weightLight,
-  },
-  bold: {
-    ...base,
-    ...weightBold,
-  },
-  uppercase: {
-    ...transformUppercase,
-  },
-};
-
-export const button = {
-  primary: {
-    ...base,
-    ...colorWhite,
-  },
-  text: {
-    ...base,
-  },
+  return _typography(prop);
 };

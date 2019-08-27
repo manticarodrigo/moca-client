@@ -11,14 +11,14 @@ export const activeDotStyle = {
 };
 
 export const slide = {
-  ...Alignment.get(['flex', 'centerXY']),
+  ...Alignment.get(['fill', 'centerXY']),
   backgroundColor: '#fff',
 };
 
 export const slideTitle = {
-  fontSize: Typography.fontSizes[3],
+  ...Typography.get({ size: 4 }),
 };
 
 export const slideText = {
-  fontSize: Typography.fontSizes[1],
+  ...Typography.get({ size: 2 }),
 };

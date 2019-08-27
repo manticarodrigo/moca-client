@@ -16,7 +16,7 @@ import OnboardingScreen from '@src/screens/OnboardingScreen/OnboardingScreen';
 
 import useNavigation from '@src/hooks/useNavigation';
 
-import Flex from '@src/components/Flex';
+import View from '@src/components/View';
 import Card from '@src/components/Card';
 import Text from '@src/components/Text';
 
@@ -44,11 +44,11 @@ const SitemapScreen = () => {
   const navigation = useNavigation();
   const handleNavigate = (screenName) => navigation.navigate(screenName);
 
-  const screens = Object.keys(authConfig).concat(
+  const screensNames = Object.keys(authConfig).concat(
     Object.values(tabConfig).flatMap((tab) => Object.keys(tab.screens)),
   );
 
-  return screens.map((name: string) => (
+  return screensNames.map((name: string) => (
     <SitemapCard
       key={name}
       name={name}
@@ -61,11 +61,11 @@ const SitemapCard = ({ name, onPress }) => {
   const handleCardPress = () => onPress(name);
 
   return (
-    <Flex direction="column" spacing={['p', 3]}>
+    <View spacing={['p', 3]}>
       <Card key={name} onPress={handleCardPress}>
         <Text>{name}</Text>
       </Card>
-    </Flex>
+    </View>
   );
 };
 
@@ -102,24 +102,13 @@ const TabStack = createBottomTabNavigator(
 
 
 const AuthStack = createStackNavigator(
-  {
-    SitemapScreen,
-    ...authConfig,
-  },
-  {
-    initialRouteName: 'SitemapScreen',
-    ...Header.getBase('Sitemap'),
-  },
+  { SitemapScreen, ...authConfig },
+  { initialRouteName: 'SitemapScreen', ...Header.getBase('Sitemap') },
 );
 
 const AppStack = createSwitchNavigator(
-  {
-    Auth: AuthStack,
-    Tab: TabStack,
-  },
-  {
-    initialRouteName: 'Auth',
-  },
+  { Auth: AuthStack, Tab: TabStack },
+  { initialRouteName: 'Auth' },
 );
 
 export default createAppContainer(AppStack);

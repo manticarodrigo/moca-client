@@ -29,10 +29,10 @@ const _space = (key: SpacingKey, multiplier: number): ViewStyle => {
   const size = space[multiplier];
 
   if (!aliases[key]) {
-    return compositions[key].reduce((acc, style) => {
-      acc[style] = size;
+    return compositions[key].reduce((styles, style) => {
+      styles[style] = size;
 
-      return acc;
+      return styles;
     }, {});
   }
 
@@ -48,7 +48,7 @@ const _spaces = (arr: SpacingTuple[]): ViewStyle => arr
 
 export type SpacingProp = SpacingTuple | SpacingTuple[];
 
-export const get = (prop?: SpacingProp) => {
+export const get = (prop: SpacingProp) => {
   const isMultiDimArr = (arr: SpacingProp): arr is SpacingTuple[] => arr[0] instanceof Array;
 
   if (!prop) {
