@@ -9,34 +9,28 @@ const aliases = {
   pl: 'left',
 };
 
-type PositionKey = keyof typeof aliases;
-type PositionTuple = [PositionKey, number];
-export type PositionProp = PositionTuple | PositionTuple[];
 
-const _position = (key: PositionKey, multiplier: number): ViewStyle => {
+export type PositionsIndex = 0 | 1 | 2 | 3 | 4;
+
+type PositionKey = keyof typeof aliases;
+
+export type PositionProp = { [key in PositionKey]?: PositionsIndex };
+
+const _position = (key: string, multiplier: PositionsIndex): ViewStyle => {
   const size = positions[multiplier];
   return { [aliases[key]]: size };
 };
 
-const _postions = (arr: PositionTuple[]): ViewStyle => arr
-  .reduce((styles, [key, size]) => ({
-    ...styles,
-    ..._position(key, size),
-  }), {});
 
-
-
-export const get = (prop?: PositionProp) => {
-  const isMultiDimArr = (arr: PositionProp): arr is PositionTuple[] => arr[0] instanceof Array;
-
+export const get = (prop?: PositionProp): ViewStyle => {
   if (!prop) {
     return null;
   }
 
-  if (isMultiDimArr(prop)) {
-    return _postions(prop);
-  }
+  const styles = {};
 
-  const [key, size] = prop;
-  return _position(key, size);
+  Object.entries(prop).forEach(([key, size]) =>
+    Object.assign(styles, _position(key, size)));
+
+  return styles;
 };

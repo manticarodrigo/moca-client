@@ -2,11 +2,12 @@ import React from 'react';
 
 import Flex from './Flex';
 import BackDrop from './BackDrop';
+import { PositionsIndex } from '@src/styles';
 
 
 type BackDropProps = {
   children?: JSX.Element | JSX.Element[];
-  pt?: number; // postionTop
+  pt?: PositionsIndex;
 };
 
 const BackDropView = ({ children, pt = 3 }: BackDropProps) => {
@@ -16,7 +17,7 @@ const BackDropView = ({ children, pt = 3 }: BackDropProps) => {
   return (
     <React.Fragment>
       <BackDrop pressed={handleBackDropPress} />
-      <Flex variant='backDropView' position={['pt', pt]}>
+      <Flex variant='backDropView' position={{ pt: pt }}>
         {children}
       </Flex>
     </React.Fragment >
