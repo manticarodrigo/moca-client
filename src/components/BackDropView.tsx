@@ -1,27 +1,27 @@
 import React from 'react';
 
-import Flex from './Flex';
-import BackDrop from './BackDrop';
+import View from './View';
+import Backdrop from './Backdrop';
 import { PositionIndex } from '@src/styles';
 
 
-type BackDropProps = {
+type BackdropProps = {
   children?: JSX.Element | JSX.Element[];
   pt?: PositionIndex;
 };
 
-const BackDropView = ({ children, pt = 3 }: BackDropProps) => {
+const BackdropView = ({ children, pt = 3 }: BackdropProps) => {
 
-  const handleBackDropPress = () => console.log('go back!');
+  const handleBackdropPress = () => console.log('go back!');
 
   return (
     <React.Fragment>
-      <BackDrop onPress={handleBackDropPress} />
-      <Flex variant="backDropView" position={{ pt: pt }}>
+      <Backdrop onPress={handleBackdropPress} />
+      <View variant="backdropView" alignment={['column', 'centerY']} position={{ pt: pt }}>
         {children}
-      </Flex>
+      </View>
     </React.Fragment >
   );
 };
 
-export default BackDropView;
+export default BackdropView;

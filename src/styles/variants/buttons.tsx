@@ -33,16 +33,19 @@ const text: ButtonVariant = {
   underlayColor: Colors.grey,
 };
 
-export {
-  primary,
-  text,
-};
-
-export const backDrop: ButtonVariant = {
-  style: {
+const backdrop: ButtonVariant = {
+  view: {
     backgroundColor: Colors.lightBlack,
     height: '100%',
     width: '100%'
   },
+  text: undefined,
   underlayColor: undefined,
 };
+
+export {
+  primary,
+  text,
+  backdrop
+};
+

@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View as RNView, SafeAreaView } from 'react-native';
 
-import { Views, Alignment, AlignmentProp, Spacing, SpacingProp, Colors } from '@src/styles';
+import { Views, Alignment, AlignmentProp, Spacing, SpacingProp, Colors, PositionProp, Position } from '@src/styles';
 
 type ViewProps = {
   safeArea?: boolean;
   variant?: keyof typeof Views;
   alignment?: AlignmentProp;
   spacing?: SpacingProp;
+  position?: PositionProp
   background?: keyof typeof Colors;
   children: JSX.Element | JSX.Element[];
 };
@@ -31,7 +32,7 @@ const View = ({
       ...Spacing.get(spacing),
       ...Position.get(position),
     },
-  }), [variant, alignment, spacing, background]);
+  }), [variant, alignment, spacing, position, background]);
 
   return (
     <ViewType style={styles.view}>
