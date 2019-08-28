@@ -18,6 +18,7 @@ import * as Slides from './vendor/slides';
 // props
 export { SpacingProp } from './global/spacing';
 export { AlignmentProp } from './global/alignment';
+export { TypographyProp } from './global/typography';
 
 export {
   Spacing,

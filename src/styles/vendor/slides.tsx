@@ -1,4 +1,5 @@
 import * as Alignment from '../global/alignment';
+import * as Spacing from '../global/spacing';
 import * as Typography from '../global/typography';
 import * as Colors from '../global/colors';
 
@@ -11,14 +12,15 @@ export const activeDotStyle = {
 };
 
 export const slide = {
-  ...Alignment.get(['flex', 'centerXY']),
+  ...Alignment.get(['fill', 'centerXY']),
+  ...Spacing.get({ p: 2 }),
   backgroundColor: '#fff',
 };
 
 export const slideTitle = {
-  fontSize: Typography.fontSizes[3],
+  ...Typography.get({ size: 4 }),
 };
 
 export const slideText = {
-  fontSize: Typography.fontSizes[1],
+  ...Typography.get({ size: 2, align: 'center' }),
 };

@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 
 import { User, Chat } from '@src/types';
 import Card from '@src/components/Card';
-import Flex from '@src/components/Flex';
+import View from '@src/components/View';
 import Avatar from '@src/components/Avatar';
 import Text from '@src/components/Text';
 
@@ -29,15 +29,15 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
   }, [chat, currentUser.id]);
 
   return (
-    <Card spacing={['mb', 3]} onPress={handleCardPress}>
-      <Flex>
+    <Card spacing={{ mb: 3 }} onPress={handleCardPress}>
+      <View alignment="row">
         <Avatar size={60} uri={imageUrl} />
-        <Flex direction="column" spacing={['pl', 3]}>
-          <Text variant="bold">{username}</Text>
-          <Text variant="smallLight">{time}</Text>
-        </Flex>
-      </Flex>
-      <Text variant="smallLight" spacing={['mt', 3]} numberOfLines={1}>
+        <View alignment="column" spacing={{ pl: 3 }}>
+          <Text typography={{ size: 3, weight: '700' }}>{username}</Text>
+          <Text typography={{ size: 2, weight: '100' }}>{time}</Text>
+        </View>
+      </View>
+      <Text typography={{ size: 2, weight: '200' }} spacing={{ mt: 3 }} numberOfLines={1}>
         {text}
       </Text>
     </Card>

@@ -1,34 +1,41 @@
 import { ViewStyle } from 'react-native';
 
+import * as Alignment from '../global/alignment';
 import * as Spacing from '../global/spacing';
+import * as Borders from '../global/borders';
 import * as Shadows from '../global/shadows';
 import * as Colors from '../global/colors';
 
 const msgBubble: ViewStyle = {
-  display: 'flex',
-  borderRadius: Spacing.space[2],
-  marginTop: Spacing.space[2],
-  padding: Spacing.space[2],
-  height: 'auto',
+  ...Spacing.get({ mt: 2, p: 2 }),
+  ...Borders.primary,
   ...Shadows.primary,
+  height: 'auto',
 };
 
-export const msgBubbleRight: ViewStyle = {
+const msgBubbleRight: ViewStyle = {
   ...msgBubble,
-  alignSelf: 'flex-end',
+  ...Alignment.get('alignEnd'),
+  ...Spacing.get({ ml: 4 }),
   backgroundColor: Colors.primary,
-  marginLeft: Spacing.space[4],
 };
 
-export const msgBubbleLeft: ViewStyle = {
+const msgBubbleLeft: ViewStyle = {
   ...msgBubble,
-  alignSelf: 'flex-start',
+  ...Alignment.get('alignStart'),
+  ...Spacing.get({ mr: 4 }),
   backgroundColor: Colors.white,
-  marginRight: Spacing.space[4],
 };
 
-export const chatInputContainer: ViewStyle = {
+const chatInputContainer: ViewStyle = {
+  ...Alignment.get('row'),
   borderTopWidth: 1,
   borderTopColor: '#ddd',
   height: 60,
+};
+
+export {
+  msgBubbleRight,
+  msgBubbleLeft,
+  chatInputContainer,
 };

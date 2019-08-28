@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { SectionListData } from 'react-native';
 
 import { Chat } from '@src/types';
+import { getChats } from '@src/store/actions/ChatActions';
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
-import { getChats } from '@src/store/actions/ChatActions';
 
 import Text from '@src/components/Text';
 import SectionList from '@src/components/SectionList';
@@ -34,7 +34,7 @@ const ChatListScreen = () => {
   );
 
   const renderSectionHeader = ({ section }: SectionHeaderProps) => (
-    <Text variant="uppercase" spacing={['my', 3]}>
+    <Text typography={{ size: 1, transform: 'uppercase' }} spacing={{ my: 3 }}>
       {section.title}
     </Text>
   );
