@@ -19,7 +19,7 @@ import * as Slides from './vendor/slides';
 // props
 export { SpacingProp } from './global/spacing';
 export { AlignmentProp } from './global/alignment';
-export { PositionProp, PositionsIndex } from './global/positions';
+export { PositionProp, PositionIndex } from './global/positions';
 
 export {
   Position,
