@@ -10,13 +10,13 @@ const aliases = {
 };
 
 
-export type PositionsIndex = 0 | 1 | 2 | 3 | 4;
+export type PositionIndex = 0 | 1 | 2 | 3 | 4;
 
 type PositionKey = keyof typeof aliases;
 
-export type PositionProp = { [key in PositionKey]?: PositionsIndex };
+export type PositionProp = { [key in PositionKey]?: PositionIndex };
 
-const _position = (key: string, multiplier: PositionsIndex): ViewStyle => {
+const _position = (key: string, multiplier: PositionIndex): ViewStyle => {
   const size = positions[multiplier];
   return { [aliases[key]]: size };
 };
