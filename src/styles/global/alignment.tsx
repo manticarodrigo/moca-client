@@ -1,15 +1,13 @@
 import { ViewStyle } from 'react-native';
 
 const aliases = {
-  flex: {
-    flex: 1,
-  },
-  centerX: {
-    justifyContent: 'center',
-  },
-  centerY: {
-    alignItems: 'center',
-  },
+  fill: { flex: 1 },
+  centerX: { justifyContent: 'center' },
+  centerY: { alignItems: 'center' },
+  row: { flexDirection: 'row' },
+  column: { flexDirection: 'column' },
+  alignEnd: { alignSelf: 'flex-end' },
+  alignStart: { alignSelf: 'flex-start' },
 };
 
 const compositions = {
@@ -17,25 +15,32 @@ const compositions = {
 };
 
 type AlignmentKey = keyof typeof aliases | keyof typeof compositions;
-export type AlignmentProp = AlignmentKey | AlignmentKey[];
 
 const _alignment = (key: AlignmentKey): ViewStyle => {
   if (!aliases[key]) {
-    return compositions[key].reduce((acc, style) => ({ ...acc, ...style }), {});
+    const styles = {};
+
+    compositions[key].forEach((style) => Object.assign(styles, style));
+
+    return styles;
   }
 
-  return { ...aliases[key] };
+  return aliases[key];
 };
 
-export const get = (prop: AlignmentProp): ViewStyle => {
-  const isArr = (arr: AlignmentProp): arr is AlignmentKey[] => arr instanceof Array;
+export type AlignmentProp = AlignmentKey | AlignmentKey[];
 
+export const get = (prop: AlignmentProp): ViewStyle => {
   if (!prop) {
     return null;
   }
 
-  if (isArr(prop)) {
-    return prop.reduce((styles, key) => ({ ...styles, ..._alignment(key) }), {});
+  if (prop instanceof Array) {
+    const styles = {};
+
+    prop.forEach((key) => Object.assign(styles, _alignment(key)));
+
+    return styles;
   }
 
   return _alignment(prop);
