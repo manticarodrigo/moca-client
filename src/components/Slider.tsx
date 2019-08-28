@@ -7,6 +7,7 @@ import { Slides } from '@src/styles';
 const styles = StyleSheet.create({ ...Slides });
 
 type Slide = {
+  icon?: JSX.Element;
   title: string;
   text: string;
 }
@@ -21,10 +22,11 @@ const Slider = ({ slides = [] }: SliderProps) => (
     activeDotStyle={styles.activeDotStyle}
     loop={false}
   >
-    {slides.map((slide) => (
-      <View key={slide.title} style={styles.slide}>
-        <Text style={styles.slideTitle}>{slide.title}</Text>
-        <Text style={styles.slideText}>{slide.text}</Text>
+    {slides.map(({ icon, title, text }) => (
+      <View key={title} style={styles.slide}>
+        {icon}
+        <Text style={styles.slideTitle}>{title}</Text>
+        <Text style={styles.slideText}>{text}</Text>
       </View>
     ))}
   </Swiper>

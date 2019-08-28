@@ -9,9 +9,7 @@ type SectionListProps = RNSectionListProps<any> & {
 
 const SectionList = ({ variant = 'primary', ...nativeProps }: SectionListProps) => {
   const styles = useMemo(() => StyleSheet.create({
-    list: {
-      ...Lists[variant],
-    },
+    list: { ...Lists[variant] },
   }), [variant]);
 
   return (
