@@ -1,6 +1,5 @@
 import { Dispatch } from 'react';
 
-import { User } from '@src/types';
 import { mockImg } from '@src/services/mock';
 
 export type AuthAction =

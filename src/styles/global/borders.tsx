@@ -1,3 +1,3 @@
 export const primary = {
-  borderRadius: 10,
+  borderRadius: 8,
 };

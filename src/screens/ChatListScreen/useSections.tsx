@@ -2,8 +2,6 @@ import { useMemo } from 'react';
 import { SectionListData } from 'react-native';
 import { format, distanceInWordsToNow } from 'date-fns';
 
-import { Chat } from '@src/types';
-
 type SectionMap = {
   [key: string]: SectionListData<{ date?: Date; title?: string; data: Chat[] }>;
 };

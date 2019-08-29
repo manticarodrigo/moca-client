@@ -6,40 +6,27 @@ const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
 
 type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
 type TypographyColor = { color?: keyof typeof Colors };
-
 type TypographyWeight = { weight?: TextStyle['fontWeight'] };
 type TypographyAlign = { align?: TextStyle['textAlign'] };
 type TypographyTransform = { transform?: TextStyle['textTransform'] };
 
-type TypographyObject =
+export type TypographyProp =
   & TypographySizeIndex
   & TypographyWeight
   & TypographyAlign
   & TypographyTransform
   & TypographyColor;
 
-const _typography = ({ size, color, weight, align, transform }: TypographyObject): TextStyle => ({
+export const get = ({
+  color,
+  size,
+  weight,
+  align,
+  transform,
+}: TypographyProp): TextStyle => ({
   color: Colors[color],
   fontSize: fontSizes[size],
-  fontWeight: weight,
+  fontFamily: weight ? `family-${weight}` : undefined,
   textAlign: align,
   textTransform: transform,
 });
-
-export type TypographyProp = TypographyObject | TypographyObject[];
-
-export const get = (prop?: TypographyProp): TextStyle => {
-  if (!prop) {
-    return null;
-  }
-
-  if (prop instanceof Array) {
-    const styles = {};
-
-    prop.forEach((object) => Object.assign(styles, _typography(object)));
-
-    return styles;
-  }
-
-  return _typography(prop);
-};
