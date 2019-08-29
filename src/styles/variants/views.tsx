@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native';
+import { ViewStyle, StyleSheet } from 'react-native';
 
 import * as Alignment from '../global/alignment';
 import * as Spacing from '../global/spacing';
@@ -34,8 +34,15 @@ const chatInputContainer: ViewStyle = {
   height: 60,
 };
 
+const backdropView: ViewStyle = {
+  ...Spacing.get({ p: 3 }),
+  ...Borders.secondary,
+  ...StyleSheet.absoluteFillObject,
+  backgroundColor: Colors.white,
+}
 export {
   msgBubbleRight,
   msgBubbleLeft,
   chatInputContainer,
+  backdropView,
 };
