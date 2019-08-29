@@ -1,40 +1,73 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View as RNView, SafeAreaView } from 'react-native';
+import { StyleSheet, View as RNView, SafeAreaView, TouchableOpacity } from 'react-native';
 
-import { Views, Alignment, AlignmentProp, Spacing, SpacingProp, Colors } from '@src/styles';
+import { Views, Spacing, SpacingProp, Colors } from '@src/styles';
 
 type ViewProps = {
   safeArea?: boolean;
   variant?: keyof typeof Views;
-  alignment?: AlignmentProp;
   spacing?: SpacingProp;
-  background?: keyof typeof Colors;
+  row?: boolean;
+  column?: boolean;
+  expand?: boolean;
+  center?: boolean;
+  centerMainAxis?: boolean;
+  centerCrossAxis?: boolean;
+  height?: number;
+  bgColor?: keyof typeof Colors;
   children: JSX.Element | JSX.Element[];
+  onPress?: () => void;
 };
 
 const View = ({
   safeArea,
   variant,
-  alignment,
   spacing,
-  background = 'white',
+  row,
+  column,
+  expand,
+  center,
+  centerMainAxis,
+  centerCrossAxis,
+  height,
+  bgColor,
   children,
+  onPress,
 }: ViewProps) => {
+  const WrapperType = useMemo(() => onPress ? TouchableOpacity : React.Fragment, [onPress]);
+  const wrapperProps = useMemo(() => ({ ...(onPress ? { onPress } : null) }), [onPress]);
   const ViewType = useMemo(() => safeArea ? SafeAreaView : RNView, [safeArea]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
-      backgroundColor: Colors[background],
+      height,
+      ...Spacing.getStyles(spacing),
       ...Views[variant],
-      ...Alignment.get(alignment),
-      ...Spacing.get(spacing),
+      flex: expand && 1,
+      flexDirection: ((row && 'row') || (column && 'column')) || null,
+      justifyContent: ((center || centerMainAxis) && 'center') || null,
+      alignItems: ((center || centerCrossAxis) && 'center') || null,
+      backgroundColor: Colors[bgColor],
     },
-  }), [variant, alignment, spacing, background]);
+  }), [
+    variant,
+    spacing,
+    row,
+    column,
+    expand,
+    center,
+    centerMainAxis,
+    centerCrossAxis,
+    height,
+    bgColor,
+  ]);
 
   return (
-    <ViewType style={styles.view}>
-      {children}
-    </ViewType>
+    <WrapperType {...wrapperProps}>
+      <ViewType style={styles.view}>
+        {children}
+      </ViewType>
+    </WrapperType>
   );
 };
 

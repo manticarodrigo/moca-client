@@ -12,8 +12,8 @@ type TextProps = RNTextProps & {
 const Text = ({ typography, spacing, children, ...textProps }: TextProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
-      ...Typography.get(typography),
-      ...Spacing.get(spacing),
+      ...Typography.getStyles(typography),
+      ...Spacing.getStyles(spacing),
     },
   }), [typography, spacing]);
 

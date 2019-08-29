@@ -7,9 +7,11 @@ import Avatar from '@src/components/Avatar';
 import { mockImg } from '@src/services/mock';
 
 const ChatHeader = ({ params: { img = mockImg, title = '' } }) => (
-  <View alignment={['fill', 'row', 'centerY']} spacing={{ px: 3 }}>
+  <View row expand centerCrossAxis>
     <Avatar size={40} uri={img} />
-    <Text typography={{ size: 3, weight: '700' }} spacing={{ ml: 3 }}>{title}</Text>
+    <Text spacing={{ ml: 3 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
+      {title}
+    </Text>
   </View>
 );
 

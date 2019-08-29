@@ -33,10 +33,10 @@ const ChatListScreen = () => {
     <ChatListCard currentUser={currentUser} chat={item} onPress={handleCardPress} />
   );
 
-  const renderSectionHeader = ({ section }: SectionHeaderProps) => (
-    <View spacing={{ pt: 3, ml: 3 }}>
-      <Text typography={{ size: 1, transform: 'uppercase', color: 'semiGrey' }}>
-        {section.title}
+  const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
+    <View spacing={{ ml: 3, py: 3 }}>
+      <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+        {title.charAt(0).toUpperCase() + title.slice(1)}
       </Text>
     </View>
   );
@@ -52,6 +52,10 @@ const ChatListScreen = () => {
       sections={sections}
     />
   );
+};
+
+ChatListScreen.navigationOptions = {
+  title: 'Messages',
 };
 
 export default ChatListScreen;

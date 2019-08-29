@@ -1,13 +1,14 @@
 import React from 'react';
 
 import {
+  StackNavigatorConfig,
   createStackNavigator,
   createBottomTabNavigator,
   createSwitchNavigator,
   createAppContainer,
 } from 'react-navigation';
 
-import { Header } from '@src/styles';
+import { Typography, Colors } from '@src/styles';
 
 import ChatListScreen from '@src/screens/ChatListScreen/ChatListScreen';
 import ChatScreen from '@src/screens/ChatScreen/ChatScreen';
@@ -17,8 +18,24 @@ import OnboardingScreen from '@src/screens/OnboardingScreen/OnboardingScreen';
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
-import Card from '@src/components/Card';
 import Text from '@src/components/Text';
+
+export const getDefaultNavConfig = (title: string): StackNavigatorConfig => ({
+  headerLayoutPreset: 'center',
+  defaultNavigationOptions: {
+    title,
+    headerStyle: {
+      borderBottomWidth: 0,
+      height: 60,
+      backgroundColor: Colors.primary,
+    },
+    headerTintColor: Colors.primary,
+    headerBackTitle: null,
+    headerTitleStyle: {
+      ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
+    },
+  },
+});
 
 export const tabConfig = {
   Chat: {
@@ -61,10 +78,8 @@ const SitemapCard = ({ name, onPress }) => {
   const handleCardPress = () => onPress(name);
 
   return (
-    <View spacing={{ p: 3 }}>
-      <Card key={name} onPress={handleCardPress}>
-        <Text>{name}</Text>
-      </Card>
+    <View key={name} variant="borderBottom" spacing={{ p: 4 }} onPress={handleCardPress}>
+      <Text typography={{ size: 3, weight: '700', color: 'primary' }}>{name}</Text>
     </View>
   );
 };
@@ -79,7 +94,7 @@ const _createStack = (tabName, initialRouteName, screens) => createStackNavigato
   ),
   {
     initialRouteName,
-    ...Header.getBase(tabName),
+    ...getDefaultNavConfig(tabName),
   },
 );
 
@@ -103,7 +118,7 @@ const TabStack = createBottomTabNavigator(
 
 const AuthStack = createStackNavigator(
   { SitemapScreen, ...authConfig },
-  { initialRouteName: 'SitemapScreen', ...Header.getBase('Sitemap') },
+  { initialRouteName: 'SitemapScreen', ...getDefaultNavConfig('Sitemap') },
 );
 
 const AppStack = createSwitchNavigator(

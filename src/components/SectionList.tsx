@@ -1,23 +1,17 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, SectionList as RNSectionList, SectionListProps as RNSectionListProps } from 'react-native';
 
-import { Lists } from '@src/styles';
+import { Colors } from '@src/styles';
 
-type SectionListProps = RNSectionListProps<any> & {
-  variant?: keyof typeof Lists;
-};
+type SectionListProps = RNSectionListProps<any> & {};
 
-const SectionList = ({ variant = 'primary', ...nativeProps }: SectionListProps) => {
-  const styles = useMemo(() => StyleSheet.create({
-    list: { ...Lists[variant] },
-  }), [variant]);
+const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+    backgroundColor: Colors.lightGrey,
+  },
+});
 
-  return (
-    <RNSectionList
-      style={styles.list}
-      {...nativeProps}
-    />
-  );
-};
+const SectionList = (props: SectionListProps) => <RNSectionList style={styles.list} {...props} />;
 
 export default SectionList;

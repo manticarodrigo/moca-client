@@ -43,7 +43,7 @@ const OnboardingScreen = () => {
   const handleButtonPress = () => navigation.navigate('Tab');
 
   const slideViews = slideArr.map(({ icon, title, text }) => (
-    <View key={title} alignment={['fill', 'centerXY']} spacing={{ px: 5 }}>
+    <View key={title} column expand center spacing={{ px: 5 }}>
       <View>
         {icon}
       </View>

@@ -4,6 +4,7 @@ export const primary = '#143d6c';
 export const secondary = '#57b0cc';
 export const secondaryLight = '#71cfeb';
 export const secondaryLighter = '#bbe4f2';
+export const secondaryLightest = '#d0eef8';
 export const dark = '#485c7a';
 export const grey = '#6a7e8f';
 export const semiGrey = '#8ba5b9';

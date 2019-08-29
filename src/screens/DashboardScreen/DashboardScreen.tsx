@@ -11,7 +11,7 @@ const DashboardScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <View alignment={['fill', 'centerXY']} background="grey">
+    <View expand center bgColor="lightGrey">
       <Button onPress={handleButtonPress}>
         Go to Chat
       </Button>

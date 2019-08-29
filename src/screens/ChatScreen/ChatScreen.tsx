@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
-import { Chat } from '@src/types';
 
 import View from '@src/components/View';
 import TextInput from '@src/components/TextInput';
@@ -16,7 +15,7 @@ const ChatScreen = () => {
   const { setParams, ...navigation } = useNavigation();
   const [text, setText] = useState('');
   const [chat, setChat] = useState<Chat>({
-    id: undefined,
+    id: null,
     messages: [],
     participants: [],
   });
@@ -48,8 +47,8 @@ const ChatScreen = () => {
   const handlePressSend = () => setText('');
 
   return (
-    <View safeArea alignment={['fill', 'column']}>
-      <View alignment={['fill', 'column']} spacing={{ p: 3 }} background="grey">
+    <View safeArea column expand>
+      <View column expand spacing={{ p: 3 }}>
         {chat.messages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -58,9 +57,9 @@ const ChatScreen = () => {
           />
         ))}
       </View>
-      <View variant="chatInputContainer">
+      <View variant="borderTop" row height={60}>
         <TextInput
-          alignment="fill"
+          expand
           spacing={{ py: 2, px: 3 }}
           onChangeText={handleChangeText}
           placeholder="Type a message..."
