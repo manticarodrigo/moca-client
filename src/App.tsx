@@ -10,6 +10,7 @@ import NavigationProvider from '@src/NavigationProvider';
 import MuseoSansRounded300 from '@src/assets/fonts/MuseoSansRounded-300.otf';
 import MuseoSansRounded500 from '@src/assets/fonts/MuseoSansRounded-500.otf';
 import MuseoSansRounded700 from '@src/assets/fonts/MuseoSansRounded-700.otf';
+import MuseoSansRounded900 from '@src/assets/fonts/MuseoSansRounded-900.otf';
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -20,6 +21,7 @@ const App = () => {
         'family-300': MuseoSansRounded300,
         'family-500': MuseoSansRounded500,
         'family-700': MuseoSansRounded700,
+        'family-900': MuseoSansRounded900,
       });
 
       setFontsLoaded(true);
