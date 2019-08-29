@@ -1,9 +1,9 @@
 import React from 'react';
 
-import View from './View';
-import Backdrop from './Backdrop';
 import { PositionIndex } from '@src/styles';
 
+import View from './View';
+import Button from './Button';
 
 type BackdropProps = {
   children?: JSX.Element | JSX.Element[];
@@ -11,16 +11,15 @@ type BackdropProps = {
 };
 
 const BackdropView = ({ children, pt = 3 }: BackdropProps) => {
-
   const handleBackdropPress = () => console.log('go back!');
 
   return (
-    <React.Fragment>
-      <Backdrop onPress={handleBackdropPress} />
-      <View variant="backdropView" alignment={['column', 'centerY']} position={{ pt: pt }}>
+    <>
+      <Button variant="backdrop" onPress={handleBackdropPress} />
+      <View variant="backdrop" column alignCenter position={{ pt }}>
         {children}
       </View>
-    </React.Fragment >
+    </>
   );
 };
 

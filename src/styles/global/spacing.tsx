@@ -25,14 +25,14 @@ const spaceSize = [0, 4, 8, 16, 32, 64, 128, 256, 512];
 type SpacingSizeIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type SpacingKey = keyof typeof aliases | keyof typeof compositions;
 
-const _spacing = (key: string, multiplier: SpacingSizeIndex): ViewStyle => {
+const _getKeyStyles = (key: string, multiplier: SpacingSizeIndex): ViewStyle => {
   const size = spaceSize[multiplier];
 
   if (!aliases[key]) {
     const styles = {};
 
-    compositions[key].forEach((styleName) => {
-      styles[styleName] = spaceSize[size];
+    compositions[key].forEach((style) => {
+      styles[style] = size;
     });
 
     return styles;
@@ -43,14 +43,14 @@ const _spacing = (key: string, multiplier: SpacingSizeIndex): ViewStyle => {
 
 export type SpacingProp = { [key in SpacingKey]?: SpacingSizeIndex };
 
-export const get = (prop?: SpacingProp): ViewStyle => {
-  if (!prop) {
-    return null;
-  }
+export const getStyles = (prop?: SpacingProp): ViewStyle => {
+  if (!prop) { return null; }
 
-  const styles = {};
+  const propList = Object.entries(prop);
+  const viewStyle = propList.reduce((prev, [key, size]) => ({
+    ...prev,
+    ..._getKeyStyles(key, size),
+  }), {});
 
-  Object.entries(prop).forEach(([key, size]) => Object.assign(styles, _spacing(key, size)));
-
-  return styles;
+  return viewStyle;
 };

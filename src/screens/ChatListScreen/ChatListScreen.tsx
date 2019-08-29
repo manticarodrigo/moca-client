@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { SectionListData } from 'react-native';
 
-import { Chat } from '@src/types';
 import { getChats } from '@src/store/actions/ChatActions';
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 
+import View from '@src/components/View';
 import Text from '@src/components/Text';
 import SectionList from '@src/components/SectionList';
 
@@ -33,10 +33,12 @@ const ChatListScreen = () => {
     <ChatListCard currentUser={currentUser} chat={item} onPress={handleCardPress} />
   );
 
-  const renderSectionHeader = ({ section }: SectionHeaderProps) => (
-    <Text typography={{ size: 1, transform: 'uppercase' }} spacing={{ my: 3 }}>
-      {section.title}
-    </Text>
+  const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
+    <View spacing={{ ml: 3, py: 3 }}>
+      <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+        {title.charAt(0).toUpperCase() + title.slice(1)}
+      </Text>
+    </View>
   );
 
   const keyExtractor = (item: Chat) => item.id.toString();
@@ -45,10 +47,15 @@ const ChatListScreen = () => {
     <SectionList
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
+      stickySectionHeadersEnabled={false}
       keyExtractor={keyExtractor}
       sections={sections}
     />
   );
+};
+
+ChatListScreen.navigationOptions = {
+  title: 'Messages',
 };
 
 export default ChatListScreen;

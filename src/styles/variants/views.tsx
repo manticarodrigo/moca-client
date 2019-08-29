@@ -1,48 +1,61 @@
 import { ViewStyle, StyleSheet } from 'react-native';
 
-import * as Alignment from '../global/alignment';
 import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
 import * as Shadows from '../global/shadows';
 import * as Colors from '../global/colors';
 
 const msgBubble: ViewStyle = {
-  ...Spacing.get({ mt: 2, p: 2 }),
+  ...Spacing.getStyles({ mt: 2, p: 2 }),
   ...Borders.primary,
   ...Shadows.primary,
   height: 'auto',
 };
 
-const msgBubbleRight: ViewStyle = {
+const msgBubbleLeft: ViewStyle = {
+  ...Spacing.getStyles({ mr: 4 }),
   ...msgBubble,
-  ...Alignment.get('alignEnd'),
-  ...Spacing.get({ ml: 4 }),
+  alignSelf: 'flex-start',
+  backgroundColor: Colors.white,
+};
+
+const msgBubbleRight: ViewStyle = {
+  ...Spacing.getStyles({ ml: 4 }),
+  ...msgBubble,
+  alignSelf: 'flex-end',
   backgroundColor: Colors.primary,
 };
 
-const msgBubbleLeft: ViewStyle = {
-  ...msgBubble,
-  ...Alignment.get('alignStart'),
-  ...Spacing.get({ mr: 4 }),
+const card = {
+  ...Spacing.getStyles({ p: 3 }),
+  ...Shadows.primary,
+  ...Borders.primary,
   backgroundColor: Colors.white,
+  width: '100%',
 };
 
-const chatInputContainer: ViewStyle = {
-  ...Alignment.get('row'),
+const borderTop: ViewStyle = {
   borderTopWidth: 1,
-  borderTopColor: '#ddd',
-  height: 60,
+  borderTopColor: Colors.secondaryLightest,
 };
 
-const backdropView: ViewStyle = {
-  ...Spacing.get({ p: 3 }),
+const borderBottom: ViewStyle = {
+  borderBottomWidth: 1,
+  borderBottomColor: Colors.secondaryLightest,
+};
+
+const backdrop: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
   ...Borders.secondary,
   ...StyleSheet.absoluteFillObject,
   backgroundColor: Colors.white,
-}
+};
+
 export {
   msgBubbleRight,
   msgBubbleLeft,
-  chatInputContainer,
-  backdropView,
+  card,
+  borderTop,
+  borderBottom,
+  backdrop,
 };

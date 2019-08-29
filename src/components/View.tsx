@@ -1,43 +1,81 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View as RNView, SafeAreaView } from 'react-native';
+import { StyleSheet, View as RNView, SafeAreaView, TouchableOpacity } from 'react-native';
 
-import { Views, Alignment, AlignmentProp, Spacing, SpacingProp, Colors, PositionProp, Position } from '@src/styles';
+import { Views, Position, PositionProp, Spacing, SpacingProp, Colors } from '@src/styles';
 
 type ViewProps = {
   safeArea?: boolean;
   variant?: keyof typeof Views;
-  alignment?: AlignmentProp;
+  position?: PositionProp;
   spacing?: SpacingProp;
-  position?: PositionProp
-  background?: keyof typeof Colors;
+  row?: boolean;
+  column?: boolean;
+  expand?: boolean;
+  justifyCenter?: boolean;
+  justifyBetween?: boolean;
+  alignCenter?: boolean;
+  width?: string | number;
+  height?: string | number;
+  bgColor?: keyof typeof Colors;
   children: JSX.Element | JSX.Element[];
+  onPress?: () => void;
 };
 
 const View = ({
   safeArea,
   variant,
-  alignment,
   spacing,
   position,
-  background = 'white',
+  row,
+  column,
+  expand,
+  justifyCenter,
+  justifyBetween,
+  alignCenter,
+  width,
+  height,
+  bgColor,
   children,
+  onPress,
 }: ViewProps) => {
+  const WrapperType = useMemo(() => onPress ? TouchableOpacity : React.Fragment, [onPress]);
+  const wrapperProps = useMemo(() => ({ ...(onPress ? { onPress } : null) }), [onPress]);
   const ViewType = useMemo(() => safeArea ? SafeAreaView : RNView, [safeArea]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
-      backgroundColor: Colors[background],
+      width,
+      height,
       ...Views[variant],
-      ...Alignment.get(alignment),
-      ...Spacing.get(spacing),
-      ...Position.get(position),
+      ...Position.getStyles(position),
+      ...Spacing.getStyles(spacing),
+      flex: expand && 1,
+      flexDirection: ((row && 'row') || (column && 'column')) || null,
+      justifyContent: (justifyCenter && 'center') || (justifyBetween && 'space-between') || null,
+      alignItems: (alignCenter && 'center') || null,
+      backgroundColor: Colors[bgColor],
     },
-  }), [variant, alignment, spacing, position, background]);
+  }), [
+    variant,
+    spacing,
+    position,
+    row,
+    column,
+    expand,
+    justifyCenter,
+    justifyBetween,
+    alignCenter,
+    width,
+    height,
+    bgColor,
+  ]);
 
   return (
-    <ViewType style={styles.view}>
-      {children}
-    </ViewType>
+    <WrapperType {...wrapperProps}>
+      <ViewType style={styles.view}>
+        {children}
+      </ViewType>
+    </WrapperType>
   );
 };
 

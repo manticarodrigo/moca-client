@@ -1,6 +1,5 @@
 import { ViewStyle, TextStyle } from 'react-native';
 
-import * as Alignment from '../global/alignment';
 import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
 import * as Typography from '../global/typography';
@@ -14,22 +13,23 @@ type ButtonVariant = {
 
 const primary: ButtonVariant = {
   view: {
-    ...Spacing.get({ p: 3 }),
+    ...Spacing.getStyles({ p: 3 }),
     ...Borders.primary,
     backgroundColor: Colors.primary,
   },
-  text: { ...Typography.get({ color: 'white', size: 3 }) },
-  underlayColor: undefined,
+  text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
 };
 
 const text: ButtonVariant = {
   view: {
-    ...Alignment.get('centerXY'),
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: Colors.white,
     height: '100%',
     width: 80,
   },
-  text: { ...Typography.get({ color: 'text', size: 3 }) },
+  text: { ...Typography.getStyles({ color: 'semiGrey', size: 3 }) },
   underlayColor: Colors.grey,
 };
 
@@ -37,7 +37,7 @@ const backdrop: ButtonVariant = {
   view: {
     backgroundColor: Colors.lightBlack,
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   text: undefined,
   underlayColor: undefined,
@@ -46,6 +46,5 @@ const backdrop: ButtonVariant = {
 export {
   primary,
   text,
-  backdrop
+  backdrop,
 };
-

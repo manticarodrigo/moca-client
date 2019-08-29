@@ -1,8 +1,7 @@
 export const primary = {
-  borderRadius: 10,
+  borderRadius: 8,
 };
 
 export const secondary = {
   borderRadius: 16,
 };
-

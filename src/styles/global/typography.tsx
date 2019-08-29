@@ -1,45 +1,57 @@
 import { TextStyle } from 'react-native';
+import * as Font from 'expo-font';
+
+import MuseoSansRounded300 from '@src/assets/fonts/MuseoSansRounded-300.otf';
+import MuseoSansRounded500 from '@src/assets/fonts/MuseoSansRounded-500.otf';
+import MuseoSansRounded700 from '@src/assets/fonts/MuseoSansRounded-700.otf';
+import MuseoSansRounded900 from '@src/assets/fonts/MuseoSansRounded-900.otf';
 
 import * as Colors from './colors';
 
-const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
+export const loadFonts = async () => {
+  await Font.loadAsync({
+    'family-300': MuseoSansRounded300,
+    'family-500': MuseoSansRounded500,
+    'family-700': MuseoSansRounded700,
+    'family-900': MuseoSansRounded900,
+  });
+};
+
+const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72];
 
 type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
 type TypographyColor = { color?: keyof typeof Colors };
-
-type TypographyWeight = { weight?: TextStyle['fontWeight'] };
+type TypographyWeight = { weight?: '300' | '500' | '700' | '900' };
 type TypographyAlign = { align?: TextStyle['textAlign'] };
 type TypographyTransform = { transform?: TextStyle['textTransform'] };
+type TypographyDecoration = { decoration?: TextStyle['textDecorationLine'] };
 
-type TypographyObject =
+export type TypographyProp =
   & TypographySizeIndex
   & TypographyWeight
   & TypographyAlign
   & TypographyTransform
+  & TypographyDecoration
   & TypographyColor;
 
-const _typography = ({ size, color, weight, align, transform }: TypographyObject): TextStyle => ({
-  color: Colors[color],
-  fontSize: fontSizes[size],
-  fontWeight: weight,
-  textAlign: align,
-  textTransform: transform,
-});
+export const getStyles = (prop: TypographyProp): TextStyle => {
+  if (!prop) { return null; }
 
-export type TypographyProp = TypographyObject | TypographyObject[];
+  const {
+    color,
+    size,
+    weight,
+    align,
+    transform,
+    decoration,
+  } = prop;
 
-export const get = (prop?: TypographyProp): TextStyle => {
-  if (!prop) {
-    return null;
-  }
-
-  if (prop instanceof Array) {
-    const styles = {};
-
-    prop.forEach((object) => Object.assign(styles, _typography(object)));
-
-    return styles;
-  }
-
-  return _typography(prop);
+  return {
+    color: Colors[color],
+    fontSize: fontSizes[size],
+    fontFamily: weight ? `family-${weight}` : null,
+    textAlign: align,
+    textTransform: transform,
+    textDecorationLine: decoration,
+  };
 };
