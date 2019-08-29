@@ -1,6 +1,21 @@
 import { TextStyle } from 'react-native';
+import * as Font from 'expo-font';
+
+import MuseoSansRounded300 from '@src/assets/fonts/MuseoSansRounded-300.otf';
+import MuseoSansRounded500 from '@src/assets/fonts/MuseoSansRounded-500.otf';
+import MuseoSansRounded700 from '@src/assets/fonts/MuseoSansRounded-700.otf';
+import MuseoSansRounded900 from '@src/assets/fonts/MuseoSansRounded-900.otf';
 
 import * as Colors from './colors';
+
+export const loadFonts = async () => {
+  await Font.loadAsync({
+    'family-300': MuseoSansRounded300,
+    'family-500': MuseoSansRounded500,
+    'family-700': MuseoSansRounded700,
+    'family-900': MuseoSansRounded900,
+  });
+};
 
 const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72];
 
