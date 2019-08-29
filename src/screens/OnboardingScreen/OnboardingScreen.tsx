@@ -48,7 +48,7 @@ const OnboardingScreen = () => {
           <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
             {title}
           </Text>
-          <Text variant="regular">
+          <Text variant="regular" typography={{ align: 'center' }}>
             {text}
           </Text>
         </View>
