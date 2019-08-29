@@ -22,15 +22,14 @@ const _position = (key: string, multiplier: PositionIndex): ViewStyle => {
 };
 
 
-export const get = (prop?: PositionProp): ViewStyle => {
+export const getStyles = (prop?: PositionProp): ViewStyle => {
   if (!prop) {
     return null;
   }
 
   const styles = {};
 
-  Object.entries(prop).forEach(([key, size]) =>
-    Object.assign(styles, _position(key, size)));
+  Object.entries(prop).forEach(([key, size]) => Object.assign(styles, _position(key, size)));
 
   return styles;
 };

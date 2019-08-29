@@ -1,8 +1,8 @@
 import React from 'react';
-import { Image } from 'react-native';
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
+import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Slider from '@src/components/Slider';
 import Button from '@src/components/Button';
@@ -12,17 +12,10 @@ import ShieldIcon from '@src/components/icons/ShieldIcon';
 import DeviceMapIcon from '@src/components/icons/DeviceMapIcon';
 import SettingsIcon from '@src/components/icons/SettingsIcon';
 
-type Slide = {
-  logo: JSX.Element;
-  icon: JSX.Element;
-  title: string;
-  text: string;
-}
-
 const OnboardingScreen = () => {
   const navigation = useNavigation();
 
-  const slideArr = [
+  const slides = [
     {
       icon: <ShieldIcon />,
       title: 'Reliable',
@@ -42,29 +35,34 @@ const OnboardingScreen = () => {
 
   const handleButtonPress = () => navigation.navigate('Tab');
 
-  const slideViews = slideArr.map(({ icon, title, text }) => (
-    <View key={title} column expand center spacing={{ px: 5 }}>
-      <View>
-        {icon}
-      </View>
-      <Text spacing={{ pt: 4, pb: 2 }} typography={{ size: 4, weight: '700', color: 'primary' }}>
-        {title}
-      </Text>
-      <Text typography={{ color: 'semiGrey', size: 2, weight: '500', align: 'center' }}>
-        {text}
-      </Text>
-    </View>
-  ));
-
   return (
-    <View safeArea column expand center>
-      <View spacing={{ mt: 6 }}>
-        <Image style={{ width: 175, height: 110 }} source={Logo} />
+    <View safeArea expand alignCenter>
+      <View spacing={{ pt: 5 }}>
+        <Image width={175} height={110} file={Logo} />
       </View>
-      <Slider slides={slideViews} />
-      <Button onPress={handleButtonPress}>
-        Go to Tabs
-      </Button>
+      <Slider slides={slides.map(({ icon, title, text }) => (
+        <View key={title} column expand justifyCenter alignCenter spacing={{ px: 5 }}>
+          <View>
+            {icon}
+          </View>
+          <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
+            {title}
+          </Text>
+          <Text variant="regular">
+            {text}
+          </Text>
+        </View>
+      ))}
+      />
+      <View width="100%" spacing={{ px: 4, pb: 4 }}>
+        <Button onPress={handleButtonPress}>
+          Signup
+        </Button>
+        <View row justifyCenter spacing={{ mt: 4 }}>
+          <Text variant="regular">Already have an account?</Text>
+          <Text variant="link" spacing={{ ml: 1 }} onPress={handleButtonPress}>Login</Text>
+        </View>
+      </View>
     </View>
   );
 };

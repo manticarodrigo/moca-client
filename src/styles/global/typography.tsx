@@ -9,12 +9,14 @@ type TypographyColor = { color?: keyof typeof Colors };
 type TypographyWeight = { weight?: '300' | '500' | '700' };
 type TypographyAlign = { align?: TextStyle['textAlign'] };
 type TypographyTransform = { transform?: TextStyle['textTransform'] };
+type TypographyDecoration = { decoration?: TextStyle['textDecorationLine'] };
 
 export type TypographyProp =
   & TypographySizeIndex
   & TypographyWeight
   & TypographyAlign
   & TypographyTransform
+  & TypographyDecoration
   & TypographyColor;
 
 export const getStyles = (prop: TypographyProp): TextStyle => {
@@ -26,6 +28,7 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
     weight,
     align,
     transform,
+    decoration,
   } = prop;
 
   return {
@@ -34,5 +37,6 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
     fontFamily: weight ? `family-${weight}` : null,
     textAlign: align,
     textTransform: transform,
+    textDecorationLine: decoration,
   };
 };

@@ -5,4 +5,3 @@ export const primary = {
 export const secondary = {
   borderRadius: 16,
 };
-

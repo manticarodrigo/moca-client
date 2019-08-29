@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 
 import View from '@src/components/View';
-import Avatar from '@src/components/Avatar';
+import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
 type ChatListCardProps = {
@@ -29,7 +29,7 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
   return (
     <View variant="borderBottom" spacing={{ p: 3 }} onPress={handleCardPress} bgColor="white">
       <View row spacing={{ p: 1 }}>
-        <Avatar size={60} uri={imageUrl} />
+        <Image rounded size={60} uri={imageUrl} />
         <View column spacing={{ pl: 3 }}>
           <Text spacing={{ mb: 2 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
             {username}

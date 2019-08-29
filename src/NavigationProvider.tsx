@@ -115,7 +115,6 @@ const TabStack = createBottomTabNavigator(
   ),
 );
 
-
 const AuthStack = createStackNavigator(
   { SitemapScreen, ...authConfig },
   { initialRouteName: 'SitemapScreen', ...getDefaultNavConfig('Sitemap') },

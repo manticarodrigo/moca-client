@@ -44,7 +44,7 @@ const borderBottom: ViewStyle = {
   borderBottomColor: Colors.secondaryLightest,
 };
 
-const backdropView: ViewStyle = {
+const backdrop: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
   ...Borders.secondary,
   ...StyleSheet.absoluteFillObject,
@@ -57,5 +57,5 @@ export {
   card,
   borderTop,
   borderBottom,
-  backdropView,
+  backdrop,
 };

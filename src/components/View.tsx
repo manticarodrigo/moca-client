@@ -11,10 +11,11 @@ type ViewProps = {
   row?: boolean;
   column?: boolean;
   expand?: boolean;
-  center?: boolean;
-  centerMainAxis?: boolean;
-  centerCrossAxis?: boolean;
-  height?: number;
+  justifyCenter?: boolean;
+  justifyBetween?: boolean;
+  alignCenter?: boolean;
+  width?: string | number;
+  height?: string | number;
   bgColor?: keyof typeof Colors;
   children: JSX.Element | JSX.Element[];
   onPress?: () => void;
@@ -28,9 +29,10 @@ const View = ({
   row,
   column,
   expand,
-  center,
-  centerMainAxis,
-  centerCrossAxis,
+  justifyCenter,
+  justifyBetween,
+  alignCenter,
+  width,
   height,
   bgColor,
   children,
@@ -42,14 +44,15 @@ const View = ({
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
+      width,
       height,
-      ...Position.get(position),
-      ...Spacing.getStyles(spacing),
       ...Views[variant],
+      ...Position.getStyles(position),
+      ...Spacing.getStyles(spacing),
       flex: expand && 1,
       flexDirection: ((row && 'row') || (column && 'column')) || null,
-      justifyContent: ((center || centerMainAxis) && 'center') || null,
-      alignItems: ((center || centerCrossAxis) && 'center') || null,
+      justifyContent: (justifyCenter && 'center') || (justifyBetween && 'space-between') || null,
+      alignItems: (alignCenter && 'center') || null,
       backgroundColor: Colors[bgColor],
     },
   }), [
@@ -59,9 +62,10 @@ const View = ({
     row,
     column,
     expand,
-    center,
-    centerMainAxis,
-    centerCrossAxis,
+    justifyCenter,
+    justifyBetween,
+    alignCenter,
+    width,
     height,
     bgColor,
   ]);
