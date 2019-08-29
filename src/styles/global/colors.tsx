@@ -16,3 +16,4 @@ export const errorLight = '#f3bfc3';
 export const success = '#819e3f';
 export const successLight = '#99b366';
 export const warning = '#f7c92b';
+export const lightBlack = 'rgba(0,0,0,0.8)';

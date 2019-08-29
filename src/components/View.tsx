@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View as RNView, SafeAreaView, TouchableOpacity } from 'react-native';
 
-import { Views, Spacing, SpacingProp, Colors } from '@src/styles';
+import { Views, Position, PositionProp, Spacing, SpacingProp, Colors } from '@src/styles';
 
 type ViewProps = {
   safeArea?: boolean;
   variant?: keyof typeof Views;
+  position?: PositionProp;
   spacing?: SpacingProp;
   row?: boolean;
   column?: boolean;
@@ -23,6 +24,7 @@ const View = ({
   safeArea,
   variant,
   spacing,
+  position,
   row,
   column,
   expand,
@@ -41,6 +43,7 @@ const View = ({
   const styles = useMemo(() => StyleSheet.create({
     view: {
       height,
+      ...Position.get(position),
       ...Spacing.getStyles(spacing),
       ...Views[variant],
       flex: expand && 1,
@@ -52,6 +55,7 @@ const View = ({
   }), [
     variant,
     spacing,
+    position,
     row,
     column,
     expand,

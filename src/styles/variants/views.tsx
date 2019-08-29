@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native';
+import { ViewStyle, StyleSheet } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
@@ -44,10 +44,18 @@ const borderBottom: ViewStyle = {
   borderBottomColor: Colors.secondaryLightest,
 };
 
+const backdropView: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  ...Borders.secondary,
+  ...StyleSheet.absoluteFillObject,
+  backgroundColor: Colors.white,
+};
+
 export {
   msgBubbleRight,
   msgBubbleLeft,
   card,
   borderTop,
   borderBottom,
+  backdropView,
 };
