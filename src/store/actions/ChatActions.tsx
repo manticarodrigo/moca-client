@@ -1,7 +1,6 @@
 import { Dispatch } from 'react';
 
 import { fetchChats } from '@src/services/mock';
-import { User, Chat } from '@src/types';
 
 export type ChatAction =
   | { type: 'GET_CHATS'; payload: Chat[] };

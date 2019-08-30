@@ -1,4 +1,3 @@
-import { Chat } from '@src/types';
 import { ChatAction } from '@src/store/actions/ChatActions';
 
 export type ChatState = {

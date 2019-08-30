@@ -1,15 +1,18 @@
 import React from 'react';
 
-import Flex from '@src/components/Flex';
+import View from '@src/components/View';
 import Text from '@src/components/Text';
-import Avatar from '@src/components/Avatar';
+import Image from '@src/components/Image';
+
 import { mockImg } from '@src/services/mock';
 
 const ChatHeader = ({ params: { img = mockImg, title = '' } }) => (
-  <Flex alignment={['flex', 'centerY']} spacing={['px', 3]}>
-    <Avatar size={40} uri={img} />
-    <Text variant="bold" spacing={['ml', 3]}>{title}</Text>
-  </Flex>
+  <View row expand alignCenter>
+    <Image rounded size={40} uri={img} />
+    <Text spacing={{ ml: 3 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
+      {title}
+    </Text>
+  </View>
 );
 
 export default ChatHeader;

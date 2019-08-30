@@ -1,32 +1,25 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 
-import { Slides } from '@src/styles';
+import { Colors } from '@src/styles';
 
-const styles = StyleSheet.create({ ...Slides });
-
-type Slide = {
-  title: string;
-  text: string;
-}
+const { dotStyle, activeDotStyle } = StyleSheet.create({
+  dotStyle: { backgroundColor: Colors.secondaryLighter },
+  activeDotStyle: { backgroundColor: Colors.secondary },
+});
 
 type SliderProps = {
-  slides: Slide[];
+  slides: JSX.Element[];
 };
 
 const Slider = ({ slides = [] }: SliderProps) => (
   <Swiper
-    dotStyle={styles.dotStyle}
-    activeDotStyle={styles.activeDotStyle}
+    dotStyle={dotStyle}
+    activeDotStyle={activeDotStyle}
     loop={false}
   >
-    {slides.map((slide) => (
-      <View key={slide.title} style={styles.slide}>
-        <Text style={styles.slideTitle}>{slide.title}</Text>
-        <Text style={styles.slideText}>{slide.text}</Text>
-      </View>
-    ))}
+    {slides}
   </Swiper>
 );
 

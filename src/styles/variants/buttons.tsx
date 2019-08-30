@@ -1,29 +1,50 @@
-import { ViewStyle } from 'react-native';
+import { ViewStyle, TextStyle } from 'react-native';
 
-import * as Colors from '../global/colors';
 import * as Spacing from '../global/spacing';
+import * as Borders from '../global/borders';
+import * as Typography from '../global/typography';
+import * as Colors from '../global/colors';
 
 type ButtonVariant = {
-  style: ViewStyle;
+  view: ViewStyle;
+  text: TextStyle;
   underlayColor: string;
 }
-export const primary: ButtonVariant = {
-  style: {
-    borderRadius: Spacing.space[2],
-    padding: Spacing.space[3],
+
+const primary: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 3 }),
+    ...Borders.primary,
     backgroundColor: Colors.primary,
   },
+  text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
+const text: ButtonVariant = {
+  view: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+    height: '100%',
+    width: 80,
+  },
+  text: { ...Typography.getStyles({ color: 'semiGrey', size: 3 }) },
+  underlayColor: Colors.grey,
+};
+
+const backdrop: ButtonVariant = {
+  view: {
+    backgroundColor: Colors.lightBlack,
+    height: '100%',
+    width: '100%',
+  },
+  text: undefined,
   underlayColor: undefined,
 };
 
-export const text: ButtonVariant = {
-  style: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    width: 80,
-    backgroundColor: Colors.white,
-  },
-  underlayColor: '#ddd',
+export {
+  primary,
+  text,
+  backdrop,
 };

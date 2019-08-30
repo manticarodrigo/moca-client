@@ -2,8 +2,6 @@ import { useMemo } from 'react';
 import { SectionListData } from 'react-native';
 import { format, distanceInWordsToNow } from 'date-fns';
 
-import { Chat } from '@src/types';
-
 type SectionMap = {
   [key: string]: SectionListData<{ date?: Date; title?: string; data: Chat[] }>;
 };
@@ -16,9 +14,9 @@ const useSections = (chats?: Chat[]) => useMemo(() => {
     const key = format(createdAt, 'MM-DD-YYYY');
     // get current section props
     const {
-      date = undefined,
-      title = undefined,
-      data = undefined,
+      date = null,
+      title = null,
+      data = null,
     } = map[key] || {};
 
     // assign new values to current section
