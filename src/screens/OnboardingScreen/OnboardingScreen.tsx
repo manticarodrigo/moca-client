@@ -1,4 +1,6 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
+
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
@@ -37,6 +39,7 @@ const OnboardingScreen = () => {
 
   return (
     <View safeArea expand alignCenter>
+      <StatusBar barStyle="dark-content" />
       <View spacing={{ pt: 5 }}>
         <Image width={175} height={110} file={Logo} />
       </View>

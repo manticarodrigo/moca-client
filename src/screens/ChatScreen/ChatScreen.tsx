@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { StatusBar } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
@@ -49,6 +50,7 @@ const ChatScreen = () => {
 
   return (
     <View safeArea column expand>
+      <StatusBar barStyle="dark-content" />
       <View column expand spacing={{ p: 3 }}>
         {chat.messages.map((message) => (
           <ChatMessage
