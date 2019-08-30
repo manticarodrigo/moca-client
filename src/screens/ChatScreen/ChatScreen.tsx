@@ -74,7 +74,7 @@ const ChatScreen = () => {
   );
 };
 
-ChatScreen.navigationOptions = ({ navigation: { state: { params } } }) => ({
+ChatScreen.navigationOptions = ({ navigation: { state: { params = {} } } }) => ({
   headerTitle: <ChatHeader params={params} />,
   headerStyle: {
     backgroundColor: '#fff',

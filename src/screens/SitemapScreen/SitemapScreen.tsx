@@ -29,4 +29,8 @@ const SitemapScreen = () => {
   });
 };
 
+SitemapScreen.navigationOptions = {
+  title: 'Developer Sitemap',
+};
+
 export default SitemapScreen;

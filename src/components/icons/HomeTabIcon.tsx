@@ -1,11 +1,10 @@
 import React from 'react';
 import Svg, { Defs, Path, G, Circle, Rect, Mask, Use } from 'react-native-svg';
 
-
 const white = '#fff';
-const washedBlue = '#C5D2DC';
-const lightBlue = '#BBE4F2';
-const darkBlue = '#57B0CC';
+const washedBlue = '#c5d2dc';
+const lightBlue = '#bbe4f2';
+const darkBlue = '#57b0cc';
 
 const HomeTabIcon = ({ focused }) => (
   <Svg width={48} height={48}>

@@ -11,13 +11,15 @@ import {
 } from 'react-navigation';
 
 import { Views, Typography, Colors } from '@src/styles';
-import { HomeTabIcon, ScheduleTabIcon } from '@src/components/icons';
+import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
+import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ChatListScreen from '@src/screens/ChatListScreen';
-import ChatScreen from '@src/screens/ChatScreen/ChatScreen';
+import ChatScreen from '@src/screens/ChatScreen';
+import ProfileScreen from '@src/screens/ProfileScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -44,8 +46,12 @@ const defaultTabConfig: TabNavigatorConfig = {
       switch (routeName) {
         case 'HomeTab':
           return <HomeTabIcon focused={focused} />;
-        case 'ChatTab':
+        case 'ScheduleTab':
           return <ScheduleTabIcon focused={focused} />;
+        case 'ChatTab':
+          return <ChatTabIcon focused={focused} />;
+        case 'ProfileTab':
+          return <ProfileTabIcon focused={focused} />;
         default:
           return null;
       }
@@ -72,16 +78,24 @@ const TabStack = createBottomTabNavigator({
     DashboardScreen,
   }, defaultNavConfig),
 
+  ScheduleTab: createStackNavigator({
+    ScheduleScreen,
+  }, defaultNavConfig),
+
   ChatTab: createStackNavigator({
     ChatListScreen,
     ChatScreen,
+  }, defaultNavConfig),
+
+  ProfileTab: createStackNavigator({
+    ProfileScreen,
   }, defaultNavConfig),
 
 }, defaultTabConfig);
 
 const AppStack = createSwitchNavigator(
   { Auth: AuthStack, Tab: TabStack },
-  { initialRouteName: 'Auth' },
+  { initialRouteName: 'Tab' },
 );
 
 export default createAppContainer(AppStack);
