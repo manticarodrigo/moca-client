@@ -67,35 +67,37 @@ const defaultTabConfig: TabNavigatorConfig = {
   }),
 };
 
-const AuthStack = createStackNavigator({
-  SitemapScreen,
-  OnboardingScreen,
-}, defaultNavConfig);
-
-const TabStack = createBottomTabNavigator({
-
-  HomeTab: createStackNavigator({
-    DashboardScreen,
-  }, defaultNavConfig),
-
-  ScheduleTab: createStackNavigator({
-    ScheduleScreen,
-  }, defaultNavConfig),
-
-  ChatTab: createStackNavigator({
-    ChatListScreen,
-    ChatScreen,
-  }, defaultNavConfig),
-
-  ProfileTab: createStackNavigator({
-    ProfileScreen,
-  }, defaultNavConfig),
-
-}, defaultTabConfig);
-
 const AppStack = createSwitchNavigator(
-  { Auth: AuthStack, Tab: TabStack },
-  { initialRouteName: 'Tab' },
+  {
+
+    AuthStack: createStackNavigator({
+      SitemapScreen,
+      OnboardingScreen,
+    }, defaultNavConfig),
+
+    TabStack: createBottomTabNavigator({
+
+      HomeTab: createStackNavigator({
+        DashboardScreen,
+      }, defaultNavConfig),
+
+      ScheduleTab: createStackNavigator({
+        ScheduleScreen,
+      }, defaultNavConfig),
+
+      ChatTab: createStackNavigator({
+        ChatListScreen,
+        ChatScreen,
+      }, defaultNavConfig),
+
+      ProfileTab: createStackNavigator({
+        ProfileScreen,
+      }, defaultNavConfig),
+
+    }, defaultTabConfig),
+
+  },
+  { initialRouteName: 'AuthStack' },
 );
 
 export default createAppContainer(AppStack);

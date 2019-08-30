@@ -35,7 +35,7 @@ const OnboardingScreen = () => {
     },
   ];
 
-  const handleButtonPress = () => navigation.navigate('Tab');
+  const handleButtonPress = () => navigation.navigate('TabStack');
 
   return (
     <View safeArea expand alignCenter>
