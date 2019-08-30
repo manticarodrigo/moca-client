@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StatusBar } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
@@ -12,7 +13,8 @@ import ChatHeader from './ChatHeader';
 
 const ChatScreen = () => {
   const [{ authState: { currentUser } }] = useStore();
-  const { setParams, ...navigation } = useNavigation();
+  const navigation = useNavigation();
+  const setHeaderProps = useCallback(navigation.setParams, []);
   const [text, setText] = useState('');
   const [chat, setChat] = useState<Chat>({
     id: null,
@@ -22,7 +24,7 @@ const ChatScreen = () => {
 
   useEffect(() => {
     const onMount = async () => {
-      const { params = {} } = navigation.state;
+      const { params } = navigation.state;
 
       if (params.chat) {
         setChat(params.chat);
@@ -36,18 +38,19 @@ const ChatScreen = () => {
     if (chat.participants.length) {
       const otherParticipant = chat.participants.find(({ id }) => id !== currentUser.id);
 
-      setParams({
+      setHeaderProps({
         title: otherParticipant.username,
         img: otherParticipant.imageUrl,
       });
     }
-  }, [chat, currentUser.id, setParams]);
+  }, [chat, currentUser.id, setHeaderProps]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
 
   return (
     <View safeArea column expand>
+      <StatusBar barStyle="dark-content" />
       <View column expand spacing={{ p: 3 }}>
         {chat.messages.map((message) => (
           <ChatMessage

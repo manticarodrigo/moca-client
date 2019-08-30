@@ -47,11 +47,11 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
   } = prop;
 
   return {
-    color: Colors[color],
-    fontSize: fontSizes[size],
-    fontFamily: weight ? `family-${weight}` : null,
-    textAlign: align,
-    textTransform: transform,
-    textDecorationLine: decoration,
+    ...(color && { color: Colors[color] }),
+    ...(size && { fontSize: fontSizes[size] }),
+    ...(weight && { fontFamily: `family-${weight}` }),
+    ...(align && { textAlign: align }),
+    ...(transform && { textTransform: transform }),
+    ...(decoration && { textDecorationLine: decoration }),
   };
 };

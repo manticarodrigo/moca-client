@@ -1,4 +1,6 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
+
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
@@ -33,10 +35,11 @@ const OnboardingScreen = () => {
     },
   ];
 
-  const handleButtonPress = () => navigation.navigate('Tab');
+  const handleButtonPress = () => navigation.navigate('TabStack');
 
   return (
     <View safeArea expand alignCenter>
+      <StatusBar barStyle="dark-content" />
       <View spacing={{ pt: 5 }}>
         <Image width={175} height={110} file={Logo} />
       </View>
@@ -48,7 +51,7 @@ const OnboardingScreen = () => {
           <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
             {title}
           </Text>
-          <Text variant="regular">
+          <Text variant="regular" typography={{ align: 'center' }}>
             {text}
           </Text>
         </View>

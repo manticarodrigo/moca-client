@@ -5,7 +5,7 @@ import useNavigation from '@src/hooks/useNavigation';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 
-const DashboardScreen = () => {
+const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
@@ -19,8 +19,8 @@ const DashboardScreen = () => {
   );
 };
 
-DashboardScreen.navigationOptions = {
-  title: 'Home',
+ProfileScreen.navigationOptions = {
+  title: 'Profile',
 };
 
-export default DashboardScreen;
+export default ProfileScreen;
