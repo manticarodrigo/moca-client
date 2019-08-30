@@ -6,9 +6,12 @@ import { activateKeepAwake } from 'expo-keep-awake'; // eslint-disable-line impo
 import StoreProvider from '@src/StoreProvider';
 import NavigationProvider from '@src/NavigationProvider';
 
+import FormField from './components/FormField';
+import EmailIcon from './assets/Icons/email.png';
+
 const App = () => (
   <StoreProvider>
-    <NavigationProvider />
+    <FormField placeholder="Email Address" icon={EmailIcon} />
   </StoreProvider>
 );
 

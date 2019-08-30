@@ -1,12 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Animated } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
-
-import Text from './TextInput';
 
 
 import { widthPercentageToDP, heightPercentageToDP } from '../deviceSize';
+
+import TextInput from './TextInput';
+import Text from './Text';
+
+
 
 type FormFieldProps = {
   placeholder: string;
@@ -14,6 +17,23 @@ type FormFieldProps = {
 }
 
 const FormField = ({ placeholder, icon }: FormFieldProps) => {
+
+  const [focus, setFocus] = useState(
+    { isFocused: false }
+  );
+
+  // const [animatedValue, setAnimatedValue] = useState({
+
+  // });
+
+  const handleFocus = () => {
+    setFocus({ isFocused: true });
+  }
+
+  const handleBlur = () => {
+    setFocus({ isFocused: false });
+  }
+
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -23,20 +43,40 @@ const FormField = ({ placeholder, icon }: FormFieldProps) => {
       justifyContent: 'space-between',
       borderRadius: Spacing.space[2],
       marginTop: Spacing.space[5],
+      marginLeft: widthPercentageToDP(6.4),
+      marginRight: widthPercentageToDP(6.4),
       padding: Spacing.space[3],
-      borderRadius: Spacing.space[1],
       width: widthPercentageToDP(87.2),
       height: heightPercentageToDP(8.3),
-      backgroundColor: Colors['lightGrey'],
+      backgroundColor: focus.isFocused ? Colors['semiGreyThree'] : Colors['lightGrey']
     },
     text: {
-      color: Colors['text']
+      color: Colors['semiGrey'],
+      fontSize: widthPercentageToDP(4.2),
+      width: widthPercentageToDP(70),
+      height: heightPercentageToDP(8.3),
+    },
+    placeholderStyle: {
+      position: 'absolute',
+      left: 0,
+      top: !focus.isFocused ? 18 : 0,
+      fontSize: !focus.isFocused ? 16 : 14,
+      color: !focus.isFocused ? '#aaa' : '#000',
     }
-  }), [placeholder]);
+  }), [focus]);
+
 
   return (
     <View style={styles.view}>
-      <Text placeholder={placeholder} />
+      <Text style={styles.placeholderStyle}>
+        {placeholder}
+      </Text>
+      <TextInput
+        style={styles.text}
+        onFocus={handleFocus}
+        // placeholder={placeholder}
+        onBlur={handleBlur}
+      />
       <Image source={icon} />
     </View>
   );
