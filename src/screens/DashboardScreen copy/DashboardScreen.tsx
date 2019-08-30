@@ -19,8 +19,4 @@ const DashboardScreen = () => {
   );
 };
 
-DashboardScreen.navigationOptions = {
-  title: 'Home',
-};
-
 export default DashboardScreen;
