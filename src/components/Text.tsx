@@ -11,19 +11,19 @@ const variants = {
 
 type TextProps = RNTextProps & {
   variant?: keyof typeof variants;
-  typography?: TypographyProp;
   spacing?: SpacingProp;
+  typography?: TypographyProp;
   children: string;
 };
 
-const Text = ({ variant, typography, spacing, children, ...textProps }: TextProps) => {
+const Text = ({ variant, spacing, typography, children, ...textProps }: TextProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
       ...variants[variant],
       ...Spacing.getStyles(spacing),
       ...Typography.getStyles(typography),
     },
-  }), [variant, typography, spacing]);
+  }), [variant, spacing, typography]);
 
   return (
     <RNText style={styles.text} {...textProps}>

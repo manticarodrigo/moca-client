@@ -2,13 +2,12 @@ import { ViewStyle, StyleSheet } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
-import * as Shadows from '../global/shadows';
 import * as Colors from '../global/colors';
 
 const msgBubble: ViewStyle = {
-  ...Spacing.getStyles({ mt: 2, p: 2 }),
+  ...Spacing.getStyles({ mt: 2, p: 3 }),
   ...Borders.primary,
-  ...Shadows.primary,
+  minWidth: 60,
   height: 'auto',
 };
 
@@ -23,15 +22,7 @@ const msgBubbleRight: ViewStyle = {
   ...Spacing.getStyles({ ml: 4 }),
   ...msgBubble,
   alignSelf: 'flex-end',
-  backgroundColor: Colors.primary,
-};
-
-const card = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...Shadows.primary,
-  ...Borders.primary,
-  backgroundColor: Colors.white,
-  width: '100%',
+  backgroundColor: Colors.secondary,
 };
 
 const borderTop: ViewStyle = {
@@ -54,7 +45,6 @@ const backdrop: ViewStyle = {
 export {
   msgBubbleRight,
   msgBubbleLeft,
-  card,
   borderTop,
   borderBottom,
   backdrop,

@@ -1,23 +1,40 @@
 
 import React, { useMemo } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { format } from 'date-fns';
 
-import { Views, Colors } from '@src/styles';
+import View from '@src/components/View';
+import Text from '@src/components/Text';
 
 type ChatMessageProps = {
-  text: string;
   alignRight: boolean;
+  text: string;
+  createdAt: string;
 };
 
-const ChatMessage = ({ text, alignRight }: ChatMessageProps) => {
-  const styles = useMemo(() => StyleSheet.create({
-    view: { ...(alignRight ? Views.msgBubbleRight : Views.msgBubbleLeft) },
-    text: { color: alignRight ? Colors.white : Colors.text },
-  }), [alignRight]);
+const ChatMessage = ({ text, createdAt, alignRight }: ChatMessageProps) => {
+  const time = useMemo(() => format(createdAt, 'hh:mm'), [createdAt]);
 
   return (
-    <View style={styles.view}>
-      <Text style={styles.text}>{text}</Text>
+    <View variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
+      <Text
+        typography={{
+          color: alignRight ? 'white' : 'dark',
+          weight: '500',
+          align: 'right',
+        }}
+      >
+        {text}
+      </Text>
+      <Text
+        spacing={{ mt: 2 }}
+        typography={{
+          color: alignRight ? 'secondaryLighter' : 'semiGreyAlt',
+          weight: '500',
+          align: 'right',
+        }}
+      >
+        {time}
+      </Text>
     </View>
   );
 };
