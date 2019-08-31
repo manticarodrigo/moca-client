@@ -6,11 +6,10 @@ import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 
 import { Views, Spacing, Colors } from '@src/styles';
-import { BackButtonIcon } from '@src/components/icons';
+import { BackButtonIcon, CameraIcon, SendIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import TextInput from '@src/components/TextInput';
-import Button from '@src/components/Button';
 
 import ChatMessage from './ChatMessage';
 import ChatHeader from './ChatHeader';
@@ -48,7 +47,7 @@ const ChatScreen: NavigationComponent = () => {
   }, [chat, currentUser.id, setHeaderProps]);
 
   const handleChangeText = (val: string) => setText(val);
-  const handlePressSend = () => setText('');
+  const onPressSend = () => setText('');
 
   return (
     <View safeArea column expand>
@@ -63,16 +62,22 @@ const ChatScreen: NavigationComponent = () => {
           />
         ))}
       </View>
-      <View variant="borderTop" row height={72} spacing={{ p: 3 }}>
-        <TextInput
-          variant="chat"
-          expand
-          spacing={{ px: 3 }}
-          onChangeText={handleChangeText}
-          placeholder="Type a message..."
-          value={text}
-        />
-        <Button variant="text" onPress={handlePressSend}>Send</Button>
+      <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
+        <View spacing={{ p: 1 }}>
+          <CameraIcon />
+        </View>
+        <View expand spacing={{ px: 2 }}>
+          <TextInput
+            variant="chat"
+            spacing={{ px: 3 }}
+            onChangeText={handleChangeText}
+            placeholder="Type a message..."
+            value={text}
+          />
+        </View>
+        <View spacing={{ p: 1 }} onPress={onPressSend}>
+          <SendIcon active={text.length} />
+        </View>
       </View>
     </View>
   );

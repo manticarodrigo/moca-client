@@ -5,6 +5,7 @@ import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/s
 
 const variants = {
   chat: {
+    height: '100%',
     borderRadius: 24,
     backgroundColor: Colors.lightGrey,
   },
@@ -14,18 +15,16 @@ type TextInputProps = RNTextInputProps & {
   variant?: keyof typeof variants;
   typography?: TypographyProp;
   spacing?: SpacingProp;
-  expand?: boolean;
 };
 
-const TextInput = ({ variant, typography, spacing, expand, ...textProps }: TextInputProps) => {
+const TextInput = ({ variant, typography, spacing, ...textProps }: TextInputProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
       ...Spacing.getStyles(spacing),
       ...Typography.getStyles(typography),
       ...variants[variant],
-      flex: expand && 1,
     },
-  }), [variant, typography, spacing, expand]);
+  }), [variant, typography, spacing]);
 
   return <RNTextInput style={styles.text} {...textProps} />;
 };

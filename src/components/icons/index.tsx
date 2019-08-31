@@ -6,3 +6,5 @@ export { default as ProfileTabIcon } from './ProfileTabIcon';
 export { default as ShieldIcon } from './ShieldIcon';
 export { default as DeviceMapIcon } from './DeviceMapIcon';
 export { default as SettingsIcon } from './SettingsIcon';
+export { default as CameraIcon } from './CameraIcon';
+export { default as SendIcon } from './SendIcon';
