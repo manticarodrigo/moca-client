@@ -19,6 +19,7 @@ const ChatScreen: NavigationComponent = () => {
   const navigation = useNavigation();
   const setHeaderProps = useCallback(navigation.setParams, []);
   const [text, setText] = useState('');
+  const [fetchedChat, setFetchedChat] = useState(false);
   const [chat, setChat] = useState<Chat>({
     id: null,
     messages: [],
@@ -27,15 +28,16 @@ const ChatScreen: NavigationComponent = () => {
 
   useEffect(() => {
     const onMount = async () => {
-      const { params } = navigation.state;
+      const { params = {} } = navigation.state;
 
-      if (params.chat) {
+      if (params.chat && !fetchedChat) {
         setChat(params.chat);
+        setFetchedChat(true);
       }
     };
 
     onMount();
-  }, [navigation.state]);
+  }, [navigation.state, fetchedChat]);
 
   useEffect(() => {
     if (chat.participants.length) {
@@ -46,8 +48,19 @@ const ChatScreen: NavigationComponent = () => {
     }
   }, [chat, currentUser.id, setHeaderProps]);
 
-  const handleChangeText = (val: string) => setText(val);
-  const onPressSend = () => setText('');
+  const onChangeText = (val: string) => setText(val);
+
+  const onPressSend = () => {
+    const message: Message = {
+      id: `${Math.floor(Math.random() * 1000000000)}`,
+      text,
+      userId: currentUser.id,
+      createdAt: new Date().toDateString(),
+    };
+
+    setChat({ ...chat, messages: [...chat.messages, message] });
+    setText('');
+  };
 
   return (
     <View safeArea column expand>
@@ -70,8 +83,8 @@ const ChatScreen: NavigationComponent = () => {
           <TextInput
             variant="chat"
             spacing={{ px: 3 }}
-            onChangeText={handleChangeText}
-            placeholder="Type a message..."
+            onChangeText={onChangeText}
+            placeholder="Type your message..."
             value={text}
           />
         </View>
