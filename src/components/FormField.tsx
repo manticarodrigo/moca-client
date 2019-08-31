@@ -4,7 +4,7 @@ import { StyleSheet, View, Image, Animated } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
 
 
-import { widthPercentageToDP, heightPercentageToDP } from '../deviceSize';
+import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
 
 import TextInput from './TextInput';
 import Text from './Text';
