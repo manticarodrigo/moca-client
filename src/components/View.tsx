@@ -9,9 +9,9 @@ type ViewProps = {
   position?: PositionProp;
   spacing?: SpacingProp;
   shadow?: ShadowProp;
+  flex?: number;
   row?: boolean;
   column?: boolean;
-  expand?: boolean;
   justifyCenter?: boolean;
   justifyBetween?: boolean;
   alignCenter?: boolean;
@@ -28,9 +28,9 @@ const View = ({
   spacing,
   position,
   shadow,
+  flex,
   row,
   column,
-  expand,
   justifyCenter,
   justifyBetween,
   alignCenter,
@@ -65,7 +65,7 @@ const View = ({
       ...Spacing.getStyles(spacing),
       ...Shadow.getStyles(shadow),
       ...(bgColor && { backgroundColor: Colors[bgColor] }),
-      ...(expand && { flex: 1 }),
+      ...(flex && { flex }),
       ...(direction && { flexDirection: direction }),
       ...(justify && { justifyContent: justify }),
       ...(align && { alignItems: align }),
@@ -76,7 +76,7 @@ const View = ({
     position,
     shadow,
     direction,
-    expand,
+    flex,
     justify,
     align,
     width,

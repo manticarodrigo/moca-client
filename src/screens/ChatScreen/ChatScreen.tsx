@@ -63,9 +63,9 @@ const ChatScreen: NavigationComponent = () => {
   };
 
   return (
-    <View safeArea column expand>
+    <View safeArea column flex={1}>
       <StatusBar barStyle="dark-content" />
-      <View column expand spacing={{ p: 3 }} bgColor="lightGrey">
+      <View column flex={1} spacing={{ p: 3 }} bgColor="lightGrey">
         {chat.messages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -79,7 +79,7 @@ const ChatScreen: NavigationComponent = () => {
         <View spacing={{ p: 1 }}>
           <CameraIcon />
         </View>
-        <View expand spacing={{ px: 2 }}>
+        <View flex={1} spacing={{ px: 2 }}>
           <TextInput
             variant="chat"
             spacing={{ px: 3 }}

@@ -1,6 +1,7 @@
 import { ViewStyle, StyleSheet } from 'react-native';
 
 import * as Spacing from '../global/spacing';
+import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
 
@@ -42,10 +43,23 @@ const backdrop: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
+const card: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  ...Borders.primary,
+  backgroundColor: Colors.white,
+};
+
+const shadowCard: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...card,
+};
+
 export {
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
   borderBottom,
   backdrop,
+  card,
+  shadowCard,
 };
