@@ -1,3 +1,4 @@
+export { default as BackButtonIcon } from './BackButtonIcon';
 export { default as HomeTabIcon } from './HomeTabIcon';
 export { default as ScheduleTabIcon } from './ScheduleTabIcon';
 export { default as ChatTabIcon } from './ChatTabIcon';

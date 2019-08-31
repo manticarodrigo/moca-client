@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProps } from 'react-native';
 
-import { Spacing, SpacingProp, Typography, TypographyProp } from '@src/styles';
+import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/styles';
 
 const variants = {
-  primary: {},
+  chat: {
+    borderRadius: 24,
+    backgroundColor: Colors.lightGrey,
+  },
 };
 
 type TextInputProps = RNTextInputProps & {
