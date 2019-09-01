@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StatusBar } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
-import { Chat } from '@src/types';
 
-import Flex from '@src/components/Flex';
+import View from '@src/components/View';
 import TextInput from '@src/components/TextInput';
 import Button from '@src/components/Button';
 
@@ -13,17 +13,18 @@ import ChatHeader from './ChatHeader';
 
 const ChatScreen = () => {
   const [{ authState: { currentUser } }] = useStore();
-  const { setParams, ...navigation } = useNavigation();
+  const navigation = useNavigation();
+  const setHeaderProps = useCallback(navigation.setParams, []);
   const [text, setText] = useState('');
   const [chat, setChat] = useState<Chat>({
-    id: undefined,
+    id: null,
     messages: [],
     participants: [],
   });
 
   useEffect(() => {
     const onMount = async () => {
-      const { params = {} } = navigation.state;
+      const { params } = navigation.state;
 
       if (params.chat) {
         setChat(params.chat);
@@ -37,19 +38,20 @@ const ChatScreen = () => {
     if (chat.participants.length) {
       const otherParticipant = chat.participants.find(({ id }) => id !== currentUser.id);
 
-      setParams({
+      setHeaderProps({
         title: otherParticipant.username,
         img: otherParticipant.imageUrl,
       });
     }
-  }, [chat, currentUser.id, setParams]);
+  }, [chat, currentUser.id, setHeaderProps]);
 
   const handleChangeText = (val: string) => setText(val);
   const handlePressSend = () => setText('');
 
   return (
-    <Flex alignment="flex" safeArea direction="column">
-      <Flex alignment="flex" spacing={['p', 3]} direction="column" background="grey">
+    <View safeArea column expand>
+      <StatusBar barStyle="dark-content" />
+      <View column expand spacing={{ p: 3 }}>
         {chat.messages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -57,18 +59,18 @@ const ChatScreen = () => {
             text={message.text}
           />
         ))}
-      </Flex>
-      <Flex variant="chatInputContainer">
+      </View>
+      <View variant="borderTop" row height={60}>
         <TextInput
-          alignment="flex"
-          spacing={[['py', 2], ['px', 3]]}
+          expand
+          spacing={{ py: 2, px: 3 }}
           onChangeText={handleChangeText}
           placeholder="Type a message..."
           value={text}
         />
         <Button variant="text" onPress={handlePressSend}>Send</Button>
-      </Flex>
-    </Flex>
+      </View>
+    </View>
   );
 };
 

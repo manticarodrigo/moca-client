@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProps } from 'react-native';
 
-import { Alignment, AlignmentProp, Spacing, SpacingProp, Typography } from '@src/styles';
+import { Spacing, SpacingProp, Typography, TypographyProp } from '@src/styles';
 
 const variants = {
   primary: {},
@@ -9,22 +9,22 @@ const variants = {
 
 type TextInputProps = RNTextInputProps & {
   variant?: keyof typeof variants;
-  text?: keyof typeof Typography.text;
-  alignment?: AlignmentProp;
+  typography?: TypographyProp;
   spacing?: SpacingProp;
+  expand?: boolean;
 };
 
-const Text = ({ variant, text, spacing, alignment, ...textProps }: TextInputProps) => {
+const TextInput = ({ variant, typography, spacing, expand, ...textProps }: TextInputProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
+      ...Spacing.getStyles(spacing),
+      ...Typography.getStyles(typography),
       ...variants[variant],
-      ...Typography.text[text],
-      ...Alignment.get(alignment),
-      ...Spacing.get(spacing),
+      flex: expand && 1,
     },
-  }), [variant, text, alignment, spacing]);
+  }), [variant, typography, spacing, expand]);
 
   return <RNTextInput style={styles.text} {...textProps} />;
 };
 
-export default Text;
+export default TextInput;

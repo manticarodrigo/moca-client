@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'react-native';
-import { Buttons, Typography } from '@src/styles';
+
+import { Buttons } from '@src/styles';
 
 type ButtonProps = TouchableHighlightProps & {
   variant?: keyof typeof Buttons;
@@ -9,17 +10,13 @@ type ButtonProps = TouchableHighlightProps & {
 
 const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
   const styles = useMemo(() => StyleSheet.create({
-    button: {
-      ...Buttons[variant].style,
-    },
-    text: {
-      ...Typography.button[variant],
-    },
+    view: { ...Buttons[variant].view },
+    text: { ...Buttons[variant].text },
   }), [variant]);
 
   return (
     <TouchableHighlight
-      style={styles.button}
+      style={styles.view}
       underlayColor={Buttons[variant].underlayColor}
       onPress={onPress}
     >

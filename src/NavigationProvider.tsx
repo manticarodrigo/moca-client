@@ -1,12 +1,16 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 
 import {
+  StackNavigatorConfig,
+  TabNavigatorConfig,
   createStackNavigator,
   createBottomTabNavigator,
   createSwitchNavigator,
   createAppContainer,
 } from 'react-navigation';
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import { Header } from '@src/styles';
 
@@ -28,6 +32,8 @@ export const tabConfig = {
       ChatListScreen,
       ChatScreen,
 =======
+=======
+>>>>>>> master
 import { Views, Typography, Colors } from '@src/styles';
 import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
 
@@ -38,7 +44,10 @@ import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ChatListScreen from '@src/screens/ChatListScreen';
 import ChatScreen from '@src/screens/ChatScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
+<<<<<<< HEAD
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
+=======
+>>>>>>> master
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -48,50 +57,49 @@ const defaultNavConfig: StackNavigatorConfig = {
       borderBottomWidth: 0,
       height: 60,
       backgroundColor: Colors.primary,
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
     },
-  },
-  Dashboard: {
-    initialRouteName: 'DashboardScreen',
-    screens: {
-      DashboardScreen,
+    headerTintColor: Colors.primary,
+    headerBackTitle: null,
+    headerTitleStyle: {
+      ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
     },
-  },
+  }),
 };
 
-export const authConfig = {
-  OnboardingScreen,
+const defaultTabConfig: TabNavigatorConfig = {
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused }) => {
+      const { routeName } = navigation.state;
+
+      switch (routeName) {
+        case 'HomeTab':
+          return <HomeTabIcon focused={focused} />;
+        case 'ScheduleTab':
+          return <ScheduleTabIcon focused={focused} />;
+        case 'ChatTab':
+          return <ChatTabIcon focused={focused} />;
+        case 'ProfileTab':
+          return <ProfileTabIcon focused={focused} />;
+        default:
+          return null;
+      }
+    },
+    tabBarVisible: navigation.state.index < 1,
+    tabBarOptions: {
+      showLabel: false,
+      style: {
+        ...Views.borderTop,
+        height: 72,
+      },
+    },
+  }),
 };
 
-const SitemapScreen = () => {
-  const navigation = useNavigation();
-  const handleNavigate = (screenName) => navigation.navigate(screenName);
-
-  const screens = Object.keys(authConfig).concat(
-    Object.values(tabConfig).flatMap((tab) => Object.keys(tab.screens)),
-  );
-
-  return screens.map((name: string) => (
-    <SitemapCard
-      key={name}
-      name={name}
-      onPress={handleNavigate}
-    />
-  ));
-};
-
-const SitemapCard = ({ name, onPress }) => {
-  const handleCardPress = () => onPress(name);
-
-  return (
-    <Flex direction="column" spacing={['p', 3]}>
-      <Card key={name} onPress={handleCardPress}>
-        <Text>{name}</Text>
-      </Card>
-    </Flex>
-  );
-};
-
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 const _createStack = (tabName, initialRouteName, screens) => createStackNavigator(
   Object.entries(screens).reduce(
@@ -108,49 +116,39 @@ const _createStack = (tabName, initialRouteName, screens) => createStackNavigato
       return screenMap;
     }, {},
   ),
-  {
-    initialRouteName,
-    ...Header.getBase(tabName),
-  },
-);
-
-const TabStack = createBottomTabNavigator(
-  Object.entries(tabConfig).reduce(
-    (tabsMap, [tabName, { initialRouteName, screens }]) => {
-      const stack = _createStack(tabName, initialRouteName, screens);
-
-      // remove tab bar in nested screens
-      stack.navigationOptions = ({ navigation }) => ({
-        tabBarVisible: !(navigation.state.index > 0),
-      });
-
-      tabsMap[tabName] = stack;
-
-      return tabsMap;
-    }, {},
-  ),
-);
-
-
-const AuthStack = createStackNavigator(
-  {
-    SitemapScreen,
-    ...authConfig,
-  },
-  {
-    initialRouteName: 'SitemapScreen',
-    ...Header.getBase('Sitemap'),
-  },
-);
-
+=======
 const AppStack = createSwitchNavigator(
+>>>>>>> master
   {
-    Auth: AuthStack,
-    Tab: TabStack,
+
+    AuthStack: createStackNavigator({
+      SitemapScreen,
+      OnboardingScreen,
+    }, defaultNavConfig),
+
+    TabStack: createBottomTabNavigator({
+
+      HomeTab: createStackNavigator({
+        DashboardScreen,
+      }, defaultNavConfig),
+
+      ScheduleTab: createStackNavigator({
+        ScheduleScreen,
+      }, defaultNavConfig),
+
+      ChatTab: createStackNavigator({
+        ChatListScreen,
+        ChatScreen,
+      }, defaultNavConfig),
+
+      ProfileTab: createStackNavigator({
+        ProfileScreen,
+      }, defaultNavConfig),
+
+    }, defaultTabConfig),
+
   },
-  {
-    initialRouteName: 'Auth',
-  },
+  { initialRouteName: 'AuthStack' },
 );
 
 export default createAppContainer(AppStack);

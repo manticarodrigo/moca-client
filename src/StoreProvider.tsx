@@ -52,7 +52,7 @@ const initialState: StoreState = {
   },
 };
 
-export const StoreContext = createContext<ProviderValue>([initialState, () => undefined]);
+export const StoreContext = createContext<ProviderValue>([initialState, () => null]);
 
 const StoreProvider = ({ children }: { children: ReactNode }) => (
   <StoreContext.Provider value={useAsyncReducer(rootReducer, initialState)}>

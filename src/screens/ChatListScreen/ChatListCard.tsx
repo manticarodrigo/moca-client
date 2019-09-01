@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 
-import { User, Chat } from '@src/types';
-import Card from '@src/components/Card';
-import Flex from '@src/components/Flex';
-import Avatar from '@src/components/Avatar';
+import View from '@src/components/View';
+import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
 type ChatListCardProps = {
@@ -29,18 +27,24 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
   }, [chat, currentUser.id]);
 
   return (
-    <Card spacing={['mb', 3]} onPress={handleCardPress}>
-      <Flex>
-        <Avatar size={60} uri={imageUrl} />
-        <Flex direction="column" spacing={['pl', 3]}>
-          <Text variant="bold">{username}</Text>
-          <Text variant="smallLight">{time}</Text>
-        </Flex>
-      </Flex>
-      <Text variant="smallLight" spacing={['mt', 3]} numberOfLines={1}>
+    <View variant="borderBottom" spacing={{ p: 3 }} onPress={handleCardPress} bgColor="white">
+      <View row spacing={{ p: 1 }}>
+        <Image rounded size={60} uri={imageUrl} />
+        <View column spacing={{ pl: 3 }}>
+          <Text spacing={{ mb: 2 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
+            {username}
+          </Text>
+          <Text typography={{ size: 1, weight: '500', color: 'grey' }}>{time}</Text>
+        </View>
+      </View>
+      <Text
+        numberOfLines={1}
+        spacing={{ mt: 3, px: 1, pb: 3 }}
+        typography={{ size: 2, weight: '300', color: 'grey' }}
+      >
         {text}
       </Text>
-    </Card>
+    </View>
   );
 };
 

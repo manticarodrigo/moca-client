@@ -1,8 +1,9 @@
 import React from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
+
+import View from '@src/components/View';
 import Button from '@src/components/Button';
-import Flex from '@src/components/Flex';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
@@ -10,12 +11,16 @@ const DashboardScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <Flex alignment={['flex', 'centerXY']} background="grey">
+    <View expand justifyCenter alignCenter bgColor="lightGrey">
       <Button onPress={handleButtonPress}>
         Go to Chat
       </Button>
-    </Flex>
+    </View>
   );
+};
+
+DashboardScreen.navigationOptions = {
+  title: 'Home',
 };
 
 export default DashboardScreen;

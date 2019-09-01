@@ -1,4 +1,3 @@
-import { User } from '@src/types';
 import { AuthAction } from '@src/store/actions/AuthActions';
 
 export type AuthState = {

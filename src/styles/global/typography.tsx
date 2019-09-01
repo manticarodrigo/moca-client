@@ -1,66 +1,57 @@
 import { TextStyle } from 'react-native';
+import * as Font from 'expo-font';
 
-import * as Colors from '@src/styles/global/colors';
+import MuseoSansRounded300 from '@src/assets/fonts/MuseoSansRounded-300.otf';
+import MuseoSansRounded500 from '@src/assets/fonts/MuseoSansRounded-500.otf';
+import MuseoSansRounded700 from '@src/assets/fonts/MuseoSansRounded-700.otf';
+import MuseoSansRounded900 from '@src/assets/fonts/MuseoSansRounded-900.otf';
 
-export const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72];
+import * as Colors from './colors';
 
-const colorText: TextStyle = {
-  color: Colors.text,
+export const loadFonts = async () => {
+  await Font.loadAsync({
+    'family-300': MuseoSansRounded300,
+    'family-500': MuseoSansRounded500,
+    'family-700': MuseoSansRounded700,
+    'family-900': MuseoSansRounded900,
+  });
 };
 
-const colorWhite: TextStyle = {
-  color: Colors.white,
-};
+const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72];
 
-const sizeSmall: TextStyle = {
-  fontSize: fontSizes[2],
-};
+type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
+type TypographyColor = { color?: keyof typeof Colors };
+type TypographyWeight = { weight?: '300' | '500' | '700' | '900' };
+type TypographyAlign = { align?: TextStyle['textAlign'] };
+type TypographyTransform = { transform?: TextStyle['textTransform'] };
+type TypographyDecoration = { decoration?: TextStyle['textDecorationLine'] };
 
-const sizeMedium: TextStyle = {
-  fontSize: fontSizes[3],
-};
+export type TypographyProp =
+  & TypographySizeIndex
+  & TypographyWeight
+  & TypographyAlign
+  & TypographyTransform
+  & TypographyDecoration
+  & TypographyColor;
 
-const weightLight: TextStyle = {
-  fontWeight: '100',
-};
+export const getStyles = (prop: TypographyProp): TextStyle => {
+  if (!prop) { return null; }
 
-const weightBold: TextStyle = {
-  fontWeight: '700',
-};
+  const {
+    color,
+    size,
+    weight,
+    align,
+    transform,
+    decoration,
+  } = prop;
 
-const transformUppercase: TextStyle = {
-  textTransform: 'uppercase',
-};
-
-const base = {
-  ...colorText,
-  ...sizeMedium,
-};
-
-export const text = {
-  base: {
-    ...base,
-  },
-  smallLight: {
-    ...base,
-    ...sizeSmall,
-    ...weightLight,
-  },
-  bold: {
-    ...base,
-    ...weightBold,
-  },
-  uppercase: {
-    ...transformUppercase,
-  },
-};
-
-export const button = {
-  primary: {
-    ...base,
-    ...colorWhite,
-  },
-  text: {
-    ...base,
-  },
+  return {
+    ...(color && { color: Colors[color] }),
+    ...(size && { fontSize: fontSizes[size] }),
+    ...(weight && { fontFamily: `family-${weight}` }),
+    ...(align && { textAlign: align }),
+    ...(transform && { textTransform: transform }),
+    ...(decoration && { textDecorationLine: decoration }),
+  };
 };
