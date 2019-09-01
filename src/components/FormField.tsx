@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 import { StyleSheet, View, Image, Animated } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
@@ -14,17 +14,23 @@ import Text from './Text';
 type FormFieldProps = {
   placeholder: string;
   icon?: any;
+  value: string;
 }
 
-const FormField = ({ placeholder, icon }: FormFieldProps) => {
+const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
 
   const [focus, setFocus] = useState(
     { isFocused: false }
   );
 
-  // const [animatedValue, setAnimatedValue] = useState({
+  const animatedIsFocused = new Animated.Value(value === '' ? 0 : 1);
 
-  // });
+  useEffect(() => {
+    Animated.timing(animatedIsFocused, {
+      toValue: (focus.isFocused || value !== '') ? 1 : 0,
+      duration: 200,
+    }).start();
+  });
 
   const handleFocus = () => {
     setFocus({ isFocused: true });
@@ -41,36 +47,51 @@ const FormField = ({ placeholder, icon }: FormFieldProps) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderRadius: Spacing.space[2],
-      marginTop: Spacing.space[5],
+      borderRadius: Spacing.spaceSize[2],
+      marginTop: Spacing.spaceSize[5],
       marginLeft: widthPercentageToDP(6.4),
       marginRight: widthPercentageToDP(6.4),
-      padding: Spacing.space[3],
+      padding: Spacing.spaceSize[3],
       width: widthPercentageToDP(87.2),
       height: heightPercentageToDP(8.3),
-      backgroundColor: focus.isFocused ? Colors['semiGreyThree'] : Colors['lightGrey']
+      backgroundColor: focus.isFocused ? Colors.semiGreyLighter : Colors.lightGrey
     },
     text: {
-      color: Colors['semiGrey'],
-      fontSize: widthPercentageToDP(4.2),
+      color: Colors.black,
+      paddingTop: heightPercentageToDP(3.0),
+      //paddingLeft: widthPercentageToDP(4.2),
+      fontSize: 16,
       width: widthPercentageToDP(70),
       height: heightPercentageToDP(8.3),
     },
-    placeholderStyle: {
-      position: 'absolute',
-      left: 0,
-      top: !focus.isFocused ? 18 : 0,
-      fontSize: !focus.isFocused ? 16 : 14,
-      color: !focus.isFocused ? '#aaa' : '#000',
-    }
   }), [focus]);
 
+  const placeholderStyle = {
+    position: 'absolute',
+    left: widthPercentageToDP(4.2),
+    //paddingLeft: widthPercentageToDP(4.2),
+    //paddingTop: widthPercentageToDP(4.8),
+    top: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [heightPercentageToDP(2.7), heightPercentageToDP(1.0)],
+    }),
+    fontSize: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [16, 14],
+    }),
+    fontWeight: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['500', '300'],
+    }),
+    color: Colors.semiGrey
+  }
 
   return (
     <View style={styles.view}>
-      <Text style={styles.placeholderStyle}>
+      <Animated.Text style={placeholderStyle}>
         {placeholder}
-      </Text>
+      </Animated.Text>
+      {console.log(value)}
       <TextInput
         style={styles.text}
         onFocus={handleFocus}
