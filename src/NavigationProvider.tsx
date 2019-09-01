@@ -7,6 +7,7 @@ import {
   createAppContainer,
 } from 'react-navigation';
 
+<<<<<<< Updated upstream
 import { Header } from '@src/styles';
 
 import ChatListScreen from '@src/screens/ChatListScreen/ChatListScreen';
@@ -26,6 +27,28 @@ export const tabConfig = {
     screens: {
       ChatListScreen,
       ChatScreen,
+=======
+import { Views, Typography, Colors } from '@src/styles';
+import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
+
+import SitemapScreen from '@src/screens/SitemapScreen';
+import OnboardingScreen from '@src/screens/OnboardingScreen';
+import DashboardScreen from '@src/screens/DashboardScreen';
+import ScheduleScreen from '@src/screens/ScheduleScreen';
+import ChatListScreen from '@src/screens/ChatListScreen';
+import ChatScreen from '@src/screens/ChatScreen';
+import ProfileScreen from '@src/screens/ProfileScreen';
+import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
+
+const defaultNavConfig: StackNavigatorConfig = {
+  headerLayoutPreset: 'center',
+  defaultNavigationOptions: ({ navigation }) => ({
+    title: navigation.state.routeName,
+    headerStyle: {
+      borderBottomWidth: 0,
+      height: 60,
+      backgroundColor: Colors.primary,
+>>>>>>> Stashed changes
     },
   },
   Dashboard: {
@@ -69,10 +92,18 @@ const SitemapCard = ({ name, onPress }) => {
   );
 };
 
+<<<<<<< Updated upstream
 const _createStack = (tabName, initialRouteName, screens) => createStackNavigator(
   Object.entries(screens).reduce(
     (screenMap, [name, component]) => {
       screenMap[name] = component;
+=======
+    AuthStack: createStackNavigator({
+      SitemapScreen,
+      OnboardingScreen,
+      SelectionScreen,
+    }, defaultNavConfig),
+>>>>>>> Stashed changes
 
       return screenMap;
     }, {},

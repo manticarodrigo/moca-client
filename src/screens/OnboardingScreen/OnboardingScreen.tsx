@@ -24,7 +24,12 @@ const OnboardingScreen = () => {
     },
   ];
 
+<<<<<<< Updated upstream
   const handleButtonPress = () => navigation.navigate('Tab');
+=======
+  const handleButtonPress = () => navigation.navigate('SelectionScreen');
+
+>>>>>>> Stashed changes
 
   return (
     <Flex safeArea direction="column" alignment={['flex', 'centerXY']} background="grey">
