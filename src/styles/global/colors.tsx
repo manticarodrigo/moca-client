@@ -10,6 +10,7 @@ export const grey = '#6a7e8f';
 export const semiGrey = '#8ba5b9';
 export const semiGreyLight = '#dedede';
 export const semiGreyLighter = '#e2e9ee';
+export const semiGreyAlt = '#c5d2dc';
 export const lightGrey = '#f3f2f7';
 export const error = '#f53e3f';
 export const errorLight = '#f3bfc3';
