@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View as RNView, SafeAreaView, TouchableOpacity } from 'react-native';
 
-import { Views, Position, PositionProp, Spacing, SpacingProp, Colors } from '@src/styles';
+import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
 type ViewProps = {
   safeArea?: boolean;
   variant?: keyof typeof Views;
   position?: PositionProp;
   spacing?: SpacingProp;
+  shadow?: ShadowProp;
   row?: boolean;
   column?: boolean;
   expand?: boolean;
@@ -26,6 +27,7 @@ const View = ({
   variant,
   spacing,
   position,
+  shadow,
   row,
   column,
   expand,
@@ -42,6 +44,18 @@ const View = ({
   const wrapperProps = useMemo(() => ({ ...(onPress ? { onPress } : null) }), [onPress]);
   const ViewType = useMemo(() => safeArea ? SafeAreaView : RNView, [safeArea]);
 
+  const direction = useMemo(() => (
+    (row && 'row') || (column && 'column')
+  ), [row, column]);
+
+  const justify = useMemo(() => (
+    (justifyCenter && 'center') || (justifyBetween && 'space-between')
+  ), [justifyCenter, justifyBetween]);
+
+  const align = useMemo(() => (
+    alignCenter && 'center'
+  ), [alignCenter]);
+
   const styles = useMemo(() => StyleSheet.create({
     view: {
       width,
@@ -49,22 +63,22 @@ const View = ({
       ...Views[variant],
       ...Position.getStyles(position),
       ...Spacing.getStyles(spacing),
-      flex: expand && 1,
-      flexDirection: ((row && 'row') || (column && 'column')) || null,
-      justifyContent: (justifyCenter && 'center') || (justifyBetween && 'space-between') || null,
-      alignItems: (alignCenter && 'center') || null,
-      backgroundColor: Colors[bgColor],
+      ...Shadow.getStyles(shadow),
+      ...(bgColor && { backgroundColor: Colors[bgColor] }),
+      ...(expand && { flex: 1 }),
+      ...(direction && { flexDirection: direction }),
+      ...(justify && { justifyContent: justify }),
+      ...(align && { alignItems: align }),
     },
   }), [
     variant,
     spacing,
     position,
-    row,
-    column,
+    shadow,
+    direction,
     expand,
-    justifyCenter,
-    justifyBetween,
-    alignCenter,
+    justify,
+    align,
     width,
     height,
     bgColor,
