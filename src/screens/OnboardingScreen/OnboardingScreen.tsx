@@ -35,16 +35,7 @@ const OnboardingScreen = () => {
     },
   ];
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-  const handleButtonPress = () => navigation.navigate('Tab');
-=======
   const handleButtonPress = () => navigation.navigate('SelectionScreen');
-
->>>>>>> Stashed changes
-=======
-  const handleButtonPress = () => navigation.navigate('TabStack');
->>>>>>> master
 
   return (
     <View safeArea expand alignCenter>
