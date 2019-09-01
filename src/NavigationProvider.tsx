@@ -20,6 +20,7 @@ import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ChatListScreen from '@src/screens/ChatListScreen';
 import ChatScreen from '@src/screens/ChatScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
+import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -73,6 +74,7 @@ const AppStack = createSwitchNavigator(
     AuthStack: createStackNavigator({
       SitemapScreen,
       OnboardingScreen,
+      SelectionScreen,
     }, defaultNavConfig),
 
     TabStack: createBottomTabNavigator({

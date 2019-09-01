@@ -14,6 +14,7 @@ import ShieldIcon from '@src/components/icons/ShieldIcon';
 import DeviceMapIcon from '@src/components/icons/DeviceMapIcon';
 import SettingsIcon from '@src/components/icons/SettingsIcon';
 
+
 const OnboardingScreen = () => {
   const navigation = useNavigation();
 
