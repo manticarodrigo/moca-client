@@ -3,13 +3,9 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View, Image, Animated } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
 
-
 import { widthPercentageToDP, heightPercentageToDP } from '../deviceSize';
 
 import TextInput from './TextInput';
-import Text from './Text';
-
-
 
 type FormFieldProps = {
   placeholder: string;
@@ -40,7 +36,6 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
     setFocus({ isFocused: false });
   }
 
-
   const styles = useMemo(() => StyleSheet.create({
     view: {
       display: 'flex',
@@ -59,7 +54,6 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
     text: {
       color: Colors.black,
       paddingTop: heightPercentageToDP(3.0),
-      //paddingLeft: widthPercentageToDP(4.2),
       fontSize: 16,
       width: widthPercentageToDP(70),
       height: heightPercentageToDP(8.3),
@@ -69,8 +63,6 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
   const placeholderStyle = {
     position: 'absolute',
     left: widthPercentageToDP(4.2),
-    //paddingLeft: widthPercentageToDP(4.2),
-    //paddingTop: widthPercentageToDP(4.8),
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
       outputRange: [heightPercentageToDP(2.7), heightPercentageToDP(1.0)],
@@ -91,11 +83,9 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
       <Animated.Text style={placeholderStyle}>
         {placeholder}
       </Animated.Text>
-      {console.log(value)}
       <TextInput
         style={styles.text}
         onFocus={handleFocus}
-        // placeholder={placeholder}
         onBlur={handleBlur}
       />
       <Image source={icon} />
