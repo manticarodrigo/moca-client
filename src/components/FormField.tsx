@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
-import { StyleSheet, View, Image, Animated } from 'react-native';
+import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
 
 
@@ -8,34 +8,31 @@ import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceS
 
 import TextInput from './TextInput';
 
-type FormFieldProps = {
+type FormFieldProps = TextInputProps & {
   placeholder: string;
-  icon?: any;
+  icon?: object;
   value: string;
 }
 
-const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
+const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldProps) => {
+  const [isFocused, setIsFocused] = useState(false);
 
-  const [focus, setFocus] = useState(
-    { isFocused: false }
-  );
-
-  const animatedIsFocused = new Animated.Value(value === '' ? 0 : 1);
+  const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
 
   useEffect(() => {
     Animated.timing(animatedIsFocused, {
-      toValue: (focus.isFocused || value !== '') ? 1 : 0,
+      toValue: (isFocused || value !== '') ? 1 : 0,
       duration: 200,
     }).start();
   });
 
   const handleFocus = () => {
-    setFocus({ isFocused: true });
-  }
+    setIsFocused(true);
+  };
 
   const handleBlur = () => {
-    setFocus({ isFocused: false });
-  }
+    setIsFocused(false);
+  };
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -50,7 +47,7 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
       padding: Spacing.spaceSize[3],
       width: widthPercentageToDP(87.2),
       height: heightPercentageToDP(8.3),
-      backgroundColor: focus.isFocused ? Colors.semiGreyLighter : Colors.lightGrey
+      backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
     },
     text: {
       color: Colors.black,
@@ -59,7 +56,7 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
       width: widthPercentageToDP(70),
       height: heightPercentageToDP(8.3),
     },
-  }), [focus]);
+  }), [isFocused]);
 
   const placeholderStyle = {
     position: 'absolute',
@@ -76,8 +73,8 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
       inputRange: [0, 1],
       outputRange: ['500', '300'],
     }),
-    color: Colors.semiGrey
-  }
+    color: Colors.semiGrey,
+  };
 
   return (
     <View style={styles.view}>
@@ -88,6 +85,7 @@ const FormField = ({ placeholder, icon, value }: FormFieldProps) => {
         style={styles.text}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        {...textInputProps}
       />
       <Image source={icon} />
     </View>
