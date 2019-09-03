@@ -21,6 +21,8 @@ import ChatListScreen from '@src/screens/ChatListScreen';
 import ChatScreen from '@src/screens/ChatScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
+import ZipCodeScreen from '@src/screens/SignUp/ZipCodeScreen';
+import UnvalidZipCodeScreen from '@src/screens/SignUp/UnvalidZipCodeScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -75,6 +77,8 @@ const AppStack = createSwitchNavigator(
       SitemapScreen,
       OnboardingScreen,
       SelectionScreen,
+      ZipCodeScreen,
+      UnvalidZipCodeScreen,
     }, defaultNavConfig),
 
     TabStack: createBottomTabNavigator({

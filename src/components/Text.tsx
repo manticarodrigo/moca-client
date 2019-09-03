@@ -7,6 +7,7 @@ const variants = {
   title: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
   regular: { ...Typography.getStyles({ color: 'semiGrey', size: 2, weight: '500' }) },
   link: { ...Typography.getStyles({ color: 'primary', size: 2, weight: '700', decoration: 'underline' }) },
+  error: { ...Typography.getStyles({ color: 'error', size: 4, weight: '500' }) },
 };
 
 type TextProps = RNTextProps & {
