@@ -13,7 +13,7 @@ import { BackButtonIcon } from '@src/components/icons';
 
 import locationNotAvailable from '@src/assets/pngs/locationNotAvailable.png';
 
-const UnvalidZipCodeScreen = () => {
+const UnvalidMediCareScreen = () => {
   const navigation = useNavigation();
   const handleButtonPress = () => navigation.navigate('ZipCodeScreen');
 
@@ -22,25 +22,19 @@ const UnvalidZipCodeScreen = () => {
       <View alignCenter spacing={{ mx: 4 }}>
         <Image file={locationNotAvailable} width={74} height={87} />
         <Text variant="error" spacing={{ mt: 3 }}>
-          {"Sorry, MOCA hasn't made it"}
+          Sorry !
         </Text>
-        <Text variant="error">
-          to your area yet
-        </Text>
-        <Text variant="regular" spacing={{ mt: 2 }}>
-          Thanks for your interest in Moca!
-        </Text>
-        <Text variant="regular" spacing={{ mt: 1, p: 3 }}>
-          We are currently not available in your area, but we are working hard to change
-          that Please provide your email with us to receive updates and therapy
-          tips! You will receive a $50 discount on your first therapy session when
-          we become available in your area.
+        <Text variant="regular" spacing={{ mt: 2, p: 3 }}>
+          Due to regulations we are still working to offer services for Medicare
+          patients. Please provide your email and we will notify you when this
+          update is complete. You will also receive a $25 discount on your first
+          therapy session when the update is complete.
         </Text>
       </View>
       <View alignCenter>
         <View width="100%" spacing={{ px: 4, pb: 4 }}>
           <Button onPress={handleButtonPress}>
-            Continue
+            Let us know
           </Button>
         </View>
       </View>
@@ -54,15 +48,18 @@ const BackButton = (
   </View>
 );
 
+// universal
+
 const NavigationHeaderTittle = ({ title }) => (
   <Text spacing={{ ml: 3 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
     {title}
   </Text>
 );
 
+// universal
 
-UnvalidZipCodeScreen.navigationOptions = () => ({
-  headerTitle: <NavigationHeaderTittle title="Location" />,
+UnvalidMediCareScreen.navigationOptions = () => ({
+  headerTitle: <NavigationHeaderTittle title="Medicare" />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
   headerStyle: {
@@ -71,4 +68,4 @@ UnvalidZipCodeScreen.navigationOptions = () => ({
     height: 80,
   },
 });
-export default UnvalidZipCodeScreen;
+export default UnvalidMediCareScreen;

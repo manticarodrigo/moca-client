@@ -23,6 +23,9 @@ import ProfileScreen from '@src/screens/ProfileScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
 import ZipCodeScreen from '@src/screens/SignUp/ZipCodeScreen';
 import UnvalidZipCodeScreen from '@src/screens/SignUp/UnvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
+import TermsOfServiceScreen from '@src/screens/SignUp/TermsOfServiceScreen';
+import UnvalidMediCareScreen from '@src/screens/SignUp/UnvalidMedicareScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -79,6 +82,9 @@ const AppStack = createSwitchNavigator(
       SelectionScreen,
       ZipCodeScreen,
       UnvalidZipCodeScreen,
+      RegistrationScreen,
+      TermsOfServiceScreen,
+      UnvalidMediCareScreen,
     }, defaultNavConfig),
 
     TabStack: createBottomTabNavigator({

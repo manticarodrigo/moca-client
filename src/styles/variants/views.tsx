@@ -35,10 +35,32 @@ const borderBottom: ViewStyle = {
   borderBottomColor: Colors.secondaryLightest,
 };
 
+const imageBorder: ViewStyle = {
+  borderWidth: 1,
+  borderColor: Colors.secondaryLighter,
+  ...Spacing.getStyles({ pt: 5, pb: 5 }),
+  width: 164,
+  height: 337,
+};
+
+const imageBorderRight: ViewStyle = {
+  ...imageBorder,
+  borderTopRightRadius: 16,
+  borderBottomRightRadius: 16,
+};
+
+const imageBorderLeft: ViewStyle = {
+  ...imageBorder,
+  borderTopLeftRadius: 16,
+  borderBottomLeftRadius: 16,
+};
+
+
 const backdrop: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
-  ...Borders.secondary,
   ...StyleSheet.absoluteFillObject,
+  borderTopRightRadius: 16,
+  borderTopLeftRadius: 16,
   backgroundColor: Colors.white,
 };
 
@@ -48,4 +70,6 @@ export {
   borderTop,
   borderBottom,
   backdrop,
+  imageBorderRight,
+  imageBorderLeft,
 };

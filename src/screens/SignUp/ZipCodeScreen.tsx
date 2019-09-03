@@ -12,7 +12,7 @@ import addLocationBig from '@src/assets/pngs/addLocationBig.png';
 
 const ZipCodeScreen = () => {
   const navigation = useNavigation();
-  const handleButtonPress = () => navigation.navigate('ZipCodeScreen');
+  const handleButtonPress = () => navigation.navigate('RegistrationScreen');
 
   return (
     <BackDropView pt={1}>

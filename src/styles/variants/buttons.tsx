@@ -43,8 +43,24 @@ const backdrop: ButtonVariant = {
   underlayColor: undefined,
 };
 
+const secondary: ButtonVariant = {
+  view: {
+    borderWidth: 1,
+    borderColor: Colors.secondaryLighter,
+    borderRadius: 6,
+    height: 32,
+    width: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: { ...Typography.getStyles({ color: 'secondaryLight', size: 2 }) },
+  underlayColor: Colors.secondaryLightest,
+};
+
+
 export {
   primary,
   text,
   backdrop,
+  secondary,
 };
