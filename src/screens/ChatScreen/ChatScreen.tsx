@@ -51,15 +51,17 @@ const ChatScreen: NavigationComponent = () => {
   const onChangeText = (val: string) => setText(val);
 
   const onPressSend = () => {
-    const message: Message = {
-      id: `${Math.floor(Math.random() * 1000000000)}`,
-      text,
-      userId: currentUser.id,
-      createdAt: new Date().toDateString(),
-    };
+    if (text) {
+      const message: Message = {
+        id: `${Math.floor(Math.random() * 1000000000)}`,
+        text,
+        userId: currentUser.id,
+        createdAt: new Date().toDateString(),
+      };
 
-    setChat({ ...chat, messages: [...chat.messages, message] });
-    setText('');
+      setChat({ ...chat, messages: [...chat.messages, message] });
+      setText('');
+    }
   };
 
   return (

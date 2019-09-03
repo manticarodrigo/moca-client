@@ -5,7 +5,11 @@ import { Spacing, SpacingProp, Typography, TypographyProp } from '@src/styles';
 
 const variants = {
   title: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
-  regular: { ...Typography.getStyles({ color: 'semiGrey', size: 2, weight: '500' }) },
+  titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
+  regular: { ...Typography.getStyles({ size: 2, weight: '500', color: 'semiGrey' }) },
+  regularAlt: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
+  regularSmall: { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) },
+  regularSmallAlt: { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) },
   link: { ...Typography.getStyles({ color: 'primary', size: 2, weight: '700', decoration: 'underline' }) },
 };
 

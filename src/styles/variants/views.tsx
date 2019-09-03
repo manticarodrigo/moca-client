@@ -49,9 +49,29 @@ const card: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
+const borderCard: ViewStyle = {
+  ...card,
+  borderWidth: 2,
+  borderBottomWidth: 3,
+  borderColor: Colors.secondary,
+};
+
 const shadowCard: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
   ...card,
+};
+
+const iconButton: ViewStyle = {
+  ...Spacing.getStyles({ p: 2 }),
+  ...Shadow.getStyles({ color: 'primary', blur: 2, alpha: 0.08 }),
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: 40,
+  height: 40,
+  borderRadius: 24,
+  borderWidth: 1,
+  borderColor: Colors.secondaryLighter,
+  aspectRatio: 1,
 };
 
 export {
@@ -61,5 +81,7 @@ export {
   borderBottom,
   backdrop,
   card,
+  borderCard,
   shadowCard,
+  iconButton,
 };

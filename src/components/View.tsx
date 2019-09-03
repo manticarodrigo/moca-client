@@ -15,6 +15,7 @@ type ViewProps = {
   justifyCenter?: boolean;
   justifyBetween?: boolean;
   alignCenter?: boolean;
+  alignEnd?: boolean;
   width?: string | number;
   height?: string | number;
   bgColor?: keyof typeof Colors;
@@ -34,6 +35,7 @@ const View = ({
   justifyCenter,
   justifyBetween,
   alignCenter,
+  alignEnd,
   width,
   height,
   bgColor,
@@ -48,13 +50,13 @@ const View = ({
     (row && 'row') || (column && 'column')
   ), [row, column]);
 
-  const justify = useMemo(() => (
+  const justifyContent = useMemo(() => (
     (justifyCenter && 'center') || (justifyBetween && 'space-between')
   ), [justifyCenter, justifyBetween]);
 
-  const align = useMemo(() => (
-    alignCenter && 'center'
-  ), [alignCenter]);
+  const alignItems = useMemo(() => (
+    (alignCenter && 'center') || (alignEnd && 'flex-end')
+  ), [alignCenter, alignEnd]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -67,8 +69,8 @@ const View = ({
       ...(bgColor && { backgroundColor: Colors[bgColor] }),
       ...(flex && { flex }),
       ...(direction && { flexDirection: direction }),
-      ...(justify && { justifyContent: justify }),
-      ...(align && { alignItems: align }),
+      ...(justifyContent && { justifyContent }),
+      ...(alignItems && { alignItems }),
     },
   }), [
     variant,
@@ -77,8 +79,8 @@ const View = ({
     shadow,
     direction,
     flex,
-    justify,
-    align,
+    justifyContent,
+    alignItems,
     width,
     height,
     bgColor,

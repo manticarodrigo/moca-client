@@ -9,3 +9,7 @@ export { default as SendIcon } from './SendIcon';
 export { default as SettingsIcon } from './SettingsIcon';
 export { default as ShieldIcon } from './ShieldIcon';
 export { default as WalletIcon } from './WalletIcon';
+export { default as ClockIcon } from './ClockIcon';
+export { default as InfoIcon } from './InfoIcon';
+export { default as ChatIcon } from './ChatIcon';
+export { default as PinIcon } from './PinIcon';
