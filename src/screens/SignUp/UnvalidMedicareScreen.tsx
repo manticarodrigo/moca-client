@@ -6,10 +6,10 @@ import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
+import HeaderTitle from '@src/components/HeaderTitle';
+import BackButton from '@src/components/BackButton';
 
 import { Views, Spacing, Colors } from '@src/styles';
-
-import { BackButtonIcon } from '@src/components/icons';
 
 import locationNotAvailable from '@src/assets/pngs/locationNotAvailable.png';
 
@@ -42,24 +42,8 @@ const UnvalidMediCareScreen = () => {
   );
 };
 
-const BackButton = (
-  <View shadow={{ color: 'secondary', blur: 2, alpha: 0.16 }}>
-    <BackButtonIcon />
-  </View>
-);
-
-// universal
-
-const NavigationHeaderTittle = ({ title }) => (
-  <Text spacing={{ ml: 3 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
-    {title}
-  </Text>
-);
-
-// universal
-
 UnvalidMediCareScreen.navigationOptions = () => ({
-  headerTitle: <NavigationHeaderTittle title="Medicare" />,
+  headerTitle: <HeaderTitle title="Medicare" />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
   headerStyle: {

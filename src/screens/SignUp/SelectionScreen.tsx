@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
+
 import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
@@ -11,6 +12,7 @@ import patient from '@src/assets/pngs/patient.png';
 import therapist from '@src/assets/pngs/therapist.png';
 import patientSelected from '@src/assets/pngs/patientSelect.png';
 import therapistSelected from '@src/assets/pngs/therapistSelect.png';
+
 import { Colors } from '@src/styles/index';
 
 const SelectionScreen = () => {
