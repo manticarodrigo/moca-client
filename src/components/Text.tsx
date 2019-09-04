@@ -8,6 +8,7 @@ const variants = {
   title: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
+  boldWhite: { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) },
   boldSmallGrey: { ...Typography.getStyles({ size: 1, weight: '700', color: 'grey' }) },
   regular: { ...Typography.getStyles({ size: 2, weight: '500', color: 'semiGrey' }) },
   regularSmall: { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) },

@@ -1,6 +1,8 @@
+export const transparent = 'transparent';
 export const white = '#fff';
 export const black = '#000';
 export const primary = '#143d6c';
+export const primaryDark = '#123864';
 export const secondary = '#57b0cc';
 export const secondaryLight = '#71cfeb';
 export const secondaryLighter = '#bbe4f2';

@@ -17,6 +17,7 @@ type ViewProps = {
   justifyEnd?: boolean;
   alignCenter?: boolean;
   alignEnd?: boolean;
+  absoluteFill?: boolean;
   width?: string | number;
   height?: string | number;
   bgColor?: keyof typeof Colors;
@@ -38,6 +39,7 @@ const View = ({
   justifyEnd,
   alignCenter,
   alignEnd,
+  absoluteFill,
   width,
   height,
   bgColor,
@@ -92,7 +94,7 @@ const View = ({
 
   return (
     <WrapperType {...wrapperProps}>
-      <ViewType style={styles.view}>
+      <ViewType style={[absoluteFill && [StyleSheet.absoluteFill, { zIndex: -3 }], styles.view]}>
         {children}
       </ViewType>
     </WrapperType>

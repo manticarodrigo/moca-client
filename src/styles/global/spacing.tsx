@@ -22,11 +22,12 @@ const compositions = {
 
 const spaceSize = [0, 4, 8, 16, 32, 64, 128, 256, 512];
 
-type SpacingSizeIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type SpacingKey = keyof typeof aliases | keyof typeof compositions;
 
-const _getKeyStyles = (key: string, multiplier: SpacingSizeIndex): ViewStyle => {
-  const size = spaceSize[multiplier];
+const _getKeyStyles = (key: string, multiplier: number): ViewStyle => {
+  const isNegative = Math.sign(multiplier) === -1;
+  const absoluteSize = isNegative ? spaceSize[Math.abs(multiplier)] : spaceSize[multiplier];
+  const size = isNegative ? -absoluteSize : absoluteSize;
 
   if (!aliases[key]) {
     const styles = {};
@@ -41,7 +42,7 @@ const _getKeyStyles = (key: string, multiplier: SpacingSizeIndex): ViewStyle => 
   return { [aliases[key]]: size };
 };
 
-export type SpacingProp = { [key in SpacingKey]?: SpacingSizeIndex };
+export type SpacingProp = { [key in SpacingKey]?: number };
 
 export const getStyles = (prop?: SpacingProp): ViewStyle => {
   if (!prop) { return null; }

@@ -1,3 +1,4 @@
+export { default as LogoIcon } from './LogoIcon';
 export { default as BackButtonIcon } from './BackButtonIcon';
 export { default as CameraIcon } from './CameraIcon';
 export { default as MessagesTabIcon } from './MessagesTabIcon';
