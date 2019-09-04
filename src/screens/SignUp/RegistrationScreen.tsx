@@ -89,8 +89,4 @@ RegistrationScreen.navigationOptions = () => ({
   },
 });
 
-// backpress navigation color! check.
-// change text color on button press.
-// status bar.
-
 export default RegistrationScreen;
