@@ -1,39 +1,38 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
-import { StyleSheet, View, Image, Animated } from 'react-native';
+import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
 
 
 import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
 
 import TextInput from './TextInput';
-import Text from './Text';
 
-
-
-type FormFieldProps = {
+type FormFieldProps = TextInputProps & {
   placeholder: string;
-  icon?: any;
+  icon?: object;
+  value: string;
 }
 
-const FormField = ({ placeholder, icon }: FormFieldProps) => {
+const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldProps) => {
+  const [isFocused, setIsFocused] = useState(false);
 
-  const [focus, setFocus] = useState(
-    { isFocused: false }
-  );
+  const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
 
-  // const [animatedValue, setAnimatedValue] = useState({
-
-  // });
+  useEffect(() => {
+    Animated.timing(animatedIsFocused, {
+      toValue: (isFocused || value !== '') ? 1 : 0,
+      duration: 200,
+    }).start();
+  });
 
   const handleFocus = () => {
-    setFocus({ isFocused: true });
-  }
+    setIsFocused(true);
+  };
 
   const handleBlur = () => {
-    setFocus({ isFocused: false });
-  }
-
+    setIsFocused(false);
+  };
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -41,41 +40,52 @@ const FormField = ({ placeholder, icon }: FormFieldProps) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderRadius: Spacing.space[2],
-      marginTop: Spacing.space[5],
+      borderRadius: Spacing.spaceSize[2],
+      marginTop: Spacing.spaceSize[5],
       marginLeft: widthPercentageToDP(6.4),
       marginRight: widthPercentageToDP(6.4),
-      padding: Spacing.space[3],
+      padding: Spacing.spaceSize[3],
       width: widthPercentageToDP(87.2),
       height: heightPercentageToDP(8.3),
-      backgroundColor: focus.isFocused ? Colors['semiGreyThree'] : Colors['lightGrey']
+      backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
     },
     text: {
-      color: Colors['semiGrey'],
-      fontSize: widthPercentageToDP(4.2),
+      color: Colors.black,
+      paddingTop: heightPercentageToDP(3.0),
+      fontSize: 16,
       width: widthPercentageToDP(70),
       height: heightPercentageToDP(8.3),
     },
-    placeholderStyle: {
-      position: 'absolute',
-      left: 0,
-      top: !focus.isFocused ? 18 : 0,
-      fontSize: !focus.isFocused ? 16 : 14,
-      color: !focus.isFocused ? '#aaa' : '#000',
-    }
-  }), [focus]);
+  }), [isFocused]);
 
+  const placeholderStyle = {
+    position: 'absolute',
+    left: widthPercentageToDP(4.2),
+    top: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [heightPercentageToDP(2.7), heightPercentageToDP(1.0)],
+    }),
+    fontSize: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [16, 14],
+    }),
+    fontWeight: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['500', '300'],
+    }),
+    color: Colors.semiGrey,
+  };
 
   return (
     <View style={styles.view}>
-      <Text style={styles.placeholderStyle}>
+      <Animated.Text style={placeholderStyle}>
         {placeholder}
-      </Text>
+      </Animated.Text>
       <TextInput
         style={styles.text}
         onFocus={handleFocus}
-        // placeholder={placeholder}
         onBlur={handleBlur}
+        {...textInputProps}
       />
       <Image source={icon} />
     </View>
