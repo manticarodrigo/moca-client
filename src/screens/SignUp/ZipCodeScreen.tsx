@@ -15,7 +15,7 @@ const ZipCodeScreen = () => {
   const handleButtonPress = () => navigation.navigate('RegistrationScreen');
 
   return (
-    <BackDropView pt={1}>
+    <BackDropView pt={1} hasArrow>
       <View safeArea justifyBetween expand width="100%" spacing={{ mt: 5 }}>
         <View alignCenter>
           <Image file={addLocationBig} width={74} height={87} />
