@@ -14,6 +14,7 @@ type ViewProps = {
   column?: boolean;
   justifyCenter?: boolean;
   justifyBetween?: boolean;
+  justifyEnd?: boolean;
   alignCenter?: boolean;
   alignEnd?: boolean;
   width?: string | number;
@@ -34,6 +35,7 @@ const View = ({
   column,
   justifyCenter,
   justifyBetween,
+  justifyEnd,
   alignCenter,
   alignEnd,
   width,
@@ -51,8 +53,10 @@ const View = ({
   ), [row, column]);
 
   const justifyContent = useMemo(() => (
-    (justifyCenter && 'center') || (justifyBetween && 'space-between')
-  ), [justifyCenter, justifyBetween]);
+    (justifyCenter && 'center')
+    || (justifyBetween && 'space-between')
+    || (justifyEnd && 'flex-end')
+  ), [justifyCenter, justifyBetween, justifyEnd]);
 
   const alignItems = useMemo(() => (
     (alignCenter && 'center') || (alignEnd && 'flex-end')

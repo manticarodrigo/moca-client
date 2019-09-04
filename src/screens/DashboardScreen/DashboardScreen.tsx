@@ -3,7 +3,16 @@ import React from 'react';
 import useNavigation from '@src/hooks/useNavigation';
 
 import { mockImg } from '@src/services/mock';
-import { WalletIcon, ClockIcon, InfoIcon, ChatIcon, PinIcon } from '@src/components/icons';
+import {
+  ClockIcon,
+  InfoIcon,
+  ChatIcon,
+  PinIcon,
+  ArrowRightIcon,
+  WalletIcon,
+  MessagesIcon,
+  HistoryIcon,
+} from '@src/components/icons';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -44,7 +53,7 @@ const DashboardScreen = () => {
                 <InfoIcon />
               </View>
               <View column spacing={{ ml: 3 }}>
-                <Text variant="regularAlt">
+                <Text variant="boldSecondary">
                   12:00pm / Today
                 </Text>
                 <Text variant="regular">
@@ -74,17 +83,57 @@ const DashboardScreen = () => {
 
       <View flex={1} spacing={{ px: 3, py: 4 }} bgColor="lightGrey">
 
-        <View variant="shadowCard" width="100%">
-
+        <View variant="shadowCard" width="100%" spacing={{ mb: 2 }}>
           <View row spacing={{ p: 1 }} onPress={handleButtonPress}>
             <WalletIcon />
             <View column spacing={{ pl: 3 }}>
               <Text variant="titleSmall" spacing={{ mb: 2 }}>
                 Wallet
               </Text>
-              <Text variant="regularSmallAlt">
+              <Text variant="regularSmallGrey">
                 **** **** **** **** **54
               </Text>
+            </View>
+            <View row flex={1} justifyEnd alignCenter>
+              <ArrowRightIcon />
+            </View>
+          </View>
+        </View>
+
+        <View variant="shadowCard" width="100%" spacing={{ mb: 2 }}>
+          <View row spacing={{ p: 1 }} onPress={handleButtonPress}>
+            <MessagesIcon />
+            <View column spacing={{ pl: 3 }}>
+              <Text variant="titleSmall" spacing={{ mb: 2 }}>
+                Messages
+              </Text>
+              <Text variant="regularSmallDark">
+                John Doe 10:30am / Today
+              </Text>
+              <Text variant="light">
+                You can park beside my house...
+              </Text>
+            </View>
+            <View row flex={1} justifyEnd alignCenter>
+              <ArrowRightIcon />
+            </View>
+          </View>
+        </View>
+
+        <View variant="shadowCard" width="100%" spacing={{ mb: 2 }}>
+          <View row spacing={{ p: 1 }} onPress={handleButtonPress}>
+            <HistoryIcon />
+            <View column spacing={{ pl: 3 }}>
+              <Text variant="titleSmall" spacing={{ mb: 2 }}>
+                History
+              </Text>
+              <Text>
+                <Text variant="regularSmallGrey">Last: </Text>
+                <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
+              </Text>
+            </View>
+            <View row flex={1} justifyEnd alignCenter>
+              <ArrowRightIcon />
             </View>
           </View>
         </View>
