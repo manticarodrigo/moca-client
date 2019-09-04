@@ -2,17 +2,19 @@ import React, { useReducer, createContext, Reducer, ReactNode, Dispatch } from '
 
 import { AuthAction } from '@src/store/actions/AuthActions';
 import { ChatAction } from '@src/store/actions/ChatActions';
+import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 import authReducer, { AuthState } from '@src/store/reducers/AuthReducer';
 import chatReducer, { ChatState } from '@src/store/reducers/ChatReducer';
-
+import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import { mockImg } from './services/mock';
 
 export type StoreState = {
   authState: AuthState;
   chatState: ChatState;
+  registrationState: RegistrationState;
 };
 
-type StoreAction = AuthAction | ChatAction;
+type StoreAction = AuthAction | ChatAction | RegistrationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
 type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>) => void;
@@ -37,6 +39,7 @@ const useAsyncReducer: AsyncReducer = (reducer, initialState) => {
 const rootReducer: StoreReducer = (state: StoreState, action: StoreAction) => ({
   authState: authReducer(state.authState, action as AuthAction),
   chatState: chatReducer(state.chatState, action as ChatAction),
+  registrationState: registrationReducer(state.registrationState, action as RegistrationAction),
 });
 
 const initialState: StoreState = {
@@ -49,6 +52,10 @@ const initialState: StoreState = {
   },
   chatState: {
     chats: [],
+  },
+  registrationState: {
+    userInfo: {
+    },
   },
 };
 

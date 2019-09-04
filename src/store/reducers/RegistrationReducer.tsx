@@ -1,10 +1,18 @@
+import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 
-const reducer = (state: {}, action: ChatAction) => {
+
+export type RegistrationState = {
+  userInfo?: RegistrationInfo;
+};
+
+const reducer = (state: RegistrationState = {}, action: RegistrationAction) => {
   switch (action.type) {
-    case 'REGESTER_USER':
+    case 'GET_REGISTRATION_INFO':
       return {
-        ...state,
-        userInfo: action.payload,
+        userInfo: {
+          ...state.userInfo,
+          ...action.payLoad,
+        },
       };
     default:
       return state;

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
-
+import useStore from '@src/hooks/useStore';
+import { submit } from '@src/store/actions/RegistrationAction';
 import View from '@src/components/View';
 import BackDropView from '@src/components/BackdropView';
 import Image from '@src/components/Image';
@@ -12,7 +13,14 @@ import addLocationBig from '@src/assets/pngs/addLocationBig.png';
 
 const ZipCodeScreen = () => {
   const navigation = useNavigation();
-  const handleButtonPress = () => navigation.navigate('RegistrationScreen');
+  const zipCode = '1234';
+  const [, dispatch] = useStore();
+
+  const handleButtonPress = () => {
+    dispatch(submit({ zipCode }));
+    navigation.navigate('RegistrationScreen');
+  };
+
 
   return (
     <BackDropView pt={1} hasArrow>

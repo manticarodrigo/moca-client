@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
+import useStore from '@src/hooks/useStore';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -9,6 +10,7 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import BackButton from '@src/components/BackButton';
 import HeaderTitle from '@src/components/HeaderTitle';
+import FormField from '@src/components/FormField';
 
 import logoIcon from '@src/assets/pngs/logoIcon.png';
 
@@ -21,20 +23,24 @@ const RegistrationScreen = () => {
   const handleMedicareDisagreement = () => navigation.navigate('');
   const handlePrivaryPress = () => navigation.navigate('');
   const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen');
+  const [{ registrationState: { userInfo } }] = useStore();
+
+  console.log(userInfo);
+
 
   return (
     <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
       <StatusBar barStyle="dark-content" />
       <View alignCenter>
         <Image file={logoIcon} width={51} height={59} />
-        <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area </Text>
-        <Text variant="regular" spacing={{ mt: 3 }}>
+        <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
+        <Text variant="regular" spacing={{ mt: 1 }}>
           We need some infromation to
         </Text>
         <Text variant="regular">
           get you started.
         </Text>
-        <View variant="borderTop" width="100%" alignCenter spacing={{ mt: 3 }}>
+        <View variant="borderTop" width="100%" spacing={{ mt: 3 }}>
           <View row spacing={{ m: 3 }}>
             <View spacing={{ mr: 3 }}>
               <Text variant="title" typography={{ size: 2 }}>Are you currently</Text>
@@ -53,12 +59,18 @@ const RegistrationScreen = () => {
           </View>
         </View>
       </View>
-      <View width="100%" spacing={{ px: 3 }}>
+      <View alignCenter spacing={{ mb: 3 }}>
+        <FormField placeholder="Name" value="" returnKeyType="next" />
+        <FormField placeholder="Surname" value="" returnKeyType="next" />
+        <FormField placeholder="Email address" value="" keyboardType="email-address" returnKeyType="next" />
+        <FormField placeholder="password" value="" secureTextEntry returnKeyType="done" />
+      </View>
+      <View spacing={{ mx: 3 }}>
         <Button onPress={handleButtonPress}>
           Continue
         </Button>
-        <View alignCenter row spacing={{ mt: 3 }}>
-          <Text variant="regular" typography={{ size: 1 }}>
+        <View alignCenter row spacing={{ mt: 1 }}>
+          <Text variant="regular" typography={{ size: 2 }}>
             {'By continuing, I accept the Moca '}
           </Text>
           <Text variant="link" onPress={handleTermsPress} typography={{ size: 1 }}>

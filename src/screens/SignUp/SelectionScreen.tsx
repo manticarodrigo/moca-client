@@ -15,19 +15,28 @@ import therapistSelected from '@src/assets/pngs/therapistSelect.png';
 
 import { Colors } from '@src/styles/index';
 
+import useStore from '@src/hooks/useStore';
+import { submit } from '@src/store/actions/RegistrationAction';
+
 const SelectionScreen = () => {
   type Colors = keyof typeof Colors;
 
+  const [type, setType] = useState('');
   const [buttonText, setButtonText] = useState('Select');
   const [patientBgColor, setPatientBgColor] = useState<Colors>('white');
   const [therapistBgColor, setTherapistBgColor] = useState<Colors>('white');
   const [patientImage, setPatientImage] = useState(patient);
   const [therapistImage, setTherapistImage] = useState(therapist);
 
+  const [, dispatch] = useStore();
 
   const navigation = useNavigation();
 
-  const handleButtonPress = () => navigation.navigate('UnvalidZipCodeScreen');
+
+  const handleButtonPress = () => {
+    dispatch(submit({ type }));
+    navigation.navigate('UnvalidZipCodeScreen');
+  };
 
   const handlePatientPress = () => {
     setButtonText('Continue as a Patient');
@@ -35,6 +44,7 @@ const SelectionScreen = () => {
     setTherapistBgColor('white');
     setPatientImage(patientSelected);
     setTherapistImage(therapist);
+    setType('Patient');
   };
 
   const handleTherapistPress = () => {
@@ -43,6 +53,7 @@ const SelectionScreen = () => {
     setTherapistBgColor('secondary');
     setPatientImage(patient);
     setTherapistImage(therapistSelected);
+    setType('Therapist');
   };
 
 

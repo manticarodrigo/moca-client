@@ -11,6 +11,13 @@ declare type Message = {
   createdAt: string;
 };
 
+declare type RegistrationInfo = {
+  type?: string;
+  name?: string;
+  surname?: string;
+  zipCode?: string;
+};
+
 declare type Chat = {
   id: string;
   participants: User[];

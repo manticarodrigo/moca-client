@@ -41,7 +41,7 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      marginTop: Spacing.spaceSize[5],
+      marginTop: Spacing.spaceSize[2],
       marginLeft: widthPercentageToDP(6.4),
       marginRight: widthPercentageToDP(6.4),
       padding: Spacing.spaceSize[3],
