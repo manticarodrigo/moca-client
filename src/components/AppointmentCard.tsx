@@ -49,7 +49,7 @@ const AppointmentCard = () => (
           <MessagesIcon size={0.5} />
         </View>
         <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
-          <PinIcon />
+          <PinIcon size={0.8} />
         </View>
       </View>
     </View>
