@@ -5,7 +5,7 @@ import { mockImg } from '@src/services/mock';
 import {
   ClockIcon,
   InfoIcon,
-  ChatIcon,
+  MessagesIcon,
   PinIcon,
 } from './icons';
 
@@ -46,7 +46,7 @@ const AppointmentCard = () => (
       </View>
       <View row>
         <View variant="iconButton" onPress={() => null}>
-          <ChatIcon />
+          <MessagesIcon size={0.5} />
         </View>
         <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
           <PinIcon />

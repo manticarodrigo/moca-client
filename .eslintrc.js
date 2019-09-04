@@ -19,7 +19,6 @@ module.exports =  {
     'react-hooks',
   ],
   rules:  {
-    'indent': ['error', 2],
     'object-curly-newline': 'off',
     'no-confusing-arrow': 'off',
     'no-underscore-dangle': 'off',

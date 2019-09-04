@@ -20,14 +20,14 @@ type LinkCardProps = {
 const LinkCard = ({ type, onPress, children }: LinkCardProps) => {
   const { icon, title } = useMemo(() => {
     switch (type) {
-    case 'wallet':
-      return { icon: <WalletIcon />, title: 'Wallet' };
-    case 'messages':
-      return { icon: <MessagesIcon />, title: 'Messages' };
-    case 'history':
-      return { icon: <HistoryIcon />, title: 'History' };
-    default:
-      return null;
+      case 'wallet':
+        return { icon: <WalletIcon />, title: 'Wallet' };
+      case 'messages':
+        return { icon: <MessagesIcon />, title: 'Messages' };
+      case 'history':
+        return { icon: <HistoryIcon />, title: 'History' };
+      default:
+        return null;
     }
   }, [type]);
 
