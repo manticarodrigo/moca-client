@@ -22,10 +22,10 @@ import ChatScreen from '@src/screens/ChatScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
 import ZipCodeScreen from '@src/screens/SignUp/ZipCodeScreen';
-import UnvalidZipCodeScreen from '@src/screens/SignUp/UnvalidZipCodeScreen';
+import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
 import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
 import TermsOfServiceScreen from '@src/screens/SignUp/TermsOfServiceScreen';
-import UnvalidMediCareScreen from '@src/screens/SignUp/UnvalidMedicareScreen';
+import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -81,10 +81,10 @@ const AppStack = createSwitchNavigator(
       OnboardingScreen,
       SelectionScreen,
       ZipCodeScreen,
-      UnvalidZipCodeScreen,
+      InvalidZipCodeScreen,
       RegistrationScreen,
       TermsOfServiceScreen,
-      UnvalidMediCareScreen,
+      InvalidMediCareScreen,
     }, defaultNavConfig),
 
     TabStack: createBottomTabNavigator({

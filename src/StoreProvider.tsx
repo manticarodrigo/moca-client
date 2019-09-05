@@ -54,7 +54,7 @@ const initialState: StoreState = {
     chats: [],
   },
   registrationState: {
-    userInfo: {
+    userInformation: {
     },
   },
 };

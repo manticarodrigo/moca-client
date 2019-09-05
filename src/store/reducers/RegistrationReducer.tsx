@@ -2,15 +2,15 @@ import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 
 
 export type RegistrationState = {
-  userInfo?: RegistrationInfo;
+  userInformation?: RegistrationInformation;
 };
 
 const reducer = (state: RegistrationState = {}, action: RegistrationAction) => {
   switch (action.type) {
-    case 'GET_REGISTRATION_INFO':
+    case 'UPDATE_USER':
       return {
-        userInfo: {
-          ...state.userInfo,
+        userInformation: {
+          ...state.userInformation,
           ...action.payLoad,
         },
       };

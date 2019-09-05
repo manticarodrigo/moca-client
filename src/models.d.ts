@@ -11,12 +11,13 @@ declare type Message = {
   createdAt: string;
 };
 
-declare type RegistrationInfo = {
+declare type RegistrationInformation = {
   type?: string;
   name?: string;
   surname?: string;
   zipCode?: string;
   medicalId?: string;
+  email?: string;
 };
 
 declare type Chat = {

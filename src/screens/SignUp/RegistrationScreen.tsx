@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
-import { submitUserInfo } from '@src/store/actions/RegistrationAction';
+import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -19,7 +19,7 @@ import { Views, Spacing, Colors } from '@src/styles';
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
-  const [{ registrationState: { userInfo } }, dispatch] = useStore();
+  const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const [formFields, setFormFields] = useState({
     surname: '',
     email: '',
@@ -28,20 +28,19 @@ const RegistrationScreen = () => {
     medicalId: '',
   });
 
-  const isPatient = userInfo.type === 'Patient';
+  const isPatient = userInformation.type === 'Patient';
 
   const handleButtonPress = () => {
-    dispatch(submitUserInfo({ ...formFields }));
-    navigation.navigate('UnvalidZipCodeScreen');
+    dispatch(updateUserInfomation({ ...formFields }));
+    navigation.navigate('InvalidZipCodeScreen');
   };
-  const handleMedicareAgreement = () => navigation.navigate('UnvalidMediCareScreen');
+  const handleMedicareAgreement = () => navigation.navigate('InvalidMediCareScreen');
   const handleMedicareDisagreement = () => navigation.navigate('');
   const handlePrivaryPress = () => navigation.navigate('');
   const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen');
   const handleFormFields = (name: string, text: string) => {
     setFormFields({ ...formFields, [name]: text });
   };
-
 
   const mediCare = (
     <View row spacing={{ m: 3 }}>
@@ -64,14 +63,13 @@ const RegistrationScreen = () => {
 
   const medicalId = (
     <FormField
-      placeholder="medicalId"
+      placeholder="Medical Id"
       value={formFields.medicalId}
       returnKeyType="next"
       onChangeText={(text) => handleFormFields('medicalId', text)}
     />
   );
 
-  console.log(userInfo);
 
   return (
     <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
@@ -110,7 +108,13 @@ const RegistrationScreen = () => {
           keyboardType="email-address"
           onChangeText={(text) => handleFormFields('email', text)}
         />
-        <FormField placeholder="password" value={formFields.password} secureTextEntry returnKeyType="done" onChangeText={(text) => handleFormFields('password', text)} />
+        <FormField
+          placeholder="password"
+          value={formFields.password}
+          secureTextEntry
+          returnKeyType="done"
+          onChangeText={(text) => handleFormFields('password', text)}
+        />
       </View>
       <View spacing={{ mx: 3 }}>
         <Button onPress={handleButtonPress}>

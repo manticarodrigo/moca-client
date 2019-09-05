@@ -1,8 +1,8 @@
 import { Dispatch } from 'react';
 
-export type RegistrationAction = { type: 'GET_REGISTRATION_INFO'; payLoad: RegistrationInfo };
+export type RegistrationAction = { type: 'UPDATE_USER'; payLoad: RegistrationInformation };
 
-export const submitUserInfo = (info: RegistrationInfo) => (async (
+export const updateUserInfomation = (information: RegistrationInformation) => (async (
   dispatch: Dispatch<RegistrationAction>) => {
-  dispatch({ type: 'GET_REGISTRATION_INFO', payLoad: info });
+  dispatch({ type: 'UPDATE_USER', payLoad: information });
 });

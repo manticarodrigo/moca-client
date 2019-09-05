@@ -16,7 +16,7 @@ import therapistSelected from '@src/assets/pngs/therapistSelect.png';
 import { Colors } from '@src/styles/index';
 
 import useStore from '@src/hooks/useStore';
-import { submitUserInfo } from '@src/store/actions/RegistrationAction';
+import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 const SelectionScreen = () => {
   type Colors = keyof typeof Colors;
@@ -27,15 +27,13 @@ const SelectionScreen = () => {
   const [therapistBgColor, setTherapistBgColor] = useState<Colors>('white');
   const [patientImage, setPatientImage] = useState(patient);
   const [therapistImage, setTherapistImage] = useState(therapist);
-
   const [, dispatch] = useStore();
-
   const navigation = useNavigation();
 
 
   const handleButtonPress = () => {
-    dispatch(submitUserInfo({ type }));
-    navigation.navigate('UnvalidZipCodeScreen');
+    dispatch(updateUserInfomation({ type }));
+    navigation.navigate('InvalidZipCodeScreen');
   };
 
   const handlePatientPress = () => {
@@ -64,11 +62,23 @@ const SelectionScreen = () => {
         <Text variant="title">Moca Profile</Text>
       </View>
       <View row>
-        <View variant="imageBorderLeft" alignCenter justifyBetween onPress={handlePatientPress} bgColor={patientBgColor}>
+        <View
+          variant="imageBorderLeft"
+          alignCenter
+          justifyBetween
+          onPress={handlePatientPress}
+          bgColor={patientBgColor}
+        >
           <Image file={patientImage} width={48} height={93} />
           <Text variant="title">Patient</Text>
         </View>
-        <View variant="imageBorderRight" alignCenter justifyBetween onPress={handleTherapistPress} bgColor={therapistBgColor}>
+        <View
+          variant="imageBorderRight"
+          alignCenter
+          justifyBetween
+          onPress={handleTherapistPress}
+          bgColor={therapistBgColor}
+        >
           <Image file={therapistImage} width={56} height={110} />
           <Text variant="title">Therapist</Text>
         </View>

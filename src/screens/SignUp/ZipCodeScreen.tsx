@@ -2,7 +2,7 @@ import React from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
-import { submitUserInfo } from '@src/store/actions/RegistrationAction';
+import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 import View from '@src/components/View';
 import BackDropView from '@src/components/BackdropView';
 import Image from '@src/components/Image';
@@ -17,7 +17,7 @@ const ZipCodeScreen = () => {
   const [, dispatch] = useStore();
 
   const handleButtonPress = () => {
-    dispatch(submitUserInfo({ zipCode }));
+    dispatch(updateUserInfomation({ zipCode }));
     navigation.navigate('RegistrationScreen');
   };
 
