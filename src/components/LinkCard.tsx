@@ -8,16 +8,19 @@ import {
   HistoryIcon,
 } from '@src/components/icons';
 
+import { SpacingProp } from '@src/styles';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
   type: 'wallet' | 'messages' | 'history';
+  spacing?: SpacingProp;
   onPress: () => void;
   children: JSX.Element;
 };
 
-const LinkCard = ({ type, onPress, children }: LinkCardProps) => {
+const LinkCard = ({ type, spacing, onPress, children }: LinkCardProps) => {
   const { icon, title } = useMemo(() => {
     switch (type) {
       case 'wallet':
@@ -32,7 +35,7 @@ const LinkCard = ({ type, onPress, children }: LinkCardProps) => {
   }, [type]);
 
   return (
-    <View variant="shadowCard" width="100%" spacing={{ mb: 2 }}>
+    <View variant="shadowCard" width="100%" spacing={spacing}>
       <View row spacing={{ p: 1 }} onPress={onPress}>
         {icon}
         <View column spacing={{ pl: 3 }}>

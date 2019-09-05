@@ -14,31 +14,35 @@ const DashboardScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <View scroll column flex={1} spacing={{ px: 3, py: 4 }} bgColor="lightGrey">
+    <View column flex={1} bgColor="lightGrey">
 
-      <LinkCard type="wallet" onPress={handleButtonPress}>
-        <Text variant="regularSmallGrey">
-          **** **** **** **** **54
-        </Text>
-      </LinkCard>
+      <View scroll flex={1} spacing={{ px: 3 }} insets={{ top: 4, bottom: 4 }}>
 
-      <LinkCard type="messages" onPress={handleButtonPress}>
-        <>
-          <Text variant="regularSmallDark">
-            John Doe 10:30am / Today
+        <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+          <Text variant="regularSmallGrey">
+            **** **** **** **** **54
           </Text>
-          <Text variant="light">
-            You can park beside my house...
-          </Text>
-        </>
-      </LinkCard>
+        </LinkCard>
 
-      <LinkCard type="history" onPress={handleButtonPress}>
-        <Text>
-          <Text variant="regularSmallGrey">Last: </Text>
-          <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
-        </Text>
-      </LinkCard>
+        <LinkCard type="messages" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+          <>
+            <Text variant="regularSmallDark">
+              John Doe 10:30am / Today
+            </Text>
+            <Text variant="light">
+              You can park beside my house...
+            </Text>
+          </>
+        </LinkCard>
+
+        <LinkCard type="history" onPress={handleButtonPress}>
+          <Text>
+            <Text variant="regularSmallGrey">Last: </Text>
+            <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
+          </Text>
+        </LinkCard>
+
+      </View>
 
     </View>
   );

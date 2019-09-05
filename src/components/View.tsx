@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View as RNView, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View as RNView, SafeAreaView, ScrollView, TouchableOpacity, Insets } from 'react-native';
 
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
@@ -9,6 +9,7 @@ type ViewProps = {
   variant?: keyof typeof Views;
   position?: PositionProp;
   spacing?: SpacingProp;
+  insets?: Insets;
   shadow?: ShadowProp;
   flex?: number;
   row?: boolean;
@@ -31,6 +32,7 @@ const View = ({
   scroll,
   variant,
   spacing,
+  insets,
   position,
   shadow,
   flex,
@@ -57,6 +59,19 @@ const View = ({
 
     return RNView;
   }, [safeArea, scroll]);
+
+  const viewProps = useMemo(() => {
+    if (scroll) {
+      return {
+        contentInset: Object.entries(insets).reduce((acc, [key, value]) => ({
+          ...acc,
+          [key]: Spacing.spaceSize[value],
+        }), {}),
+      };
+    }
+
+    return null;
+  }, [scroll, insets]);
 
   const direction = useMemo(() => (
     (row && 'row') || (column && 'column')
@@ -102,7 +117,10 @@ const View = ({
 
   return (
     <WrapperType {...wrapperProps}>
-      <ViewType style={[absoluteFill && [StyleSheet.absoluteFill, { zIndex: -3 }], styles.view]}>
+      <ViewType
+        {...viewProps}
+        style={[absoluteFill && StyleSheet.absoluteFill, styles.view]}
+      >
         {children}
       </ViewType>
     </WrapperType>
