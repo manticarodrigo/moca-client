@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { mockImg } from '@src/services/mock';
 
@@ -14,36 +14,39 @@ import Image from './Image';
 import Text from './Text';
 import Button from './Button';
 
-const AppointmentCard = () => (
-  <View column variant="borderCard">
-    <View row justifyBetween>
-      <View row>
-        <Image rounded size={48} uri={mockImg} />
-        <Text variant="titleSmall" spacing={{ ml: 3 }}>
-          Elvis Presley
+const AppointmentCardHeader = () => (
+  <View row justifyBetween>
+    <View row>
+      <Image rounded size={48} uri={mockImg} />
+      <Text variant="titleSmall" spacing={{ ml: 3 }}>
+        Elvis Presley
+      </Text>
+    </View>
+    <View column alignEnd>
+      <View row spacing={{ mb: 1 }}>
+        <ClockIcon />
+        <Text variant="regularSmall" spacing={{ ml: 1 }}>
+          30 min
         </Text>
       </View>
-      <View column alignEnd>
-        <View row spacing={{ mb: 1 }}>
-          <ClockIcon />
-          <Text variant="regularSmall" spacing={{ ml: 1 }}>
-            30 min
-          </Text>
-        </View>
-        <Text variant="title">$60</Text>
+      <Text variant="title">$60</Text>
+    </View>
+  </View>
+);
+
+const AppointmentCardInfo = ({ current = false }) => (
+  <View row justifyBetween spacing={{ mt: current ? 2 : -2 }}>
+    <View row>
+      <View width={48} height={48} justifyCenter alignCenter>
+        <InfoIcon />
+      </View>
+      <View column spacing={{ mt: !current && -3, ml: 3 }}>
+        <Text variant={current ? 'boldSecondary' : 'boldGrey'}>12:00pm / Today</Text>
+        <Text variant="regular">Chestnut St.</Text>
       </View>
     </View>
 
-    <View row justifyBetween spacing={{ mt: 2 }}>
-      <View row>
-        <View width={48} height={48} justifyCenter alignCenter>
-          <InfoIcon />
-        </View>
-        <View column spacing={{ ml: 3 }}>
-          <Text variant="boldSecondary">12:00pm / Today</Text>
-          <Text variant="regular">Chestnut St.</Text>
-        </View>
-      </View>
+    {current && (
       <View row>
         <View variant="iconButton" onPress={() => null}>
           <MessagesIcon size={0.5} />
@@ -52,11 +55,27 @@ const AppointmentCard = () => (
           <PinIcon size={0.8} />
         </View>
       </View>
-    </View>
+    )}
+  </View>
+);
 
-    <View row justifyCenter spacing={{ mt: 2, ml: 5 }}>
-      <Button variant="secondary">Begin Session</Button>
-    </View>
+const AppointmentCardButton = () => (
+  <View row justifyCenter spacing={{ mt: 2, ml: 5 }}>
+    <Button variant="secondary">Begin Session</Button>
+  </View>
+);
+
+type AppointmentCardProps = {
+  current?: boolean;
+};
+
+const AppointmentCard = ({ current }: AppointmentCardProps) => (
+  <View column variant={current ? 'borderCard' : 'card'} spacing={{ pb: !current && 0 }} bgColor={!current ? 'whiteTranslucent' : null}>
+    <AppointmentCardHeader />
+
+    <AppointmentCardInfo current={current} />
+
+    {current && <AppointmentCardButton />}
   </View>
 );
 

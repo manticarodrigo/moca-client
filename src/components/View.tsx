@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View as RNView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View as RNView, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
 type ViewProps = {
   safeArea?: boolean;
+  scroll?: boolean;
   variant?: keyof typeof Views;
   position?: PositionProp;
   spacing?: SpacingProp;
@@ -27,6 +28,7 @@ type ViewProps = {
 
 const View = ({
   safeArea,
+  scroll,
   variant,
   spacing,
   position,
@@ -48,7 +50,13 @@ const View = ({
 }: ViewProps) => {
   const WrapperType = useMemo(() => onPress ? TouchableOpacity : React.Fragment, [onPress]);
   const wrapperProps = useMemo(() => ({ ...(onPress ? { onPress } : null) }), [onPress]);
-  const ViewType = useMemo(() => safeArea ? SafeAreaView : RNView, [safeArea]);
+
+  const ViewType = useMemo(() => {
+    if (safeArea) return SafeAreaView;
+    if (scroll) return ScrollView;
+
+    return RNView;
+  }, [safeArea, scroll]);
 
   const direction = useMemo(() => (
     (row && 'row') || (column && 'column')

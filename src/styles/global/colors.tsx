@@ -1,5 +1,6 @@
 export const transparent = 'transparent';
 export const white = '#fff';
+export const whiteTranslucent = 'rgba(255,255,255,0.92)';
 export const black = '#000';
 export const primary = '#143d6c';
 export const primaryDark = '#123864';

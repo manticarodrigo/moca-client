@@ -14,7 +14,7 @@ const DashboardScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <View column flex={1} spacing={{ px: 3, py: 4 }} bgColor="lightGrey">
+    <View scroll column flex={1} spacing={{ px: 3, py: 4 }} bgColor="lightGrey">
 
       <LinkCard type="wallet" onPress={handleButtonPress}>
         <Text variant="regularSmallGrey">

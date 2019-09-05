@@ -10,14 +10,19 @@ import AppointmentCard from '@src/components/AppointmentCard';
 const DashboardHeader = (props: HeaderProps) => (
   <View column bgColor="primary">
 
-    <View row justifyEnd absoluteFill spacing={{ pt: 2, mr: -5 }}>
+    <View row justifyEnd absoluteFill spacing={{ mt: -3, mr: -5 }}>
       <LogoIcon size={2} />
     </View>
 
     <Header {...props} />
 
-    <View column justifyCenter spacing={{ px: 3, py: 4 }}>
+    <View column justifyCenter spacing={{ pt: 3, px: 3 }}>
       <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
+      <AppointmentCard current />
+    </View>
+
+    <View column justifyCenter spacing={{ px: 3, py: 4 }}>
+      <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
       <AppointmentCard />
     </View>
 
