@@ -15,7 +15,7 @@ const DashboardScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <View flex={1}>
+    <View flex={1} bgColor="primary">
 
       <View row justifyEnd absoluteFill spacing={{ mt: -6, mr: -5 }}>
         <LogoIcon size={2} />
@@ -49,7 +49,7 @@ const DashboardScreen = () => {
               <Text variant="regularSmallDark">
                 John Doe 10:30am / Today
               </Text>
-              <Text variant="light">
+              <Text variant="light" numberOfLines={1}>
                 You can park beside my house...
               </Text>
             </>
