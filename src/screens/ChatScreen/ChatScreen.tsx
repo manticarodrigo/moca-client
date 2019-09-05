@@ -51,35 +51,39 @@ const ChatScreen: NavigationComponent = () => {
   const onChangeText = (val: string) => setText(val);
 
   const onPressSend = () => {
-    const message: Message = {
-      id: `${Math.floor(Math.random() * 1000000000)}`,
-      text,
-      userId: currentUser.id,
-      createdAt: new Date().toDateString(),
-    };
+    if (text) {
+      const message: Message = {
+        id: `${Math.floor(Math.random() * 1000000000)}`,
+        text,
+        userId: currentUser.id,
+        createdAt: new Date().toDateString(),
+      };
 
-    setChat({ ...chat, messages: [...chat.messages, message] });
-    setText('');
+      setChat({ ...chat, messages: [...chat.messages, message] });
+      setText('');
+    }
   };
 
   return (
-    <View safeArea column expand>
+    <View safeArea column flex={1}>
       <StatusBar barStyle="dark-content" />
-      <View column expand spacing={{ p: 3 }} bgColor="lightGrey">
-        {chat.messages.map((message) => (
-          <ChatMessage
-            key={message.id}
-            alignRight={message.userId === currentUser.id}
-            text={message.text}
-            createdAt={message.createdAt}
-          />
-        ))}
+      <View scroll column flex={1} bgColor="lightGrey">
+        <View column spacing={{ p: 3 }}>
+          {chat.messages.map((message) => (
+            <ChatMessage
+              key={message.id}
+              alignRight={message.userId === currentUser.id}
+              text={message.text}
+              createdAt={message.createdAt}
+            />
+          ))}
+        </View>
       </View>
       <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
         <View spacing={{ p: 1 }}>
           <CameraIcon />
         </View>
-        <View expand spacing={{ px: 2 }}>
+        <View flex={1} spacing={{ px: 2 }}>
           <TextInput
             variant="chat"
             spacing={{ px: 3 }}

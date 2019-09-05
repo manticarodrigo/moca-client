@@ -11,7 +11,7 @@ const ProfileScreen = () => {
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
   return (
-    <View expand justifyCenter alignCenter bgColor="lightGrey">
+    <View flex={1} justifyCenter alignCenter bgColor="lightGrey">
       <Button onPress={handleButtonPress}>
         Go to Chat
       </Button>

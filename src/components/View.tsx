@@ -1,39 +1,52 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View as RNView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, ViewStyle, View as RNView, SafeAreaView, ScrollView, TouchableOpacity, Insets } from 'react-native';
 
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
 type ViewProps = {
+  style?: ViewStyle;
   safeArea?: boolean;
+  scroll?: boolean;
   variant?: keyof typeof Views;
   position?: PositionProp;
   spacing?: SpacingProp;
+  insets?: Insets;
   shadow?: ShadowProp;
+  flex?: number;
+  wrap?: boolean;
   row?: boolean;
   column?: boolean;
-  expand?: boolean;
   justifyCenter?: boolean;
   justifyBetween?: boolean;
+  justifyEnd?: boolean;
   alignCenter?: boolean;
+  alignEnd?: boolean;
+  absoluteFill?: boolean;
   width?: string | number;
   height?: string | number;
   bgColor?: keyof typeof Colors;
-  children: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[];
   onPress?: () => void;
 };
 
 const View = ({
+  style,
   safeArea,
+  scroll,
   variant,
   spacing,
   position,
   shadow,
+  flex,
+  wrap,
   row,
   column,
-  expand,
   justifyCenter,
   justifyBetween,
+  justifyEnd,
   alignCenter,
+  alignEnd,
+  absoluteFill,
   width,
   height,
   bgColor,
@@ -42,19 +55,27 @@ const View = ({
 }: ViewProps) => {
   const WrapperType = useMemo(() => onPress ? TouchableOpacity : React.Fragment, [onPress]);
   const wrapperProps = useMemo(() => ({ ...(onPress ? { onPress } : null) }), [onPress]);
-  const ViewType = useMemo(() => safeArea ? SafeAreaView : RNView, [safeArea]);
+
+  const ViewType = useMemo(() => {
+    if (safeArea) return SafeAreaView;
+    if (scroll) return ScrollView;
+
+    return RNView;
+  }, [safeArea, scroll]);
 
   const direction = useMemo(() => (
     (row && 'row') || (column && 'column')
   ), [row, column]);
 
-  const justify = useMemo(() => (
-    (justifyCenter && 'center') || (justifyBetween && 'space-between')
-  ), [justifyCenter, justifyBetween]);
+  const justifyContent = useMemo(() => (
+    (justifyCenter && 'center')
+    || (justifyBetween && 'space-between')
+    || (justifyEnd && 'flex-end')
+  ), [justifyCenter, justifyBetween, justifyEnd]);
 
-  const align = useMemo(() => (
-    alignCenter && 'center'
-  ), [alignCenter]);
+  const alignItems = useMemo(() => (
+    (alignCenter && 'center') || (alignEnd && 'flex-end')
+  ), [alignCenter, alignEnd]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -65,10 +86,11 @@ const View = ({
       ...Spacing.getStyles(spacing),
       ...Shadow.getStyles(shadow),
       ...(bgColor && { backgroundColor: Colors[bgColor] }),
-      ...(expand && { flex: 1 }),
+      ...(flex && { flex }),
+      ...(wrap && { flexWrap: 'wrap' }),
       ...(direction && { flexDirection: direction }),
-      ...(justify && { justifyContent: justify }),
-      ...(align && { alignItems: align }),
+      ...(justifyContent && { justifyContent }),
+      ...(alignItems && { alignItems }),
     },
   }), [
     variant,
@@ -76,9 +98,10 @@ const View = ({
     position,
     shadow,
     direction,
-    expand,
-    justify,
-    align,
+    flex,
+    wrap,
+    justifyContent,
+    alignItems,
     width,
     height,
     bgColor,
@@ -86,7 +109,7 @@ const View = ({
 
   return (
     <WrapperType {...wrapperProps}>
-      <ViewType style={styles.view}>
+      <ViewType style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}>
         {children}
       </ViewType>
     </WrapperType>
