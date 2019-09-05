@@ -67,15 +67,17 @@ const ChatScreen: NavigationComponent = () => {
   return (
     <View safeArea column flex={1}>
       <StatusBar barStyle="dark-content" />
-      <View column flex={1} spacing={{ p: 3 }} bgColor="lightGrey">
-        {chat.messages.map((message) => (
-          <ChatMessage
-            key={message.id}
-            alignRight={message.userId === currentUser.id}
-            text={message.text}
-            createdAt={message.createdAt}
-          />
-        ))}
+      <View scroll column flex={1} bgColor="lightGrey">
+        <View column spacing={{ p: 3 }}>
+          {chat.messages.map((message) => (
+            <ChatMessage
+              key={message.id}
+              alignRight={message.userId === currentUser.id}
+              text={message.text}
+              createdAt={message.createdAt}
+            />
+          ))}
+        </View>
       </View>
       <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
         <View spacing={{ p: 1 }}>

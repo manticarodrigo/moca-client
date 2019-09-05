@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { mockImg } from '@src/services/mock';
 
@@ -36,11 +36,11 @@ const AppointmentCardHeader = () => (
 
 const AppointmentCardInfo = ({ current = false }) => (
   <View row justifyBetween spacing={{ mt: current ? 2 : -2 }}>
-    <View row>
+    <View row flex={1}>
       <View width={48} height={48} justifyCenter alignCenter>
         <InfoIcon />
       </View>
-      <View column spacing={{ mt: !current && -3, ml: 3 }}>
+      <View column flex={1} spacing={{ mt: !current && -3, ml: 3 }}>
         <Text variant={current ? 'boldSecondary' : 'boldGrey'}>12:00pm / Today</Text>
         <Text variant="regular">Chestnut St.</Text>
       </View>
@@ -70,7 +70,12 @@ type AppointmentCardProps = {
 };
 
 const AppointmentCard = ({ current }: AppointmentCardProps) => (
-  <View column variant={current ? 'borderCard' : 'card'} spacing={{ pb: !current && 0 }} bgColor={!current ? 'whiteTranslucent' : null}>
+  <View
+    column
+    variant={current ? 'borderCard' : 'card'}
+    spacing={{ pb: !current && 0 }}
+    bgColor={!current ? 'whiteTranslucent' : null}
+  >
     <AppointmentCardHeader />
 
     <AppointmentCardInfo current={current} />

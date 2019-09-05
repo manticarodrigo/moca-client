@@ -16,11 +16,11 @@ import Text from '@src/components/Text';
 type LinkCardProps = {
   type: 'wallet' | 'messages' | 'history';
   spacing?: SpacingProp;
-  onPress: () => void;
   children: JSX.Element;
+  onPress: () => void;
 };
 
-const LinkCard = ({ type, spacing, onPress, children }: LinkCardProps) => {
+const LinkCard = ({ type, spacing, children, onPress }: LinkCardProps) => {
   const { icon, title } = useMemo(() => {
     switch (type) {
       case 'wallet':
@@ -35,19 +35,24 @@ const LinkCard = ({ type, spacing, onPress, children }: LinkCardProps) => {
   }, [type]);
 
   return (
-    <View variant="shadowCard" width="100%" spacing={spacing}>
-      <View row spacing={{ p: 1 }} onPress={onPress}>
-        {icon}
-        <View column spacing={{ pl: 3 }}>
-          <Text variant="titleSmall" spacing={{ mb: 2 }}>
-            {title}
-          </Text>
-          {children}
+    <View column variant="shadowCard" spacing={spacing}>
+
+      <View row justifyBetween spacing={{ p: 1 }} onPress={onPress}>
+
+        <View row flex={1}>
+          <View column spacing={{ mr: 3 }}>{icon}</View>
+          <View column flex={1}>
+            <Text variant="titleSmall" spacing={{ mb: 2 }}>{title}</Text>
+            {children}
+          </View>
         </View>
-        <View row flex={1} justifyEnd alignCenter>
+
+        <View row alignCenter spacing={{ ml: 3 }}>
           <ArrowRightIcon />
         </View>
+
       </View>
+
     </View>
   );
 };

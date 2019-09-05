@@ -1,4 +1,4 @@
-import { ViewStyle, StyleSheet } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
@@ -74,6 +74,15 @@ const iconButton: ViewStyle = {
   aspectRatio: 1,
 };
 
+const bottomBounceFill: ViewStyle = {
+  position: 'absolute',
+  right: 0,
+  left: 0,
+  bottom: 0,
+  marginBottom: -Dimensions.get('screen').height,
+  height: Dimensions.get('screen').height,
+};
+
 export {
   msgBubbleRight,
   msgBubbleLeft,
@@ -84,4 +93,5 @@ export {
   borderCard,
   shadowCard,
   iconButton,
+  bottomBounceFill,
 };

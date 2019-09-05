@@ -23,6 +23,15 @@ import ProfileScreen from '@src/screens/ProfileScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
+  cardShadowEnabled: false,
+  cardStyle: {
+    backgroundColor: Colors.primary,
+  },
+  transitionConfig: () => ({
+    containerStyle: {
+      backgroundColor: Colors.primary,
+    },
+  }),
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
     headerStyle: {

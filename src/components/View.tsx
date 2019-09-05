@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View as RNView, SafeAreaView, ScrollView, TouchableOpacity, Insets } from 'react-native';
+import { StyleSheet, ViewStyle, View as RNView, SafeAreaView, ScrollView, TouchableOpacity, Insets } from 'react-native';
 
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
 type ViewProps = {
+  style?: ViewStyle;
   safeArea?: boolean;
   scroll?: boolean;
   variant?: keyof typeof Views;
@@ -12,6 +13,7 @@ type ViewProps = {
   insets?: Insets;
   shadow?: ShadowProp;
   flex?: number;
+  wrap?: boolean;
   row?: boolean;
   column?: boolean;
   justifyCenter?: boolean;
@@ -23,19 +25,20 @@ type ViewProps = {
   width?: string | number;
   height?: string | number;
   bgColor?: keyof typeof Colors;
-  children: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[];
   onPress?: () => void;
 };
 
 const View = ({
+  style,
   safeArea,
   scroll,
   variant,
   spacing,
-  insets,
   position,
   shadow,
   flex,
+  wrap,
   row,
   column,
   justifyCenter,
@@ -59,19 +62,6 @@ const View = ({
 
     return RNView;
   }, [safeArea, scroll]);
-
-  const viewProps = useMemo(() => {
-    if (scroll) {
-      return {
-        contentInset: Object.entries(insets).reduce((acc, [key, value]) => ({
-          ...acc,
-          [key]: Spacing.spaceSize[value],
-        }), {}),
-      };
-    }
-
-    return null;
-  }, [scroll, insets]);
 
   const direction = useMemo(() => (
     (row && 'row') || (column && 'column')
@@ -97,6 +87,7 @@ const View = ({
       ...Shadow.getStyles(shadow),
       ...(bgColor && { backgroundColor: Colors[bgColor] }),
       ...(flex && { flex }),
+      ...(wrap && { flexWrap: 'wrap' }),
       ...(direction && { flexDirection: direction }),
       ...(justifyContent && { justifyContent }),
       ...(alignItems && { alignItems }),
@@ -108,6 +99,7 @@ const View = ({
     shadow,
     direction,
     flex,
+    wrap,
     justifyContent,
     alignItems,
     width,
@@ -117,10 +109,7 @@ const View = ({
 
   return (
     <WrapperType {...wrapperProps}>
-      <ViewType
-        {...viewProps}
-        style={[absoluteFill && StyleSheet.absoluteFill, styles.view]}
-      >
+      <ViewType style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}>
         {children}
       </ViewType>
     </WrapperType>
