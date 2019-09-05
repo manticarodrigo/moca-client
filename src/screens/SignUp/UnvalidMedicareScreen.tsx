@@ -11,16 +11,17 @@ import BackButton from '@src/components/BackButton';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-import locationNotAvailable from '@src/assets/pngs/locationNotAvailable.png';
+import unvalidMediCareImage from '@src/assets/pngs/unvalidZipCodeImage.png';
 
 const UnvalidMediCareScreen = () => {
   const navigation = useNavigation();
+
   const handleButtonPress = () => navigation.navigate('ZipCodeScreen');
 
   return (
     <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
       <View alignCenter spacing={{ mx: 4 }}>
-        <Image file={locationNotAvailable} width={74} height={87} />
+        <Image file={unvalidMediCareImage} width={74} height={87} />
         <Text variant="error" spacing={{ mt: 3 }}>
           Sorry !
         </Text>

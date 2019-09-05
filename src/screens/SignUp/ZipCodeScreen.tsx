@@ -2,14 +2,14 @@ import React from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
-import { submit } from '@src/store/actions/RegistrationAction';
+import { submitUserInfo } from '@src/store/actions/RegistrationAction';
 import View from '@src/components/View';
 import BackDropView from '@src/components/BackdropView';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 
-import addLocationBig from '@src/assets/pngs/addLocationBig.png';
+import zipCodeImage from '@src/assets/pngs/zipCodeImage.png';
 
 const ZipCodeScreen = () => {
   const navigation = useNavigation();
@@ -17,7 +17,7 @@ const ZipCodeScreen = () => {
   const [, dispatch] = useStore();
 
   const handleButtonPress = () => {
-    dispatch(submit({ zipCode }));
+    dispatch(submitUserInfo({ zipCode }));
     navigation.navigate('RegistrationScreen');
   };
 
@@ -26,7 +26,7 @@ const ZipCodeScreen = () => {
     <BackDropView pt={1} hasArrow>
       <View safeArea justifyBetween expand width="100%" spacing={{ mt: 5 }}>
         <View alignCenter>
-          <Image file={addLocationBig} width={74} height={87} />
+          <Image file={zipCodeImage} width={74} height={87} />
           <Text variant="title" spacing={{ mt: 3 }}>Where are you located?</Text>
           <Text variant="regular" spacing={{ mt: 3 }}>
             {"Enter your zip code to check MOCA's"}

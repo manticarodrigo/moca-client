@@ -16,7 +16,7 @@ import therapistSelected from '@src/assets/pngs/therapistSelect.png';
 import { Colors } from '@src/styles/index';
 
 import useStore from '@src/hooks/useStore';
-import { submit } from '@src/store/actions/RegistrationAction';
+import { submitUserInfo } from '@src/store/actions/RegistrationAction';
 
 const SelectionScreen = () => {
   type Colors = keyof typeof Colors;
@@ -34,7 +34,7 @@ const SelectionScreen = () => {
 
 
   const handleButtonPress = () => {
-    dispatch(submit({ type }));
+    dispatch(submitUserInfo({ type }));
     navigation.navigate('UnvalidZipCodeScreen');
   };
 
@@ -55,7 +55,6 @@ const SelectionScreen = () => {
     setTherapistImage(therapistSelected);
     setType('Therapist');
   };
-
 
   return (
     <View safeArea alignCenter justifyBetween expand>

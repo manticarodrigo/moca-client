@@ -16,6 +16,7 @@ declare type RegistrationInfo = {
   name?: string;
   surname?: string;
   zipCode?: string;
+  medicalId?: string;
 };
 
 declare type Chat = {

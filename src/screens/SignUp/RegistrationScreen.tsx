@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
+import { submitUserInfo } from '@src/store/actions/RegistrationAction';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -18,15 +19,59 @@ import { Views, Spacing, Colors } from '@src/styles';
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
-  const handleButtonPress = () => navigation.navigate('UnvalidZipCodeScreen');
+  const [{ registrationState: { userInfo } }, dispatch] = useStore();
+  const [formFields, setFormFields] = useState({
+    surname: '',
+    email: '',
+    name: '',
+    password: '',
+    medicalId: '',
+  });
+
+  const isPatient = userInfo.type === 'Patient';
+
+  const handleButtonPress = () => {
+    dispatch(submitUserInfo({ ...formFields }));
+    navigation.navigate('UnvalidZipCodeScreen');
+  };
   const handleMedicareAgreement = () => navigation.navigate('UnvalidMediCareScreen');
   const handleMedicareDisagreement = () => navigation.navigate('');
   const handlePrivaryPress = () => navigation.navigate('');
   const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen');
-  const [{ registrationState: { userInfo } }] = useStore();
+  const handleFormFields = (name: string, text: string) => {
+    setFormFields({ ...formFields, [name]: text });
+  };
+
+
+  const mediCare = (
+    <View row spacing={{ m: 3 }}>
+      <View spacing={{ mr: 3 }}>
+        <Text variant="title" typography={{ size: 2 }}>Are you currently</Text>
+        <Text variant="title" typography={{ size: 2 }}>covered by Medicare?</Text>
+      </View>
+      <View row alignCenter>
+        <Button variant="secondary" onPress={handleMedicareAgreement}>
+          Yes
+        </Button>
+        <View spacing={{ ml: 3 }}>
+          <Button variant="secondary" onPress={handleMedicareDisagreement}>
+            No
+          </Button>
+        </View>
+      </View>
+    </View>
+  );
+
+  const medicalId = (
+    <FormField
+      placeholder="medicalId"
+      value={formFields.medicalId}
+      returnKeyType="next"
+      onChangeText={(text) => handleFormFields('medicalId', text)}
+    />
+  );
 
   console.log(userInfo);
-
 
   return (
     <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
@@ -41,29 +86,31 @@ const RegistrationScreen = () => {
           get you started.
         </Text>
         <View variant="borderTop" width="100%" spacing={{ mt: 3 }}>
-          <View row spacing={{ m: 3 }}>
-            <View spacing={{ mr: 3 }}>
-              <Text variant="title" typography={{ size: 2 }}>Are you currently</Text>
-              <Text variant="title" typography={{ size: 2 }}>covered by Medicare?</Text>
-            </View>
-            <View row alignCenter>
-              <Button variant="secondary" onPress={handleMedicareAgreement}>
-                Yes
-              </Button>
-              <View spacing={{ ml: 3 }}>
-                <Button variant="secondary" onPress={handleMedicareDisagreement}>
-                  No
-                </Button>
-              </View>
-            </View>
-          </View>
+          {isPatient && mediCare}
         </View>
       </View>
       <View alignCenter spacing={{ mb: 3 }}>
-        <FormField placeholder="Name" value="" returnKeyType="next" />
-        <FormField placeholder="Surname" value="" returnKeyType="next" />
-        <FormField placeholder="Email address" value="" keyboardType="email-address" returnKeyType="next" />
-        <FormField placeholder="password" value="" secureTextEntry returnKeyType="done" />
+        <FormField
+          placeholder="Name"
+          value={formFields.name}
+          returnKeyType="next"
+          onChangeText={(text) => handleFormFields('name', text)}
+        />
+        <FormField
+          placeholder="Surname"
+          value={formFields.surname}
+          returnKeyType="next"
+          onChangeText={(text) => handleFormFields('surname', text)}
+        />
+        {!isPatient && medicalId}
+        <FormField
+          placeholder="Email address"
+          value={formFields.email}
+          returnKeyType="next"
+          keyboardType="email-address"
+          onChangeText={(text) => handleFormFields('email', text)}
+        />
+        <FormField placeholder="password" value={formFields.password} secureTextEntry returnKeyType="done" onChangeText={(text) => handleFormFields('password', text)} />
       </View>
       <View spacing={{ mx: 3 }}>
         <Button onPress={handleButtonPress}>

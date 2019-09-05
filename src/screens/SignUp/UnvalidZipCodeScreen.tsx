@@ -12,16 +12,17 @@ import { Views, Spacing, Colors } from '@src/styles';
 
 import BackButton from '@src/components/BackButton';
 
-import locationNotAvailable from '@src/assets/pngs/locationNotAvailable.png';
+import unvalidZipCodeImage from '@src/assets/pngs/unvalidZipCodeImage.png';
 
 const UnvalidZipCodeScreen = () => {
   const navigation = useNavigation();
+
   const handleButtonPress = () => navigation.navigate('ZipCodeScreen');
 
   return (
     <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
       <View alignCenter spacing={{ mx: 4 }}>
-        <Image file={locationNotAvailable} width={74} height={87} />
+        <Image file={unvalidZipCodeImage} width={74} height={87} />
         <Text variant="error" spacing={{ mt: 3 }}>
           {"Sorry, MOCA hasn't made it"}
         </Text>
