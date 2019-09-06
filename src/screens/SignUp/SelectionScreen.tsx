@@ -33,7 +33,7 @@ const SelectionScreen = () => {
 
   const handleButtonPress = () => {
     dispatch(updateUserInfomation({ type }));
-    navigation.navigate('InvalidZipCodeScreen');
+    navigation.navigate('ZipCodeScreen');
   };
 
   const handlePatientPress = () => {

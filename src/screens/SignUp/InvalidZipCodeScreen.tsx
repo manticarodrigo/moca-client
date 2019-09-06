@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { StackActions, NavigationActions } from 'react-navigation';
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
@@ -7,20 +7,27 @@ import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import HeaderTitle from '@src/components/HeaderTitle';
+import BackButton from '@src/components/BackButton';
+import FormField from '@src/components/FormField';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-import BackButton from '@src/components/BackButton';
 
 import InvalidZipCodeImage from '@src/assets/pngs/invalidZipCodeImage.png';
 
 const InvalidZipCodeScreen = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
 
-  const handleButtonPress = () => navigation.navigate('ZipCodeScreen');
+  const handleButtonPress = () => {
+    navigation.dispatch(StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
+    }));
+  };
 
   return (
-    <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
+    <View safeArea expand width="100%" spacing={{ mt: 3 }}>
       <View alignCenter spacing={{ mx: 4 }}>
         <Image file={InvalidZipCodeImage} width={74} height={87} />
         <Text variant="error" spacing={{ mt: 3 }}>
@@ -39,10 +46,19 @@ const InvalidZipCodeScreen = () => {
           we become available in your area.
         </Text>
       </View>
-      <View alignCenter>
+      <View alignCenter spacing={{ mt: 2 }}>
         <View width="100%" spacing={{ px: 4, pb: 4 }}>
+          <View alignCenter spacing={{ mb: 3 }}>
+            <FormField
+              placeholder="Email address"
+              value={email}
+              returnKeyType="done"
+              keyboardType="email-address"
+              onChangeText={(text) => setEmail(text)}
+            />
+          </View>
           <Button onPress={handleButtonPress}>
-            Continue
+            Let us know
           </Button>
         </View>
       </View>

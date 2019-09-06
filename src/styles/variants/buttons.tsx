@@ -57,10 +57,25 @@ const secondary: ButtonVariant = {
   underlayColor: Colors.secondaryLightest,
 };
 
+const buttonPressed = {
+  view: {
+    borderWidth: 1,
+    borderColor: Colors.secondaryLighter,
+    backgroundColor: Colors.secondary,
+    borderRadius: 6,
+    height: 32,
+    width: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: { ...Typography.getStyles({ color: 'secondaryLightest', size: 2 }) },
+  underlayColor: Colors.secondaryLightest,
+};
 
 export {
   primary,
   text,
   backdrop,
   secondary,
+  buttonPressed,
 };

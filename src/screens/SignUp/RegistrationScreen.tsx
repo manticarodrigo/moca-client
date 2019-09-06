@@ -27,15 +27,23 @@ const RegistrationScreen = () => {
     password: '',
     medicalId: '',
   });
-
+  const [isButtonPressed, setIsButtonPressed] = useState(false);
   const isPatient = userInformation.type === 'Patient';
 
   const handleButtonPress = () => {
     dispatch(updateUserInfomation({ ...formFields }));
     navigation.navigate('InvalidZipCodeScreen');
   };
-  const handleMedicareAgreement = () => navigation.navigate('InvalidMediCareScreen');
-  const handleMedicareDisagreement = () => navigation.navigate('');
+
+  const handleMedicareAgreement = () => {
+    navigation.navigate('InvalidMediCareScreen');
+  };
+
+  const handleMedicareDisagreement = () => {
+    if (isButtonPressed) setIsButtonPressed(false);
+    else setIsButtonPressed(true);
+  };
+
   const handlePrivaryPress = () => navigation.navigate('');
   const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen');
   const handleFormFields = (name: string, text: string) => {
@@ -53,7 +61,7 @@ const RegistrationScreen = () => {
           Yes
         </Button>
         <View spacing={{ ml: 3 }}>
-          <Button variant="secondary" onPress={handleMedicareDisagreement}>
+          <Button variant={isButtonPressed ? 'buttonPressed' : 'secondary'} onPress={handleMedicareDisagreement}>
             No
           </Button>
         </View>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import useNavigation from '@src/hooks/useNavigation';
 
@@ -8,6 +9,7 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
+import FormField from '@src/components/FormField';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -15,11 +17,18 @@ import InvalidMediCareImage from '@src/assets/pngs/invalidZipCodeImage.png';
 
 const InvalidMediCareScreen = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
 
-  const handleButtonPress = () => navigation.navigate('ZipCodeScreen');
+  const handleButtonPress = () => {
+    // api call
+    navigation.dispatch(StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
+    }));
+  };
 
   return (
-    <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
+    <View safeArea expand width="100%" spacing={{ mt: 3 }}>
       <View alignCenter spacing={{ mx: 4 }}>
         <Image file={InvalidMediCareImage} width={74} height={87} />
         <Text variant="error" spacing={{ mt: 3 }}>
@@ -32,8 +41,17 @@ const InvalidMediCareScreen = () => {
           therapy session when the update is complete.
         </Text>
       </View>
-      <View alignCenter>
+      <View alignCenter spacing={{ mt: 4 }}>
         <View width="100%" spacing={{ px: 4, pb: 4 }}>
+          <View alignCenter spacing={{ mb: 3 }}>
+            <FormField
+              placeholder="Email address"
+              value={email}
+              returnKeyType="done"
+              keyboardType="email-address"
+              onChangeText={(text) => setEmail(text)}
+            />
+          </View>
           <Button onPress={handleButtonPress}>
             Let us know
           </Button>
