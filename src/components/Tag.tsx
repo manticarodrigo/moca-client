@@ -18,7 +18,7 @@ type TagProps = {
 
 
 const Tag = ({ placeholder, icon, positive, positiveReport, emptySlots, away }: TagProps) => {
-  const textAndImageColor = useCallback(() => {
+  const textAndImageColor = useMemo(() => {
     if (positive) {
       return Colors.white;
     } if (positiveReport) {
@@ -27,7 +27,7 @@ const Tag = ({ placeholder, icon, positive, positiveReport, emptySlots, away }: 
     return Colors.semiGrey;
   }, [positive, positiveReport]);
 
-  const width = useCallback(() => {
+  const width = useMemo(() => {
     if (emptySlots) {
       return widthPercentageToDP(13.6);
     } if (away) {
@@ -47,15 +47,15 @@ const Tag = ({ placeholder, icon, positive, positiveReport, emptySlots, away }: 
       borderColor: (positive || positiveReport) ? Colors.secondary : Colors.semiGrey,
       margin: Spacing.spaceSize[1],
       padding: Spacing.spaceSize[2],
-      width: width(),
+      width,
       height: heightPercentageToDP(3.6),
       backgroundColor: positive ? Colors.secondary : null,
     },
     text: {
-      color: textAndImageColor(),
+      color: textAndImageColor,
     },
     img: {
-      tintColor: textAndImageColor(),
+      tintColor: textAndImageColor,
     },
   }), [positive, positiveReport, textAndImageColor, width, away]);
 
