@@ -5,53 +5,27 @@ import { Colors, Typography } from '@src/styles';
 import View from '@src/components/View';
 
 const ScheduleScreen = () => {
-  const [markedDates, setMarkedDates] = useState({});
+  const [markedDate, setMarkedDate] = useState({});
 
-  const onDayPress = (day) => {
-    setMarkedDates((prev) => {
-      const { length } = Object.keys(prev);
-
-      if (!length) {
-        return {
-          ...prev,
-          [day.dateString]: {
-            startingDay: true,
-            selected: true,
-            color: Colors.primary,
-          },
-        };
-      }
-
-      if (length === 1) {
-        return {
-          ...prev,
-          [day.dateString]: {
-            endingDay: true,
-            selected: true,
-            color: Colors.primary,
-          },
-        };
-      }
-
-      if (length > 1) {
-        return {
-          [day.dateString]: {
-            startingDay: true,
-            selected: true,
-            color: Colors.primary,
-          },
-        };
-      }
-
-      return prev;
-    });
-  };
+  const onDayPress = (day) => setMarkedDate({
+    [day.dateString]: {
+      customStyles: {
+        container: {
+          backgroundColor: Colors.primary,
+          borderRadius: 10,
+        },
+        text: {
+          color: Colors.white,
+        },
+      },
+    },
+  });
 
   return (
     <View flex={1} justifyCenter alignCenter bgColor="lightGrey">
       <Calendar
-        markedDates={markedDates}
-        markingType="period"
+        markedDates={markedDate}
+        markingType="custom"
         onDayPress={onDayPress}
         style={{ width: '100%', height: '100%' }}
         theme={{
