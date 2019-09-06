@@ -11,6 +11,8 @@ import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
 import FormField from '@src/components/FormField';
 
+import EmailIcon from '@src/assets/Icons/email.png';
+
 import { Views, Spacing, Colors } from '@src/styles';
 
 import InvalidMediCareImage from '@src/assets/pngs/invalidZipCodeImage.png';
@@ -50,6 +52,7 @@ const InvalidMediCareScreen = () => {
               returnKeyType="done"
               keyboardType="email-address"
               onChangeText={(text) => setEmail(text)}
+              icon={EmailIcon}
             />
           </View>
           <Button onPress={handleButtonPress}>

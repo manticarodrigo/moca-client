@@ -14,6 +14,8 @@ import HeaderTitle from '@src/components/HeaderTitle';
 import FormField from '@src/components/FormField';
 
 import logoIcon from '@src/assets/pngs/logoIcon.png';
+import EmailIcon from '@src/assets/Icons/email.png';
+import PasswordIcon from '@src/assets/Icons/eye.png';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -115,6 +117,7 @@ const RegistrationScreen = () => {
           returnKeyType="next"
           keyboardType="email-address"
           onChangeText={(text) => handleFormFields('email', text)}
+          icon={EmailIcon}
         />
         <FormField
           placeholder="password"
@@ -122,6 +125,7 @@ const RegistrationScreen = () => {
           secureTextEntry
           returnKeyType="done"
           onChangeText={(text) => handleFormFields('password', text)}
+          icon={PasswordIcon}
         />
       </View>
       <View spacing={{ mx: 3 }}>

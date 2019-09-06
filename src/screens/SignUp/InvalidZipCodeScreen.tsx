@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
+
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
@@ -9,6 +10,8 @@ import Button from '@src/components/Button';
 import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
 import FormField from '@src/components/FormField';
+
+import EmailIcon from '@src/assets/Icons/email.png';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -54,6 +57,7 @@ const InvalidZipCodeScreen = () => {
               value={email}
               returnKeyType="done"
               keyboardType="email-address"
+              icon={EmailIcon}
               onChangeText={(text) => setEmail(text)}
             />
           </View>
