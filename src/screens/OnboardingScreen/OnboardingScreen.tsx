@@ -39,13 +39,13 @@ const OnboardingScreen = () => {
   const handleButtonPress = () => navigation.navigate('SelectionScreen');
 
   return (
-    <View safeArea expand alignCenter>
+    <View safeArea flex={1} alignCenter>
       <StatusBar barStyle="dark-content" />
       <View spacing={{ pt: 5 }}>
         <Image width={175} height={110} file={Logo} />
       </View>
       <Slider slides={slides.map(({ icon, title, text }) => (
-        <View key={title} column expand justifyCenter alignCenter spacing={{ px: 5 }}>
+        <View key={title} column flex={1} justifyCenter alignCenter spacing={{ px: 5 }}>
           <View>
             {icon}
           </View>

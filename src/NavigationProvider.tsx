@@ -11,7 +11,7 @@ import {
 } from 'react-navigation';
 
 import { Views, Typography, Colors } from '@src/styles';
-import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
+import { HomeTabIcon, ScheduleTabIcon, MessagesTabIcon, ProfileTabIcon } from '@src/components/icons';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
@@ -29,6 +29,12 @@ import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
+  cardShadowEnabled: false,
+  transitionConfig: () => ({
+    containerStyle: {
+      backgroundColor: Colors.primary,
+    },
+  }),
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
     headerStyle: {
@@ -55,7 +61,7 @@ const defaultTabConfig: TabNavigatorConfig = {
         case 'ScheduleTab':
           return <ScheduleTabIcon focused={focused} />;
         case 'ChatTab':
-          return <ChatTabIcon focused={focused} />;
+          return <MessagesTabIcon focused={focused} />;
         case 'ProfileTab':
           return <ProfileTabIcon focused={focused} />;
         default:
@@ -109,7 +115,7 @@ const AppStack = createSwitchNavigator(
     }, defaultTabConfig),
 
   },
-  { initialRouteName: 'AuthStack' },
+  { initialRouteName: 'TabStack' },
 );
 
 export default createAppContainer(AppStack);

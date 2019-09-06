@@ -12,7 +12,7 @@ const ChatHeader = ({ params = {} }: ChatHeaderProps) => {
   const { img = mockImg, title = '' } = params;
 
   return (
-    <View row expand alignCenter>
+    <View row flex={1} alignCenter>
       <Image rounded size={48} uri={img} />
       <Text spacing={{ ml: 3 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
         {title}
