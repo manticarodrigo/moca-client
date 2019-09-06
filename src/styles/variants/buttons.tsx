@@ -56,7 +56,7 @@ const backdrop: ButtonVariant = {
   underlayColor: undefined,
 };
 
-const secondary: ButtonVariant = {
+const tertiary: ButtonVariant = {
   view: {
     borderWidth: 1,
     borderColor: Colors.secondaryLighter,
@@ -87,7 +87,7 @@ const buttonPressed = {
 
 export {
   primary,
-  secondary,
+  tertiary,
   text,
   backdrop,
   secondary,

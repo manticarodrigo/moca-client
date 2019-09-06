@@ -55,7 +55,7 @@ const SelectionScreen = () => {
   };
 
   return (
-    <View safeArea alignCenter justifyBetween expand>
+    <View safeArea alignCenter justifyBetween flex={1}>
       <StatusBar barStyle="dark-content" />
       <View spacing={{ pt: 5 }} alignCenter>
         <Text variant="title">Please select your</Text>

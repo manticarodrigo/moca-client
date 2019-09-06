@@ -6,7 +6,7 @@ import Text from '@src/components/Text';
 
 const TermsOfServiceScreen = () => (
   <BackDropView pt={1} hasArrow>
-    <View safeArea expand width="100%" spacing={{ mt: 4 }}>
+    <View safeArea flex={1} width="100%" spacing={{ mt: 4 }}>
       <View variant="borderBottom" width="100%" height={54} alignCenter>
         <Text variant="title">Terms & Service</Text>
       </View>

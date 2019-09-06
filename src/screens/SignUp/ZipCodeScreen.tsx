@@ -24,7 +24,7 @@ const ZipCodeScreen = () => {
 
   return (
     <BackDropView pt={1} hasArrow>
-      <View safeArea justifyBetween expand width="100%" spacing={{ mt: 5 }}>
+      <View safeArea justifyBetween flex={1} width="100%" spacing={{ mt: 5 }}>
         <View alignCenter>
           <Image file={zipCodeImage} width={74} height={87} />
           <Text variant="title" spacing={{ mt: 3 }}>Where are you located?</Text>

@@ -30,7 +30,7 @@ const InvalidZipCodeScreen = () => {
   };
 
   return (
-    <View safeArea expand width="100%" spacing={{ mt: 3 }}>
+    <View safeArea flex={1} width="100%" spacing={{ mt: 3 }}>
       <View alignCenter spacing={{ mx: 4 }}>
         <Image file={InvalidZipCodeImage} width={74} height={87} />
         <Text variant="error" spacing={{ mt: 3 }}>

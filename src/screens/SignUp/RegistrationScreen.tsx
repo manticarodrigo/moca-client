@@ -82,7 +82,7 @@ const RegistrationScreen = () => {
 
 
   return (
-    <View safeArea justifyBetween expand width="100%" spacing={{ mt: 3 }}>
+    <View safeArea flex={1} justifyBetween width="100%" spacing={{ mt: 3 }}>
       <StatusBar barStyle="dark-content" />
       <View alignCenter>
         <Image file={logoIcon} width={51} height={59} />
