@@ -111,14 +111,11 @@ export {
   borderTop,
   borderBottom,
   backdrop,
-<<<<<<< HEAD
   imageBorderRight,
   imageBorderLeft,
-=======
   card,
   borderCard,
   shadowCard,
   iconButton,
   bottomBounceFill,
->>>>>>> 5a5a4aa8bda5f08a57c208e85cf7b206a32fce3a
 };
