@@ -27,7 +27,7 @@ const BackdropView = ({ children, pt = 3, hasArrow }: BackdropProps) => {
         <View alignCenter spacing={{ mt: 2 }}>
           {hasArrow && <Image file={arrow} width={40} height={8} />}
         </View>
-        <View alignCenter width="100%">
+        <View alignCenter flex={1} width="100%">
           {children}
         </View>
       </View>

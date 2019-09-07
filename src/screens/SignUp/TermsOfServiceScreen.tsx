@@ -10,7 +10,7 @@ const TermsOfServiceScreen = () => (
       <View variant="borderBottom" width="100%" height={54} alignCenter>
         <Text variant="title">Terms & Service</Text>
       </View>
-      <View spacing={{ m: 4 }}>
+      <View flex={1} spacing={{ m: 4 }}>
         <Text variant="regular">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tempor
           dapibus nunc sed fringilla. Nulla facilisi.

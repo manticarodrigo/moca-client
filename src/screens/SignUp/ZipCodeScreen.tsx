@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
@@ -10,11 +10,12 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 
 import zipCodeImage from '@src/assets/pngs/zipCodeImage.png';
+import FormField from '@src/components/FormField';
 
 const ZipCodeScreen = () => {
   const navigation = useNavigation();
-  const zipCode = '1234';
   const [, dispatch] = useStore();
+  const [zipCode, setZipCode] = useState('');
 
   const handleButtonPress = () => {
     dispatch(updateUserInfomation({ zipCode }));
@@ -24,7 +25,7 @@ const ZipCodeScreen = () => {
 
   return (
     <BackDropView pt={1} hasArrow>
-      <View safeArea justifyBetween flex={1} width="100%" spacing={{ mt: 5 }}>
+      <View safeArea flex={1} width="100%" spacing={{ mt: 5 }}>
         <View alignCenter>
           <Image file={zipCodeImage} width={74} height={87} />
           <Text variant="title" spacing={{ mt: 3 }}>Where are you located?</Text>
@@ -35,10 +36,21 @@ const ZipCodeScreen = () => {
             availability in your area
           </Text>
         </View>
-        <View width="100%" spacing={{ px: 4, pb: 4 }}>
-          <Button onPress={handleButtonPress}>
-            Continue
-          </Button>
+        <View alignCenter spacing={{ mt: 2 }}>
+          <View width="100%" spacing={{ px: 4, pb: 4 }}>
+            <View alignCenter spacing={{ mb: 3 }}>
+              <FormField
+                placeholder="Zip code"
+                value={zipCode}
+                returnKeyType="done"
+                keyboardType="number-pad"
+                onChangeText={(text) => setZipCode(text)}
+              />
+            </View>
+            <Button onPress={handleButtonPress}>
+              Continue
+            </Button>
+          </View>
         </View>
       </View>
     </BackDropView>

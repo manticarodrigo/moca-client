@@ -16,7 +16,6 @@ import FormField from '@src/components/FormField';
 import logoIcon from '@src/assets/pngs/logoIcon.png';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
-
 import { Views, Spacing, Colors } from '@src/styles';
 
 const RegistrationScreen = () => {
@@ -33,8 +32,13 @@ const RegistrationScreen = () => {
   const isPatient = userInformation.type === 'Patient';
 
   const handleButtonPress = () => {
+    // validation
     dispatch(updateUserInfomation({ ...formFields }));
-    navigation.navigate('InvalidZipCodeScreen');
+    if (userInformation.type === 'Patient') {
+      navigation.navigate('AddressScreen', {
+        name: formFields.name,
+      });
+    }
   };
 
   const handleMedicareAgreement = () => {
@@ -45,6 +49,7 @@ const RegistrationScreen = () => {
     if (isButtonPressed) setIsButtonPressed(false);
     else setIsButtonPressed(true);
   };
+
 
   const handlePrivaryPress = () => navigation.navigate('');
   const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen');
@@ -59,11 +64,11 @@ const RegistrationScreen = () => {
         <Text variant="title" typography={{ size: 2 }}>covered by Medicare?</Text>
       </View>
       <View row alignCenter>
-        <Button variant="secondary" onPress={handleMedicareAgreement}>
+        <Button variant="tertiary" onPress={handleMedicareAgreement}>
           Yes
         </Button>
         <View spacing={{ ml: 3 }}>
-          <Button variant={isButtonPressed ? 'buttonPressed' : 'secondary'} onPress={handleMedicareDisagreement}>
+          <Button variant={isButtonPressed ? 'buttonPressed' : 'tertiary'} onPress={handleMedicareDisagreement}>
             No
           </Button>
         </View>

@@ -18,6 +18,10 @@ declare type RegistrationInformation = {
   zipCode?: string;
   medicalId?: string;
   email?: string;
+  address?: {
+    street: string;
+    apartment: string;
+  };
 };
 
 declare type Chat = {
