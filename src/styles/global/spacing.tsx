@@ -20,7 +20,7 @@ const compositions = {
   py: [aliases.pt, aliases.pb],
 };
 
-export const spaceSize = [0, 4, 8, 16, 32, 64, 128, 256, 512];
+export const spaceSize = [0, 4, 8, 16, 24, 32, 64, 128, 256, 512];
 
 type SpacingSizeIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type SpacingKey = keyof typeof aliases | keyof typeof compositions;

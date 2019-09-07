@@ -8,3 +8,4 @@ export { default as DeviceMapIcon } from './DeviceMapIcon';
 export { default as SettingsIcon } from './SettingsIcon';
 export { default as CameraIcon } from './CameraIcon';
 export { default as SendIcon } from './SendIcon';
+export { default as PriceRateIcon } from './PriceRateIcon';
