@@ -28,7 +28,7 @@ const AddressScreen = () => {
   const handleButtonPress = () => {
     // validation
     dispatch(updateUserInfomation({ address: { street, apartment } }));
-    navigation.navigate('OnboardingScreen'); // homeScreen
+    // navigation.navigate('OnboardingScreen'); // homeScreen
   };
 
   return (
