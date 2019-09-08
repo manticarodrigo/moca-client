@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
+
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import View from '@src/components/View';
@@ -16,6 +17,7 @@ import FormField from '@src/components/FormField';
 import logoIcon from '@src/assets/pngs/logoIcon.png';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
+
 import { Views, Spacing, Colors } from '@src/styles';
 
 const RegistrationScreen = () => {
@@ -36,6 +38,10 @@ const RegistrationScreen = () => {
     dispatch(updateUserInfomation({ ...formFields }));
     if (userInformation.type === 'Patient') {
       navigation.navigate('AddressScreen', {
+        name: formFields.name,
+      });
+    } else {
+      navigation.navigate('QualificationsScreen', {
         name: formFields.name,
       });
     }

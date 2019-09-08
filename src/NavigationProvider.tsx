@@ -11,7 +11,7 @@ import {
 } from 'react-navigation';
 
 import { Views, Typography, Colors } from '@src/styles';
-import { HomeTabIcon, ScheduleTabIcon, MessagesTabIcon, ProfileTabIcon } from '@src/components/icons';
+import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
@@ -26,6 +26,8 @@ import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
 import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
 import TermsOfServiceScreen from '@src/screens/SignUp/TermsOfServiceScreen';
 import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/SignUp/AddressScreen';
+import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -61,7 +63,7 @@ const defaultTabConfig: TabNavigatorConfig = {
         case 'ScheduleTab':
           return <ScheduleTabIcon focused={focused} />;
         case 'ChatTab':
-          return <MessagesTabIcon focused={focused} />;
+          return <ChatTabIcon focused={focused} />;
         case 'ProfileTab':
           return <ProfileTabIcon focused={focused} />;
         default:
@@ -70,6 +72,7 @@ const defaultTabConfig: TabNavigatorConfig = {
     },
     tabBarVisible: navigation.state.index < 1,
     tabBarOptions: {
+      showIcon: true,
       showLabel: false,
       style: {
         ...Views.borderTop,
@@ -91,6 +94,8 @@ const AppStack = createSwitchNavigator(
       RegistrationScreen,
       TermsOfServiceScreen,
       InvalidMediCareScreen,
+      AddressScreen,
+      QualificationsScreen,
     }, defaultNavConfig),
 
     TabStack: createBottomTabNavigator({
@@ -115,7 +120,7 @@ const AppStack = createSwitchNavigator(
     }, defaultTabConfig),
 
   },
-  { initialRouteName: 'TabStack' },
+  { initialRouteName: 'AuthStack' },
 );
 
 export default createAppContainer(AppStack);

@@ -23,6 +23,8 @@ const InvalidZipCodeScreen = () => {
   const [email, setEmail] = useState('');
 
   const handleButtonPress = () => {
+    // validation
+    // api call
     navigation.dispatch(StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],

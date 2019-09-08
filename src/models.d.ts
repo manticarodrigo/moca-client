@@ -11,6 +11,8 @@ declare type Message = {
   createdAt: string;
 };
 
+declare type Qualifications = '';
+
 declare type RegistrationInformation = {
   type?: string;
   name?: string;
@@ -22,6 +24,7 @@ declare type RegistrationInformation = {
     street: string;
     apartment: string;
   };
+  qualifications?: Array<string>; // to be changed later [add all types of checkBox items]
 };
 
 declare type Chat = {

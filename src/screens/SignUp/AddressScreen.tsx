@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import useNavigation from '@src/hooks/useNavigation';
-
 import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
@@ -13,6 +11,8 @@ import StreetIcon from '@src/assets/Icons/pinGrey.png';
 import ApartmentIcon from '@src/assets/Icons/building.png';
 
 import useStore from '@src/hooks/useStore';
+import useNavigation from '@src/hooks/useNavigation';
+
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
