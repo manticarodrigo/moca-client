@@ -34,7 +34,7 @@ const SelectionScreen = () => {
   const handleButtonPress = () => {
     // validation
     dispatch(updateUserInfomation({ type }));
-    navigation.navigate('ZipCodeScreen');
+    navigation.navigate('ZipCodeScreen', { transition: 'slideTop' });
   };
 
   const handlePatientPress = () => {

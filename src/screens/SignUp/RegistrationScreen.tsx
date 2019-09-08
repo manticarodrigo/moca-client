@@ -56,9 +56,10 @@ const RegistrationScreen = () => {
     else setIsButtonPressed(true);
   };
 
-
   const handlePrivaryPress = () => navigation.navigate('');
-  const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen');
+
+  const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen', { transition: 'slideTop' });
+
   const handleFormFields = (name: string, text: string) => {
     setFormFields({ ...formFields, [name]: text });
   };

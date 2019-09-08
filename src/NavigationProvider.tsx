@@ -12,6 +12,7 @@ import {
 
 import { Views, Typography, Colors } from '@src/styles';
 import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
+import { TransitionConfiguration } from '@src/NavigationTransitions';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
@@ -32,11 +33,7 @@ import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
   cardShadowEnabled: false,
-  transitionConfig: () => ({
-    containerStyle: {
-      backgroundColor: Colors.primary,
-    },
-  }),
+  transitionConfig: TransitionConfiguration,
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
     headerStyle: {
