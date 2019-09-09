@@ -25,7 +25,7 @@ const BackdropView = ({ children, pt = 3, hasArrow }: BackdropProps) => {
       <Button variant="backdrop" onPress={handleBackdropPress} />
       <View variant="backdrop" safeArea column alignCenter position={{ pt }}>
         <View alignCenter spacing={{ mt: 2 }}>
-          {hasArrow && <Image file={arrow} width={40} height={8} />}
+          {hasArrow && <Image file={arrow} width={49} height={17} />}
         </View>
         <View alignCenter flex={1} width="100%">
           {children}
