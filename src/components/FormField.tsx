@@ -1,20 +1,31 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
 import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
-import { Spacing, Colors } from '@src/styles';
+import { Spacing, SpacingProp, Colors } from '@src/styles';
 
 
 import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
+
+import ErrorIcon from '@src/assets/Icons/warning.png';
 
 import TextInput from './TextInput';
 
 type FormFieldProps = TextInputProps & {
   placeholder: string;
-  icon?: object;
   value: string;
+  icon?: object;
+  error?: boolean;
+  spacing?: SpacingProp;
 }
 
-const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldProps) => {
+const FormField = ({
+  placeholder,
+  icon,
+  value,
+  spacing,
+  error,
+  ...textInputProps
+}: FormFieldProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
@@ -41,10 +52,10 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      marginTop: Spacing.spaceSize[5],
-      marginLeft: widthPercentageToDP(6.4),
-      marginRight: widthPercentageToDP(6.4),
+      borderWidth: error ? 1 : null,
+      borderColor: error ? Colors.error : null,
       padding: Spacing.spaceSize[3],
+      ...Spacing.getStyles(spacing),
       width: widthPercentageToDP(87.2),
       height: heightPercentageToDP(8.3),
       backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
@@ -56,7 +67,7 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
       width: widthPercentageToDP(70),
       height: heightPercentageToDP(8.3),
     },
-  }), [isFocused]);
+  }), [isFocused, spacing, error]);
 
   const placeholderStyle = {
     position: 'absolute',
@@ -87,7 +98,7 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
         onBlur={handleBlur}
         {...textInputProps}
       />
-      <Image source={icon} />
+      <Image source={error ? ErrorIcon : icon} />
     </View>
   );
 };
