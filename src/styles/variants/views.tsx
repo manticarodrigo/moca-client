@@ -49,6 +49,13 @@ const card: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
+const cardRight: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  borderTopRightRadius: Spacing.spaceSize[2],
+  borderBottomRightRadius: Spacing.spaceSize[2],
+  backgroundColor: Colors.white,
+};
+
 const cardLeft: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
   borderTopLeftRadius: Spacing.spaceSize[2],
@@ -56,11 +63,22 @@ const cardLeft: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
-const cardRight: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  borderTopRightRadius: Spacing.spaceSize[2],
-  borderBottomRightRadius: Spacing.spaceSize[2],
-  backgroundColor: Colors.white,
+const borderCardRight: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...cardRight,
+  borderTopWidth: 1,
+  borderRightWidth: 1,
+  borderBottomWidth: 1,
+  borderColor: Colors.primary,
+};
+
+const borderCardLeft: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...cardLeft,
+  borderTopWidth: 1,
+  borderLeftWidth: 1,
+  borderBottomWidth: 1,
+  borderColor: Colors.primary,
 };
 
 const borderCard: ViewStyle = {
@@ -105,8 +123,10 @@ export {
   borderBottom,
   backdrop,
   card,
-  cardLeft,
   cardRight,
+  cardLeft,
+  borderCardRight,
+  borderCardLeft,
   borderCard,
   shadowCard,
   iconButton,

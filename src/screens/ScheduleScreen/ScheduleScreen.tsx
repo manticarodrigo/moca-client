@@ -14,7 +14,7 @@ const ScheduleScreen = () => {
   const loadItems = (day) => {
     setTimeout(() => {
       for (let i = -15; i < 85; i += 1) {
-        const strTime = format(addDays(day.timestamp, i), 'YYYY-MM-DD');
+        const strTime = format(addDays(day.timestamp, i + 1), 'YYYY-MM-DD');
 
         if (!items[strTime]) {
           items[strTime] = [];
@@ -30,6 +30,18 @@ const ScheduleScreen = () => {
               documents: 2,
               completedDocuments: 2,
               earnings: 60,
+              isToday: i === 0,
+            });
+          } else if (i === 0) {
+            items[strTime].push({
+              strTime,
+              appointments: 0,
+              completedAppointments: 0,
+              timeSpent: 0,
+              documents: 0,
+              completedDocuments: 0,
+              earnings: 0,
+              isToday: true,
             });
           }
         }
@@ -44,7 +56,7 @@ const ScheduleScreen = () => {
   };
 
   const renderItem = (item) => (
-    <View variant="cardRight" column flex={1} spacing={{ mt: 2, mr: 3 }}>
+    <View variant={item.isToday ? 'borderCardRight' : 'cardRight'} column flex={1} spacing={{ mt: 2, mr: 3 }}>
       <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
         <Tag icon="report" type="borderLight" placeholder={`${item.completedDocuments}/${item.documents}`} />
       </View>
@@ -56,19 +68,21 @@ const ScheduleScreen = () => {
     </View>
   );
 
-  const renderDay = (day) => {
+  const renderDay = (day, item = { isToday: false }) => {
     if (day) {
+      const { isToday } = item;
+
       return (
-        <View variant="cardLeft" column spacing={{ mt: 2, ml: 3 }}>
+        <View variant={isToday ? 'borderCardLeft' : 'cardLeft'} column spacing={{ mt: 2, ml: 3 }}>
           <View row>
-            <Text variant="titleSecondaryLarge">{day.day}</Text>
+            <Text variant={isToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>{day.day}</Text>
             <View column spacing={{ ml: 2 }}>
-              <Text variant="lightSecondarySmallest">{format(day.timestamp, 'MMM')}</Text>
-              <Text variant="lightSecondarySmallest">{day.year}</Text>
+              <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>{format(day.timestamp, 'MMM')}</Text>
+              <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>{day.year}</Text>
             </View>
           </View>
 
-          <Text variant="regularSecondary">{format(day.timestamp, 'dddd')}</Text>
+          <Text variant={isToday ? 'regularPrimary' : 'regularSecondary'}>{format(day.timestamp, 'dddd')}</Text>
         </View>
       );
     }
