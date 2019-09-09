@@ -6,11 +6,11 @@ import Text from '@src/components/Text';
 
 const TermsOfServiceScreen = () => (
   <BackDropView pt={1} hasArrow>
-    <View safeArea flex={1} width="100%" spacing={{ mt: 4 }}>
-      <View variant="borderBottom" width="100%" height={54} alignCenter>
-        <Text variant="title">Terms & Service</Text>
+    <View safeArea flex={1} width="100%">
+      <View variant="borderBottom" width="100%" height={48} alignCenter justifyCenter>
+        <Text variant="titleSmall">Terms & Service</Text>
       </View>
-      <View flex={1} spacing={{ m: 4 }}>
+      <View flex={1} spacing={{ m: 3 }}>
         <Text variant="regular">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tempor
           dapibus nunc sed fringilla. Nulla facilisi.

@@ -29,7 +29,6 @@ const InvalidZipCodeScreen = () => {
   const handleButtonPress = () => {
     // validation email input
     // api call
-
     dispatch(resetUserInformation());
     navigation.dispatch(StackActions.reset({
       index: 0,
@@ -41,7 +40,7 @@ const InvalidZipCodeScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + 20}
+      keyboardVerticalOffset={Header.HEIGHT + 80}
     >
       <View safeArea flex={1} spacing={{ mt: 4, mx: 3 }} alignCenter justifyEnd>
         <View alignCenter>
