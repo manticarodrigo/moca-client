@@ -30,40 +30,51 @@ const ZipCodeScreen = () => {
   };
 
   return (
-    <BackDropView pt={1} hasArrow>
-      <View spacing={{ mt: 5, px: 4 }} alignCenter flex={1} width="100%">
-        <View alignCenter>
-          <Image file={zipCodeImage} width={74} height={87} />
-          <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
-          <Text variant="regular" spacing={{ mt: 2 }}>
-            {"Enter your zip code to check MOCA's"}
-          </Text>
-          <Text variant="regular">
-            availability in your area
-          </Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+    >
+      <BackDropView pt={1} hasArrow>
+        <View
+          spacing={{ mt: 5, px: 4 }}
+          alignCenter
+          flex={1}
+          width="100%"
+          justifyEnd
+        >
+          <View alignCenter>
+            <Image file={zipCodeImage} width={74} height={87} />
+            <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
+            <Text variant="regular" spacing={{ mt: 2 }}>
+              {"Enter your zip code to check MOCA's"}
+            </Text>
+            <Text variant="regular">
+              availability in your area
+            </Text>
+          </View>
+          <View alignCenter width="100%" spacing={{ mt: 4 }}>
+            <FormField
+              placeholder="Zip code"
+              value={zipCode}
+              returnKeyType="done"
+              keyboardType="number-pad"
+              onChangeText={(text) => setZipCode(text)}
+            />
+          </View>
+          <View width="100%" spacing={{ mt: 4 }}>
+            <Button
+              variant={zipCode === '' ? 'primaryDisabled' : 'primary'}
+              {...(zipCode !== '' ? { onPress: handleButtonPress } : '')}
+            >
+              Continue
+            </Button>
+          </View>
+          <View flex={1} />
         </View>
-        <View alignCenter width="100%" spacing={{ mt: 4 }}>
-          <FormField
-            placeholder="Zip code"
-            value={zipCode}
-            returnKeyType="done"
-            keyboardType="number-pad"
-            onChangeText={(text) => setZipCode(text)}
-          />
-        </View>
-        <View width="100%" spacing={{ mt: 4 }}>
-          <Button
-            variant={zipCode === '' ? 'primaryDisabled' : 'primary'}
-            {...(zipCode !== '' ? { onPress: handleButtonPress } : '')}
-          >
-            Continue
-          </Button>
-        </View>
-      </View>
-    </BackDropView>
+      </BackDropView>
+    </KeyboardAvoidingView>
   );
 };
-
 
 ZipCodeScreen.navigationOptions = {
   header: null,

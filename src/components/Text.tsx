@@ -7,7 +7,7 @@ const variants = {
   link: { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary', decoration: 'underline' }) },
   title: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
   regular: { ...Typography.getStyles({ color: 'semiGrey', size: 2, weight: '500' }) },
-  error: { ...Typography.getStyles({ color: 'error', size: 4, weight: '500' }) },
+  error: { ...Typography.getStyles({ color: 'error', size: 4, weight: '700' }) },
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   titleSmallWhite: { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },

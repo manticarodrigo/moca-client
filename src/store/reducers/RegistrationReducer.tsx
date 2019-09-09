@@ -14,6 +14,12 @@ const reducer = (state: RegistrationState = {}, action: RegistrationAction) => {
           ...action.payLoad,
         },
       };
+    case 'RESET_USER':
+      return {
+        userInformation: {
+
+        },
+      };
     default:
       return state;
   }

@@ -4,7 +4,6 @@ import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
 import * as Typography from '../global/typography';
 import * as Colors from '../global/colors';
-import { cpus } from 'os';
 
 type ButtonVariant = {
   view: ViewStyle;
