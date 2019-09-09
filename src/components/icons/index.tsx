@@ -16,3 +16,6 @@ export { default as ArrowRightIcon } from './ArrowRightIcon';
 export { default as WalletIcon } from './WalletIcon';
 export { default as MessagesIcon } from './MessagesIcon';
 export { default as HistoryIcon } from './HistoryIcon';
+export { default as AppointmentIcon } from './AppointmentIcon';
+export { default as ReportIcon } from './ReportIcon';
+export { default as DollarIcon } from './DollarIcon';

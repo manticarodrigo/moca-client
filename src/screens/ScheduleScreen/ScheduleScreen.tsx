@@ -6,6 +6,7 @@ import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Tag from '@src/components/Tag';
 
 const ScheduleScreen = () => {
   const [items, setItems] = useState({});
@@ -43,11 +44,15 @@ const ScheduleScreen = () => {
   };
 
   const renderItem = (item) => (
-    <View variant="cardRight" flex={1} column alignEnd spacing={{ mt: 2, mr: 3 }}>
-      <Text variant="lightSecondarySmallest">{`Time Spent: ${item.timeSpent}`}</Text>
-      <Text variant="lightSecondarySmallest">{`Appointments: ${item.completedAppointments} / ${item.appointments}`}</Text>
-      <Text variant="lightSecondarySmallest">{`Documents: ${item.completedDocuments} / ${item.documents}`}</Text>
-      <Text variant="lightSecondarySmallest">{`Earnings: $${item.earnings}`}</Text>
+    <View variant="cardRight" column flex={1} spacing={{ mt: 2, mr: 3 }}>
+      <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
+        <Tag icon="report" type="borderLight" placeholder={`${item.completedDocuments}/${item.documents}`} />
+      </View>
+      <View row flex={1} justifyEnd>
+        <Tag icon="appointment" type="fill" placeholder={`${item.completedAppointments}/${item.appointments}`} />
+        <Tag icon="clock" type="border" placeholder={item.timeSpent} spacing={{ ml: 2 }} />
+        <Tag icon="dollar" type="fill" placeholder={item.earnings} spacing={{ ml: 2 }} />
+      </View>
     </View>
   );
 
@@ -72,8 +77,15 @@ const ScheduleScreen = () => {
   };
 
   const renderEmptyDate = () => (
-    <View variant="cardRight" flex={1} column alignEnd spacing={{ mt: 2, mr: 3 }}>
-      <Text variant="lightSecondarySmallest">Nothing to see.</Text>
+    <View variant="cardRight" column flex={1} spacing={{ mt: 2, mr: 3 }}>
+      <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
+        <Tag icon="report" placeholder="0/0" />
+      </View>
+      <View row flex={1} justifyEnd>
+        <Tag icon="appointment" placeholder="0/0" />
+        <Tag icon="clock" placeholder="0" spacing={{ ml: 1 }} />
+        <Tag icon="dollar" placeholder="0" spacing={{ ml: 1 }} />
+      </View>
     </View>
   );
 
@@ -97,8 +109,13 @@ const ScheduleScreen = () => {
         monthTextColor: Colors.white,
         textDayFontFamily: 'family-700',
         todayTextColor: Colors.secondaryLighter,
-        selectedDayBackgroundColor: Colors.secondary,
         dotColor: Colors.semiGreyLighter,
+        'stylesheet.day.basic': {
+          selected: {
+            backgroundColor: Colors.secondary,
+            borderRadius: 8,
+          },
+        },
       }}
     />
   );
