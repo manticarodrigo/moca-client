@@ -48,6 +48,12 @@ const imageBorderRight: ViewStyle = {
   ...imageBorder,
   borderTopRightRadius: 16,
   borderBottomRightRadius: 16,
+  borderLeftWidth: 0,
+};
+
+const imageBorderRightPressed: ViewStyle = {
+  ...imageBorderRight,
+  borderColor: Colors.secondary,
 };
 
 const imageBorderLeft: ViewStyle = {
@@ -56,6 +62,12 @@ const imageBorderLeft: ViewStyle = {
   borderBottomLeftRadius: 16,
 };
 
+
+const imageBorderLeftPressed: ViewStyle = {
+  ...imageBorderLeft,
+  borderColor: Colors.secondary,
+  borderRightColor: Colors.secondaryLighter,
+};
 
 const backdrop: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
@@ -118,4 +130,6 @@ export {
   shadowCard,
   iconButton,
   bottomBounceFill,
+  imageBorderRightPressed,
+  imageBorderLeftPressed,
 };

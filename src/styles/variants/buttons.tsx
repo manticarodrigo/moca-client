@@ -4,6 +4,7 @@ import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
 import * as Typography from '../global/typography';
 import * as Colors from '../global/colors';
+import { cpus } from 'os';
 
 type ButtonVariant = {
   view: ViewStyle;
@@ -16,6 +17,16 @@ const primary: ButtonVariant = {
     ...Spacing.getStyles({ p: 3 }),
     ...Borders.primary,
     backgroundColor: Colors.primary,
+  },
+  text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
+const primaryDisabled: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 3 }),
+    ...Borders.primary,
+    backgroundColor: Colors.buttonDisabled,
   },
   text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
   underlayColor: null,
@@ -70,7 +81,7 @@ const tertiary: ButtonVariant = {
   underlayColor: Colors.secondaryLightest,
 };
 
-const buttonPressed = {
+const buttonPressed: ButtonVariant = {
   view: {
     borderWidth: 1,
     borderColor: Colors.secondaryLighter,
@@ -92,4 +103,5 @@ export {
   backdrop,
   secondary,
   buttonPressed,
+  primaryDisabled,
 };

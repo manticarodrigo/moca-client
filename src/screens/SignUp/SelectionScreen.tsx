@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 
@@ -21,15 +20,34 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 const SelectionScreen = () => {
   type Colors = keyof typeof Colors;
 
+  let buttonText = 'Select';
+  let patientBgColor: Colors = 'white';
+  let therapistBgColor: Colors = 'white';
+  let patientImage = patient;
+  let therapistImage = therapist;
+
+  const therapistImageWidth = 56;
+  const therapistImageHeight = 110;
+  const patientImageWidth = 48;
+  const patientImageHeight = 93;
+
   const [type, setType] = useState('');
-  const [buttonText, setButtonText] = useState('Select');
-  const [patientBgColor, setPatientBgColor] = useState<Colors>('white');
-  const [therapistBgColor, setTherapistBgColor] = useState<Colors>('white');
-  const [patientImage, setPatientImage] = useState(patient);
-  const [therapistImage, setTherapistImage] = useState(therapist);
   const [, dispatch] = useStore();
   const navigation = useNavigation();
 
+  if (type === 'Patient') {
+    buttonText = 'Continue as a Patient';
+    patientBgColor = 'secondary';
+    therapistBgColor = 'white';
+    patientImage = patientSelected;
+    therapistImage = therapist;
+  } else if (type === 'Therapist') {
+    buttonText = 'Continue as a Therapist';
+    patientBgColor = 'white';
+    therapistBgColor = 'secondary';
+    patientImage = patient;
+    therapistImage = therapistSelected;
+  }
 
   const handleButtonPress = () => {
     // validation
@@ -37,55 +55,42 @@ const SelectionScreen = () => {
     navigation.navigate('ZipCodeScreen', { transition: 'slideTop' });
   };
 
-  const handlePatientPress = () => {
-    setButtonText('Continue as a Patient');
-    setPatientBgColor('secondary');
-    setTherapistBgColor('white');
-    setPatientImage(patientSelected);
-    setTherapistImage(therapist);
-    setType('Patient');
-  };
-
-  const handleTherapistPress = () => {
-    setButtonText('Continue as a Therapist');
-    setPatientBgColor('white');
-    setTherapistBgColor('secondary');
-    setPatientImage(patient);
-    setTherapistImage(therapistSelected);
-    setType('Therapist');
-  };
-
   return (
-    <View safeArea alignCenter justifyBetween flex={1}>
-      <StatusBar barStyle="dark-content" />
-      <View spacing={{ pt: 5 }} alignCenter>
+    <View safeArea alignCenter flex={1} spacing={{ mx: 3 }}>
+      <View spacing={{ mt: 5 }} alignCenter>
         <Text variant="title">Please select your</Text>
-        <Text variant="title">Moca Profile</Text>
+        <View alignCenter row>
+          <Text variant="title" typography={{ color: 'secondary' }}>MOCA</Text>
+          <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
+        </View>
       </View>
-      <View row>
+      <View row spacing={{ mt: 5 }}>
         <View
-          variant="imageBorderLeft"
+          variant={type === 'Patient' ? 'imageBorderLeftPressed' : 'imageBorderLeft'}
           alignCenter
           justifyBetween
-          onPress={handlePatientPress}
+          {...(type !== 'Patient' ? { onPress: () => setType('Patient') } : '')}
           bgColor={patientBgColor}
         >
-          <Image file={patientImage} width={48} height={93} />
+          <Image file={patientImage} width={patientImageWidth} height={patientImageHeight} />
           <Text variant="title">Patient</Text>
         </View>
         <View
-          variant="imageBorderRight"
+          variant={type === 'Therapist' ? 'imageBorderRightPressed' : 'imageBorderRight'}
           alignCenter
           justifyBetween
-          onPress={handleTherapistPress}
+          {...(type !== 'Therapist' ? { onPress: () => setType('Therapist') } : '')}
           bgColor={therapistBgColor}
         >
-          <Image file={therapistImage} width={56} height={110} />
+          <Image file={therapistImage} width={therapistImageWidth} height={therapistImageHeight} />
           <Text variant="title">Therapist</Text>
         </View>
       </View>
-      <View width="100%" spacing={{ px: 4, pb: 4 }}>
-        <Button onPress={handleButtonPress}>
+      <View width="100%" flex={1} justifyEnd spacing={{ mb: 3 }}>
+        <Button
+          variant={type === '' ? 'primaryDisabled' : 'primary'}
+          {...(type !== '' ? { onPress: handleButtonPress } : '')}
+        >
           {buttonText}
         </Button>
       </View>
