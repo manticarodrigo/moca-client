@@ -21,6 +21,19 @@ const primary: ButtonVariant = {
   underlayColor: null,
 };
 
+const secondary: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 2 }),
+    ...Borders.primary,
+    borderWidth: 2,
+    borderColor: Colors.secondaryLightest,
+    backgroundColor: 'transparent',
+    width: '100%',
+  },
+  text: { ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
 const text: ButtonVariant = {
   view: {
     justifyContent: 'center',
@@ -45,6 +58,7 @@ const backdrop: ButtonVariant = {
 
 export {
   primary,
+  secondary,
   text,
   backdrop,
 };

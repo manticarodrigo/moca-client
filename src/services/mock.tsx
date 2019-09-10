@@ -1,7 +1,7 @@
 import { subDays } from 'date-fns';
 
 const mockUsernames = ['Adam Smith', 'David Hume', 'Ayn Rand', 'Jeremy Bentham', 'Michel Foucault'];
-const mockMessages = ['Hey!', 'How are you?', 'Doing well, and you?', 'Doing great!', 'Good to hear.'];
+const mockMessages = ['Hey buddy! Long time no see man. What are you up to?', 'How are you?', 'Doing well, and you?', 'Doing great!', 'Good to hear.'];
 export const mockImg = 'https://www.chaarat.com/wp-content/uploads/2017/08/placeholder-user.png';
 
 

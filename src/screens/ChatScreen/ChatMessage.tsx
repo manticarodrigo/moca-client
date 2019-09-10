@@ -15,7 +15,7 @@ const ChatMessage = ({ text, createdAt, alignRight }: ChatMessageProps) => {
   const time = useMemo(() => format(createdAt, 'hh:mm'), [createdAt]);
 
   return (
-    <View variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
+    <View column variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
       <Text
         typography={{
           color: alignRight ? 'white' : 'dark',
