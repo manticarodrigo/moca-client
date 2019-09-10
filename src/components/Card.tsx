@@ -12,13 +12,13 @@ type CardProps = {
   icon?: any;
   details?: string;
   arrow?: boolean;
-  big?: boolean;
+  large?: boolean;
   children?: JSX.Element | JSX.Element[];
   onPress?: () => void;
 }
 
 
-const Tag = ({ placeholder, icon, arrow, details, big, children }: CardProps) => {
+const Tag = ({ placeholder, icon, arrow, details, large, children }: CardProps) => {
   const styles = useMemo(() => StyleSheet.create({
     icon: {
       margin: Spacing.spaceSize[3],
@@ -26,17 +26,17 @@ const Tag = ({ placeholder, icon, arrow, details, big, children }: CardProps) =>
     arrow: {
       display: arrow ? 'flex' : 'none',
       position: 'absolute',
-      top: big ? 30 : 17,
+      top: large ? 30 : 17,
       right: 30,
     },
-  }), [arrow, big]);
+  }), [arrow, large]);
 
   return (
     <View
       row
       alignCenter
       width="100%"
-      height={big ? 80 : 50}
+      height={large ? 80 : 50}
       bgColor="white"
       variant="borderBottom"
     >

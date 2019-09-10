@@ -71,18 +71,18 @@ const View = ({
       ...(align && { alignItems: align }),
     },
   }), [
-    variant,
-    spacing,
-    position,
-    shadow,
-    direction,
-    expand,
-    justify,
-    align,
-    width,
-    height,
-    bgColor,
-  ]);
+      variant,
+      spacing,
+      position,
+      shadow,
+      direction,
+      expand,
+      justify,
+      align,
+      width,
+      height,
+      bgColor,
+    ]);
 
   return (
     <WrapperType {...wrapperProps}>

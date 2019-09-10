@@ -1,27 +1,27 @@
 import React, { useMemo } from 'react';
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 
 import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
 
-import { PriceRateIcon } from '@src/components/icons';
+import PriceRateIcon from '@src/assets/Icons/priceRate.png';
 
 import Text from './Text';
 import View from './View';
 
 type PriceTableProps = {
   thirtyMinsRate: string;
-  FourtyFiveMinsRate: string;
-  SixtyMinsRate: string;
-  FirstEvaluationRate: string;
+  fourtyFiveMinsRate: string;
+  sixtyMinsRate: string;
+  firstEvaluationRate: string;
 }
 
 
 const PriceTable = ({
   thirtyMinsRate,
-  FourtyFiveMinsRate,
-  SixtyMinsRate,
-  FirstEvaluationRate,
+  fourtyFiveMinsRate,
+  sixtyMinsRate,
+  firstEvaluationRate,
 }: PriceTableProps) => {
   const styles = useMemo(() => StyleSheet.create({
   }), []);
@@ -36,21 +36,21 @@ const PriceTable = ({
       bgColor="white"
     >
       <View row position={{ pl: 0 }}>
-        <PriceRateIcon />
+        <Image source={PriceRateIcon} />
         <Text
-          spacing={{ m: 1 }}
+          spacing={{ ml: 3 }}
           typography={{
-            color: 'black',
+            color: 'dark',
             size: 2,
-            weight: '300',
+            weight: '700',
           }}
         >
           Price Rate
         </Text>
       </View>
-      <View column position={{ pl: 1 }}>
-        <View row>
-          <View spacing={{ pr: 4 }}>
+      <View column position={{ pl: 1 }} spacing={{ mt: 3 }}>
+        <View row variant="borderBottom" spacing={{ pb: 3 }}>
+          <View variant="borderRight" spacing={{ pr: 4 }}>
             <Text
               spacing={{ mb: 2 }}
               typography={{
@@ -72,7 +72,7 @@ const PriceTable = ({
               {thirtyMinsRate}
             </Text>
           </View>
-          <View spacing={{ px: 4 }}>
+          <View variant="borderRight" spacing={{ px: 5 }}>
             <Text
               spacing={{ mb: 2 }}
               typography={{
@@ -91,10 +91,10 @@ const PriceTable = ({
                 weight: '700',
               }}
             >
-              {FourtyFiveMinsRate}
+              {fourtyFiveMinsRate}
             </Text>
           </View>
-          <View spacing={{ px: 4 }}>
+          <View spacing={{ px: 5 }}>
             <Text
               spacing={{ mb: 2 }}
               typography={{
@@ -113,11 +113,11 @@ const PriceTable = ({
                 weight: '700',
               }}
             >
-              {SixtyMinsRate}
+              {sixtyMinsRate}
             </Text>
           </View>
         </View>
-        <View row position={{ pl: 0 }}>
+        <View row position={{ pl: 0 }} spacing={{ mt: 2 }}>
           <Text
             spacing={{ pt: 3 }}
             typography={{
@@ -129,14 +129,14 @@ const PriceTable = ({
             First time evaluation price
           </Text>
           <Text
-            spacing={{ ml: 5 }}
+            spacing={{ ml: 6 }}
             typography={{
               color: 'secondary',
               size: 5,
               weight: '700',
             }}
           >
-            {FirstEvaluationRate}
+            {firstEvaluationRate}
           </Text>
         </View>
       </View>
