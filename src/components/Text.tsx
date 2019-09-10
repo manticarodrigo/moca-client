@@ -6,6 +6,9 @@ import { Spacing, SpacingProp, Typography, TypographyProp } from '@src/styles';
 const variants = {
   link: { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary', decoration: 'underline' }) },
   title: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
+  titleSecondary: { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondary' }) },
+  titlePrimaryLarge: { ...Typography.getStyles({ size: 5, weight: '700', color: 'primary' }) },
+  titleSecondaryLarge: { ...Typography.getStyles({ size: 5, weight: '700', color: 'secondary' }) },
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   titleSmallWhite: { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
@@ -13,10 +16,14 @@ const variants = {
   boldGrey: { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) },
   boldSmallGrey: { ...Typography.getStyles({ size: 1, weight: '700', color: 'grey' }) },
   regular: { ...Typography.getStyles({ size: 2, weight: '500', color: 'semiGrey' }) },
+  regularPrimary: { ...Typography.getStyles({ size: 2, weight: '500', color: 'primary' }) },
+  regularSecondary: { ...Typography.getStyles({ size: 2, weight: '500', color: 'secondary' }) },
   regularSmall: { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) },
   regularSmallGrey: { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) },
   regularSmallDark: { ...Typography.getStyles({ size: 1, weight: '500', color: 'dark' }) },
   light: { ...Typography.getStyles({ size: 2, weight: '300', color: 'semiGrey' }) },
+  lightPrimarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'primary' }) },
+  lightSecondarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'secondary' }) },
 };
 
 type TextProps = RNTextProps & {
