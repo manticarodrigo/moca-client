@@ -35,6 +35,11 @@ const borderBottom: ViewStyle = {
   borderBottomColor: Colors.secondaryLightest,
 };
 
+const borderRight: ViewStyle = {
+  borderRightWidth: 1,
+  borderRightColor: Colors.secondaryLightest,
+};
+
 const backdrop: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
   ...Borders.secondary,
@@ -47,5 +52,6 @@ export {
   msgBubbleLeft,
   borderTop,
   borderBottom,
+  borderRight,
   backdrop,
 };
