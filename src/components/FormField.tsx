@@ -12,10 +12,10 @@ import TextInput from './TextInput';
 
 type FormFieldProps = TextInputProps & {
   placeholder: string;
-  value: string;
   icon?: object;
-  error?: boolean;
+  value: string;
   spacing?: SpacingProp;
+  error?: boolean;
 }
 
 const FormField = ({

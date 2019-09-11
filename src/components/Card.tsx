@@ -18,7 +18,7 @@ type CardProps = {
 }
 
 
-const Tag = ({ placeholder, icon, arrow, details, large, children }: CardProps) => {
+const Card = ({ placeholder, icon, arrow, details, large, children }: CardProps) => {
   const styles = useMemo(() => StyleSheet.create({
     icon: {
       margin: Spacing.spaceSize[3],
@@ -59,4 +59,4 @@ const Tag = ({ placeholder, icon, arrow, details, large, children }: CardProps) 
   );
 };
 
-export default Tag;
+export default Card;
