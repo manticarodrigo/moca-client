@@ -25,7 +25,7 @@ const AddressScreen = () => {
   const name = navigation.getParam('name', '');
   const [street, setStreet] = useState('');
   const [apartment, setApartment] = useState('');
-  const [, dispatch] = useStore();
+  const [{ registrationState: { userInformation } }, dispatch] = useStore();
 
 
   const handleButtonPress = () => {
@@ -34,6 +34,7 @@ const AddressScreen = () => {
     // navigation.navigate('OnboardingScreen'); // homeScreen
   };
 
+  console.log(userInformation);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}

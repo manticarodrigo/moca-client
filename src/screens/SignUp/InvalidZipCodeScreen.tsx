@@ -25,15 +25,25 @@ const InvalidZipCodeScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [, dispatch] = useStore();
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const validateEmailAddress = () => {
+    // eslint-disable-next-line no-useless-escape
+    const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
+    return regexpEmail.test(email);
+  };
+  const submitEmail = () => true; // Api call
 
   const handleButtonPress = () => {
-    // validation email input
-    // api call
-    dispatch(resetUserInformation());
-    navigation.dispatch(StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
-    }));
+    if (validateEmailAddress()) {
+      setIsEmailValid(true);
+      submitEmail();
+      dispatch(resetUserInformation());
+      navigation.dispatch(StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
+      }));
+    } else setIsEmailValid(false);
   };
 
   return (
@@ -52,26 +62,15 @@ const InvalidZipCodeScreen = () => {
             to your area yet
           </Text>
           <Text variant="regular" spacing={{ mt: 2 }} typography={{ size: 1 }}>
-            Thanks for your interest in Moca!
+            {'Thanks for your interest in Moca!\n'}
+            {'We are currently not available in your area, but\n'}
+            {'we are working hard to change that. Please\n'}
+            {'provide your email with us to receive updates\n'}
+            {'and therapy tips! You will receive a $50\n'}
+            {'discount on your first therapy session when\n'}
+            {'we become available in your area.\n'}
           </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            We are currently not available in your area, but
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            we are working hard to change that. Please
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            provide your email with us to receive updates
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            and therapy tips! You will receive a $50
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            discount on your first therapy session when
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            we become available in your area.
-          </Text>
+
         </View>
         <View alignCenter width="100%" spacing={{ mt: 4 }}>
           <FormField
@@ -82,6 +81,12 @@ const InvalidZipCodeScreen = () => {
             icon={EmailIcon}
             onChangeText={(text) => setEmail(text)}
           />
+          {!isEmailValid
+            && (
+              <Text variant="errorSmall" spacing={{ mt: 1 }}>
+                Please enter a valid Email address
+              </Text>
+            )}
         </View>
         <View width="100%" spacing={{ mt: 4 }}>
           <Button

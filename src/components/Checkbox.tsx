@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableHighlight } from 'react-native';
 
 import CheckBoxFilled from '@src/assets/pngs/tickFilled.png';
@@ -8,30 +8,39 @@ import View from './View';
 import Image from './Image';
 
 
+type CheckBoxProps = {
+  handleCheckBoxClick: (value: string, checked: boolean) => void;
+  value: string;
+  width: number;
+  height: number;
+  isChecked: boolean;
+};
+
 const CheckBox = ({
-  selectedArrayObject,
-  checkBoxKey,
+  handleCheckBoxClick,
   value,
   width,
   height,
-  ...viewProps
-}) => {
+  isChecked,
+}: CheckBoxProps) => {
   const [checked, setChecked] = useState(false);
 
-  const toggleState = (Key, checkBoxValue) => {
-    setChecked(!checked);
-    if (!checked) {
-      selectedArrayObject.pushItem({ checkBoxKey: Key, value: checkBoxValue });
-    } else {
-      selectedArrayObject.getArray()
-        .splice(selectedArrayObject.getArray().findIndex((x) => x.checkBoxKey === checkBoxKey), 1);
+  useEffect(() => {
+    if (isChecked) {
+      setChecked(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isChecked]);
+
+  const handleClick = () => {
+    handleCheckBoxClick(value, !checked);
+    setChecked(!checked);
   };
 
   return (
-    <View {...viewProps}>
+    <View>
       <TouchableHighlight
-        onPress={() => toggleState(checkBoxKey, value)}
+        onPress={() => handleClick()}
         underlayColor="transparent"
       >
         {checked

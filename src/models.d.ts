@@ -20,6 +20,7 @@ declare type RegistrationInformation = {
   zipCode?: string;
   medicalId?: string;
   email?: string;
+  password?: string;
   address?: {
     street: string;
     apartment: string;

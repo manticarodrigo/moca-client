@@ -86,6 +86,7 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
         onFocus={handleFocus}
         onBlur={handleBlur}
         {...textInputProps}
+        value={value}
       />
       <Image source={icon} />
     </View>

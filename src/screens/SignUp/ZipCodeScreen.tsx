@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
@@ -16,17 +16,34 @@ import FormField from '@src/components/FormField';
 
 const ZipCodeScreen = () => {
   const navigation = useNavigation();
-  const [, dispatch] = useStore();
+  const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const [zipCode, setZipCode] = useState('');
+  const [isZipCodeValid, setIsZipCodeValid] = useState(true);
+
+  const validateZipCode = (userInput: string) => {
+    const regexpNumber = new RegExp('^[+ 0-9]{5}$');
+    return regexpNumber.test(userInput);
+  };
+
+  useEffect(() => {
+    if (Object.prototype.hasOwnProperty.call(userInformation, 'zipCode')) {
+      setZipCode(userInformation.zipCode);
+      if (!validateZipCode(userInformation.zipCode)) setIsZipCodeValid(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getLocation = () => true; // api call to check zipCode availability
 
   const handleButtonPress = () => {
-    // api call, validate zipcode then
-    // if zipCode avalible
-    // add param to navigation with user's location
+    // add param to navigation with user's location later
     dispatch(updateUserInfomation({ zipCode }));
-    navigation.navigate('RegistrationScreen');
-    // else
-    // navigation.navigate('InvalidZipCodeScreen');
+    if (validateZipCode(zipCode)) {
+      setIsZipCodeValid(true);
+      if (getLocation()) {
+        navigation.navigate('RegistrationScreen');
+      } else navigation.navigate('InvalidZipCodeScreen');
+    } else setIsZipCodeValid(false);
   };
 
   return (
@@ -59,7 +76,14 @@ const ZipCodeScreen = () => {
               returnKeyType="done"
               keyboardType="number-pad"
               onChangeText={(text) => setZipCode(text)}
+              maxLength={5}
             />
+            {!isZipCodeValid
+              && (
+                <Text spacing={{ mt: 1 }} variant="errorSmall">
+                  Please enter a valid Zip code
+                </Text>
+              )}
           </View>
           <View width="100%" spacing={{ mt: 4 }}>
             <Button

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { StatusBar, KeyboardAvoidingView } from 'react-native';
-import { Header } from 'react-navigation';
+import React, { useState, useEffect } from 'react';
+import { KeyboardAvoidingView } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
@@ -24,29 +23,63 @@ import { Views, Spacing, Colors } from '@src/styles';
 const RegistrationScreen = () => {
   const navigation = useNavigation();
   const [{ registrationState: { userInformation } }, dispatch] = useStore();
+  const isPatient = userInformation.type === 'Patient';
+
   const [formFields, setFormFields] = useState({
     surname: '',
     email: '',
     name: '',
     password: '',
-    medicalId: '',
+    ...(!isPatient && { medicalId: '' }),
   });
+
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [isButtonPressed, setIsButtonPressed] = useState(false);
-  const isPatient = userInformation.type === 'Patient';
+  const [mediCareRemainder, setMediCareRemainder] = useState(false);
+  const isAnyFieldsEmpty = Object.values(formFields).includes('');
+
+
+  const validateEmailAddress = (email: string) => {
+    const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
+    return regexpEmail.test(email);
+  };
+
+  useEffect(() => {
+    if (Object.prototype.hasOwnProperty.call(userInformation, 'email')) {
+      const { email, surname, name, password } = userInformation;
+
+      setFormFields({
+        ...formFields,
+        ...(!isPatient && { medicalId: userInformation.medicalId }),
+        surname,
+        email,
+        name,
+        password,
+      });
+      setIsButtonPressed(true);
+
+      if (!validateEmailAddress(email)) setIsEmailValid(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   const handleButtonPress = () => {
-    // validation
-    dispatch(updateUserInfomation({ ...formFields }));
-    if (userInformation.type === 'Patient') {
-      navigation.navigate('AddressScreen', {
-        name: formFields.name,
-      });
-    } else {
-      navigation.navigate('QualificationsScreen', {
-        name: formFields.name,
-      });
-    }
+    if ((isPatient && isButtonPressed) || !isPatient) {
+      dispatch(updateUserInfomation({ ...formFields }));
+      if (validateEmailAddress(formFields.email)) {
+        setIsEmailValid(true);
+        if (isPatient) {
+          navigation.navigate('AddressScreen', {
+            name: formFields.name,
+          });
+        } else {
+          navigation.navigate('QualificationsScreen', {
+            name: formFields.name,
+          });
+        }
+      } else setIsEmailValid(false);
+    } else setMediCareRemainder(true);
   };
 
   const handleMedicareAgreement = () => {
@@ -55,7 +88,10 @@ const RegistrationScreen = () => {
 
   const handleMedicareDisagreement = () => {
     if (isButtonPressed) setIsButtonPressed(false);
-    else setIsButtonPressed(true);
+    else {
+      setIsButtonPressed(true);
+      setMediCareRemainder(false);
+    }
   };
 
   const handlePrivaryPress = () => navigation.navigate('');
@@ -102,7 +138,6 @@ const RegistrationScreen = () => {
       behavior="padding"
     >
       <View safeArea flex={1} spacing={{ mt: 4 }} justifyEnd>
-        <StatusBar barStyle="dark-content" />
         <View alignCenter>
           <Image file={logoIcon} width={49} height={60} />
           <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
@@ -114,6 +149,12 @@ const RegistrationScreen = () => {
           </Text>
         </View>
         {isPatient && mediCare}
+        {mediCareRemainder
+          && (
+            <Text variant="errorSmall" spacing={{ mt: 1, ml: 5 }}>
+              Please make a choice to continue
+            </Text>
+          )}
         <View spacing={{ mb: 3 }}>
           <FormField
             placeholder="Name"
@@ -136,6 +177,12 @@ const RegistrationScreen = () => {
             onChangeText={(text) => handleFormFields('email', text)}
             icon={EmailIcon}
           />
+          {!isEmailValid
+            && (
+              <Text variant="errorSmall" spacing={{ mt: 1, ml: 5 }}>
+                Please enter a valid Email address
+              </Text>
+            )}
           <FormField
             placeholder="password"
             value={formFields.password}
@@ -146,7 +193,10 @@ const RegistrationScreen = () => {
           />
         </View>
         <View spacing={{ mx: 3 }}>
-          <Button onPress={handleButtonPress}>
+          <Button
+            variant={isAnyFieldsEmpty ? 'primaryDisabled' : 'primary'}
+            {...(isAnyFieldsEmpty ? '' : { onPress: handleButtonPress })}
+          >
             Continue
           </Button>
           <View alignCenter row spacing={{ mt: 2 }}>

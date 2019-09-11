@@ -27,16 +27,27 @@ const InvalidMediCareScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [, dispatch] = useStore();
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const validateEmailAddress = () => {
+    // eslint-disable-next-line no-useless-escape
+    const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
+    return regexpEmail.test(email);
+  };
+  const submitEmail = () => true; // Api call
 
   const handleButtonPress = () => {
-    // validate email input
-    // api call
-    dispatch(resetUserInformation());
-    navigation.dispatch(StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
-    }));
+    if (validateEmailAddress()) {
+      setIsEmailValid(true);
+      submitEmail();
+      dispatch(resetUserInformation());
+      navigation.dispatch(StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
+      }));
+    } else setIsEmailValid(false);
   };
+
 
   return (
     <KeyboardAvoidingView
@@ -51,28 +62,14 @@ const InvalidMediCareScreen = () => {
             Sorry !
           </Text>
           <Text variant="regular" spacing={{ mt: 2 }} typography={{ size: 1 }}>
-            Due to regulations we are still working to offer
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            services for Medicare patients. Please provide
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            We are currently not available in your area, but
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            our email and we will notify you when this
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            update is complete. You will also receive a $25
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            discount on your first therapy session when
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            the update is complete
-          </Text>
-          <Text variant="regular" spacing={{ mt: 1 }} typography={{ size: 1 }}>
-            we become available in your area.
+            {'Due to regulations we are still working to offer\n'}
+            {'services for Medicare patients. Please provide\n'}
+            {'We are currently not available in your area, but\n'}
+            {'our email and we will notify you when this\n'}
+            {'update is complete. You will also receive a $25\n'}
+            {'discount on your first therapy session when\n'}
+            {'the update is complete\n'}
+            {'we become available in your area\n'}
           </Text>
         </View>
         <View alignCenter width="100%" spacing={{ mt: 4 }}>
@@ -84,6 +81,12 @@ const InvalidMediCareScreen = () => {
             icon={EmailIcon}
             onChangeText={(text) => setEmail(text)}
           />
+          {!isEmailValid
+            && (
+              <Text variant="errorSmall" spacing={{ mt: 1 }}>
+                Please enter a valid Email address
+              </Text>
+            )}
         </View>
         <View width="100%" spacing={{ mt: 4 }}>
           <Button

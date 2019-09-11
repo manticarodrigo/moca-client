@@ -15,10 +15,11 @@ import therapistSelected from '@src/assets/pngs/therapistSelect.png';
 import { Colors } from '@src/styles/index';
 
 import useStore from '@src/hooks/useStore';
-import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
+import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
 
 const SelectionScreen = () => {
   type Colors = keyof typeof Colors;
+  const navigation = useNavigation();
 
   let buttonText = 'Select';
   let patientBgColor: Colors = 'white';
@@ -32,8 +33,7 @@ const SelectionScreen = () => {
   const patientImageHeight = 93;
 
   const [type, setType] = useState('');
-  const [, dispatch] = useStore();
-  const navigation = useNavigation();
+  const [{ registrationState: { userInformation } }, dispatch] = useStore();
 
   if (type === 'Patient') {
     buttonText = 'Continue as a Patient';
@@ -50,6 +50,9 @@ const SelectionScreen = () => {
   }
 
   const handleButtonPress = () => {
+    if (Object.prototype.hasOwnProperty.call(userInformation, 'type')) {
+      if (userInformation.type !== type) dispatch(resetUserInformation());
+    }
     dispatch(updateUserInfomation({ type }));
     navigation.navigate('ZipCodeScreen', { transition: 'slideTop' });
   };

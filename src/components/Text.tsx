@@ -8,6 +8,7 @@ const variants = {
   title: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
   regular: { ...Typography.getStyles({ color: 'semiGrey', size: 2, weight: '500' }) },
   error: { ...Typography.getStyles({ color: 'error', size: 4, weight: '700' }) },
+  errorSmall: { ...Typography.getStyles({ color: 'error', size: 1, weight: '500' }) },
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   titleSmallWhite: { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
@@ -24,7 +25,7 @@ type TextProps = RNTextProps & {
   variant?: keyof typeof variants;
   spacing?: SpacingProp;
   typography?: TypographyProp;
-  children: string | JSX.Element[];
+  children: string | JSX.Element[] | string[];
 };
 
 const Text = ({ variant, spacing, typography, children, ...textProps }: TextProps) => {
