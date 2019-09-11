@@ -1,4 +1,4 @@
-import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions, View } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
@@ -39,6 +39,13 @@ const borderBottom: ViewStyle = {
 const borderRight: ViewStyle = {
   borderRightWidth: 1,
   borderRightColor: Colors.secondaryLightest,
+};
+
+const roundedBorder: ViewStyle = {
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
 const backdrop: ViewStyle = {
@@ -100,4 +107,5 @@ export {
   shadowCard,
   iconButton,
   bottomBounceFill,
+  roundedBorder,
 };

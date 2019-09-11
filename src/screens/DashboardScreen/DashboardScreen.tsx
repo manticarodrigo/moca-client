@@ -9,11 +9,6 @@ import Text from '@src/components/Text';
 import LinkCard from '@src/components/LinkCard';
 import AppointmentCard from '@src/components/AppointmentCard';
 
-import FormField from '@src/components/FormField';
-import Tag from '@src/components/Tag';
-import Rating from '@src/components/Rating';
-import AppointmentIcon from '@src/assets/Icons/appointment.png';
-import PriceTable from '@src/components/PriceTable';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
