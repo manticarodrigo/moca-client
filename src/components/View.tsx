@@ -4,7 +4,7 @@ import { StyleSheet, ViewStyle, View as RNView, SafeAreaView, ScrollView, Toucha
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
 type ViewProps = {
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   safeArea?: boolean;
   scroll?: boolean;
   variant?: keyof typeof Views;

@@ -14,6 +14,7 @@ const SitemapScreen = () => {
   const screensNames = [
     'OnboardingScreen',
     'DashboardScreen',
+    'ScheduleScreen',
     'ChatListScreen',
     'ChatScreen',
   ];

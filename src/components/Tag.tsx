@@ -1,68 +1,83 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 
-import { StyleSheet, View, Image } from 'react-native';
-import { Spacing, Colors } from '@src/styles';
+import { StyleSheet } from 'react-native';
+import { Spacing, SpacingProp, Colors } from '@src/styles';
 
-import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
+import { ReportIcon, AppointmentIcon, ClockIcon, DollarIcon } from '@src/components/icons';
 
 import Text from './Text';
+import View from './View';
 
 type TagProps = {
   placeholder: string;
-  icon?: any;
-  positive?: boolean;
-  positiveReport?: boolean;
-  emptySlots?: boolean;
-  away?: boolean;
+  icon?: 'report' | 'appointment' | 'clock' | 'dollar';
+  type?: 'fill' | 'border' | 'borderLight';
+  center?: boolean;
+  spacing?: SpacingProp;
 }
 
-
-const Tag = ({ placeholder, icon, positive, positiveReport, emptySlots, away }: TagProps) => {
-  const textAndImageColor = useMemo(() => {
-    if (positive) {
-      return Colors.white;
-    } if (positiveReport) {
-      return Colors.secondary;
+const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) => {
+  const borderColor = useMemo(() => {
+    switch (type) {
+      case 'fill':
+        return Colors.secondary;
+      case 'borderLight':
+        return Colors.secondaryLight;
+      default:
+        return Colors.semiGrey;
     }
-    return Colors.semiGrey;
-  }, [positive, positiveReport]);
+  }, [type]);
 
-  const width = useMemo(() => {
-    if (emptySlots) {
-      return widthPercentageToDP(13.6);
-    } if (away) {
-      return widthPercentageToDP(21.9);
+  const color = useMemo(() => {
+    switch (type) {
+      case 'fill':
+        return Colors.white;
+      case 'borderLight':
+        return Colors.secondaryLight;
+      default:
+        return Colors.semiGrey;
     }
-    return widthPercentageToDP(16.3);
-  }, [emptySlots, away]);
+  }, [type]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: away ? 'center' : 'space-between',
+      ...Spacing.getStyles(spacing),
       borderRadius: Spacing.spaceSize[5],
       borderWidth: 1,
-      borderColor: (positive || positiveReport) ? Colors.secondary : Colors.semiGrey,
-      margin: Spacing.spaceSize[1],
-      padding: Spacing.spaceSize[2],
-      width,
-      height: heightPercentageToDP(3.6),
-      backgroundColor: positive ? Colors.secondary : null,
+      borderColor,
+      minWidth: 50,
     },
     text: {
-      color: textAndImageColor,
+      ...Spacing.getStyles({ ml: 1 }),
+      color,
     },
-    img: {
-      tintColor: textAndImageColor,
-    },
-  }), [positive, positiveReport, textAndImageColor, width, away]);
+  }), [borderColor, color, spacing]);
 
-
+  const iconType = useMemo(() => {
+    switch (icon) {
+      case 'report':
+        return <ReportIcon tint={color} />;
+      case 'appointment':
+        return <AppointmentIcon tint={color} />;
+      case 'clock':
+        return <ClockIcon />;
+      case 'dollar':
+        return <DollarIcon tint={color} />;
+      default:
+        return null;
+    }
+  }, [icon, color]);
   return (
-    <View style={styles.view}>
-      <Image style={styles.img} source={icon} />
+    <View
+      row
+      justifyCenter={center}
+      justifyBetween={!center}
+      alignCenter
+      spacing={{ px: 2 }}
+      bgColor={type === 'fill' ? 'secondary' : null}
+      style={styles.view}
+    >
+      {iconType}
       <Text style={styles.text}>{placeholder}</Text>
     </View>
   );
