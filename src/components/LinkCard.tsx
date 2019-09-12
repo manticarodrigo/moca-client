@@ -3,6 +3,8 @@ import React, { useMemo } from 'react';
 
 import {
   ArrowRightIcon,
+  ContactIcon,
+  DiagnosisIcon,
   WalletIcon,
   MessagesIcon,
   HistoryIcon,
@@ -14,7 +16,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
-  type: 'wallet' | 'messages' | 'history';
+  type: 'wallet' | 'messages' | 'history' | 'diagnosis' | 'contact';
   spacing?: SpacingProp;
   children: JSX.Element;
   onPress: () => void;
@@ -29,6 +31,10 @@ const LinkCard = ({ type, spacing, children, onPress }: LinkCardProps) => {
         return { icon: <MessagesIcon />, title: 'Messages' };
       case 'history':
         return { icon: <HistoryIcon />, title: 'History' };
+      case 'diagnosis':
+        return { icon: <DiagnosisIcon />, title: 'Injury' };
+      case 'contact':
+        return { icon: <ContactIcon />, title: 'Complete Profile' };
       default:
         return null;
     }
