@@ -8,7 +8,7 @@ type ButtonProps = TouchableHighlightProps & {
   children?: string;
 };
 
-const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
+const Button = ({ variant = 'primary', onPress, children, ...touchableHighlightProps }: ButtonProps) => {
   const styles = useMemo(() => StyleSheet.create({
     view: { ...Buttons[variant].view },
     text: { ...Buttons[variant].text },
@@ -19,6 +19,7 @@ const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
       style={styles.view}
       underlayColor={Buttons[variant].underlayColor}
       onPress={onPress}
+      {...touchableHighlightProps}
     >
       <Text style={styles.text}>
         {children}

@@ -20,6 +20,11 @@ const ZipCodeScreen = () => {
   const [zipCode, setZipCode] = useState('');
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
 
+  const zipCodeImageWidth = 74;
+  const zipCodeImageHeigth = 87;
+
+  const isButtonDisabled = zipCode === '' || !isZipCodeValid;
+
   const validateZipCode = (userInput: string) => {
     const regexpNumber = new RegExp('^[+ 0-9]{5}$');
     return regexpNumber.test(userInput);
@@ -28,21 +33,26 @@ const ZipCodeScreen = () => {
   useEffect(() => {
     if (Object.prototype.hasOwnProperty.call(userInformation, 'zipCode')) {
       setZipCode(userInformation.zipCode);
-      if (!validateZipCode(userInformation.zipCode)) setIsZipCodeValid(false);
+
+      if (!validateZipCode(userInformation.zipCode)) {
+        setIsZipCodeValid(false);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userInformation]);
 
   const getLocation = () => true; // api call to check zipCode availability
 
   const handleButtonPress = () => {
-    // add param to navigation with user's location later
     dispatch(updateUserInfomation({ zipCode }));
+
     if (validateZipCode(zipCode)) {
       setIsZipCodeValid(true);
+
       if (getLocation()) {
         navigation.navigate('RegistrationScreen');
-      } else navigation.navigate('InvalidZipCodeScreen');
+      } else {
+        navigation.navigate('InvalidZipCodeScreen');
+      }
     } else setIsZipCodeValid(false);
   };
 
@@ -60,7 +70,7 @@ const ZipCodeScreen = () => {
           justifyEnd
         >
           <View alignCenter>
-            <Image file={zipCodeImage} width={74} height={87} />
+            <Image file={zipCodeImage} width={zipCodeImageWidth} height={zipCodeImageHeigth} />
             <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
             <Text variant="regular" spacing={{ mt: 2 }}>
               {"Enter your zip code to check MOCA's"}
@@ -75,8 +85,11 @@ const ZipCodeScreen = () => {
               value={zipCode}
               returnKeyType="done"
               keyboardType="number-pad"
-              onChangeText={(text) => setZipCode(text)}
               maxLength={5}
+              onChangeText={(text) => {
+                setZipCode(text);
+                setIsZipCodeValid(true);
+              }}
             />
             {!isZipCodeValid
               && (
@@ -87,8 +100,9 @@ const ZipCodeScreen = () => {
           </View>
           <View width="100%" spacing={{ mt: 4 }}>
             <Button
-              variant={zipCode === '' ? 'primaryDisabled' : 'primary'}
-              {...(zipCode !== '' ? { onPress: handleButtonPress } : '')}
+              disabled={isButtonDisabled}
+              variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+              onPress={handleButtonPress}
             >
               Continue
             </Button>

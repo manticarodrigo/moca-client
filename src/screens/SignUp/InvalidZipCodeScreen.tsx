@@ -27,11 +27,19 @@ const InvalidZipCodeScreen = () => {
   const [, dispatch] = useStore();
   const [isEmailValid, setIsEmailValid] = useState(true);
 
+  const imageWidth = 74;
+  const imageHeight = 87;
+  const paddingOffset = 80;
+
+  const isButtonDisabled = email === '' || !isEmailValid;
+
+
   const validateEmailAddress = () => {
     // eslint-disable-next-line no-useless-escape
     const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
     return regexpEmail.test(email);
   };
+
   const submitEmail = () => true; // Api call
 
   const handleButtonPress = () => {
@@ -39,22 +47,25 @@ const InvalidZipCodeScreen = () => {
       setIsEmailValid(true);
       submitEmail();
       dispatch(resetUserInformation());
+
       navigation.dispatch(StackActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
       }));
-    } else setIsEmailValid(false);
+    } else {
+      setIsEmailValid(false);
+    }
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + 80}
+      keyboardVerticalOffset={Header.HEIGHT + paddingOffset}
     >
       <View safeArea flex={1} spacing={{ mt: 4, mx: 3 }} alignCenter justifyEnd>
         <View alignCenter>
-          <Image file={InvalidZipCodeImage} width={74} height={87} />
+          <Image file={InvalidZipCodeImage} width={imageWidth} height={imageHeight} />
           <Text variant="error" spacing={{ mt: 4 }}>
             {"Sorry, MOCA hasn't made it"}
           </Text>
@@ -70,7 +81,6 @@ const InvalidZipCodeScreen = () => {
             {'discount on your first therapy session when\n'}
             {'we become available in your area.\n'}
           </Text>
-
         </View>
         <View alignCenter width="100%" spacing={{ mt: 4 }}>
           <FormField
@@ -79,7 +89,10 @@ const InvalidZipCodeScreen = () => {
             returnKeyType="done"
             keyboardType="email-address"
             icon={EmailIcon}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => {
+              setEmail(text);
+              setIsEmailValid(true);
+            }}
           />
           {!isEmailValid
             && (
@@ -90,8 +103,9 @@ const InvalidZipCodeScreen = () => {
         </View>
         <View width="100%" spacing={{ mt: 4 }}>
           <Button
-            variant={email === '' ? 'primaryDisabled' : 'primary'}
-            {...(email !== '' ? { onPress: handleButtonPress } : '')}
+            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+            onPress={handleButtonPress}
+            disabled={isButtonDisabled}
           >
             Let us know
           </Button>

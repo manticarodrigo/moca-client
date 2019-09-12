@@ -11,7 +11,7 @@ import {
 } from 'react-navigation';
 
 import { Views, Typography, Colors } from '@src/styles';
-import { HomeTabIcon, ScheduleTabIcon, ChatTabIcon, ProfileTabIcon } from '@src/components/icons';
+import { HomeTabIcon, ScheduleTabIcon, MessagesTabIcon, ProfileTabIcon } from '@src/components/icons';
 import { TransitionConfiguration } from '@src/NavigationTransitions';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
@@ -60,7 +60,7 @@ const defaultTabConfig: TabNavigatorConfig = {
         case 'ScheduleTab':
           return <ScheduleTabIcon focused={focused} />;
         case 'ChatTab':
-          return <ChatTabIcon focused={focused} />;
+          return <MessagesTabIcon focused={focused} />;
         case 'ProfileTab':
           return <ProfileTabIcon focused={focused} />;
         default:
@@ -69,7 +69,6 @@ const defaultTabConfig: TabNavigatorConfig = {
     },
     tabBarVisible: navigation.state.index < 1,
     tabBarOptions: {
-      showIcon: true,
       showLabel: false,
       style: {
         ...Views.borderTop,

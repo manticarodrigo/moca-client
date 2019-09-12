@@ -13,7 +13,7 @@ type CheckBoxProps = {
   value: string;
   width: number;
   height: number;
-  isChecked: boolean;
+  isChecked?: boolean;
 };
 
 const CheckBox = ({

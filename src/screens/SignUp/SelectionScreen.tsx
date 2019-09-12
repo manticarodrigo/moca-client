@@ -21,33 +21,34 @@ const SelectionScreen = () => {
   type Colors = keyof typeof Colors;
   const navigation = useNavigation();
 
-  let buttonText = 'Select';
-  let patientBgColor: Colors = 'white';
-  let therapistBgColor: Colors = 'white';
-  let patientImage = patient;
-  let therapistImage = therapist;
+  const [type, setType] = useState('');
+  const [{ registrationState: { userInformation } }, dispatch] = useStore();
 
   const therapistImageWidth = 56;
   const therapistImageHeight = 110;
   const patientImageWidth = 48;
   const patientImageHeight = 93;
 
-  const [type, setType] = useState('');
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
+  const isPatient = type === 'Patient';
+  const isTherapist = type === 'Therapist';
+  const buttonDisabled = type === '';
 
-  if (type === 'Patient') {
-    buttonText = 'Continue as a Patient';
-    patientBgColor = 'secondary';
-    therapistBgColor = 'white';
-    patientImage = patientSelected;
-    therapistImage = therapist;
-  } else if (type === 'Therapist') {
+
+  let buttonText = 'Select';
+
+  if (isTherapist) {
     buttonText = 'Continue as a Therapist';
-    patientBgColor = 'white';
-    therapistBgColor = 'secondary';
-    patientImage = patient;
-    therapistImage = therapistSelected;
   }
+
+  if (isPatient) {
+    buttonText = 'Continue as a Patient';
+  }
+
+  const patientBgColor: Colors = isPatient ? 'secondary' : 'white';
+  const therapistBgColor: Colors = isTherapist ? 'secondary' : 'white';
+  const patientImage = isPatient ? patientSelected : patient;
+  const therapistImage = isTherapist ? therapistSelected : therapist;
+
 
   const handleButtonPress = () => {
     if (Object.prototype.hasOwnProperty.call(userInformation, 'type')) {
@@ -68,20 +69,20 @@ const SelectionScreen = () => {
       </View>
       <View row spacing={{ mt: 5 }}>
         <View
-          variant={type === 'Patient' ? 'imageBorderLeftPressed' : 'imageBorderLeft'}
+          variant={isPatient ? 'imageBorderLeftPressed' : 'imageBorderLeft'}
           alignCenter
           justifyBetween
-          {...(type !== 'Patient' ? { onPress: () => setType('Patient') } : '')}
+          {...(!isPatient ? { onPress: () => setType('Patient') } : '')}
           bgColor={patientBgColor}
         >
           <Image file={patientImage} width={patientImageWidth} height={patientImageHeight} />
           <Text variant="title">Patient</Text>
         </View>
         <View
-          variant={type === 'Therapist' ? 'imageBorderRightPressed' : 'imageBorderRight'}
+          variant={isTherapist ? 'imageBorderRightPressed' : 'imageBorderRight'}
           alignCenter
           justifyBetween
-          {...(type !== 'Therapist' ? { onPress: () => setType('Therapist') } : '')}
+          {...(!isTherapist ? { onPress: () => setType('Therapist') } : '')}
           bgColor={therapistBgColor}
         >
           <Image file={therapistImage} width={therapistImageWidth} height={therapistImageHeight} />
@@ -90,8 +91,9 @@ const SelectionScreen = () => {
       </View>
       <View width="100%" flex={1} justifyEnd spacing={{ mb: 3 }}>
         <Button
-          variant={type === '' ? 'primaryDisabled' : 'primary'}
-          {...(type !== '' ? { onPress: handleButtonPress } : '')}
+          variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
+          onPress={handleButtonPress}
+          disabled={buttonDisabled}
         >
           {buttonText}
         </Button>

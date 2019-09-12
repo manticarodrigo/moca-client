@@ -23,7 +23,9 @@ declare type RegistrationInformation = {
   password?: string;
   address?: {
     street: string;
-    apartment: string;
+    apartmentNumber: string;
+    city: string;
+    state: string;
   };
   qualifications?: Array<string>; // to be changed later [add all types of checkBox items]
 };

@@ -20,6 +20,7 @@ const QualifactionsScreen = () => {
   const [selectedCheckBoxItems, setSelectedCheckBoxItems] = useState([]);
   const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const isPreviouslyChecked = Object.prototype.hasOwnProperty.call(userInformation, 'qualifications');
+  const isButtonDisabled = selectedCheckBoxItems.length === 0;
 
 
   const CheckBoxItems = [
@@ -87,8 +88,9 @@ const QualifactionsScreen = () => {
       </View>
       <View spacing={{ mx: 3, mt: 3 }}>
         <Button
-          variant={selectedCheckBoxItems.length === 0 ? 'primaryDisabled' : 'primary'}
-          {...(selectedCheckBoxItems.length === 0 ? '' : { onPress: handleButtonPress })}
+          variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+          onPress={handleButtonPress}
+          disabled={isButtonDisabled}
         >
           Continue
         </Button>
