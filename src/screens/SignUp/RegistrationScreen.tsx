@@ -25,7 +25,6 @@ const RegistrationScreen = () => {
   const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const isPatient = userInformation.type === 'Patient';
 
-  const emailRef = useRef();
   const [formFields, setFormFields] = useState({
     surname: '',
     email: '',
