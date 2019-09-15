@@ -12,7 +12,6 @@ import {
 
 import { Views, Typography, Colors } from '@src/styles';
 import { HomeTabIcon, ScheduleTabIcon, MessagesTabIcon, ProfileTabIcon } from '@src/components/icons';
-import { TransitionConfiguration } from '@src/NavigationTransitions';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
@@ -22,10 +21,8 @@ import ChatListScreen from '@src/screens/ChatListScreen';
 import ChatScreen from '@src/screens/ChatScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
-import ZipCodeScreen from '@src/screens/SignUp/ZipCodeScreen';
 import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
 import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
-import TermsOfServiceScreen from '@src/screens/SignUp/TermsOfServiceScreen';
 import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
@@ -33,7 +30,11 @@ import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
   cardShadowEnabled: false,
-  transitionConfig: TransitionConfiguration,
+  transitionConfig: () => ({
+    containerStyle: {
+      backgroundColor: Colors.primary,
+    },
+  }),
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
     headerStyle: {
@@ -85,10 +86,8 @@ const AppStack = createSwitchNavigator(
       SitemapScreen,
       OnboardingScreen,
       SelectionScreen,
-      ZipCodeScreen,
       InvalidZipCodeScreen,
       RegistrationScreen,
-      TermsOfServiceScreen,
       InvalidMediCareScreen,
       AddressScreen,
       QualificationsScreen,

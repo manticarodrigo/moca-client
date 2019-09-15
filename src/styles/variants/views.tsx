@@ -69,11 +69,11 @@ const imageBorderLeftPressed: ViewStyle = {
   borderRightColor: Colors.secondaryLighter,
 };
 
-const backdrop: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...StyleSheet.absoluteFillObject,
-  borderTopRightRadius: 16,
-  borderTopLeftRadius: 16,
+const modal: ViewStyle = {
+  borderTopLeftRadius: 30,
+  borderTopRightRadius: 30,
+  overflow: 'hidden',
+  flex: 1,
   backgroundColor: Colors.white,
 };
 
@@ -155,7 +155,7 @@ export {
   msgBubbleLeft,
   borderTop,
   borderBottom,
-  backdrop,
+  modal,
   imageBorderRight,
   imageBorderLeft,
   card,

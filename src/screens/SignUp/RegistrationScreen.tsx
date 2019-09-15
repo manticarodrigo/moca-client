@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
+
+import TermsOfServiceScreen from '@src/modals/TermsOfServiceScreen';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -13,6 +15,8 @@ import Button from '@src/components/Button';
 import BackButton from '@src/components/BackButton';
 import HeaderTitle from '@src/components/HeaderTitle';
 import FormField from '@src/components/FormField';
+import ModalView from '@src/components/ModalView';
+
 
 import logoIcon from '@src/assets/pngs/logoIcon.png';
 import EmailIcon from '@src/assets/Icons/email.png';
@@ -33,6 +37,7 @@ const RegistrationScreen = () => {
     ...(!isPatient && { medicalId: '' }),
   });
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isMediCarePressed, setIsMediCarePressed] = useState(false);
 
@@ -70,6 +75,18 @@ const RegistrationScreen = () => {
   }, []);
 
 
+  const TermsOfServiceModal = (
+    <ModalView
+      hasArrow
+      isVisible={isModalVisible}
+      onBackdropPress={() => setIsModalVisible(false)}
+      onSwipeComplete={() => setIsModalVisible(false)}
+      handleArrowClick={() => setIsModalVisible(false)}
+    >
+      <TermsOfServiceScreen />
+    </ModalView>
+  );
+
   const handleButtonPress = () => {
     dispatch(updateUserInfomation({ ...formFields }));
 
@@ -103,7 +120,9 @@ const RegistrationScreen = () => {
 
   const handlePrivaryPress = () => navigation.navigate('');
 
-  const handleTermsPress = () => navigation.navigate('TermsOfServiceScreen', { transition: 'slideTop' });
+  const handleTermsOfServicePress = () => {
+    setIsModalVisible(true);
+  };
 
   const handleFormFields = (name: string, text: string) => {
     setFormFields({ ...formFields, [name]: text });
@@ -216,7 +235,7 @@ const RegistrationScreen = () => {
             </Text>
             <Text
               variant="link"
-              onPress={handleTermsPress}
+              onPress={handleTermsOfServicePress}
               typography={{ size: 1, color: 'secondary' }}
               spacing={{ ml: 1, mt: 1 }}
             >
@@ -237,6 +256,7 @@ const RegistrationScreen = () => {
             </Text>
           </View>
         </View>
+        {TermsOfServiceModal}
         <View flex={1} />
       </View>
     </KeyboardAvoidingView>
