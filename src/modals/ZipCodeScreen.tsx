@@ -13,7 +13,7 @@ import zipCodeImage from '@src/assets/pngs/zipCodeImage.png';
 import FormField from '@src/components/FormField';
 
 type ZipCodeScreenProps = {
-  navigateToScreen: (name: string, shouldNavigate: boolean) => void;
+  navigateToScreen: (name: string) => void;
 };
 
 const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
@@ -50,9 +50,9 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
     if (validateZipCode(zipCode)) {
       setIsZipCodeValid(true);
       if (getLocation()) {
-        navigateToScreen('RegistrationScreen', true);
+        navigateToScreen('RegistrationScreen');
       } else {
-        navigateToScreen('InvalidZipCodeScreen', true);
+        navigateToScreen('InvalidZipCodeScreen');
       }
     } else setIsZipCodeValid(false);
   };
