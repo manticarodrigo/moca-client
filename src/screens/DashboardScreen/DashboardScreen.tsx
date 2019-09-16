@@ -1,39 +1,50 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, StyleSheet } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 
-import { LogoIcon, PersonIcon, SearchIcon } from '@src/components/icons';
+import { LogoIcon, FilterIcon, SearchIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import TextInput from '@src/components/TextInput';
 import LinkCard from '@src/components/LinkCard';
 import AppointmentCard from '@src/components/AppointmentCard';
+import Button from '@src/components/Button';
 
-// TODO: design not ok yet
+import * as Colors from '@src/styles/global/colors';
+
 const SearchPanel = () => {
   const [text, setText] = useState('');
   const onChangeText = (val: string) => setText(val);
   const onPressSearch = () => setText('');
+  const navigation = useNavigation();
+  const onPressFilter = () => navigation.navigate('FilterScreen');
 
   return (
     <View>
-      <View column height={57} />
-      <Text variant="titleSmallWhite">Hi, John</Text>
-      <View height={48}>
-        <View spacing={{ px: 2 }}>
-          <SearchIcon />
+      <View column spacing={{ px: 4, pt: 5, pb: 3 }}>
+        <Text variant="titleSmallWhite">Hi, John</Text>
+      </View>
+      <View row spacing={{ px: 4, my: 3 }} height={48} width={271}>
+        <View
+          row
+          alignCenter
+          style={{ borderRadius: 8, backgroundColor: Colors.lightGrey }}
+        >
+          <View spacing={{ px: 3 }} onPress={onPressSearch}>
+            <SearchIcon />
+          </View>
           <TextInput
             variant="search"
-            spacing={{ px: 3 }}
+            typography={{ color: 'primary' }}
             onChangeText={onChangeText}
-            placeholder="Therapists Search"
+            placeholder="Therapists Search..."
             value={text}
           />
         </View>
-        <View spacing={{ p: 1 }} onPress={onPressSearch}>
-          <PersonIcon />
+        <View column spacing={{ px: 2 }} onPress={onPressFilter}>
+          <FilterIcon />
         </View>
       </View>
     </View>
@@ -53,7 +64,7 @@ const LinkCardList = (props) => {
       flexDirection: 'row',
       height: '100%',
       width: `${profilePercent}%`,
-      backgroundColor: '#819e3f',
+      backgroundColor: Colors.success,
       borderRadius: 8,
     },
   });
@@ -135,21 +146,37 @@ const AppointmentList = (props) => {
 const DashboardScreen = () => {
   // TODO: get the real value and remove first View below
   const [isTherapist, setTherapist] = useState(true);
+  const [isFiltering, setFiltering] = useState(false);
+
+  const _keyboardDidShow = () => { setFiltering(true); };
+  const _keyboardDidHide = () => { setFiltering(false); };
+
+  useEffect(() => {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      _keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      _keyboardDidHide,
+    );
+  });
 
   return (
     <View flex={1} bgColor="primary">
-
-      <View key="Therapist" onPress={() => setTherapist(!isTherapist)}>
-        {isTherapist && (<Text> set to therapist, click to change</Text>)}
-        {!isTherapist && (<Text> set to patient, click to change</Text>)}
-      </View>
 
       <View row justifyEnd absoluteFill spacing={{ mt: -6, mr: -5 }}>
         <LogoIcon size={2} />
       </View>
 
+      <Button variant="secondary" onPress={() => setTherapist(!isTherapist)}>
+        {isTherapist && (<Text> set to therapist, click to change</Text>)}
+        {!isTherapist && (<Text> set to patient, click to change</Text>)}
+      </Button>
+
       { !isTherapist && <SearchPanel /> }
 
+      { !isFiltering && (
       <View scroll flex={1}>
 
         <AppointmentList isTherapist={isTherapist} />
@@ -157,7 +184,7 @@ const DashboardScreen = () => {
         <LinkCardList isTherapist={isTherapist} />
 
       </View>
-
+      )}
     </View>
   );
 };

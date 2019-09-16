@@ -10,10 +10,7 @@ const variants = {
     backgroundColor: Colors.lightGrey,
   },
   search: {
-    height: 48,
-    width: 271,
-    borderRadius: 24,
-    color: Colors.primary,
+    width: 190,
     backgroundColor: Colors.lightGrey,
   },
 };
