@@ -6,22 +6,22 @@ import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
 
 const msgBubble: ViewStyle = {
-  ...Spacing.getStyles({ mt: 2, p: 3 }),
+  ...Spacing.getStyles({ m: 3, p: 3 }),
   ...Borders.primary,
   minWidth: 60,
   height: 'auto',
 };
 
 const msgBubbleLeft: ViewStyle = {
-  ...Spacing.getStyles({ mr: 4 }),
   ...msgBubble,
+  ...Spacing.getStyles({ mr: 4 }),
   alignSelf: 'flex-start',
   backgroundColor: Colors.white,
 };
 
 const msgBubbleRight: ViewStyle = {
-  ...Spacing.getStyles({ ml: 4 }),
   ...msgBubble,
+  ...Spacing.getStyles({ ml: 4 }),
   alignSelf: 'flex-end',
   backgroundColor: Colors.secondary,
 };

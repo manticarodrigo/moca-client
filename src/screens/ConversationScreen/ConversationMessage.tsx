@@ -5,13 +5,13 @@ import { format } from 'date-fns';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-type ChatMessageProps = {
+type ConversationMessageProps = {
   alignRight: boolean;
   text: string;
   createdAt: string;
 };
 
-const ChatMessage = ({ text, createdAt, alignRight }: ChatMessageProps) => {
+const ConversationMessage = ({ text, createdAt, alignRight }: ConversationMessageProps) => {
   const time = useMemo(() => format(createdAt, 'hh:mm'), [createdAt]);
 
   return (
@@ -39,4 +39,4 @@ const ChatMessage = ({ text, createdAt, alignRight }: ChatMessageProps) => {
   );
 };
 
-export default ChatMessage;
+export default ConversationMessage;

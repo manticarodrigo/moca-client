@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SectionListData } from 'react-native';
 
-import { getChats } from '@src/store/actions/ChatActions';
+import { getConversations } from '@src/store/actions/ConversationActions';
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 
@@ -10,27 +10,29 @@ import Text from '@src/components/Text';
 import SectionList from '@src/components/SectionList';
 
 import useSections from './useSections';
-import ChatListCard from './ChatListCard';
+import ConversationListCard from './ConversationListCard';
 
 type SectionHeaderProps = {
-  section: SectionListData<{ title: string; data: Chat[] }>;
+  section: SectionListData<{ title: string; data: Conversation[] }>;
 };
 
-const ChatListScreen = () => {
-  const [{ authState: { currentUser }, chatState }, dispatch] = useStore();
+const ConversationListScreen = () => {
+  const [store, dispatch] = useStore();
+  const { authState: { currentUser }, conversationState } = store;
+
   const navigation = useNavigation();
-  const sections = useSections(chatState.chats);
+  const sections = useSections(conversationState.conversations);
 
   useEffect(() => {
     if (currentUser) {
-      dispatch(getChats(currentUser));
+      dispatch(getConversations(currentUser));
     }
   }, [currentUser, dispatch]);
 
-  const handleCardPress = (chat: Chat) => navigation.push('ChatScreen', { chat });
+  const handleCardPress = (conversation: Conversation) => navigation.push('ConversationScreen', { conversation });
 
-  const renderItem = ({ item }: { item: Chat }) => (
-    <ChatListCard currentUser={currentUser} chat={item} onPress={handleCardPress} />
+  const renderItem = ({ item }: { item: Conversation }) => (
+    <ConversationListCard currentUser={currentUser} conversation={item} onPress={handleCardPress} />
   );
 
   const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
@@ -41,7 +43,7 @@ const ChatListScreen = () => {
     </View>
   );
 
-  const keyExtractor = (item: Chat) => item.id.toString();
+  const keyExtractor = (item: Conversation) => item.id.toString();
 
   return (
     <SectionList
@@ -54,8 +56,8 @@ const ChatListScreen = () => {
   );
 };
 
-ChatListScreen.navigationOptions = {
+ConversationListScreen.navigationOptions = {
   title: 'Messages',
 };
 
-export default ChatListScreen;
+export default ConversationListScreen;

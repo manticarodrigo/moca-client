@@ -15,8 +15,8 @@ const SitemapScreen = () => {
     'OnboardingScreen',
     'DashboardScreen',
     'ScheduleScreen',
-    'ChatListScreen',
-    'ChatScreen',
+    'ConversationListScreen',
+    'ConversationScreen',
   ];
 
   return screensNames.map((name: string) => {

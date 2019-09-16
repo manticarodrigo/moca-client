@@ -11,7 +11,7 @@ declare type Message = {
   createdAt: string;
 };
 
-declare type Chat = {
+declare type Conversation = {
   id: string;
   participants: User[];
   messages: Message[];

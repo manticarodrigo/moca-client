@@ -12,7 +12,7 @@ import AppointmentCard from '@src/components/AppointmentCard';
 const DashboardScreen = () => {
   const navigation = useNavigation();
 
-  const handleButtonPress = () => navigation.navigate('ChatListScreen');
+  const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
   return (
     <View flex={1} bgColor="primary">

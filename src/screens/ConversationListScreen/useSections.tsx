@@ -3,10 +3,10 @@ import { SectionListData } from 'react-native';
 import { format, distanceInWordsToNow } from 'date-fns';
 
 type SectionMap = {
-  [key: string]: SectionListData<{ date?: Date; title?: string; data: Chat[] }>;
+  [key: string]: SectionListData<{ date?: Date; title?: string; data: Conversation[] }>;
 };
 
-const useSections = (chats?: Chat[]) => useMemo(() => {
+const useSections = (chats?: Conversation[]) => useMemo(() => {
   const sectionsMap = (chats || []).reduce<SectionMap>((map, chat) => {
     // get current chat latest message timestamp
     const { createdAt } = chat.messages[chat.messages.length - 1];

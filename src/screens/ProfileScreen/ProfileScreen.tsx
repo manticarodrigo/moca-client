@@ -8,12 +8,12 @@ import Button from '@src/components/Button';
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
-  const handleButtonPress = () => navigation.navigate('ChatListScreen');
+  const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
   return (
     <View flex={1} justifyCenter alignCenter bgColor="lightGrey">
       <Button onPress={handleButtonPress}>
-        Go to Chat
+        Go to Conversation
       </Button>
     </View>
   );
