@@ -28,7 +28,6 @@ type State = Conversation & {
 const ConversationScreen: NavigationComponent = () => {
   const [{ authState: { currentUser } }] = useStore();
   const navigation = useNavigation();
-  const setHeaderProps = useCallback(navigation.setParams, []);
   const [state, setState] = useState<State>({
     id: null,
     messages: [],
@@ -51,14 +50,16 @@ const ConversationScreen: NavigationComponent = () => {
     onMount();
   }, [navigation.state, state]);
 
+  const setParams = useCallback(navigation.setParams, []);
+
   useEffect(() => {
     if (state.participants.length) {
       const otherParticipant = state.participants.find(({ id }) => id !== currentUser.id);
       const { username, imageUrl } = otherParticipant;
 
-      setHeaderProps({ title: username, img: imageUrl });
+      setParams({ title: username, img: imageUrl });
     }
-  }, [state, currentUser.id, setHeaderProps]);
+  }, [state, currentUser.id, setParams]);
 
   const scrollToBottom = () => {
     const { current } = sectionListRef;

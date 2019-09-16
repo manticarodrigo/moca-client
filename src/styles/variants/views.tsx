@@ -6,7 +6,7 @@ import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
 
 const msgBubble: ViewStyle = {
-  ...Spacing.getStyles({ m: 3, p: 3 }),
+  ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
   ...Borders.primary,
   minWidth: 60,
   height: 'auto',
@@ -14,14 +14,14 @@ const msgBubble: ViewStyle = {
 
 const msgBubbleLeft: ViewStyle = {
   ...msgBubble,
-  ...Spacing.getStyles({ mr: 4 }),
+  ...Spacing.getStyles({ mr: 5 }),
   alignSelf: 'flex-start',
   backgroundColor: Colors.white,
 };
 
 const msgBubbleRight: ViewStyle = {
   ...msgBubble,
-  ...Spacing.getStyles({ ml: 4 }),
+  ...Spacing.getStyles({ ml: 5 }),
   alignSelf: 'flex-end',
   backgroundColor: Colors.secondary,
 };
