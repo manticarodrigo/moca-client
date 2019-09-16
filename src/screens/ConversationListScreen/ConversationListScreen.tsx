@@ -4,12 +4,12 @@ import { SectionListData } from 'react-native';
 import { getConversations } from '@src/store/actions/ConversationActions';
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
+import useDateSections from '@src/hooks/useDateSections';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import SectionList from '@src/components/SectionList';
 
-import useSections from './useSections';
 import ConversationListCard from './ConversationListCard';
 
 type SectionHeaderProps = {
@@ -21,7 +21,11 @@ const ConversationListScreen = () => {
   const { authState: { currentUser }, conversationState } = store;
 
   const navigation = useNavigation();
-  const sections = useSections(conversationState.conversations);
+
+  const sections = useDateSections(
+    conversationState.conversations,
+    ({ messages }) => messages[messages.length - 1].createdAt,
+  );
 
   useEffect(() => {
     if (currentUser) {

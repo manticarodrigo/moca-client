@@ -3,13 +3,13 @@ import { SectionListData } from 'react-native';
 import { format, distanceInWordsToNow } from 'date-fns';
 
 type SectionMap = {
-  [key: string]: SectionListData<{ date?: Date; title?: string; data: Conversation[] }>;
-};
+  [key: string]: SectionListData<{ date?: Date; title?: string; data: any[] }>;
+}
 
-const useSections = (chats?: Conversation[]) => useMemo(() => {
-  const sectionsMap = (chats || []).reduce<SectionMap>((map, chat) => {
-    // get current chat latest message timestamp
-    const { createdAt } = chat.messages[chat.messages.length - 1];
+const useSections = (items: any[], getItemDate: (item: any) => string) => useMemo(() => {
+  const sectionsMap = items.reduce<SectionMap>((map, item) => {
+    // get current item timestamp
+    const createdAt = getItemDate(item);
     // get current section key
     const key = format(createdAt, 'MM-DD-YYYY');
     // get current section props
@@ -23,7 +23,7 @@ const useSections = (chats?: Conversation[]) => useMemo(() => {
     map[key] = {
       date: date || new Date(createdAt),
       title: title || distanceInWordsToNow(createdAt, { addSuffix: true }),
-      data: Array.isArray(data) ? data.concat([chat]) : [chat],
+      data: Array.isArray(data) ? data.concat([item]) : [item],
     };
 
     return map;
@@ -31,6 +31,6 @@ const useSections = (chats?: Conversation[]) => useMemo(() => {
 
   // return list of sections sorted by descending date
   return Object.values(sectionsMap).sort((a, b) => b.date - a.date);
-}, [chats]);
+}, [items, getItemDate]);
 
 export default useSections;

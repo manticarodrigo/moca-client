@@ -4,6 +4,7 @@ import { NavigationComponent } from 'react-navigation';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
+import useDateSections from '@src/hooks/useDateSections';
 
 import { Views, Spacing, Colors } from '@src/styles';
 import { BackButtonIcon, CameraIcon, SendIcon } from '@src/components/icons';
@@ -13,7 +14,6 @@ import Text from '@src/components/Text';
 import TextInput from '@src/components/TextInput';
 import SectionList from '@src/components/SectionList';
 
-import useSections from './useSections';
 import ConversationMessage from './ConversationMessage';
 import ConversationHeader from './ConversationHeader';
 
@@ -37,7 +37,7 @@ const ConversationScreen: NavigationComponent = () => {
   });
 
   const sectionListRef = useRef<RNSectionList<Message[]>>();
-  const sections = useSections(state.messages);
+  const sections = useDateSections(state.messages, (message) => message.createdAt);
 
   useEffect(() => {
     const onMount = async () => {
