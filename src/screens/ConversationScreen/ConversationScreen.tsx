@@ -6,6 +6,7 @@ import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
 import useScrollToStart from '@src/hooks/useScrollToStart';
+import useImageViewer from '@src/hooks/useImageViewer';
 
 import { getImage } from '@src/utlities/imagePicker';
 
@@ -41,6 +42,7 @@ const ConversationScreen: NavigationComponent = () => {
 
   const sections = useDateSections(state.messages, (message) => message.createdAt);
   const { scrollRef, scrollToStart } = useScrollToStart({ offset: 67 /* actions height */ });
+  const { viewer, onPressImage } = useImageViewer(state.messages);
 
   useEffect(() => {
     const onMount = async () => {
@@ -95,7 +97,11 @@ const ConversationScreen: NavigationComponent = () => {
   };
 
   const renderItem = ({ item }: { item: Message }) => (
-    <ConversationMessage message={item} alignRight={item.sender === currentUser.id} />
+    <ConversationMessage
+      message={item}
+      alignRight={item.sender === currentUser.id}
+      onPressImage={onPressImage}
+    />
   );
 
   const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
@@ -109,27 +115,30 @@ const ConversationScreen: NavigationComponent = () => {
   const keyExtractor = (item: Message) => item.id.toString();
 
   return (
-    <View safeArea column flex={1}>
-      <StatusBar barStyle="dark-content" />
-      <SectionList
-        inverted
-        ref={scrollRef}
-        renderItem={renderItem}
-        renderSectionFooter={renderSectionHeader}
-        keyExtractor={keyExtractor}
-        sections={sections}
-        ListHeaderComponent={(
-          <ConversationActions onPressInjury={scrollToStart} onPressLocation={scrollToStart} />
-        )}
-        bgColor="lightGrey"
-      />
-      <ConversationInputs
-        text={state.text}
-        onChangeText={onChangeText}
-        onPressCamera={onPressCamera}
-        onPressSend={onPressSend}
-      />
-    </View>
+    <>
+      <View safeArea column flex={1}>
+        <StatusBar barStyle="dark-content" />
+        <SectionList
+          inverted
+          ref={scrollRef}
+          renderItem={renderItem}
+          renderSectionFooter={renderSectionHeader}
+          keyExtractor={keyExtractor}
+          sections={sections}
+          ListHeaderComponent={(
+            <ConversationActions onPressInjury={scrollToStart} onPressLocation={scrollToStart} />
+          )}
+          bgColor="lightGrey"
+        />
+        <ConversationInputs
+          text={state.text}
+          onChangeText={onChangeText}
+          onPressCamera={onPressCamera}
+          onPressSend={onPressSend}
+        />
+      </View>
+      {viewer}
+    </>
   );
 };
 
