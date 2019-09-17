@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { Colors } from '@src/styles';
 
-const alertFail = (message: string) => Alert.alert('Image Picker Failed', message);
+const alertFail = (message: string) => Alert.alert('Oops!', message);
 
 const getImage = async (callback: (response: ImagePicker.ImagePickerResult) => void) => {
   const { permissions } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
@@ -20,7 +20,7 @@ const getImage = async (callback: (response: ImagePicker.ImagePickerResult) => v
   }
 
   if (options.length === 1) {
-    alertFail('You did not grant permissions to use your photos.');
+    alertFail('You did not grant permissions to use your photos or camera.\n\nPlease go to your settings and grant permissions if you wish to continue.');
     return;
   }
 
