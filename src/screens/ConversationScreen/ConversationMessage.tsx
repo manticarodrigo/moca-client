@@ -4,18 +4,24 @@ import { format } from 'date-fns';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Image from '@src/components/Image';
 
 type ConversationMessageProps = {
   alignRight: boolean;
-  text: string;
-  createdAt: string;
+  message: Message;
 };
 
-const ConversationMessage = ({ text, createdAt, alignRight }: ConversationMessageProps) => {
+const ConversationMessage = ({ message, alignRight }: ConversationMessageProps) => {
+  const { text, attachmentURI, createdAt } = message;
   const time = useMemo(() => format(createdAt, 'hh:mm'), [createdAt]);
 
   return (
     <View column variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
+      {attachmentURI && (
+        <View column spacing={{ mb: 2 }}>
+          <Image width={200} height={200} uri={attachmentURI} />
+        </View>
+      )}
       <Text
         typography={{
           color: alignRight ? 'white' : 'dark',

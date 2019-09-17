@@ -18,7 +18,7 @@ const primary: ButtonVariant = {
     backgroundColor: Colors.primary,
   },
   text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
-  underlayColor: Colors.primaryDark,
+  underlayColor: Colors.secondary,
 };
 
 const primarySmall: ButtonVariant = {

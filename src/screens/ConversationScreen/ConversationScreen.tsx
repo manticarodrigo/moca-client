@@ -6,17 +6,19 @@ import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
 
-import { Views, Spacing, Colors } from '@src/styles';
-import { BackButtonIcon, CameraIcon, SendIcon, DiagnosisIcon, PinIcon } from '@src/components/icons';
+import { getImage } from '@src/utlities/imagePicker';
 
+import { Views, Spacing, Colors } from '@src/styles';
+
+import { BackButtonIcon } from '@src/components/icons';
 import View from '@src/components/View';
-import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import TextInput from '@src/components/TextInput';
 import SectionList from '@src/components/SectionList';
 
-import ConversationMessage from './ConversationMessage';
 import ConversationHeader from './ConversationHeader';
+import ConversationMessage from './ConversationMessage';
+import ConversationActions from './ConversationActions';
+import ConversationInputs from './ConversationInputs';
 
 type SectionHeaderProps = {
   section: SectionListData<{ title: string; data: Message[] }>;
@@ -25,47 +27,6 @@ type SectionHeaderProps = {
 type State = Conversation & {
   text: string;
 }
-
-const ConversationActions = ({ onPressInjury, onPressLocation }) => (
-  <View scroll horizontal row spacing={{ p: 3 }}>
-    <Button
-      variant="primarySmall"
-      icon={<DiagnosisIcon size={0.4} tint="white" />}
-      spacing={{ mr: 2 }}
-      onPress={onPressInjury}
-    >
-      Add Injury Info
-    </Button>
-    <Button
-      variant="primarySmall"
-      icon={<PinIcon size={0.6} tint="white" />}
-      spacing={{ mr: 2 }}
-      onPress={onPressLocation}
-    >
-      Add Location
-    </Button>
-  </View>
-);
-
-const ConversationInputs = ({ text, onChangeText, onPressSend }) => (
-  <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
-    <View spacing={{ p: 1 }}>
-      <CameraIcon />
-    </View>
-    <View flex={1} spacing={{ px: 2 }}>
-      <TextInput
-        variant="conversation"
-        spacing={{ px: 3 }}
-        onChangeText={onChangeText}
-        placeholder="Type your message..."
-        value={text}
-      />
-    </View>
-    <View spacing={{ p: 1 }} onPress={onPressSend}>
-      <SendIcon active={text.length} />
-    </View>
-  </View>
-);
 
 const ConversationScreen: NavigationComponent = () => {
   const [{ authState: { currentUser } }] = useStore();
@@ -110,21 +71,34 @@ const ConversationScreen: NavigationComponent = () => {
       current.scrollToLocation({
         sectionIndex: 0,
         itemIndex: 0,
-        viewOffset: 67,
+        viewOffset: 67, // account for actions height
       });
     }
   };
 
+  const _createMessage = (attachmentURI?: string): Message => ({
+    id: `${Math.floor(Math.random() * 1000000000)}`,
+    text: state.text,
+    sender: currentUser.id,
+    attachmentURI,
+    createdAt: new Date().toDateString(),
+  });
+
   const onChangeText = (val: string) => setState((prev) => ({ ...prev, text: val }));
+
+  const onPressCamera = async () => {
+    getImage((response) => {
+      if (response.cancelled === false) {
+        const message = _createMessage(response.uri);
+
+        setState((prev) => ({ ...prev, messages: [message, ...prev.messages], text: '' }));
+      }
+    });
+  };
 
   const onPressSend = () => {
     if (state.text) {
-      const message: Message = {
-        id: `${Math.floor(Math.random() * 1000000000)}`,
-        text: state.text,
-        userId: currentUser.id,
-        createdAt: new Date().toDateString(),
-      };
+      const message = _createMessage();
 
       setState((prev) => ({ ...prev, messages: [message, ...prev.messages], text: '' }));
       scrollToBottom();
@@ -132,12 +106,7 @@ const ConversationScreen: NavigationComponent = () => {
   };
 
   const renderItem = ({ item }: { item: Message }) => (
-    <ConversationMessage
-      key={item.id}
-      alignRight={item.userId === currentUser.id}
-      text={item.text}
-      createdAt={item.createdAt}
-    />
+    <ConversationMessage message={item} alignRight={item.sender === currentUser.id} />
   );
 
   const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
@@ -168,6 +137,7 @@ const ConversationScreen: NavigationComponent = () => {
       <ConversationInputs
         text={state.text}
         onChangeText={onChangeText}
+        onPressCamera={onPressCamera}
         onPressSend={onPressSend}
       />
     </View>

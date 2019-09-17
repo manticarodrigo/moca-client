@@ -24,4 +24,5 @@ export { default as MessagesIcon } from './MessagesIcon';
 export { default as HistoryIcon } from './HistoryIcon';
 export { default as AppointmentIcon } from './AppointmentIcon';
 export { default as ReportIcon } from './ReportIcon';
+export { default as ClockSimpleIcon } from './ClockSimpleIcon';
 export { default as DollarIcon } from './DollarIcon';
