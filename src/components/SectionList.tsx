@@ -5,16 +5,17 @@ import { Colors, Spacing, SpacingProp } from '@src/styles';
 
 type SectionListProps = RNSectionListProps<any> & {
   spacing?: SpacingProp;
+  bgColor?: keyof typeof Colors;
 };
 
-const SectionList = ({ spacing, ...props }: SectionListProps, ref) => {
+const SectionList = ({ spacing, bgColor, ...props }: SectionListProps, ref) => {
   const styles = useMemo(() => StyleSheet.create({
     list: {
-      ...Spacing.getStyles(spacing),
       flex: 1,
-      backgroundColor: Colors.lightGrey,
+      ...Spacing.getStyles(spacing),
+      ...(bgColor && { backgroundColor: Colors[bgColor] }),
     },
-  }), [spacing]);
+  }), [spacing, bgColor]);
 
   return <RNSectionList ref={ref} style={styles.list} {...props} />;
 };

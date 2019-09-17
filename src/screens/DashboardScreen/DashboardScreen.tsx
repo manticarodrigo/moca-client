@@ -77,6 +77,7 @@ DashboardScreen.navigationOptions = ({ navigationOptions }) => ({
   headerStyle: {
     ...navigationOptions.headerStyle,
     backgroundColor: 'transparent',
+    elevation: 0,
   },
 });
 

@@ -1,28 +1,43 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'react-native';
+import { StyleSheet, TouchableHighlight, TouchableHighlightProps } from 'react-native';
 
-import { Buttons } from '@src/styles';
+import { Spacing, SpacingProp, Buttons } from '@src/styles';
+
+import Text from './Text';
 
 type ButtonProps = TouchableHighlightProps & {
   variant?: keyof typeof Buttons;
+  spacing?: SpacingProp;
+  icon?: JSX.Element;
   children?: string;
 };
 
-const Button = ({ variant = 'primary', onPress, children }: ButtonProps) => {
+const Button = ({ variant = 'primary', spacing, icon, children, ...buttonProps }: ButtonProps) => {
   const styles = useMemo(() => StyleSheet.create({
-    view: { ...Buttons[variant].view },
-    text: { ...Buttons[variant].text },
-  }), [variant]);
+    view: {
+      ...Buttons[variant].view,
+      ...Spacing.getStyles(spacing),
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    text: {
+      ...Buttons[variant].text,
+      ...(icon && { ...Spacing.getStyles({ ml: 2 }) }),
+    },
+  }), [variant, spacing, icon]);
 
   return (
     <TouchableHighlight
       style={styles.view}
       underlayColor={Buttons[variant].underlayColor}
-      onPress={onPress}
+      {...buttonProps}
     >
-      <Text style={styles.text}>
-        {children}
-      </Text>
+      <>
+        {icon}
+        <Text style={styles.text}>
+          {children}
+        </Text>
+      </>
     </TouchableHighlight>
   );
 };

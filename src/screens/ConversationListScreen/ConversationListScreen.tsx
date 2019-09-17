@@ -56,6 +56,7 @@ const ConversationListScreen = () => {
       stickySectionHeadersEnabled={false}
       keyExtractor={keyExtractor}
       sections={sections}
+      bgColor="lightGrey"
     />
   );
 };

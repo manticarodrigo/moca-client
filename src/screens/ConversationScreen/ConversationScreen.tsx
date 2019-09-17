@@ -7,9 +7,10 @@ import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
 
 import { Views, Spacing, Colors } from '@src/styles';
-import { BackButtonIcon, CameraIcon, SendIcon } from '@src/components/icons';
+import { BackButtonIcon, CameraIcon, SendIcon, ReportIcon, PinIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
+import Button from '@src/components/Button';
 import Text from '@src/components/Text';
 import TextInput from '@src/components/TextInput';
 import SectionList from '@src/components/SectionList';
@@ -24,6 +25,47 @@ type SectionHeaderProps = {
 type State = Conversation & {
   text: string;
 }
+
+const ConversationActions = ({ onPressInjury, onPressLocation }) => (
+  <View scroll horizontal row spacing={{ p: 3 }}>
+    <Button
+      variant="primarySmall"
+      icon={<ReportIcon tint="white" />}
+      spacing={{ mr: 2 }}
+      onPress={onPressInjury}
+    >
+      Add Injury Info
+    </Button>
+    <Button
+      variant="primarySmall"
+      icon={<PinIcon size={0.5} tint="white" />}
+      spacing={{ mr: 2 }}
+      onPress={onPressLocation}
+    >
+      Add Location
+    </Button>
+  </View>
+);
+
+const ConversationInputs = ({ text, onChangeText, onPressSend }) => (
+  <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
+    <View spacing={{ p: 1 }}>
+      <CameraIcon />
+    </View>
+    <View flex={1} spacing={{ px: 2 }}>
+      <TextInput
+        variant="conversation"
+        spacing={{ px: 3 }}
+        onChangeText={onChangeText}
+        placeholder="Type your message..."
+        value={text}
+      />
+    </View>
+    <View spacing={{ p: 1 }} onPress={onPressSend}>
+      <SendIcon active={text.length} />
+    </View>
+  </View>
+);
 
 const ConversationScreen: NavigationComponent = () => {
   const [{ authState: { currentUser } }] = useStore();
@@ -68,6 +110,7 @@ const ConversationScreen: NavigationComponent = () => {
       current.scrollToLocation({
         sectionIndex: 0,
         itemIndex: 0,
+        viewOffset: 67,
       });
     }
   };
@@ -117,24 +160,16 @@ const ConversationScreen: NavigationComponent = () => {
         renderSectionFooter={renderSectionHeader}
         keyExtractor={keyExtractor}
         sections={sections}
+        ListHeaderComponent={(
+          <ConversationActions onPressInjury={scrollToBottom} onPressLocation={scrollToBottom} />
+        )}
+        bgColor="lightGrey"
       />
-      <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
-        <View spacing={{ p: 1 }} onPress={scrollToBottom}>
-          <CameraIcon />
-        </View>
-        <View flex={1} spacing={{ px: 2 }}>
-          <TextInput
-            variant="conversation"
-            spacing={{ px: 3 }}
-            onChangeText={onChangeText}
-            placeholder="Type your message..."
-            value={state.text}
-          />
-        </View>
-        <View spacing={{ p: 1 }} onPress={onPressSend}>
-          <SendIcon active={state.text.length} />
-        </View>
-      </View>
+      <ConversationInputs
+        text={state.text}
+        onChangeText={onChangeText}
+        onPressSend={onPressSend}
+      />
     </View>
   );
 };
