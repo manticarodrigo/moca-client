@@ -9,6 +9,10 @@ const variants = {
     borderRadius: 24,
     backgroundColor: Colors.lightGrey,
   },
+  search: {
+    width: 190,
+    backgroundColor: Colors.lightGrey,
+  },
 };
 
 type TextInputProps = RNTextInputProps & {

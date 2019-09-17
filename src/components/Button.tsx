@@ -9,7 +9,7 @@ type ButtonProps = TouchableHighlightProps & {
   variant?: keyof typeof Buttons;
   spacing?: SpacingProp;
   icon?: JSX.Element;
-  children?: string;
+  children?: (string | JSX.Element) | (string | JSX.Element)[];
 };
 
 const Button = ({ variant = 'primary', spacing, icon, children, ...buttonProps }: ButtonProps) => {

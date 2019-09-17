@@ -7,7 +7,7 @@ import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
 
 import { Views, Spacing, Colors } from '@src/styles';
-import { BackButtonIcon, CameraIcon, SendIcon, ReportIcon, PinIcon } from '@src/components/icons';
+import { BackButtonIcon, CameraIcon, SendIcon, DiagnosisIcon, PinIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
@@ -30,7 +30,7 @@ const ConversationActions = ({ onPressInjury, onPressLocation }) => (
   <View scroll horizontal row spacing={{ p: 3 }}>
     <Button
       variant="primarySmall"
-      icon={<ReportIcon tint="white" />}
+      icon={<DiagnosisIcon size={0.4} tint="white" />}
       spacing={{ mr: 2 }}
       onPress={onPressInjury}
     >
@@ -38,7 +38,7 @@ const ConversationActions = ({ onPressInjury, onPressLocation }) => (
     </Button>
     <Button
       variant="primarySmall"
-      icon={<PinIcon size={0.5} tint="white" />}
+      icon={<PinIcon size={0.6} tint="white" />}
       spacing={{ mr: 2 }}
       onPress={onPressLocation}
     >
