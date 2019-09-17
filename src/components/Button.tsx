@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, TouchableHighlight, TouchableHighlightProps } from 'react-native';
+import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'react-native';
 
 import { Spacing, SpacingProp, Buttons } from '@src/styles';
-
-import Text from './Text';
 
 type ButtonProps = TouchableHighlightProps & {
   variant?: keyof typeof Buttons;
@@ -17,8 +15,7 @@ const Button = ({ variant = 'primary', spacing, icon, children, ...buttonProps }
     view: {
       ...Buttons[variant].view,
       ...Spacing.getStyles(spacing),
-      flexDirection: 'row',
-      alignItems: 'center',
+      ...(icon && { flexDirection: 'row', alignItems: 'center' }),
     },
     text: {
       ...Buttons[variant].text,
