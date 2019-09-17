@@ -25,6 +25,7 @@ type TypographyWeight = { weight?: '300' | '500' | '700' | '900' };
 type TypographyAlign = { align?: TextStyle['textAlign'] };
 type TypographyTransform = { transform?: TextStyle['textTransform'] };
 type TypographyDecoration = { decoration?: TextStyle['textDecorationLine'] };
+type TypographyHeight = { height?: 0 | 22 };
 
 export type TypographyProp =
   & TypographySizeIndex
@@ -32,7 +33,8 @@ export type TypographyProp =
   & TypographyAlign
   & TypographyTransform
   & TypographyDecoration
-  & TypographyColor;
+  & TypographyColor
+  & TypographyHeight;
 
 export const getStyles = (prop: TypographyProp): TextStyle => {
   if (!prop) { return null; }
@@ -44,6 +46,7 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
     align,
     transform,
     decoration,
+    height,
   } = prop;
 
   return {
@@ -53,5 +56,6 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
     ...(align && { textAlign: align }),
     ...(transform && { textTransform: transform }),
     ...(decoration && { textDecorationLine: decoration }),
+    ...(height && { lineHeight: height }),
   };
 };

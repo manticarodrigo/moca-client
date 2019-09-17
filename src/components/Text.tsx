@@ -26,6 +26,7 @@ const variants = {
   light: { ...Typography.getStyles({ size: 2, weight: '300', color: 'semiGrey' }) },
   lightPrimarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'primary' }) },
   lightSecondarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'secondary' }) },
+  lightTextCenter: { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondaryLighter', align: 'center', height: 22 }) },
 };
 
 type TextProps = RNTextProps & {

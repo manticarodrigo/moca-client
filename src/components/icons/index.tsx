@@ -1,5 +1,6 @@
 export { default as LogoIcon } from './LogoIcon';
 export { default as BackButtonIcon } from './BackButtonIcon';
+export { default as BigEnvelopIcon } from './BigEnvelopIcon';
 export { default as CameraIcon } from './CameraIcon';
 export { default as MessagesTabIcon } from './MessagesTabIcon';
 export { default as ContactIcon } from './ContactIcon';

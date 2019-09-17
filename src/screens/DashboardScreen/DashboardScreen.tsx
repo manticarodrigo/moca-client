@@ -3,7 +3,7 @@ import { Keyboard, StyleSheet } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
 
-import { LogoIcon, FilterIcon, SearchIcon } from '@src/components/icons';
+import { BigEnvelopIcon, LogoIcon, FilterIcon, SearchIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -13,6 +13,24 @@ import AppointmentCard from '@src/components/AppointmentCard';
 import Button from '@src/components/Button';
 
 import * as Colors from '@src/styles/global/colors';
+
+const BackgroundCheckPanel = () => (
+  <View alignCenter justifyCenter spacing={{ pb: 4 }}>
+    <BigEnvelopIcon />
+    <View justifyCenter spacing={{ pt: 4 }}>
+      <Text variant="titleSmallWhite">You’re almost there!</Text>
+    </View>
+    <View justifyCenter>
+      <Text variant="lightTextCenter" spacing={{ px: 4, pt: 3 }}>
+        In order to provide quality and safety for
+        MOCA’s Patients and Providers, we have sent
+        you an email to assist you in completing the
+        background check process. Once complete,
+        your profile will become active.
+      </Text>
+    </View>
+  </View>
+);
 
 const SearchPanel = () => {
   const [text, setText] = useState('');
@@ -55,9 +73,11 @@ const LinkCardList = (props) => {
   const navigation = useNavigation();
   const handleButtonPress = () => navigation.navigate('ChatListScreen');
 
-  const { isTherapist } = props;
+  const { isActivated, isTherapist } = props;
   const profilePercent = 50; // TODO: get the real value
   const remainingProfilePercentString = `${100 - profilePercent}% of your profile information is missing`;
+
+  const bgColor = (isTherapist && !isActivated) ? 'primary' : 'lightGrey';
 
   const styles = StyleSheet.create({
     progressBar: {
@@ -70,7 +90,7 @@ const LinkCardList = (props) => {
   });
 
   return (
-    <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor="lightGrey">
+    <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor={bgColor}>
 
       {!isTherapist && (
         <LinkCard type="diagnosis" spacing={{ mb: 2 }} onPress={handleButtonPress}>
@@ -86,6 +106,7 @@ const LinkCardList = (props) => {
         </Text>
       </LinkCard>
 
+      {isActivated && (
       <LinkCard type="messages" spacing={{ mb: 2 }} onPress={handleButtonPress}>
         <>
           <Text variant="regularSmallDark">
@@ -96,15 +117,18 @@ const LinkCardList = (props) => {
           </Text>
         </>
       </LinkCard>
+      )}
 
+      {isActivated && (
       <LinkCard type="history" spacing={{ mb: 2 }} onPress={handleButtonPress}>
         <Text>
           <Text variant="regularSmallGrey">Last: </Text>
           <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
         </Text>
       </LinkCard>
+      )}
 
-      {!isTherapist && (
+      {!isActivated && ( // add a better check
         <LinkCard type="contact" spacing={{ mb: 2 }} onPress={handleButtonPress}>
           <View>
             <Text variant="regularSmallSuccess">
@@ -146,6 +170,8 @@ const AppointmentList = (props) => {
 const DashboardScreen = () => {
   // TODO: get the real value and remove first View below
   const [isTherapist, setTherapist] = useState(true);
+  const [isActivated, setActivated] = useState(false);
+
   const [isFiltering, setFiltering] = useState(false);
 
   const _keyboardDidShow = () => { setFiltering(true); };
@@ -170,18 +196,24 @@ const DashboardScreen = () => {
       </View>
 
       <Button variant="secondary" onPress={() => setTherapist(!isTherapist)}>
-        {isTherapist && (<Text> set to therapist, click to change</Text>)}
-        {!isTherapist && (<Text> set to patient, click to change</Text>)}
+        therapist button, click to switch
+      </Button>
+      <Button variant="secondary" onPress={() => setActivated(!isActivated)}>
+        activated button, click to change
       </Button>
 
+      { !isActivated && isTherapist && <BackgroundCheckPanel /> }
+      { isActivated && isTherapist && (
+        <View alignCenter><Text variant="titleSmallWhite">Appointments</Text></View>
+      )}
       { !isTherapist && <SearchPanel /> }
 
       { !isFiltering && (
       <View scroll flex={1}>
-
+        { (!isTherapist || isActivated) && (
         <AppointmentList isTherapist={isTherapist} />
-
-        <LinkCardList isTherapist={isTherapist} />
+        )}
+        <LinkCardList isActivated={isActivated} isTherapist={isTherapist} />
 
       </View>
       )}
@@ -189,12 +221,8 @@ const DashboardScreen = () => {
   );
 };
 
-DashboardScreen.navigationOptions = ({ navigationOptions }) => ({
-  title: 'Appointments',
-  headerStyle: {
-    ...navigationOptions.headerStyle,
-    backgroundColor: 'transparent',
-  },
+DashboardScreen.navigationOptions = () => ({
+  header: null,
 });
 
 export default DashboardScreen;
