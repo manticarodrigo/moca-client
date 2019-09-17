@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { SectionListData, SectionList as RNSectionList, StatusBar } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { SectionListData, StatusBar } from 'react-native';
 import { NavigationComponent } from 'react-navigation';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
+import useScrollToStart from '@src/hooks/useScrollToStart';
 
 import { getImage } from '@src/utlities/imagePicker';
 
@@ -38,8 +39,8 @@ const ConversationScreen: NavigationComponent = () => {
     text: '',
   });
 
-  const sectionListRef = useRef<RNSectionList<Message[]>>();
   const sections = useDateSections(state.messages, (message) => message.createdAt);
+  const { scrollRef, scrollToStart } = useScrollToStart({ offset: 67 /* actions height */ });
 
   useEffect(() => {
     const onMount = async () => {
@@ -63,18 +64,6 @@ const ConversationScreen: NavigationComponent = () => {
       setParams({ title: username, img: imageUrl });
     }
   }, [state, currentUser.id, setParams]);
-
-  const scrollToBottom = () => {
-    const { current } = sectionListRef;
-
-    if (current) {
-      current.scrollToLocation({
-        sectionIndex: 0,
-        itemIndex: 0,
-        viewOffset: 67, // account for actions height
-      });
-    }
-  };
 
   const _createMessage = (attachmentURI?: string): Message => ({
     id: `${Math.floor(Math.random() * 1000000000)}`,
@@ -101,7 +90,7 @@ const ConversationScreen: NavigationComponent = () => {
       const message = _createMessage();
 
       setState((prev) => ({ ...prev, messages: [message, ...prev.messages], text: '' }));
-      scrollToBottom();
+      scrollToStart();
     }
   };
 
@@ -124,13 +113,13 @@ const ConversationScreen: NavigationComponent = () => {
       <StatusBar barStyle="dark-content" />
       <SectionList
         inverted
-        ref={sectionListRef}
+        ref={scrollRef}
         renderItem={renderItem}
         renderSectionFooter={renderSectionHeader}
         keyExtractor={keyExtractor}
         sections={sections}
         ListHeaderComponent={(
-          <ConversationActions onPressInjury={scrollToBottom} onPressLocation={scrollToBottom} />
+          <ConversationActions onPressInjury={scrollToStart} onPressLocation={scrollToStart} />
         )}
         bgColor="lightGrey"
       />
