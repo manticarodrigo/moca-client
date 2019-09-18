@@ -85,6 +85,7 @@ const AppStack = createSwitchNavigator(
     TabStack: createBottomTabNavigator({
 
       HomeTab: createStackNavigator({
+        DashboardScreen,
         FilterScreen,
       }, defaultNavConfig),
 
