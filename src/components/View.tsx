@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, ViewStyle, View as RNView, SafeAreaView, ScrollView, TouchableOpacity, Insets } from 'react-native';
 
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
+import { on } from 'cluster';
 
 type ViewProps = {
   style?: ViewStyle | ViewStyle[];
@@ -55,15 +56,14 @@ const View = ({
   children,
   onPress,
 }: ViewProps) => {
-  const WrapperType = useMemo(() => onPress ? TouchableOpacity : React.Fragment, [onPress]);
-  const wrapperProps = useMemo(() => ({ ...(onPress ? { onPress } : null) }), [onPress]);
 
   const ViewType = useMemo(() => {
     if (safeArea) return SafeAreaView;
     if (scroll) return ScrollView;
+    if (onPress) return TouchableOpacity;
 
     return RNView;
-  }, [safeArea, scroll]);
+  }, [safeArea, scroll, onPress]);
 
   const viewProps = useMemo(() => ({
     ...(scroll && horizontal ? { horizontal } : null),
@@ -99,29 +99,28 @@ const View = ({
       ...(alignItems && { alignItems }),
     },
   }), [
-    variant,
-    spacing,
-    position,
-    shadow,
-    direction,
-    flex,
-    wrap,
-    justifyContent,
-    alignItems,
-    width,
-    height,
-    bgColor,
-  ]);
+      variant,
+      spacing,
+      position,
+      shadow,
+      direction,
+      flex,
+      wrap,
+      justifyContent,
+      alignItems,
+      width,
+      height,
+      bgColor,
+    ]);
 
   return (
-    <WrapperType {...wrapperProps}>
-      <ViewType
-        style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}
-        {...viewProps}
-      >
-        {children}
-      </ViewType>
-    </WrapperType>
+    <ViewType
+      onPress={onPress}
+      style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}
+      {...viewProps}
+    >
+      {children}
+    </ViewType>
   );
 };
 
