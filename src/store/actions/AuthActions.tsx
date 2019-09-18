@@ -1,18 +1,14 @@
 import { Dispatch } from 'react';
 
-import { mockImg } from '@src/services/mock';
-
 export type AuthAction =
   | { type: 'LOGIN'; payload: User };
 
-export const login = () => (async (dispatch: Dispatch<AuthAction>) => {
-  const user: User = {
-    id: '0',
-    username: 'John Doe',
-    imageUrl: mockImg,
-  };
+const login = (username: string, password: string) => (async (dispatch: Dispatch<AuthAction>) => {
+  // const user = await getUser(username, password);
 
-  dispatch({ type: 'LOGIN', payload: user });
+  // dispatch({ type: 'LOGIN', payload: user });
 });
 
-export default {};
+export {
+  login,
+};

@@ -18,8 +18,8 @@ import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
 import FilterScreen from '@src/screens/DashboardScreen/FilterScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
-import ChatListScreen from '@src/screens/ChatListScreen';
-import ChatScreen from '@src/screens/ChatScreen';
+import ConversationListScreen from '@src/screens/ConversationListScreen';
+import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
@@ -55,7 +55,7 @@ const defaultTabConfig: TabNavigatorConfig = {
           return <HomeTabIcon focused={focused} />;
         case 'ScheduleTab':
           return <ScheduleTabIcon focused={focused} />;
-        case 'ChatTab':
+        case 'ConversationTab':
           return <MessagesTabIcon focused={focused} />;
         case 'ProfileTab':
           return <ProfileTabIcon focused={focused} />;
@@ -93,9 +93,9 @@ const AppStack = createSwitchNavigator(
         ScheduleScreen,
       }, defaultNavConfig),
 
-      ChatTab: createStackNavigator({
-        ChatListScreen,
-        ChatScreen,
+      ConversationTab: createStackNavigator({
+        ConversationListScreen,
+        ConversationScreen,
       }, defaultNavConfig),
 
       ProfileTab: createStackNavigator({
