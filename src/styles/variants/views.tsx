@@ -153,8 +153,6 @@ export {
   msgBubbleLeft,
   borderTop,
   borderBottom,
-  borderRight,
-  backdrop,
   modal,
   therapistView,
   therapistViewtPressed,
@@ -167,7 +165,6 @@ export {
   shadowCard,
   iconButton,
   bottomBounceFill,
-  roundedBorder,
   patientViewPressed,
   patientView,
 };
