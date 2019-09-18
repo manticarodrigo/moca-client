@@ -10,25 +10,31 @@ import {
   EveningIcon,
   MostReviewedIcon,
   HighestRatedIcon,
+  MaleIcon,
+  FemaleIcon,
+  BothGendersIcon,
 } from '@src/components/icons';
 
+
 const FilterScreen = () => {
+  const [focus, setfocus] = useState([]);
+
   const filterItems = {
     sortBy: {
       title: 'Sort By',
       items: [
         {
-          icon: <LowestPriceIcon />,
+          icon: <LowestPriceIcon focused={!!focus.includes('Lowest')} />,
           firstLine: 'Lowest',
           secondLine: 'Price',
         },
         {
-          icon: <MostReviewedIcon />,
+          icon: <MostReviewedIcon focused={!!focus.includes('Most')} />,
           firstLine: 'Most',
           secondLine: 'Reviews',
         },
         {
-          icon: <HighestRatedIcon />,
+          icon: <HighestRatedIcon focused={!!focus.includes('Highest')} />,
           firstLine: 'Highest',
           secondLine: 'Rated',
         },
@@ -38,15 +44,15 @@ const FilterScreen = () => {
       title: 'Desired Time',
       items: [
         {
-          icon: <MorningIcon />,
+          icon: <MorningIcon focused={!!focus.includes('Morning')} />,
           firstLine: 'Morning',
         },
         {
-          icon: <AfternoonIcon />,
+          icon: <AfternoonIcon focused={!!focus.includes('Afternoon')} />,
           firstLine: 'Afternoon',
         },
         {
-          icon: <EveningIcon />,
+          icon: <EveningIcon focused={!!focus.includes('Evening')} />,
           firstLine: 'Evening',
         },
       ],
@@ -83,27 +89,29 @@ const FilterScreen = () => {
       title: 'Gender',
       items: [
         {
+          icon: <MaleIcon focused={!!focus.includes('Female')} />,
           firstLine: 'Female',
         },
         {
+          icon: <FemaleIcon focused={!!focus.includes('Male')} />,
           firstLine: 'Male',
         },
         {
+          icon: <BothGendersIcon focused={!!focus.includes('Either')} />,
           firstLine: 'Either',
         },
       ],
     },
   };
 
-  const [focus, setfocus] = useState(['Female', 'Either', 'Evening']);
-
   const handlePress = (key) => {
-    const newFocus = focus;
-    const index = newFocus.indexOf(key);
+    const newFocus = [...focus];
+    const index = focus.indexOf(key);
     if (index !== -1) {
       newFocus.splice(index, 1);
     } else {
       newFocus.push(key);
+      // newFocus.push(key);
     }
     setfocus(newFocus);
   };

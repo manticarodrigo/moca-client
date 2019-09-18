@@ -25,3 +25,6 @@ export { default as EveningIcon } from './EveningIcon';
 export { default as AfternoonIcon } from './AfternoonIcon';
 export { default as HighestRatedIcon } from './HighestRatedIcon';
 export { default as MostReviewedIcon } from './MostReviewedIcon';
+export { default as MaleIcon } from './MaleIcon';
+export { default as FemaleIcon } from './FemaleIcon';
+export { default as BothGendersIcon } from './BothGendersIcon';

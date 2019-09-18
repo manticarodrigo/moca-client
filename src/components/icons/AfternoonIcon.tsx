@@ -1,13 +1,15 @@
 import React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
-const AfternoonIcon = () => (
+import { Colors } from '@src/styles';
+
+const AfternoonIcon = ({ focused }) => (
   <Svg width="35px" height="28px" viewBox="0 0 35 28">
     <G id="Guide" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
       <G
         id="Assets"
         transform="translate(-216.000000, -1316.000000)"
-        fill="#57B0CC"
+        fill={focused ? Colors.white : '#57B0CC'}
         fillRule="nonzero"
       >
         <G id="lunch" transform="translate(216.000000, 1316.000000)">
