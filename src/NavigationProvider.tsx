@@ -21,6 +21,12 @@ import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
+import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
+import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
+import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/SignUp/AddressScreen';
+import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -80,6 +86,12 @@ const AppStack = createSwitchNavigator(
     AuthStack: createStackNavigator({
       SitemapScreen,
       OnboardingScreen,
+      SelectionScreen,
+      InvalidZipCodeScreen,
+      RegistrationScreen,
+      InvalidMediCareScreen,
+      AddressScreen,
+      QualificationsScreen,
     }, defaultNavConfig),
 
     TabStack: createBottomTabNavigator({

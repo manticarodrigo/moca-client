@@ -33,6 +33,16 @@ const primarySmall: ButtonVariant = {
   },
 };
 
+const primaryDisabled: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 3 }),
+    ...Borders.primary,
+    backgroundColor: Colors.buttonDisabled,
+  },
+  text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
 const secondary: ButtonVariant = {
   view: {
     ...Spacing.getStyles({ p: 2 }),
@@ -68,10 +78,42 @@ const backdrop: ButtonVariant = {
   underlayColor: undefined,
 };
 
+const tertiary: ButtonVariant = {
+  view: {
+    borderWidth: 1,
+    borderColor: Colors.secondaryLighter,
+    borderRadius: 6,
+    height: 32,
+    width: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: { ...Typography.getStyles({ color: 'secondaryLight', size: 2 }) },
+  underlayColor: Colors.secondaryLightest,
+};
+
+const buttonPressed: ButtonVariant = {
+  view: {
+    borderWidth: 1,
+    borderColor: Colors.secondaryLighter,
+    backgroundColor: Colors.secondary,
+    borderRadius: 6,
+    height: 32,
+    width: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: { ...Typography.getStyles({ color: 'secondaryLightest', size: 2 }) },
+  underlayColor: Colors.secondaryLightest,
+};
+
 export {
   primary,
+  tertiary,
   primarySmall,
-  secondary,
   text,
   backdrop,
+  secondary,
+  buttonPressed,
+  primaryDisabled,
 };

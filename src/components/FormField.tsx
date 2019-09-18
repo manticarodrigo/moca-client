@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
 import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
 import { Spacing, SpacingProp, Colors } from '@src/styles';
@@ -25,7 +25,7 @@ const FormField = ({
   spacing,
   error,
   ...textInputProps
-}: FormFieldProps) => {
+}: FormFieldProps, ref: React.Ref<any>) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
@@ -54,6 +54,9 @@ const FormField = ({
       borderRadius: Spacing.spaceSize[2],
       borderWidth: error ? 1 : null,
       borderColor: error ? Colors.error : null,
+      marginTop: Spacing.spaceSize[2],
+      marginLeft: widthPercentageToDP(6.4),
+      marginRight: widthPercentageToDP(6.4),
       padding: Spacing.spaceSize[3],
       ...Spacing.getStyles(spacing),
       width: widthPercentageToDP(87.2),
@@ -97,10 +100,12 @@ const FormField = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         {...textInputProps}
+        value={value}
+        ref={ref}
       />
       <Image source={error ? ErrorIcon : icon} />
     </View>
   );
 };
 
-export default FormField;
+export default forwardRef(FormField);

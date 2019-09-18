@@ -52,6 +52,44 @@ const backdrop: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
   ...Borders.secondary,
   ...StyleSheet.absoluteFillObject,
+};
+
+const selectionScreenBorderImage: ViewStyle = {
+  ...Spacing.getStyles({ pt: 5, pb: 5 }),
+  borderWidth: 7,
+  borderColor: Colors.transparent,
+  width: 164,
+  height: 337,
+};
+
+const therapistView: ViewStyle = {
+  ...selectionScreenBorderImage,
+  borderTopRightRadius: 16,
+  borderBottomRightRadius: 16,
+};
+
+const therapistViewtPressed: ViewStyle = {
+  ...therapistView,
+  borderColor: Colors.secondaryDarker,
+};
+
+const patientView: ViewStyle = {
+  ...selectionScreenBorderImage,
+  borderTopLeftRadius: 16,
+  borderBottomLeftRadius: 16,
+};
+
+
+const patientViewPressed: ViewStyle = {
+  ...patientView,
+  borderColor: Colors.secondaryDarker,
+};
+
+const modal: ViewStyle = {
+  borderTopLeftRadius: 30,
+  borderTopRightRadius: 30,
+  overflow: 'hidden',
+  flex: 1,
   backgroundColor: Colors.white,
 };
 
@@ -135,6 +173,9 @@ export {
   borderBottom,
   borderRight,
   backdrop,
+  modal,
+  therapistView,
+  therapistViewtPressed,
   card,
   cardRight,
   cardLeft,
@@ -145,4 +186,6 @@ export {
   iconButton,
   bottomBounceFill,
   roundedBorder,
+  patientViewPressed,
+  patientView,
 };
