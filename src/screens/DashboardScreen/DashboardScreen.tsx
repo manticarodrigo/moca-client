@@ -15,10 +15,10 @@ import Button from '@src/components/Button';
 import * as Colors from '@src/styles/global/colors';
 
 const SearchPanel = () => {
+  const navigation = useNavigation();
   const [text, setText] = useState('');
   const onChangeText = (val: string) => setText(val);
   const onPressSearch = () => setText('');
-  const navigation = useNavigation();
   const onPressFilter = () => navigation.navigate('FilterScreen');
 
   return (
@@ -53,7 +53,7 @@ const SearchPanel = () => {
 
 const LinkCardList = (props) => {
   const navigation = useNavigation();
-  const handleButtonPress = () => navigation.navigate('ChatListScreen');
+  const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
   const { isTherapist } = props;
   const profilePercent = 50; // TODO: get the real value
@@ -194,6 +194,7 @@ DashboardScreen.navigationOptions = ({ navigationOptions }) => ({
   headerStyle: {
     ...navigationOptions.headerStyle,
     backgroundColor: 'transparent',
+    elevation: 0,
   },
 });
 

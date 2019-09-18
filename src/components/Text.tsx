@@ -32,7 +32,7 @@ type TextProps = RNTextProps & {
   variant?: keyof typeof variants;
   spacing?: SpacingProp;
   typography?: TypographyProp;
-  children: string | JSX.Element[];
+  children: (string | JSX.Element) | (string | JSX.Element)[];
 };
 
 const Text = ({ variant, spacing, typography, children, ...textProps }: TextProps) => {
