@@ -1,4 +1,4 @@
-import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions, View } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';

@@ -174,16 +174,16 @@ const DashboardScreen = () => {
         {!isTherapist && (<Text> set to patient, click to change</Text>)}
       </Button>
 
-      { !isTherapist && <SearchPanel /> }
+      {!isTherapist && <SearchPanel />}
 
-      { !isFiltering && (
-      <View scroll flex={1}>
+      {!isFiltering && (
+        <View scroll flex={1}>
 
-        <AppointmentList isTherapist={isTherapist} />
+          <AppointmentList isTherapist={isTherapist} />
 
-        <LinkCardList isTherapist={isTherapist} />
+          <LinkCardList isTherapist={isTherapist} />
 
-      </View>
+        </View>
       )}
     </View>
   );

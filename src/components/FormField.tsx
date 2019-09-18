@@ -1,10 +1,12 @@
 import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
 import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
-import { Spacing, Colors } from '@src/styles';
+import { Spacing, SpacingProp, Colors } from '@src/styles';
 
 
 import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
+
+import ErrorIcon from '@src/assets/Icons/warning.png';
 
 import TextInput from './TextInput';
 
@@ -12,12 +14,16 @@ type FormFieldProps = TextInputProps & {
   placeholder: string;
   icon?: object;
   value: string;
+  spacing?: SpacingProp;
+  error?: boolean;
 }
 
 const FormField = ({
   placeholder,
   icon,
   value,
+  spacing,
+  error,
   ...textInputProps
 }: FormFieldProps, ref: React.Ref<any>) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -46,10 +52,10 @@ const FormField = ({
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      marginTop: Spacing.spaceSize[2],
-      marginLeft: widthPercentageToDP(6.4),
-      marginRight: widthPercentageToDP(6.4),
+      borderWidth: error ? 1 : null,
+      borderColor: error ? Colors.error : null,
       padding: Spacing.spaceSize[3],
+      ...Spacing.getStyles(spacing),
       width: widthPercentageToDP(87.2),
       height: heightPercentageToDP(8.3),
       backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
@@ -61,7 +67,7 @@ const FormField = ({
       width: widthPercentageToDP(70),
       height: heightPercentageToDP(8.3),
     },
-  }), [isFocused]);
+  }), [isFocused, spacing, error]);
 
   const placeholderStyle = {
     position: 'absolute',
@@ -94,7 +100,7 @@ const FormField = ({
         value={value}
         ref={ref}
       />
-      <Image source={icon} />
+      <Image source={error ? ErrorIcon : icon} />
     </View>
   );
 };
