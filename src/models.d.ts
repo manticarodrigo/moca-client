@@ -6,12 +6,13 @@ declare type User = {
 
 declare type Message = {
   id: string;
+  sender: string;
   text: string;
-  userId: string;
+  attachmentURI?: string;
   createdAt: string;
 };
 
-declare type Chat = {
+declare type Conversation = {
   id: string;
   participants: User[];
   messages: Message[];

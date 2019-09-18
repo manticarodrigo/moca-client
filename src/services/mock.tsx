@@ -24,7 +24,7 @@ const _genMessage = (text: string, userId: string): Message => ({
   createdAt: _genDaysBefore(_genRandomInt(16)),
 });
 
-const _genChat = (username: string, currentUser: User): Chat => {
+const _genConversation = (username: string, currentUser: User): Conversation => {
   const participants = [
     currentUser,
     _genParticipant(username),
@@ -42,6 +42,6 @@ const _genChat = (username: string, currentUser: User): Chat => {
   };
 };
 
-export const fetchChats = async (currentUser: User) => (
-  mockUsernames.map((username) => _genChat(username, currentUser))
+export const fetchConversations = async (currentUser: User) => (
+  mockUsernames.map((username) => _genConversation(username, currentUser))
 );

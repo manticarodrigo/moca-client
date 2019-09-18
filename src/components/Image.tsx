@@ -6,8 +6,8 @@ import { mockImg } from '@src/services/mock';
 type ImageProps = {
   rounded?: boolean;
   size?: number;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   uri?: string;
   file?: ImageRequireSource;
 };

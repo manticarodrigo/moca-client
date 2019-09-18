@@ -4,9 +4,13 @@ import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProp
 import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/styles';
 
 const variants = {
-  chat: {
+  conversation: {
     height: '100%',
     borderRadius: 24,
+    backgroundColor: Colors.lightGrey,
+  },
+  search: {
+    width: 190,
     backgroundColor: Colors.lightGrey,
   },
 };
