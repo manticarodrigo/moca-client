@@ -8,18 +8,17 @@ import { resetUserInformation } from '@src/store/actions/RegistrationAction';
 
 
 import View from '@src/components/View';
-import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
 import FormField from '@src/components/FormField';
 
-import EmailIcon from '@src/assets/Icons/email.png';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-import InvalidZipCodeImage from '@src/assets/pngs/invalidZipCodeImage.png';
+import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
+import EmailIcon from '@src/assets/Icons/email.png';
 
 const InvalidZipCodeScreen = () => {
   const navigation = useNavigation();
@@ -27,10 +26,7 @@ const InvalidZipCodeScreen = () => {
   const [, dispatch] = useStore();
   const [isEmailValid, setIsEmailValid] = useState(true);
 
-  const imageWidth = 74;
-  const imageHeight = 87;
   const paddingOffset = 80;
-
   const isButtonDisabled = email === '' || !isEmailValid;
 
 
@@ -65,14 +61,11 @@ const InvalidZipCodeScreen = () => {
     >
       <View safeArea flex={1} spacing={{ mt: 4, mx: 3 }} alignCenter justifyEnd>
         <View alignCenter>
-          <Image file={InvalidZipCodeImage} width={imageWidth} height={imageHeight} />
+          <BigEnvelopeRedIcon />
           <Text variant="error" spacing={{ mt: 4 }}>
-            {"Sorry, MOCA hasn't made it"}
+            SORRY !
           </Text>
-          <Text variant="error">
-            to your area yet
-          </Text>
-          <Text variant="regular" spacing={{ mt: 2 }} typography={{ size: 1 }}>
+          <Text variant="regular" spacing={{ mt: 3 }} typography={{ size: 1, align: 'center' }}>
             {'Thanks for your interest in Moca!\n'}
             {'We are currently not available in your area, but\n'}
             {'we are working hard to change that. Please\n'}
@@ -82,7 +75,7 @@ const InvalidZipCodeScreen = () => {
             {'we become available in your area.\n'}
           </Text>
         </View>
-        <View alignCenter width="100%" spacing={{ mt: 4 }}>
+        <View alignCenter width="100%" spacing={{ mt: 3 }}>
           <FormField
             placeholder="Email address"
             value={email}
@@ -101,7 +94,7 @@ const InvalidZipCodeScreen = () => {
               </Text>
             )}
         </View>
-        <View width="100%" spacing={{ mt: 4 }}>
+        <View width="100%" spacing={{ mt: 3 }}>
           <Button
             variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
             onPress={handleButtonPress}

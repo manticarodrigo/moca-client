@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, forwardRef } from 'react';
 import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProps } from 'react-native';
 
 import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/styles';
@@ -17,7 +17,12 @@ type TextInputProps = RNTextInputProps & {
   spacing?: SpacingProp;
 };
 
-const TextInput = ({ variant, typography, spacing, ...textProps }: TextInputProps) => {
+const TextInput = ({
+  variant,
+  typography,
+  spacing,
+  ...textProps
+}: TextInputProps, ref: React.Ref<any>) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
       ...Spacing.getStyles(spacing),
@@ -26,7 +31,7 @@ const TextInput = ({ variant, typography, spacing, ...textProps }: TextInputProp
     },
   }), [variant, typography, spacing]);
 
-  return <RNTextInput style={styles.text} {...textProps} />;
+  return <RNTextInput style={styles.text} ref={ref} {...textProps} />;
 };
 
-export default TextInput;
+export default forwardRef(TextInput);

@@ -1,40 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { TouchableHighlight } from 'react-native';
 
-import CheckBoxFilled from '@src/assets/pngs/tickFilled.png';
-import CheckBoxEmpty from '@src/assets/pngs/tickEmpty.png';
+import TickEmptyIcon from '@src/components/icons/TickEmptyIcon';
+import TickFilledIcon from '@src/components/icons/TickFilledIcon';
+
 
 import View from './View';
-import Image from './Image';
-
 
 type CheckBoxProps = {
-  handleCheckBoxClick: (value: string, checked: boolean) => void;
-  value: string;
-  width: number;
-  height: number;
+  handleCheckBoxClick: (checked: boolean, index: number) => void;
   isChecked?: boolean;
+  index?: number;
 };
 
 const CheckBox = ({
   handleCheckBoxClick,
-  value,
-  width,
-  height,
   isChecked,
+  index,
 }: CheckBoxProps) => {
-  const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    if (isChecked) {
-      setChecked(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isChecked]);
-
   const handleClick = () => {
-    handleCheckBoxClick(value, !checked);
-    setChecked(!checked);
+    handleCheckBoxClick(!isChecked, index);
   };
 
   return (
@@ -43,12 +28,12 @@ const CheckBox = ({
         onPress={() => handleClick()}
         underlayColor="transparent"
       >
-        {checked
+        {isChecked
           ? (
-            <Image file={CheckBoxFilled} width={width} height={height} />
+            <TickFilledIcon />
           )
           : (
-            <Image file={CheckBoxEmpty} width={width} height={height} />
+            <TickEmptyIcon />
           )}
       </TouchableHighlight>
     </View>

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import View from '@src/components/View';
-import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 
-import zipCodeImage from '@src/assets/pngs/zipCodeImage.png';
+import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 import FormField from '@src/components/FormField';
 
 type ZipCodeScreenProps = {
@@ -20,9 +18,6 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const [zipCode, setZipCode] = useState('');
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
-
-  const zipCodeImageWidth = 74;
-  const zipCodeImageHeigth = 87;
 
   const isButtonDisabled = zipCode === '' || !isZipCodeValid;
 
@@ -59,13 +54,13 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
 
   return (
     <View
-      spacing={{ mt: 3, px: 4 }}
+      spacing={{ mt: 5, px: 4 }}
       alignCenter
       flex={1}
       width="100%"
     >
       <View alignCenter>
-        <Image file={zipCodeImage} width={zipCodeImageWidth} height={zipCodeImageHeigth} />
+        <AddLocationBigIcon />
         <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
         <Text variant="regular" spacing={{ mt: 2 }}>
           {"Enter your zip code to check MOCA's"}
@@ -93,7 +88,7 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
             </Text>
           )}
       </View>
-      <View width="100%" spacing={{ mt: 4 }}>
+      <View width="100%" flex={1} spacing={{ mt: 4 }}>
         <Button
           disabled={isButtonDisabled}
           variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

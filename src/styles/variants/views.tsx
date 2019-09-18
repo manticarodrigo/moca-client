@@ -36,37 +36,35 @@ const borderBottom: ViewStyle = {
   borderBottomColor: Colors.secondaryLightest,
 };
 
-const imageBorder: ViewStyle = {
-  borderWidth: 1,
-  borderColor: Colors.secondaryLighter,
+const selectionScreenBorderImage: ViewStyle = {
   ...Spacing.getStyles({ pt: 5, pb: 5 }),
+  borderWidth: 7,
+  borderColor: Colors.transparent,
   width: 164,
   height: 337,
 };
 
-const imageBorderRight: ViewStyle = {
-  ...imageBorder,
+const therapistView: ViewStyle = {
+  ...selectionScreenBorderImage,
   borderTopRightRadius: 16,
   borderBottomRightRadius: 16,
-  borderLeftWidth: 0,
 };
 
-const imageBorderRightPressed: ViewStyle = {
-  ...imageBorderRight,
-  borderColor: Colors.secondary,
+const therapistViewtPressed: ViewStyle = {
+  ...therapistView,
+  borderColor: Colors.secondaryDarker,
 };
 
-const imageBorderLeft: ViewStyle = {
-  ...imageBorder,
+const patientView: ViewStyle = {
+  ...selectionScreenBorderImage,
   borderTopLeftRadius: 16,
   borderBottomLeftRadius: 16,
 };
 
 
-const imageBorderLeftPressed: ViewStyle = {
-  ...imageBorderLeft,
-  borderColor: Colors.secondary,
-  borderRightColor: Colors.secondaryLighter,
+const patientViewPressed: ViewStyle = {
+  ...patientView,
+  borderColor: Colors.secondaryDarker,
 };
 
 const modal: ViewStyle = {
@@ -156,8 +154,8 @@ export {
   borderTop,
   borderBottom,
   modal,
-  imageBorderRight,
-  imageBorderLeft,
+  therapistView,
+  therapistViewtPressed,
   card,
   cardRight,
   cardLeft,
@@ -167,6 +165,6 @@ export {
   shadowCard,
   iconButton,
   bottomBounceFill,
-  imageBorderRightPressed,
-  imageBorderLeftPressed,
+  patientViewPressed,
+  patientView,
 };

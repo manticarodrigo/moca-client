@@ -5,16 +5,15 @@ import ZipeCodeScreen from '@src/modals/ZipCodeScreen';
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
-import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import ModalView from '@src/components/ModalView';
 
 
-import patient from '@src/assets/pngs/patient.png';
-import therapist from '@src/assets/pngs/therapist.png';
-import patientSelected from '@src/assets/pngs/patientSelect.png';
-import therapistSelected from '@src/assets/pngs/therapistSelect.png';
+import PatientIcon from '@src/components/icons/PatientIcon';
+import TherapistIcon from '@src/components/icons/TherapistIcon';
+import TherapistSelectIcon from '@src/components/icons/TherapistSelectIcon';
+import PatientSelectIcon from '@src/components/icons/PatientSelectIcon';
 
 import { Colors } from '@src/styles/index';
 
@@ -22,18 +21,14 @@ import useStore from '@src/hooks/useStore';
 import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
 
 const SelectionScreen = () => {
-  type Colors = keyof typeof Colors;
+  type ColorKey = keyof typeof Colors;
+
   const navigation = useNavigation();
   const [type, setType] = useState('');
   const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [screenName, setScreenName] = useState();
   const [shouldNavigate, setShouldNavigate] = useState(false);
-
-  const therapistImageWidth = 56;
-  const therapistImageHeight = 110;
-  const patientImageWidth = 48;
-  const patientImageHeight = 93;
 
   const isPatient = type === 'Patient';
   const isTherapist = type === 'Therapist';
@@ -50,10 +45,10 @@ const SelectionScreen = () => {
     buttonText = 'Continue as a Patient';
   }
 
-  const patientBgColor: Colors = isPatient ? 'secondary' : 'white';
-  const therapistBgColor: Colors = isTherapist ? 'secondary' : 'white';
-  const patientImage = isPatient ? patientSelected : patient;
-  const therapistImage = isTherapist ? therapistSelected : therapist;
+  const patientBgColor: ColorKey = isPatient ? 'white' : 'semiGreyLighter';
+  const therapistBgColor: ColorKey = isTherapist ? 'white' : 'semiGreyLighter';
+  const patientTextColor: ColorKey = isPatient ? 'primary' : 'white';
+  const therapistTextColor: ColorKey = isTherapist ? 'primary' : 'white';
 
 
   const handleButtonPress = () => {
@@ -72,7 +67,6 @@ const SelectionScreen = () => {
 
   const ZipCodeModal = (
     <ModalView
-      hasArrow
       isVisible={isModalVisible}
       onBackdropPress={() => setIsModalVisible(false)}
       onSwipeComplete={() => setIsModalVisible(false)}
@@ -90,7 +84,7 @@ const SelectionScreen = () => {
 
   return (
     <>
-      <View safeArea alignCenter flex={1} spacing={{ mx: 3 }}>
+      <View safeArea alignCenter flex={1} spacing={{ px: 3 }} width="100%">
         <View spacing={{ mt: 5 }} alignCenter>
           <Text variant="title">Please select your</Text>
           <View alignCenter row>
@@ -100,31 +94,28 @@ const SelectionScreen = () => {
         </View>
         <View row spacing={{ mt: 5 }}>
           <View
-            variant={isPatient ? 'imageBorderLeftPressed' : 'imageBorderLeft'}
+            variant={isPatient ? 'patientViewPressed' : 'patientView'}
             alignCenter
             justifyBetween
             {...(!isPatient ? { onPress: () => setType('Patient') } : '')}
             bgColor={patientBgColor}
+            spacing={{ mr: 1 }}
           >
-            <Image file={patientImage} width={patientImageWidth} height={patientImageHeight} />
-            <Text variant="title">Patient</Text>
+            {isPatient ? <PatientSelectIcon /> : <PatientIcon />}
+            <Text variant="title" typography={{ color: patientTextColor, weight: '900' }}>PATIENT</Text>
           </View>
           <View
-            variant={isTherapist ? 'imageBorderRightPressed' : 'imageBorderRight'}
+            variant={isTherapist ? 'therapistViewtPressed' : 'therapistView'}
             alignCenter
             justifyBetween
             {...(!isTherapist ? { onPress: () => setType('Therapist') } : '')}
             bgColor={therapistBgColor}
           >
-            <Image
-              file={therapistImage}
-              width={therapistImageWidth}
-              height={therapistImageHeight}
-            />
-            <Text variant="title">Therapist</Text>
+            {isTherapist ? <TherapistSelectIcon /> : <TherapistIcon />}
+            <Text variant="title" typography={{ color: therapistTextColor, weight: '900' }}>THERAPIST</Text>
           </View>
         </View>
-        <View width="100%" flex={1} justifyEnd spacing={{ mb: 3 }}>
+        <View flex={1} width="100%" justifyEnd spacing={{ mb: 3, px: 3 }}>
           <Button
             variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
             onPress={handleButtonPress}

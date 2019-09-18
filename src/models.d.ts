@@ -27,7 +27,7 @@ declare type RegistrationInformation = {
     city: string;
     state: string;
   };
-  qualifications?: Array<string>; // to be changed later [add all types of checkBox items]
+  qualifications?: Array<string, boolean>; // to be changed later [add all types of checkBox items]
 };
 
 declare type Chat = {
