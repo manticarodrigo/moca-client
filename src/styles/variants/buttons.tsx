@@ -18,7 +18,19 @@ const primary: ButtonVariant = {
     backgroundColor: Colors.primary,
   },
   text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
-  underlayColor: null,
+  underlayColor: Colors.secondary,
+};
+
+const primarySmall: ButtonVariant = {
+  ...primary,
+  view: {
+    ...primary.view,
+    ...Spacing.getStyles({ py: 2 }),
+  },
+  text: {
+    ...primary.text,
+    ...Typography.getStyles({ size: 2 }),
+  },
 };
 
 const primaryDisabled: ButtonVariant = {
@@ -98,6 +110,7 @@ const buttonPressed: ButtonVariant = {
 export {
   primary,
   tertiary,
+  primarySmall,
   text,
   backdrop,
   secondary,

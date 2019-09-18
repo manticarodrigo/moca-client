@@ -6,9 +6,9 @@ import Image from '@src/components/Image';
 
 import { mockImg } from '@src/services/mock';
 
-type ChatHeaderProps = { params: { img?: string; title?: string } };
+type ConversationHeaderProps = { params: { img?: string; title?: string } };
 
-const ChatHeader = ({ params = {} }: ChatHeaderProps) => {
+const ConversationHeader = ({ params = {} }: ConversationHeaderProps) => {
   const { img = mockImg, title = '' } = params;
 
   return (
@@ -21,4 +21,4 @@ const ChatHeader = ({ params = {} }: ChatHeaderProps) => {
   );
 };
 
-export default ChatHeader;
+export default ConversationHeader;

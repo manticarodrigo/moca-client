@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Spacing, SpacingProp, Colors } from '@src/styles';
 
-import { ReportIcon, AppointmentIcon, ClockIcon, DollarIcon } from '@src/components/icons';
+import { ReportIcon, AppointmentIcon, ClockSimpleIcon, DollarIcon } from '@src/components/icons';
 
 import Text from './Text';
 import View from './View';
@@ -60,7 +60,7 @@ const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) 
       case 'appointment':
         return <AppointmentIcon tint={color} />;
       case 'clock':
-        return <ClockIcon />;
+        return <ClockSimpleIcon tint={color} />;
       case 'dollar':
         return <DollarIcon tint={color} />;
       default:

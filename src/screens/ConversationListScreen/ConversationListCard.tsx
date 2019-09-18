@@ -5,18 +5,22 @@ import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
-type ChatListCardProps = {
+type ConversationListCardProps = {
   currentUser: User;
-  chat: Chat;
-  onPress: (chat: Chat) => void;
+  conversation: Conversation;
+  onPress: (conversation: Conversation) => void;
 };
 
-const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
-  const handleCardPress = () => onPress(chat);
+const ConversationListCard = ({
+  currentUser,
+  conversation,
+  onPress,
+}: ConversationListCardProps) => {
+  const handleCardPress = () => onPress(conversation);
 
   const { imageUrl, username, time, text } = useMemo(() => {
-    const otherParticipant = chat.participants.find(({ id }) => id !== currentUser.id);
-    const latestMessage = chat.messages[chat.messages.length - 1];
+    const otherParticipant = conversation.participants.find(({ id }) => id !== currentUser.id);
+    const latestMessage = conversation.messages[conversation.messages.length - 1];
 
     return {
       imageUrl: otherParticipant.imageUrl,
@@ -24,7 +28,7 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
       time: format(latestMessage.createdAt, 'h:mm a / DD.MM.YYYY'),
       text: latestMessage.text,
     };
-  }, [chat, currentUser.id]);
+  }, [conversation, currentUser.id]);
 
   return (
     <View variant="borderBottom" spacing={{ p: 3 }} onPress={handleCardPress} bgColor="white">
@@ -48,4 +52,4 @@ const ChatListCard = ({ currentUser, chat, onPress }: ChatListCardProps) => {
   );
 };
 
-export default ChatListCard;
+export default ConversationListCard;

@@ -4,18 +4,27 @@ import { format } from 'date-fns';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Image from '@src/components/Image';
 
-type ChatMessageProps = {
+type ConversationMessageProps = {
   alignRight: boolean;
-  text: string;
-  createdAt: string;
+  message: Message;
+  onPressImage: (uri: string) => void;
 };
 
-const ChatMessage = ({ text, createdAt, alignRight }: ChatMessageProps) => {
+const ConversationMessage = ({ message, alignRight, onPressImage }: ConversationMessageProps) => {
+  const { text, attachmentURI, createdAt } = message;
   const time = useMemo(() => format(createdAt, 'hh:mm'), [createdAt]);
+
+  const handlePressImage = () => onPressImage(attachmentURI);
 
   return (
     <View column variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
+      {attachmentURI && (
+        <View column spacing={{ mb: 2 }} onPress={handlePressImage}>
+          <Image width={200} height={200} uri={attachmentURI} />
+        </View>
+      )}
       <Text
         typography={{
           color: alignRight ? 'white' : 'dark',
@@ -39,4 +48,4 @@ const ChatMessage = ({ text, createdAt, alignRight }: ChatMessageProps) => {
   );
 };
 
-export default ChatMessage;
+export default ConversationMessage;

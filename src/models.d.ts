@@ -6,12 +6,11 @@ declare type User = {
 
 declare type Message = {
   id: string;
+  sender: string;
   text: string;
-  userId: string;
+  attachmentURI?: string;
   createdAt: string;
 };
-
-declare type Qualifications = '';
 
 declare type RegistrationInformation = {
   type?: string;
@@ -30,7 +29,7 @@ declare type RegistrationInformation = {
   qualifications?: Array<string, boolean>; // to be changed later [add all types of checkBox items]
 };
 
-declare type Chat = {
+declare type Conversation = {
   id: string;
   participants: User[];
   messages: Message[];
