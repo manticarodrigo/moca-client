@@ -5,10 +5,11 @@ import useStore from '@src/hooks/useStore';
 
 import { Colors } from '@src/styles';
 
-const ChatTabIcon = ({ focused }) => {
-  const [{ chatState: { chats } }] = useStore();
+const MessagesTabIcon = ({ focused }) => {
+  const [store] = useStore();
+  const { conversations } = store.conversationState;
 
-  const hasNotification = useMemo(() => !!chats.length, [chats]);
+  const hasNotification = useMemo(() => !!conversations.length, [conversations]);
 
   return (
     <Svg width={48} height={48}>
@@ -45,4 +46,4 @@ const ChatTabIcon = ({ focused }) => {
   );
 };
 
-export default ChatTabIcon;
+export default MessagesTabIcon;

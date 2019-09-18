@@ -4,9 +4,10 @@ import { StyleSheet, ViewStyle, View as RNView, SafeAreaView, ScrollView, Toucha
 import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
 
 type ViewProps = {
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   safeArea?: boolean;
   scroll?: boolean;
+  horizontal?: boolean;
   variant?: keyof typeof Views;
   position?: PositionProp;
   spacing?: SpacingProp;
@@ -33,6 +34,7 @@ const View = ({
   style,
   safeArea,
   scroll,
+  horizontal,
   variant,
   spacing,
   position,
@@ -62,6 +64,10 @@ const View = ({
 
     return RNView;
   }, [safeArea, scroll]);
+
+  const viewProps = useMemo(() => ({
+    ...(scroll && horizontal ? { horizontal } : null),
+  }), [scroll, horizontal]);
 
   const direction = useMemo(() => (
     (row && 'row') || (column && 'column')
@@ -109,7 +115,10 @@ const View = ({
 
   return (
     <WrapperType {...wrapperProps}>
-      <ViewType style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}>
+      <ViewType
+        style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}
+        {...viewProps}
+      >
         {children}
       </ViewType>
     </WrapperType>

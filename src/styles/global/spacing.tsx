@@ -22,6 +22,7 @@ const compositions = {
 
 export const spaceSize = [0, 4, 8, 16, 24, 32, 64, 128, 256, 512];
 
+
 type SpacingKey = keyof typeof aliases | keyof typeof compositions;
 
 const _getKeyStyles = (key: string, multiplier: number): ViewStyle => {
