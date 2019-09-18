@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-indent-props */
 import React from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
 import OpenIcon from '@src/components/icons/OpenIcon';
@@ -22,15 +21,15 @@ const ModalView = ({
   ...modalProps
 }: BackdropProps) => (
   <Modal
-      {...modalProps}
-      swipeDirection="down"
-      backdropOpacity={0.8}
-      animationInTiming={500}
-      animationOutTiming={500}
-      hideModalContentWhileAnimating
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      style={{ margin: 0, marginTop: height }}
+    {...modalProps}
+    swipeDirection="down"
+    backdropOpacity={0.8}
+    animationInTiming={500}
+    animationOutTiming={500}
+    hideModalContentWhileAnimating
+    animationIn="slideInUp"
+    animationOut="slideOutDown"
+    style={{ margin: 0, marginTop: height }}
   >
     <View variant="modal" alignCenter bgColor={bgColor}>
       <View alignCenter spacing={{ mt: 2 }} onPress={handleArrowClick}>
