@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
 import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
 import { Spacing, Colors } from '@src/styles';
@@ -14,7 +14,12 @@ type FormFieldProps = TextInputProps & {
   value: string;
 }
 
-const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldProps) => {
+const FormField = ({
+  placeholder,
+  icon,
+  value,
+  ...textInputProps
+}: FormFieldProps, ref: React.Ref<any>) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
@@ -41,7 +46,7 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      marginTop: Spacing.spaceSize[5],
+      marginTop: Spacing.spaceSize[2],
       marginLeft: widthPercentageToDP(6.4),
       marginRight: widthPercentageToDP(6.4),
       padding: Spacing.spaceSize[3],
@@ -86,10 +91,12 @@ const FormField = ({ placeholder, icon, value, ...textInputProps }: FormFieldPro
         onFocus={handleFocus}
         onBlur={handleBlur}
         {...textInputProps}
+        value={value}
+        ref={ref}
       />
       <Image source={icon} />
     </View>
   );
 };
 
-export default FormField;
+export default forwardRef(FormField);

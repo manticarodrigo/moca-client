@@ -1,9 +1,8 @@
 import React from 'react';
-import Svg, { Defs, G, Rect, Path, Circle } from 'react-native-svg';
+import Svg, { G, Rect, Path, Circle } from 'react-native-svg';
 
 const FilterIcon = () => (
   <Svg width={56} height={56}>
-    <Defs></Defs>
     <G fill="none" fillRule="evenodd">
       <G fill="#57B0CC" transform="translate(4)">
         <Rect width={48} height={48} rx={8} />

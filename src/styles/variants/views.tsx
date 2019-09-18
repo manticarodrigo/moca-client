@@ -6,22 +6,22 @@ import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
 
 const msgBubble: ViewStyle = {
-  ...Spacing.getStyles({ mt: 2, p: 3 }),
+  ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
   ...Borders.primary,
   minWidth: 60,
   height: 'auto',
 };
 
 const msgBubbleLeft: ViewStyle = {
-  ...Spacing.getStyles({ mr: 4 }),
   ...msgBubble,
+  ...Spacing.getStyles({ mr: 5 }),
   alignSelf: 'flex-start',
   backgroundColor: Colors.white,
 };
 
 const msgBubbleRight: ViewStyle = {
-  ...Spacing.getStyles({ ml: 4 }),
   ...msgBubble,
+  ...Spacing.getStyles({ ml: 5 }),
   alignSelf: 'flex-end',
   backgroundColor: Colors.secondary,
 };
@@ -36,10 +36,42 @@ const borderBottom: ViewStyle = {
   borderBottomColor: Colors.secondaryLightest,
 };
 
-const backdrop: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...Borders.secondary,
-  ...StyleSheet.absoluteFillObject,
+const selectionScreenBorderImage: ViewStyle = {
+  ...Spacing.getStyles({ pt: 5, pb: 5 }),
+  borderWidth: 7,
+  borderColor: Colors.transparent,
+  width: 164,
+  height: 337,
+};
+
+const therapistView: ViewStyle = {
+  ...selectionScreenBorderImage,
+  borderTopRightRadius: 16,
+  borderBottomRightRadius: 16,
+};
+
+const therapistViewtPressed: ViewStyle = {
+  ...therapistView,
+  borderColor: Colors.secondaryDarker,
+};
+
+const patientView: ViewStyle = {
+  ...selectionScreenBorderImage,
+  borderTopLeftRadius: 16,
+  borderBottomLeftRadius: 16,
+};
+
+
+const patientViewPressed: ViewStyle = {
+  ...patientView,
+  borderColor: Colors.secondaryDarker,
+};
+
+const modal: ViewStyle = {
+  borderTopLeftRadius: 30,
+  borderTopRightRadius: 30,
+  overflow: 'hidden',
+  flex: 1,
   backgroundColor: Colors.white,
 };
 
@@ -121,7 +153,9 @@ export {
   msgBubbleLeft,
   borderTop,
   borderBottom,
-  backdrop,
+  modal,
+  therapistView,
+  therapistViewtPressed,
   card,
   cardRight,
   cardLeft,
@@ -131,4 +165,6 @@ export {
   shadowCard,
   iconButton,
   bottomBounceFill,
+  patientViewPressed,
+  patientView,
 };

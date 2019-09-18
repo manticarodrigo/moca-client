@@ -33,10 +33,10 @@ const BackgroundCheckPanel = () => (
 );
 
 const SearchPanel = () => {
+  const navigation = useNavigation();
   const [text, setText] = useState('');
   const onChangeText = (val: string) => setText(val);
   const onPressSearch = () => setText('');
-  const navigation = useNavigation();
   const onPressFilter = () => navigation.navigate('FilterScreen');
 
   return (
@@ -71,7 +71,7 @@ const SearchPanel = () => {
 
 const LinkCardList = (props) => {
   const navigation = useNavigation();
-  const handleButtonPress = () => navigation.navigate('ChatListScreen');
+  const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
   const { isActivated, isTherapist } = props;
   const profilePercent = 50; // TODO: get the real value
