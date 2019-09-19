@@ -1,8 +1,24 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, ViewStyle, View as RNView, SafeAreaView, ScrollView, TouchableOpacity, Insets } from 'react-native';
 
-import { Views, Position, PositionProp, Spacing, SpacingProp, Shadow, ShadowProp, Colors } from '@src/styles';
-import { on } from 'cluster';
+import {
+  StyleSheet,
+  ViewStyle,
+  View as RNView,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+
+import {
+  Views,
+  Position,
+  PositionProp,
+  Spacing,
+  SpacingProp,
+  Shadow,
+  ShadowProp,
+  Colors,
+} from '@src/styles';
 
 type ViewProps = {
   style?: ViewStyle | ViewStyle[];
@@ -12,7 +28,6 @@ type ViewProps = {
   variant?: keyof typeof Views;
   position?: PositionProp;
   spacing?: SpacingProp;
-  insets?: Insets;
   shadow?: ShadowProp;
   flex?: number;
   wrap?: boolean;
@@ -56,8 +71,7 @@ const View = ({
   children,
   onPress,
 }: ViewProps) => {
-
-  const ViewType = useMemo(() => {
+  const ViewType: typeof React.Component = useMemo(() => {
     if (safeArea) return SafeAreaView;
     if (scroll) return ScrollView;
     if (onPress) return TouchableOpacity;
@@ -66,8 +80,9 @@ const View = ({
   }, [safeArea, scroll, onPress]);
 
   const viewProps = useMemo(() => ({
-    ...(scroll && horizontal ? { horizontal } : null),
-  }), [scroll, horizontal]);
+    ...(scroll && horizontal && { horizontal }),
+    ...(onPress && (!safeArea && !scroll) && { onPress }),
+  }), [safeArea, scroll, horizontal, onPress]);
 
   const direction = useMemo(() => (
     (row && 'row') || (column && 'column')
@@ -99,23 +114,22 @@ const View = ({
       ...(alignItems && { alignItems }),
     },
   }), [
-      variant,
-      spacing,
-      position,
-      shadow,
-      direction,
-      flex,
-      wrap,
-      justifyContent,
-      alignItems,
-      width,
-      height,
-      bgColor,
-    ]);
+    variant,
+    spacing,
+    position,
+    shadow,
+    direction,
+    flex,
+    wrap,
+    justifyContent,
+    alignItems,
+    width,
+    height,
+    bgColor,
+  ]);
 
   return (
     <ViewType
-      onPress={onPress}
       style={[absoluteFill && StyleSheet.absoluteFill, styles.view, style]}
       {...viewProps}
     >
