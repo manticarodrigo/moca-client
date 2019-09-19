@@ -1,6 +1,5 @@
 export { default as LogoIcon } from './LogoIcon';
 export { default as BackButtonIcon } from './BackButtonIcon';
-export { default as BigEnvelopIcon } from './BigEnvelopIcon';
 export { default as CameraIcon } from './CameraIcon';
 export { default as MessagesTabIcon } from './MessagesTabIcon';
 export { default as ContactIcon } from './ContactIcon';
@@ -44,5 +43,6 @@ export { default as TherapistIcon } from './TherapistIcon';
 export { default as PatientIcon } from './PatientIcon';
 export { default as TherapistSelectIcon } from './TherapistSelectIcon';
 export { default as PatientSelectIcon } from './PatientSelectIcon';
+export { default as BigEnvelopeIcon } from './BigEnvelopeIcon';
 export { default as BigEnvelopeRedIcon } from './BigEnvelopeRedIcon';
 export { default as AddLocationBigIcon } from './AddLocationBigIcon';

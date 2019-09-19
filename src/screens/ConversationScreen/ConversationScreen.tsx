@@ -56,16 +56,15 @@ const ConversationScreen: NavigationComponent = () => {
     onMount();
   }, [navigation.state, state]);
 
-  const setParams = useCallback(navigation.setParams, []);
-
   useEffect(() => {
     if (state.participants.length) {
       const otherParticipant = state.participants.find(({ id }) => id !== currentUser.id);
       const { username, imageUrl } = otherParticipant;
+      const setNavParams = navigation.setParams;
 
-      setParams({ title: username, img: imageUrl });
+      setNavParams({ title: username, img: imageUrl });
     }
-  }, [state, currentUser.id, setParams]);
+  }, [state, currentUser.id, navigation.setParams]);
 
   const _createMessage = (attachmentURI?: string): Message => ({
     id: `${Math.floor(Math.random() * 1000000000)}`,

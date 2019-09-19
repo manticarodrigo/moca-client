@@ -15,6 +15,7 @@ const variants = {
   titleSecondaryLarge: { ...Typography.getStyles({ size: 5, weight: '700', color: 'secondary' }) },
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   titleSmallWhite: { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) },
+  titleSmallSecondaryLight: { ...Typography.getStyles({ size: 3, weight: '700', color: 'secondaryLight' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
   boldWhite: { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) },
   boldGrey: { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) },

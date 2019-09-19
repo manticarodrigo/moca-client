@@ -1,9 +1,21 @@
-import { ViewStyle, StyleSheet, Dimensions, View } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
+
+const rounded: ViewStyle = {
+  ...Borders.primary,
+};
+
+const progressBar: ViewStyle = {
+  ...rounded,
+  ...Spacing.getStyles({ p: 1 }),
+  height: 16,
+  maxWidth: 200,
+  backgroundColor: Colors.lightGrey,
+};
 
 const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
@@ -167,6 +179,8 @@ const bottomBounceFill: ViewStyle = {
 };
 
 export {
+  rounded,
+  progressBar,
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
