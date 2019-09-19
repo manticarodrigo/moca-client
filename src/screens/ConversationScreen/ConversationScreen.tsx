@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionListData, StatusBar } from 'react-native';
 import { NavigationComponent } from 'react-navigation';
 

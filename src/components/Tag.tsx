@@ -45,7 +45,7 @@ const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) 
       borderRadius: Spacing.spaceSize[5],
       borderWidth: 1,
       borderColor,
-      minWidth: 50,
+      width: 70,
     },
     text: {
       ...Spacing.getStyles({ ml: 1 }),

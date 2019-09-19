@@ -19,6 +19,7 @@ module.exports =  {
     'react-hooks',
   ],
   rules:  {
+    'max-len': ['error' , { code: 100 }],
     'object-curly-newline': 'off',
     'no-confusing-arrow': 'off',
     'no-underscore-dangle': 'off',

@@ -33,7 +33,9 @@ const ConversationListScreen = () => {
     }
   }, [currentUser, dispatch]);
 
-  const handleCardPress = (conversation: Conversation) => navigation.push('ConversationScreen', { conversation });
+  const handleCardPress = (conversation: Conversation) => {
+    navigation.push('ConversationScreen', { conversation });
+  };
 
   const renderItem = ({ item }: { item: Conversation }) => (
     <ConversationListCard currentUser={currentUser} conversation={item} onPress={handleCardPress} />

@@ -24,6 +24,8 @@ const variants = {
   regularSmallGrey: { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) },
   regularSmallSuccess: { ...Typography.getStyles({ size: 1, weight: '500', color: 'success' }) },
   regularSmallDark: { ...Typography.getStyles({ size: 1, weight: '500', color: 'dark' }) },
+  regularPrimary: { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) },
+  regularSecondary: { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) },
   light: { ...Typography.getStyles({ size: 2, weight: '300', color: 'semiGrey' }) },
   lightPrimarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'primary' }) },
   lightSecondarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'secondary' }) },

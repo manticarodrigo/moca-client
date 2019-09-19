@@ -16,7 +16,7 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
   const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
   const profilePercent = 50;
-  const remainingProfilePercentString = `${100 - profilePercent}% of your profile information is missing`;
+  const profilePercentString = `${100 - profilePercent}% of your profile information is missing`;
 
   const bgColor = (isTherapist && !isActivated) ? 'primary' : 'lightGrey';
 
@@ -73,7 +73,7 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
         <LinkCard type="contact" spacing={{ mb: 2 }} onPress={handleButtonPress}>
           <View>
             <Text variant="regularSmallSuccess">
-              {remainingProfilePercentString}
+              {profilePercentString}
             </Text>
             <View variant="progressBar" spacing={{ mt: 2 }}>
               <View style={styles.progressBar} />
