@@ -16,6 +16,7 @@ import { HomeTabIcon, ScheduleTabIcon, MessagesTabIcon, ProfileTabIcon } from '@
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
+import FilterScreen from '@src/screens/DashboardScreen/FilterScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
@@ -97,6 +98,7 @@ const AppStack = createSwitchNavigator(
 
       HomeTab: createStackNavigator({
         DashboardScreen,
+        FilterScreen,
       }, defaultNavConfig),
 
       ScheduleTab: createStackNavigator({

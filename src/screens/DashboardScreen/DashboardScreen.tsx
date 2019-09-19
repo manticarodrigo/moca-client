@@ -209,13 +209,13 @@ const DashboardScreen = () => {
       { !isTherapist && <SearchPanel /> }
 
       { !isFiltering && (
-      <View scroll flex={1}>
-        { (!isTherapist || isActivated) && (
-        <AppointmentList isTherapist={isTherapist} />
-        )}
-        <LinkCardList isActivated={isActivated} isTherapist={isTherapist} />
+        <View scroll flex={1}>
+          { (!isTherapist || isActivated) && (
+          <AppointmentList isTherapist={isTherapist} />
+          )}
+          <LinkCardList isActivated={isActivated} isTherapist={isTherapist} />
 
-      </View>
+        </View>
       )}
     </View>
   );
