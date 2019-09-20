@@ -16,9 +16,9 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
 
   const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
-  const profilePercent = 30;
+  const profilePercent = 50;
   const profilePercentString = `${100 - profilePercent}% of your profile information is missing`;
-  const profileReady = profilePercent > 50;
+  const profileReady = profilePercent >= 50;
 
   const bgColor = (isTherapist && !isActivated) ? 'transparent' : 'lightGrey';
 
