@@ -38,11 +38,6 @@ import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
   cardShadowEnabled: false,
-  transitionConfig: () => ({
-    containerStyle: {
-      backgroundColor: Colors.primary,
-    },
-  }),
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
     headerStyle: {
@@ -127,7 +122,7 @@ const AppStack = createSwitchNavigator(
     }, defaultTabConfig),
 
   },
-  { initialRouteName: 'TabStack' },
+  { initialRouteName: 'AuthStack' },
 );
 
 export default createAppContainer(AppStack);

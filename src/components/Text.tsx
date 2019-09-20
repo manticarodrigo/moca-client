@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useMemo } from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
 
@@ -16,6 +17,8 @@ const variants = {
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   titleSmallWhite: { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) },
   titleSmallSecondaryLight: { ...Typography.getStyles({ size: 3, weight: '700', color: 'secondaryLight' }) },
+  titleSmallSuccess: { ...Typography.getStyles({ size: 3, weight: '700', color: 'success' }) },
+  titleSmallError: { ...Typography.getStyles({ size: 3, weight: '700', color: 'error' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
   boldWhite: { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) },
   boldGrey: { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) },
@@ -23,6 +26,7 @@ const variants = {
   regularSmall: { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) },
   regularSmallGrey: { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) },
   regularSmallSuccess: { ...Typography.getStyles({ size: 1, weight: '500', color: 'success' }) },
+  regularSmallError: { ...Typography.getStyles({ size: 1, weight: '500', color: 'error' }) },
   regularSmallDark: { ...Typography.getStyles({ size: 1, weight: '500', color: 'dark' }) },
   regularPrimary: { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) },
   regularSecondary: { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) },

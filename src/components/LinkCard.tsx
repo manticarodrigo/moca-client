@@ -10,7 +10,7 @@ import {
   HistoryIcon,
 } from '@src/components/icons';
 
-import { SpacingProp } from '@src/styles';
+import { SpacingProp, Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -18,11 +18,12 @@ import Text from '@src/components/Text';
 type LinkCardProps = {
   type: 'wallet' | 'messages' | 'history' | 'diagnosis' | 'contact';
   spacing?: SpacingProp;
+  status?: 'success' | 'error';
   children: JSX.Element;
   onPress: () => void;
 };
 
-const LinkCard = ({ type, spacing, children, onPress }: LinkCardProps) => {
+const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) => {
   const { icon, title } = useMemo(() => {
     switch (type) {
       case 'wallet':
@@ -34,11 +35,25 @@ const LinkCard = ({ type, spacing, children, onPress }: LinkCardProps) => {
       case 'diagnosis':
         return { icon: <DiagnosisIcon />, title: 'Injury' };
       case 'contact':
-        return { icon: <ContactIcon />, title: 'Complete Profile' };
+        return {
+          icon: <ContactIcon tint={status === 'success' ? Colors.success : Colors.error} />,
+          title: 'Complete Profile',
+        };
       default:
         return null;
     }
-  }, [type]);
+  }, [type, status]);
+
+  const titleVariant = useMemo(() => {
+    switch (status) {
+      case 'success':
+        return 'titleSmallSuccess';
+      case 'error':
+        return 'titleSmallError';
+      default:
+        return 'titleSmall';
+    }
+  }, [status]);
 
   return (
     <View column variant="shadowCard" spacing={spacing}>
@@ -48,7 +63,7 @@ const LinkCard = ({ type, spacing, children, onPress }: LinkCardProps) => {
         <View row flex={1}>
           <View column spacing={{ mr: 3 }}>{icon}</View>
           <View column flex={1}>
-            <Text variant="titleSmall" spacing={{ mb: 2 }}>{title}</Text>
+            <Text variant={titleVariant} spacing={{ mb: 2 }}>{title}</Text>
             {children}
           </View>
         </View>

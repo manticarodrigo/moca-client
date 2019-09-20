@@ -58,5 +58,4 @@ DashboardScreen.navigationOptions = {
   header: null,
 };
 
-
 export default DashboardScreen;

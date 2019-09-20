@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
@@ -13,22 +13,21 @@ type Props = { isActivated: boolean; isTherapist: boolean }
 
 const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
   const navigation = useNavigation();
+
   const handleButtonPress = () => navigation.navigate('ConversationListScreen');
 
-  const profilePercent = 50;
+  const profilePercent = 30;
   const profilePercentString = `${100 - profilePercent}% of your profile information is missing`;
+  const profileReady = profilePercent > 50;
 
-  const bgColor = (isTherapist && !isActivated) ? 'primary' : 'lightGrey';
+  const bgColor = (isTherapist && !isActivated) ? 'transparent' : 'lightGrey';
 
-  const styles = StyleSheet.create({
-    progressBar: {
-      flexDirection: 'row',
-      height: '100%',
+  const styles = useMemo(() => StyleSheet.create({
+    progressBarIndicator: {
       width: `${profilePercent}%`,
-      backgroundColor: Colors.success,
-      borderRadius: 8,
+      backgroundColor: profileReady ? Colors.success : Colors.error,
     },
-  });
+  }), [profilePercent, profileReady]);
 
   return (
     <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor={bgColor}>
@@ -70,19 +69,25 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
       )}
 
       {!isActivated && ( // add a better check
-        <LinkCard type="contact" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+        <LinkCard
+          type="contact"
+          status={profileReady ? 'success' : 'error'}
+          spacing={{ mb: 2 }}
+          onPress={handleButtonPress}
+        >
           <View>
-            <Text variant="regularSmallSuccess">
+            <Text variant={profileReady ? 'regularSmallSuccess' : 'regularSmallError'}>
               {profilePercentString}
             </Text>
             <View variant="progressBar" spacing={{ mt: 2 }}>
-              <View style={styles.progressBar} />
+              <View variant="progressBarIndicator" style={styles.progressBarIndicator} />
             </View>
           </View>
         </LinkCard>
       )}
 
-      <View variant="bottomBounceFill" bgColor="lightGrey" />
+
+      {(!isTherapist || isActivated) && <View variant="bottomBounceFill" bgColor="lightGrey" />}
 
     </View>
   );

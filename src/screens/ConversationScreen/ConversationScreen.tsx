@@ -8,16 +8,16 @@ import useDateSections from '@src/hooks/useDateSections';
 import useScrollToStart from '@src/hooks/useScrollToStart';
 import useImageViewer from '@src/hooks/useImageViewer';
 
+import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
-import { Views, Spacing, Colors } from '@src/styles';
+import { Views, Colors } from '@src/styles';
 
-import { BackButtonIcon } from '@src/components/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Image from '@src/components/Image';
 import SectionList from '@src/components/SectionList';
 
-import ConversationHeader from './ConversationHeader';
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
@@ -141,16 +141,19 @@ const ConversationScreen: NavigationComponent = () => {
   );
 };
 
-const ConversationBackButton = (
-  <View shadow={{ color: 'secondary', blur: 2, alpha: 0.16 }}>
-    <BackButtonIcon />
+type TitleParams = { img?: string; title?: string }
+
+const Title = ({ img = mockImg, title = '' }: TitleParams) => (
+  <View row flex={1} alignCenter>
+    <Image rounded size={48} uri={img} />
+    <Text variant="titleSmall" spacing={{ ml: 3 }}>
+      {title}
+    </Text>
   </View>
 );
 
 ConversationScreen.navigationOptions = ({ navigation: { state } }) => ({
-  headerTitle: <ConversationHeader params={state.params} />,
-  headerBackImage: ConversationBackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
+  headerTitle: <Title {...state.params} />,
   headerStyle: {
     ...Views.borderBottom,
     backgroundColor: Colors.white,

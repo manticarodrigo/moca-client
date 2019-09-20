@@ -17,6 +17,13 @@ const progressBar: ViewStyle = {
   backgroundColor: Colors.lightGrey,
 };
 
+const progressBarIndicator: ViewStyle = {
+  ...rounded,
+  flexDirection: 'row',
+  height: '100%',
+  backgroundColor: Colors.grey,
+};
+
 const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
   ...Borders.primary,
@@ -181,6 +188,7 @@ const bottomBounceFill: ViewStyle = {
 export {
   rounded,
   progressBar,
+  progressBarIndicator,
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
