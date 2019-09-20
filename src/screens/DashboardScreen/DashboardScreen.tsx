@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet } from 'react-native';
 
 import useNavigation from '@src/hooks/useNavigation';
+import useStore from '@src/hooks/useStore';
 
 import { BigEnvelopIcon, LogoIcon, FilterIcon, SearchIcon } from '@src/components/icons';
 
@@ -169,8 +170,10 @@ const AppointmentList = (props) => {
 
 const DashboardScreen = () => {
   // TODO: get the real value and remove first View below
-  const [isTherapist, setTherapist] = useState(true);
   const [isActivated, setActivated] = useState(false);
+  // direct access: store not provided set by default to patient
+  const [{ registrationState: { userInformation } }] = useStore();
+  const isTherapist = userInformation.type === 'Therapist';
 
   const [isFiltering, setFiltering] = useState(false);
 
@@ -195,9 +198,6 @@ const DashboardScreen = () => {
         <LogoIcon size={2} />
       </View>
 
-      <Button variant="secondary" onPress={() => setTherapist(!isTherapist)}>
-        therapist button, click to switch
-      </Button>
       <Button variant="secondary" onPress={() => setActivated(!isActivated)}>
         activated button, click to change
       </Button>
