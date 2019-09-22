@@ -10,10 +10,10 @@ import Button from '@src/components/Button';
 import ModalView from '@src/components/ModalView';
 
 
-import PatientIcon from '@src/components/icons/PatientIcon';
-import TherapistIcon from '@src/components/icons/TherapistIcon';
-import TherapistSelectIcon from '@src/components/icons/TherapistSelectIcon';
-import PatientSelectIcon from '@src/components/icons/PatientSelectIcon';
+import PatientIcon from '@src/icons/PatientIcon';
+import TherapistIcon from '@src/icons/TherapistIcon';
+import TherapistSelectIcon from '@src/icons/TherapistSelectIcon';
+import PatientSelectIcon from '@src/icons/PatientSelectIcon';
 
 import { Colors } from '@src/styles/index';
 

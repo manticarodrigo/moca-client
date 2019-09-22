@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CameraIcon, SendIcon } from '@src/components/icons';
+import { CameraIcon, SendIcon } from '@src/icons';
 
 import View from '@src/components/View';
 import TextInput from '@src/components/TextInput';

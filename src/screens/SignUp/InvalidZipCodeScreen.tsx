@@ -17,7 +17,7 @@ import FormField from '@src/components/FormField';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
+import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
 import EmailIcon from '@src/assets/Icons/email.png';
 
 const InvalidZipCodeScreen = () => {

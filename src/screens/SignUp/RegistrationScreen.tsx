@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { Header } from 'react-navigation';
 
-
 import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
 
@@ -20,7 +19,7 @@ import FormField from '@src/components/FormField';
 import ModalView from '@src/components/ModalView';
 
 
-import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
+import SecondaryLogoIcon from '@src/icons/SecondaryLogo';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
 

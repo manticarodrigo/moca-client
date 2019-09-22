@@ -13,7 +13,7 @@ import {
   MaleIcon,
   FemaleIcon,
   BothGendersIcon,
-} from '@src/components/icons';
+} from '@src/icons';
 
 
 const FilterScreen = () => {

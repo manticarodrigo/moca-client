@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
-import OpenIcon from '@src/components/icons/OpenIcon';
+import OpenIcon from '@src/icons/OpenIcon';
 
 import { Colors } from '@src/styles';
 import View from './View';

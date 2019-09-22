@@ -7,7 +7,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 
-import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
+import AddLocationBigIcon from '@src/icons/AddLocationBigIcon';
 import FormField from '@src/components/FormField';
 
 type ZipCodeScreenProps = {

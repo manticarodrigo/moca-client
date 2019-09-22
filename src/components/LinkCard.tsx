@@ -8,7 +8,7 @@ import {
   WalletIcon,
   MessagesIcon,
   HistoryIcon,
-} from '@src/components/icons';
+} from '@src/icons';
 
 import { SpacingProp, Colors } from '@src/styles';
 

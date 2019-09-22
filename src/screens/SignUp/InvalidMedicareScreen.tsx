@@ -16,7 +16,7 @@ import BackButton from '@src/components/BackButton';
 import FormField from '@src/components/FormField';
 
 import EmailIcon from '@src/assets/Icons/email.png';
-import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
+import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
 
 
 import { Views, Spacing, Colors } from '@src/styles';

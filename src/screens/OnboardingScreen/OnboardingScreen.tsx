@@ -10,9 +10,9 @@ import Slider from '@src/components/Slider';
 import Button from '@src/components/Button';
 
 import Logo from '@src/assets/pngs/logo.png';
-import ShieldIcon from '@src/components/icons/ShieldIcon';
-import DeviceMapIcon from '@src/components/icons/DeviceMapIcon';
-import SettingsIcon from '@src/components/icons/SettingsIcon';
+import ShieldIcon from '@src/icons/ShieldIcon';
+import DeviceMapIcon from '@src/icons/DeviceMapIcon';
+import SettingsIcon from '@src/icons/SettingsIcon';
 
 
 const OnboardingScreen = () => {
