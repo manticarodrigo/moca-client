@@ -1,24 +1,44 @@
 import React from 'react';
-import Svg, { G, Path } from 'react-native-svg';
+import Svg, { G, Path, Ellipse, Polyline } from 'react-native-svg';
 
 const PriceRateIcon = () => (
-  <Svg
-    width="24.000000pt"
-    height="24.000000pt"
-    viewBox="0 0 24.000000 24.000000"
-    preserveAspectRatio="xMidYMid meet"
-  >
+  <Svg width="24px" height="24px" viewBox="0 0 24 24">
     <G
-      transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
-      fill="#000000"
+      id="Guide"
       stroke="none"
+      strokeWidth={1}
+      fill="none"
+      fillRule="evenodd"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <Path d="M0 218 c0 -17 3 -19 9 -9 5 7 15 17 22 22 10 6 8 9 -8 9 -17 0 -23 -6 -23 -22z" />
-      <Path d="M140 220 c22 -22 27 -50 7 -50 -7 0 -18 9 -25 20 -14 24 -64 27 -81 6 -21 -25 -9 -69 22 -84 15 -7 27 -17 27 -23 0 -17 -50 -9 -70 11 l-20 20 0 -60 0 -60 62 0 c48 0 59 3 50 12 -16 16 -16 120 0 136 16 16 100 16 116 0 9 -9 12 0 12 40 l0 52 -60 0 -60 0 20 -20z m-50 -45 c0 -20 -5 -25 -25 -25 -14 0 -25 5 -25 10 0 6 7 10 15 10 8 0 15 7 15 15 0 8 5 15 10 15 6 0 10 -11 10 -25z" />
-      <Path d="M130 120 c0 -5 18 -10 40 -10 22 0 40 5 40 10 0 6 -18 10 -40 10 -22 0 -40 -4 -40 -10z" />
-      <Path d="M148 73 c12 -2 32 -2 45 0 12 2 2 4 -23 4 -25 0 -35 -2 -22 -4z" />
-      <Path d="M148 33 c12 -2 32 -2 45 0 12 2 2 4 -23 4 -25 0 -35 -2 -22 -4z" />
-      <Path d="M225 10 c-3 -5 -1 -10 4 -10 6 0 11 5 11 10 0 6 -2 10 -4 10 -3 0 -8 -4 -11 -10z" />
+      <G
+        id="Assets"
+        transform="translate(-240.000000, -766.000000)"
+        strokeWidth={2}
+      >
+        <G id="icon-/-price-rate" transform="translate(241.000000, 767.000000)">
+          <G id="money-time">
+            <Path
+              d="M10,11 L10,15 C10,16.657 12.686,18 16,18 C19.314,18 22,16.657 22,15 L22,11"
+              id="Path"
+              stroke="#71CFEB"
+            />
+            <Path
+              d="M10,15 L10,19 C10,20.657 12.686,22 16,22 C19.314,22 22,20.657 22,19 L22,15"
+              id="Path"
+              stroke="#71CFEB"
+            />
+            <Ellipse id="Oval" stroke="#71CFEB" cx={16} cy={11} rx={6} ry={3} />
+            <Polyline id="Path" stroke="#BBE4F2" points="7 4 7 7 4 7" />
+            <Path
+              d="M7,14 C3.134,14 0,10.866 0,7 C0,3.134 3.134,0 7,0 C10.171,0 12.85,2.109 13.71,5.001"
+              id="Path"
+              stroke="#BBE4F2"
+            />
+          </G>
+        </G>
+      </G>
     </G>
   </Svg>
 );
