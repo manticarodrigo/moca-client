@@ -14,7 +14,7 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-const QualifiactionsScreen = () => {
+const QualificationsScreen = () => {
   const navigation = useNavigation();
   const userName = navigation.getParam('name', '');
   const [{ registrationState: { userInformation: { qualifications } } }, dispatch] = useStore();
@@ -75,7 +75,7 @@ const QualifiactionsScreen = () => {
 };
 
 
-QualifiactionsScreen.navigationOptions = () => ({
+QualificationsScreen.navigationOptions = () => ({
   headerTitle: <HeaderTitle title="Qualifications" />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
@@ -86,4 +86,4 @@ QualifiactionsScreen.navigationOptions = () => ({
   },
 });
 
-export default QualifiactionsScreen;
+export default QualificationsScreen;

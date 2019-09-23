@@ -123,7 +123,7 @@ const RegistrationScreen = () => {
     }
   };
 
-  const handlePrivaryPress = () => navigation.navigate('');
+  const handlePrivacyPress = () => navigation.navigate('');
 
   const handleTermsOfServicePress = () => {
     setIsModalVisible(true);
@@ -181,7 +181,7 @@ const RegistrationScreen = () => {
             <SecondaryLogoIcon />
             <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
             <Text variant="regular" spacing={{ mt: 2 }}>
-              We need some infromation to
+              We need some information to
             </Text>
             <Text variant="regular" spacing={{ mt: 1, mb: 2 }}>
               get you started.
@@ -276,7 +276,7 @@ const RegistrationScreen = () => {
               </Text>
               <Text
                 variant="link"
-                onPress={handlePrivaryPress}
+                onPress={handlePrivacyPress}
                 typography={{ size: 1, color: 'secondary' }}
                 spacing={{ ml: 1 }}
               >
