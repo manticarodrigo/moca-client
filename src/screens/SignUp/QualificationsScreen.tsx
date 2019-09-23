@@ -8,7 +8,7 @@ import HeaderTitle from '@src/components/HeaderTitle';
 import CheckBox from '@src/components/Checkbox';
 
 import useStore from '@src/hooks/useStore';
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 

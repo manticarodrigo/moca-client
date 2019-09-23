@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StackActions, NavigationActions, Header } from 'react-navigation';
+// import { StackActions, NavigationActions, Header } from 'react-navigation';
 import { KeyboardAvoidingView } from 'react-native';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 import useStore from '@src/hooks/useStore';
 import { resetUserInformation } from '@src/store/actions/RegistrationAction';
 
@@ -44,10 +44,10 @@ const InvalidZipCodeScreen = () => {
       submitEmail();
       dispatch(resetUserInformation());
 
-      navigation.dispatch(StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
-      }));
+      // navigation.dispatch(StackActions.reset({
+      //   index: 0,
+      //   actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
+      // }));
     } else {
       setIsEmailValid(false);
     }
@@ -57,7 +57,7 @@ const InvalidZipCodeScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + paddingOffset}
+      // keyboardVerticalOffset={Header.HEIGHT + paddingOffset}
     >
       <View safeArea flex={1} spacing={{ mt: 4, mx: 3 }} alignCenter justifyEnd>
         <View alignCenter>

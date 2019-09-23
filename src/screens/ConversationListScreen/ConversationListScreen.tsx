@@ -1,70 +1,64 @@
 import React, { useEffect } from 'react';
-import { SectionListData } from 'react-native';
+import { SectionList } from 'react-native';
+
+import { ScreenProps } from '@src/stacks/ConversationStack';
 
 import { getConversations } from '@src/store/actions/ConversationActions';
+
 import useStore from '@src/hooks/useStore';
-import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
-import SectionList from '@src/components/SectionList';
 
 import ConversationListCard from './ConversationListCard';
 
-type SectionHeaderProps = {
-  section: SectionListData<{ title: string; data: Conversation[] }>;
-};
+type Props = ScreenProps<'conversationListScreen'>;
 
-const ConversationListScreen = () => {
-  const [store, dispatch] = useStore();
-  const { authState: { currentUser }, conversationState } = store;
+const ConversationSectionList: SectionList<Conversation> = SectionList;
 
-  const navigation = useNavigation();
-
+const ConversationListScreen = ({ navigation }: Props) => {
+  const { store, dispatch } = useStore();
   const sections = useDateSections(
-    conversationState.conversations,
+    store.conversations,
     ({ messages }) => messages[messages.length - 1].createdAt,
   );
 
+  navigation.setOptions({
+    title: 'Messages',
+  });
+
   useEffect(() => {
-    if (currentUser) {
-      dispatch(getConversations(currentUser));
+    if (store.user.id) {
+      dispatch(getConversations(store.user));
     }
-  }, [currentUser, dispatch]);
+  }, [store.user, dispatch]);
 
   const handleCardPress = (conversation: Conversation) => {
-    navigation.push('ConversationScreen', { conversation });
+    navigation.push('conversationScreen', { conversation });
   };
 
-  const renderItem = ({ item }: { item: Conversation }) => (
-    <ConversationListCard currentUser={currentUser} conversation={item} onPress={handleCardPress} />
-  );
-
-  const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
-    <View spacing={{ ml: 3, py: 3 }}>
-      <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
-        {title.charAt(0).toUpperCase() + title.slice(1)}
-      </Text>
-    </View>
-  );
-
-  const keyExtractor = (item: Conversation) => item.id.toString();
-
   return (
-    <SectionList
-      renderItem={renderItem}
-      renderSectionHeader={renderSectionHeader}
+    <ConversationSectionList
+      renderItem={({ item }) => (
+        <ConversationListCard
+          user={store.user}
+          conversation={item}
+          onPress={handleCardPress}
+        />
+      )}
+      renderSectionHeader={({ section }) => (
+        <View spacing={{ ml: 3, py: 3 }}>
+          <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+            {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
+          </Text>
+        </View>
+      )}
       stickySectionHeadersEnabled={false}
-      keyExtractor={keyExtractor}
+      keyExtractor={(item) => item.id}
       sections={sections}
-      bgColor="lightGrey"
     />
   );
-};
-
-ConversationListScreen.navigationOptions = {
-  title: 'Messages',
 };
 
 export default ConversationListScreen;

@@ -1,23 +1,21 @@
 import React, { useReducer, createContext, Reducer, ReactNode, Dispatch } from 'react';
 
-import { AuthAction } from '@src/store/actions/AuthActions';
+import { UserAction } from '@src/store/actions/UserActions';
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 import { ConversationAction } from '@src/store/actions/ConversationActions';
 
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
-import authReducer, { AuthState } from '@src/store/reducers/AuthReducer';
+import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
 
-import { mockImg } from './services/mock';
-
 export type StoreState = {
-  authState: AuthState;
-  conversationState: ConversationState;
+  user: UserState;
+  conversations: ConversationState;
   registrationState: RegistrationState;
 };
 
 
-type StoreAction = AuthAction | ConversationAction| RegistrationAction;
+type StoreAction = UserAction | ConversationAction| RegistrationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
 type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>) => void;
@@ -39,23 +37,19 @@ const useAsyncReducer: AsyncReducer = (reducer, initialState) => {
   return [state, asyncDispatch];
 };
 
-const rootReducer: StoreReducer = (state: StoreState, action: StoreAction) => ({
-  authState: authReducer(state.authState, action as AuthAction),
-  registrationState: registrationReducer(state.registrationState, action as RegistrationAction),
-  conversationState: conversationReducer(state.conversationState, action as ConversationAction),
+const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => ({
+  user: userReducer(store.user, action as UserAction),
+  registrationState: registrationReducer(store.registrationState, action as RegistrationAction),
+  conversations: conversationReducer(store.conversations, action as ConversationAction),
 });
 
 const initialState: StoreState = {
-  authState: {
-    currentUser: {
-      id: '0',
-      username: 'John Doe',
-      imageUrl: mockImg,
-    },
+  user: {
+    id: null,
+    username: '',
+    imageUrl: '',
   },
-  conversationState: {
-    conversations: [],
-  },
+  conversations: [],
   registrationState: {
     userInformation: {
       qualifications: [

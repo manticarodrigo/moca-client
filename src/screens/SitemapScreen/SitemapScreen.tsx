@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -19,15 +19,19 @@ const SitemapScreen = () => {
     'ConversationScreen',
   ];
 
-  return screensNames.map((name: string) => {
-    const handleCardPress = () => handleNavigate(name);
+  return (
+    <>
+      {screensNames.map((name: string) => {
+        const handleCardPress = () => handleNavigate(name);
 
-    return (
-      <View key={name} variant="borderBottom" spacing={{ p: 4 }} onPress={handleCardPress}>
-        <Text typography={{ size: 3, weight: '700', color: 'primary' }}>{name}</Text>
-      </View>
-    );
-  });
+        return (
+          <View key={name} variant="borderBottom" spacing={{ p: 4 }} onPress={handleCardPress}>
+            <Text typography={{ size: 3, weight: '700', color: 'primary' }}>{name}</Text>
+          </View>
+        );
+      })}
+    </>
+  );
 };
 
 SitemapScreen.navigationOptions = {

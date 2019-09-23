@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

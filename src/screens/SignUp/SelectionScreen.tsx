@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import ZipeCodeScreen from '@src/modals/ZipCodeScreen';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

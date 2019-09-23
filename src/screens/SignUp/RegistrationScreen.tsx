@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-import { Header } from 'react-navigation';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 import useStore from '@src/hooks/useStore';
 
 
@@ -170,7 +169,7 @@ const RegistrationScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + 60}
+      keyboardVerticalOffset={60}
     >
       <View flex={1} scroll>
         <View safeArea flex={1} spacing={{ mt: 4 }} alignCenter>

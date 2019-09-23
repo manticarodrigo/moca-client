@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import { FilterIcon, SearchIcon } from '@src/icons';
 

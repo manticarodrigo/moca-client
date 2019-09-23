@@ -1,16 +1,11 @@
 import { ConversationAction } from '@src/store/actions/ConversationActions';
 
-export type ConversationState = {
-  conversations?: Conversation[];
-};
+export type ConversationState = Conversation[];
 
-const reducer = (state: ConversationState = {}, action: ConversationAction) => {
+const reducer = (state: ConversationState, action: ConversationAction): ConversationState => {
   switch (action.type) {
     case 'GET_CONVERSATIONS':
-      return {
-        ...state,
-        conversations: action.payload,
-      };
+      return action.payload;
     default:
       return state;
   }

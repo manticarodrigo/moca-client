@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-import { Header } from 'react-navigation';
 
 import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
@@ -10,7 +9,7 @@ import Text from '@src/components/Text';
 import HeaderTitle from '@src/components/HeaderTitle';
 
 import useStore from '@src/hooks/useStore';
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
@@ -50,7 +49,7 @@ const AddressScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + 60}
+      keyboardVerticalOffset={60}
     >
       <View scroll>
         <View safeArea spacing={{ pt: 3 }} alignCenter>

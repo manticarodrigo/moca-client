@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SectionListData, StatusBar } from 'react-native';
-import { NavigationComponent } from 'react-navigation';
+import { StatusBar, SectionList } from 'react-native';
+
+import { ScreenProps } from '@src/stacks/ConversationStack';
 
 import useStore from '@src/hooks/useStore';
-import useNavigation from '@src/hooks/useNavigation';
 import useDateSections from '@src/hooks/useDateSections';
 import useScrollToStart from '@src/hooks/useScrollToStart';
 import useImageViewer from '@src/hooks/useImageViewer';
@@ -11,28 +11,28 @@ import useImageViewer from '@src/hooks/useImageViewer';
 import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
-import { Views, Colors } from '@src/styles';
+import { Spacing, Colors, Views } from '@src/styles';
+
+import { InfoIcon } from '@src/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
-import SectionList from '@src/components/SectionList';
 
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
 
-type SectionHeaderProps = {
-  section: SectionListData<{ title: string; data: Message[] }>;
-};
+type Props = ScreenProps<'conversationScreen'>;
 
 type State = Conversation & {
   text: string;
 }
 
-const ConversationScreen: NavigationComponent = () => {
-  const [{ authState: { currentUser } }] = useStore();
-  const navigation = useNavigation();
+const ConversationSectionList: SectionList<Message> = SectionList;
+
+const ConversationScreen = ({ navigation, route }: Props) => {
+  const { store } = useStore();
   const [state, setState] = useState<State>({
     id: null,
     messages: [],
@@ -40,36 +40,54 @@ const ConversationScreen: NavigationComponent = () => {
     text: '',
   });
 
-  const sections = useDateSections(state.messages, (message) => message.createdAt);
-  const { scrollRef, scrollToStart } = useScrollToStart({ offset: 67 /* actions height */ });
+  const sections = useDateSections<Message>(state.messages, (message) => message.createdAt);
+  const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
   const { viewer, onPressImage } = useImageViewer(state.messages);
 
   useEffect(() => {
     const onMount = async () => {
-      const { params = {} } = navigation.state;
+      const { conversation } = route.params;
 
-      if (params.conversation && !state.id) {
-        setState((prev) => ({ ...prev, ...params.conversation }));
+      if (conversation && !state.id) {
+        setState((prev) => ({ ...prev, ...conversation }));
       }
     };
 
     onMount();
-  }, [navigation.state, state]);
+  }, [route.params, state]);
 
   useEffect(() => {
     if (state.participants.length) {
-      const otherParticipant = state.participants.find(({ id }) => id !== currentUser.id);
-      const { username, imageUrl } = otherParticipant;
-      const setNavParams = navigation.setParams;
+      const otherParticipant = state.participants.find(({ id }) => id !== store.user.id);
+      const { username = '', imageUrl = mockImg } = otherParticipant;
 
-      setNavParams({ title: username, img: imageUrl });
+      const headerTitle = () => (
+        <View width="100%" row flex={1} alignCenter>
+          <Image rounded size={48} uri={imageUrl} />
+          <Text variant="titleSmall" spacing={{ ml: 3 }}>
+            {username}
+          </Text>
+        </View>
+      );
+
+      const headerRight = () => <InfoIcon />;
+
+      navigation.setOptions({
+        headerTitle,
+        headerStyle: {
+          ...Views.borderBottom,
+          backgroundColor: Colors.white,
+          height: 112,
+        },
+        headerRight,
+      });
     }
-  }, [state, currentUser.id, navigation.setParams]);
+  }, [state, store.user.id, navigation]);
 
   const _createMessage = (attachmentURI?: string): Message => ({
     id: `${Math.floor(Math.random() * 1000000000)}`,
     text: state.text,
-    sender: currentUser.id,
+    sender: store.user.id,
     attachmentURI,
     createdAt: new Date().toDateString(),
   });
@@ -95,39 +113,32 @@ const ConversationScreen: NavigationComponent = () => {
     }
   };
 
-  const renderItem = ({ item }: { item: Message }) => (
-    <ConversationMessage
-      message={item}
-      alignRight={item.sender === currentUser.id}
-      onPressImage={onPressImage}
-    />
-  );
-
-  const renderSectionHeader = ({ section: { title } }: SectionHeaderProps) => (
-    <View spacing={{ ml: 3, py: 4 }}>
-      <Text typography={{ size: 2, color: 'semiGrey', weight: '500', align: 'center' }}>
-        {title.charAt(0).toUpperCase() + title.slice(1)}
-      </Text>
-    </View>
-  );
-
-  const keyExtractor = (item: Message) => item.id.toString();
-
   return (
     <>
       <View safeArea column flex={1}>
         <StatusBar barStyle="dark-content" />
-        <SectionList
+        <ConversationSectionList
           inverted
-          ref={scrollRef}
-          renderItem={renderItem}
-          renderSectionFooter={renderSectionHeader}
-          keyExtractor={keyExtractor}
+          ref={setRef}
+          renderItem={({ item }) => (
+            <ConversationMessage
+              message={item}
+              alignRight={item.sender === store.user.id}
+              onPressImage={onPressImage}
+            />
+          )}
+          renderSectionFooter={({ section: { title } }) => (
+            <View spacing={{ ml: 3, py: 4 }}>
+              <Text typography={{ size: 2, color: 'semiGrey', weight: '500', align: 'center' }}>
+                {title.charAt(0).toUpperCase() + title.slice(1)}
+              </Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.id}
           sections={sections}
           ListHeaderComponent={(
             <ConversationActions onPressInjury={scrollToStart} onPressLocation={scrollToStart} />
           )}
-          bgColor="lightGrey"
         />
         <ConversationInputs
           text={state.text}
@@ -140,25 +151,5 @@ const ConversationScreen: NavigationComponent = () => {
     </>
   );
 };
-
-type TitleParams = { img?: string; title?: string }
-
-const Title = ({ img = mockImg, title = '' }: TitleParams) => (
-  <View row flex={1} alignCenter>
-    <Image rounded size={48} uri={img} />
-    <Text variant="titleSmall" spacing={{ ml: 3 }}>
-      {title}
-    </Text>
-  </View>
-);
-
-ConversationScreen.navigationOptions = ({ navigation: { state } }) => ({
-  headerTitle: <Title {...state.params} />,
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
 
 export default ConversationScreen;

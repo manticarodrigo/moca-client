@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { useNavigation } from '@react-navigation/core';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
