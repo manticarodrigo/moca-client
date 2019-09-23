@@ -1,21 +1,11 @@
 import { Dispatch } from 'react';
 
-import { mockImg } from '@src/services/mock';
+export type UserAction = | { type: 'SET_USER'; payload: User };
 
-export type UserAction = | { type: 'SET_CURRENT_USER'; payload: User };
-
-const getUser = (): User => ({
-  id: '0',
-  username: 'John Doe',
-  imageUrl: mockImg,
-});
-
-const login = () => (async (dispatch: Dispatch<UserAction>) => {
-  const user = await getUser();
-
-  dispatch({ type: 'SET_CURRENT_USER', payload: user });
+const setUser = (user: User) => (async (dispatch: Dispatch<UserAction>) => {
+  dispatch({ type: 'SET_USER', payload: user });
 });
 
 export {
-  login,
+  setUser,
 };

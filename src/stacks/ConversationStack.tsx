@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RouteProp } from '@react-navigation/core';
 
 import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
-
-import { login } from '@src/store/actions/UserActions';
-import useStore from '@src/hooks/useStore';
 
 import Header from '@src/components/Header';
 
@@ -27,23 +24,15 @@ export type ScreenProps<ScreenName extends keyof ConversationParamList> = {
 
 const Stack = createStackNavigator<ConversationParamList>();
 
-const ConversationStack = () => {
-  const { dispatch } = useStore();
-
-  useEffect(() => {
-    dispatch(login());
-  }, []);
-
-  return (
-    <Stack.Navigator
-      initialRouteName="conversationListScreen"
-      screenOptions={{ header: Header }}
-      headerMode="screen"
-    >
-      <Stack.Screen name="conversationListScreen" component={ConversationListScreen} />
-      <Stack.Screen name="conversationScreen" component={ConversationScreen} />
-    </Stack.Navigator>
-  );
-};
+const ConversationStack = () => (
+  <Stack.Navigator
+    initialRouteName="conversationListScreen"
+    screenOptions={{ header: Header }}
+    headerMode="screen"
+  >
+    <Stack.Screen name="conversationListScreen" component={ConversationListScreen} />
+    <Stack.Screen name="conversationScreen" component={ConversationScreen} />
+  </Stack.Navigator>
+);
 
 export default ConversationStack;
