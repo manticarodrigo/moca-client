@@ -11,7 +11,7 @@ import useImageViewer from '@src/hooks/useImageViewer';
 import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
-import { Spacing, Colors, Views } from '@src/styles';
+import { Colors, Views } from '@src/styles';
 
 import { InfoIcon } from '@src/icons';
 
@@ -62,7 +62,7 @@ const ConversationScreen = ({ navigation, route }: Props) => {
       const { username = '', imageUrl = mockImg } = otherParticipant;
 
       const headerTitle = () => (
-        <View width="100%" row flex={1} alignCenter>
+        <View row flex={1} alignCenter spacing={{ px: 3 }}>
           <Image rounded size={48} uri={imageUrl} />
           <Text variant="titleSmall" spacing={{ ml: 3 }}>
             {username}
@@ -77,7 +77,6 @@ const ConversationScreen = ({ navigation, route }: Props) => {
         headerStyle: {
           ...Views.borderBottom,
           backgroundColor: Colors.white,
-          height: 112,
         },
         headerRight,
       });
