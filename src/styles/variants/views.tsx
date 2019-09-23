@@ -58,7 +58,6 @@ const selectionScreenBorderImage: ViewStyle = {
   ...Spacing.getStyles({ pt: 5, pb: 5 }),
   borderWidth: 7,
   borderColor: Colors.transparent,
-  width: 164,
   height: 337,
 };
 

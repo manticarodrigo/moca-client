@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
@@ -58,14 +58,16 @@ const QualifiactionsScreen = () => {
             </View>
           ))}
         </View>
-        <View spacing={{ mt: 3 }}>
-          <Button
-            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-            onPress={handleButtonPress}
-            disabled={isButtonDisabled}
-          >
+        <View row>
+          <View flex={1}>
+            <Button
+              variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+              onPress={handleButtonPress}
+              disabled={isButtonDisabled}
+            >
           Continue
-          </Button>
+            </Button>
+          </View>
         </View>
       </View>
     </View>
