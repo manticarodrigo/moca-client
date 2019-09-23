@@ -8,8 +8,16 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-const ScheduleScreen = () => {
+import { ScreenProps } from '@src/stacks/ScheduleStack';
+
+type Props = ScreenProps<'scheduleScreen'>;
+
+const ScheduleScreen = ({ navigation }: Props) => {
   const [items, setItems] = useState({});
+
+  navigation.setOptions({
+    title: 'Calendar',
+  });
 
   const loadItems = (day) => {
     setTimeout(() => {
@@ -154,10 +162,6 @@ const ScheduleScreen = () => {
       }}
     />
   );
-};
-
-ScheduleScreen.navigationOptions = {
-  title: 'Calendar',
 };
 
 export default ScheduleScreen;

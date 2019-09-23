@@ -1,6 +1,8 @@
 import React from 'react';
-import { RouteProp } from '@react-navigation/core';
+import { RouteProp, CompositeNavigationProp } from '@react-navigation/core';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+
+import { TabNavigationProp } from '@src/NavigationProvider';
 
 import Header from '@src/components/Header';
 
@@ -8,13 +10,18 @@ import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 
 
-export type ParamList = {
+type ParamList = {
   conversationListScreen: undefined;
   conversationScreen: { conversation: Conversation };
 };
 
+type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
+  TabNavigationProp<'conversationTab'>,
+  StackNavigationProp<ParamList, ScreenName>
+>;
+
 export type ScreenProps<ScreenName extends keyof ParamList> = {
-  navigation: StackNavigationProp<ParamList, ScreenName>;
+  navigation: NavigationProp<ScreenName>;
   route: RouteProp<ParamList, ScreenName>;
 }
 

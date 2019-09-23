@@ -1,14 +1,18 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/core';
-
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 
-const ProfileScreen = () => {
-  const navigation = useNavigation();
+import { ScreenProps } from '@src/stacks/ProfileStack';
 
-  const handleButtonPress = () => navigation.navigate('ConversationListScreen');
+type Props = ScreenProps<'profileScreen'>;
+
+const ProfileScreen = ({ navigation }: Props) => {
+  navigation.setOptions({
+    title: 'Profile',
+  });
+
+  const handleButtonPress = () => navigation.jumpTo('conversationTab');
 
   return (
     <View flex={1} justifyCenter alignCenter bgColor="lightGrey">
@@ -17,10 +21,6 @@ const ProfileScreen = () => {
       </Button>
     </View>
   );
-};
-
-ProfileScreen.navigationOptions = {
-  title: 'Profile',
 };
 
 export default ProfileScreen;

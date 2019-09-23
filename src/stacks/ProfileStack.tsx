@@ -6,17 +6,14 @@ import { TabNavigationProp } from '@src/NavigationProvider';
 
 import Header from '@src/components/Header';
 
-import DashboardScreen from '@src/screens/DashboardScreen';
-import FilterScreen from '@src/screens/FilterScreen';
-
+import ProfileScreen from '@src/screens/ProfileScreen';
 
 type ParamList = {
-  dashboardScreen: undefined;
-  filterScreen: undefined;
+  profileScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'dashboardTab'>,
+  TabNavigationProp<'profileTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -27,15 +24,14 @@ export type ScreenProps<ScreenName extends keyof ParamList> = {
 
 const Stack = createStackNavigator<ParamList>();
 
-const DashboardStack = () => (
+const ProfileStack = () => (
   <Stack.Navigator
-    initialRouteName="dashboardScreen"
+    initialRouteName="profileScreen"
     screenOptions={{ header: Header }}
     headerMode="screen"
   >
-    <Stack.Screen name="dashboardScreen" component={DashboardScreen} />
-    <Stack.Screen name="filterScreen" component={FilterScreen} />
+    <Stack.Screen name="profileScreen" component={ProfileScreen} />
   </Stack.Navigator>
 );
 
-export default DashboardStack;
+export default ProfileStack;

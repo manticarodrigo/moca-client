@@ -1,24 +1,38 @@
 import React, { useEffect } from 'react';
 import { NavigationNativeContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-import ConversationStack from '@src/stacks/ConversationStack';
 import DashboardStack from '@src/stacks/DashboardStack';
+import ScheduleStack from '@src/stacks/ScheduleStack';
+import ConversationStack from '@src/stacks/ConversationStack';
+import ProfileStack from '@src/stacks/ProfileStack';
 
 import { Views } from '@src/styles';
 
 import { setUser } from '@src/store/actions/UserActions';
 import useStore from '@src/hooks/useStore';
 
-import { DashboardTabIcon, ConversationTabIcon } from '@src/icons';
+import {
+  DashboardTabIcon,
+  ScheduleTabIcon,
+  ConversationTabIcon,
+  ProfileTabIcon,
+} from '@src/icons';
 import { mockImg } from '@src/services/mock';
 
 type TabParamList = {
   dashboardTab: undefined;
+  scheduleTab: undefined;
   conversationTab: undefined;
+  profileTab: undefined;
 }
 
 const Tab = createBottomTabNavigator<TabParamList>();
+
+export type TabNavigationProp<
+  TabName extends keyof TabParamList
+> = BottomTabNavigationProp<TabParamList, TabName>;
+
 
 const NavigationProvider = () => {
   const { dispatch } = useStore();
@@ -42,9 +56,19 @@ const NavigationProvider = () => {
           options={{ tabBarIcon: DashboardTabIcon }}
         />
         <Tab.Screen
+          name="scheduleTab"
+          component={ScheduleStack}
+          options={{ tabBarIcon: ScheduleTabIcon }}
+        />
+        <Tab.Screen
           name="conversationTab"
           component={ConversationStack}
           options={{ tabBarIcon: ConversationTabIcon }}
+        />
+        <Tab.Screen
+          name="profileTab"
+          component={ProfileStack}
+          options={{ tabBarIcon: ProfileTabIcon }}
         />
       </Tab.Navigator>
     </NavigationNativeContainer>
