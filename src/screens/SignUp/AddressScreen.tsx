@@ -38,7 +38,9 @@ const AddressScreen = () => {
 
 
   const handleButtonPress = () => {
-    dispatch(updateUserInfomation({ address: { ...formFields } }));
+    const newAddress = userInformation.address.map((x) => ({ ...x }));
+    newAddress.push({ ...formFields });
+    dispatch(updateUserInfomation({ address: newAddress }));
     navigation.navigate('DashboardScreen');
   };
 

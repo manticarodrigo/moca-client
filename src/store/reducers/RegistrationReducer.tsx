@@ -26,6 +26,7 @@ const reducer = (state: RegistrationState = {}, action: RegistrationAction) => {
             { name: 'Ankle/Foot', value: 0 },
             { name: 'Other', value: 0 },
           ],
+          address: [],
         },
       };
     default:
