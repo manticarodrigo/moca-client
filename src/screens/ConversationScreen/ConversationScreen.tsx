@@ -115,7 +115,7 @@ const ConversationScreen = ({ navigation, route }: Props) => {
 
   return (
     <>
-      <View safeArea column flex={1}>
+      <View safeArea column flex={1} bgColor="lightGrey">
         <StatusBar barStyle="dark-content" />
         <ConversationSectionList
           inverted

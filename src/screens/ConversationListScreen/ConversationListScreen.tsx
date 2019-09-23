@@ -39,25 +39,27 @@ const ConversationListScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <ConversationSectionList
-      renderItem={({ item }) => (
-        <ConversationListCard
-          user={store.user}
-          conversation={item}
-          onPress={handleCardPress}
-        />
-      )}
-      renderSectionHeader={({ section }) => (
-        <View spacing={{ ml: 3, py: 3 }}>
-          <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
-            {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
-          </Text>
-        </View>
-      )}
-      stickySectionHeadersEnabled={false}
-      keyExtractor={(item) => item.id}
-      sections={sections}
-    />
+    <View column flex={1} bgColor="lightGrey">
+      <ConversationSectionList
+        renderItem={({ item }) => (
+          <ConversationListCard
+            user={store.user}
+            conversation={item}
+            onPress={handleCardPress}
+          />
+        )}
+        renderSectionHeader={({ section }) => (
+          <View spacing={{ ml: 3, py: 3 }}>
+            <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+              {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
+            </Text>
+          </View>
+        )}
+        stickySectionHeadersEnabled={false}
+        keyExtractor={(item) => item.id}
+        sections={sections}
+      />
+    </View>
   );
 };
 

@@ -19,8 +19,8 @@ type Props = ScreenProps<'dashboardScreen'>;
 
 const DashboardScreen = ({ navigation }: Props) => {
   const { store } = useStore();
-  const [isTherapist] = useState(true);
-  const [isActivated] = useState(true);
+  const [isTherapist] = useState(false);
+  const [isActivated] = useState(false);
   const [isFiltering, setFiltering] = useState(false);
 
   const _keyboardDidShow = () => { setFiltering(true); };
