@@ -14,7 +14,7 @@ const DashboardSearch = ({ name }: { name: string }) => {
 
   const onChangeText = (val: string) => setText(val);
   const onPressSearch = () => setText('');
-  const onPressFilter = () => navigation.navigate('FilterScreen');
+  const onPressFilter = () => navigation.navigate('filterScreen');
 
   return (
     <View column>

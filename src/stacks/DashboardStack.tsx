@@ -5,13 +5,13 @@ import { createStackNavigator, StackNavigationProp } from '@react-navigation/sta
 
 import Header from '@src/components/Header';
 
-import ConversationListScreen from '@src/screens/ConversationListScreen';
-import ConversationScreen from '@src/screens/ConversationScreen';
+import DashboardScreen from '@src/screens/DashboardScreen';
+import FilterScreen from '@src/screens/FilterScreen';
 
 
 export type ConversationParamList = {
-  conversationListScreen: undefined;
-  conversationScreen: { conversation: Conversation };
+  dashboardScreen: undefined;
+  filterScreen: undefined;
 };
 
 export type ScreenProps<ScreenName extends keyof ConversationParamList> = {
@@ -21,15 +21,15 @@ export type ScreenProps<ScreenName extends keyof ConversationParamList> = {
 
 const Stack = createStackNavigator<ConversationParamList>();
 
-const ConversationStack = () => (
+const DashboardStack = () => (
   <Stack.Navigator
-    initialRouteName="conversationListScreen"
+    initialRouteName="dashboardScreen"
     screenOptions={{ header: Header }}
     headerMode="screen"
   >
-    <Stack.Screen name="conversationListScreen" component={ConversationListScreen} />
-    <Stack.Screen name="conversationScreen" component={ConversationScreen} />
+    <Stack.Screen name="dashboardScreen" component={DashboardScreen} />
+    <Stack.Screen name="filterScreen" component={FilterScreen} />
   </Stack.Navigator>
 );
 
-export default ConversationStack;
+export default DashboardStack;

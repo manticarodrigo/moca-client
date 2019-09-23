@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -15,9 +15,18 @@ import {
   BothGendersIcon,
 } from '@src/icons';
 
+import { ScreenProps } from '@src/stacks/DashboardStack';
 
-const FilterScreen = () => {
+type Props = ScreenProps<'filterScreen'>;
+
+const FilterScreen = ({ navigation }: Props) => {
   const [focus, setfocus] = useState([]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: 'Filters',
+    });
+  }, [navigation]);
 
   const filterItems = {
     sortBy: {
@@ -148,10 +157,6 @@ const FilterScreen = () => {
       ))}
     </View>
   );
-};
-
-FilterScreen.navigationOptions = {
-  title: 'Filter',
 };
 
 export default FilterScreen;

@@ -28,31 +28,37 @@ const Header = ({ scene, previous, navigation }: HeaderProps) => {
   return (
     <View
       row
-      justifyCenter={!previous}
+      justifyBetween
       alignCenter
-      spacing={{ p: 4, pt: 6 }}
+      spacing={{ p: 4, pt: 5 }}
       style={styles.container}
     >
-      {previous && (
-        <View
-          column
-          justifyCenter
-          alignCenter
-          width={32}
-          height={32}
-          shadow={{ color: 'secondary', blur: 2, alpha: 0.16 }}
-          onPress={navigation.goBack}
-        >
-          <BackButtonIcon />
-        </View>
-      )}
+      <View
+        column
+        justifyCenter
+        alignCenter
+        width={32}
+        height={32}
+        shadow={previous && { color: 'secondary', blur: 2, alpha: 0.16 }}
+        onPress={previous && navigation.goBack}
+      >
+        {previous && <BackButtonIcon />}
+      </View>
       {options.headerTitle ? (
         <HeaderTitle />
       ) : (
         <Text variant="titleSmallWhite">{options.title || scene.route.name}</Text>
       )}
-
-      {options.headerRight && <HeaderRight />}
+      <View
+        column
+        justifyCenter
+        alignCenter
+        width={32}
+        height={32}
+        onPress={navigation.goBack}
+      >
+        {options.headerRight && <HeaderRight />}
+      </View>
     </View>
   );
 };

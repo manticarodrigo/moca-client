@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, SectionList } from 'react-native';
 
-import { ScreenProps } from '@src/stacks/ConversationStack';
 
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
@@ -18,6 +17,8 @@ import { InfoIcon } from '@src/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
+
+import { ScreenProps } from '@src/stacks/ConversationStack';
 
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';

@@ -8,21 +8,29 @@ import { LogoIcon } from '@src/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
+import { ScreenProps } from '@src/stacks/DashboardStack';
+
 import DashboardSearch from './DashboardSearch';
 import DashboardAlert from './DashboardAlert';
 import DashboardAppointments from './DashboardAppointments';
 import DashboardLinks from './DashboardLinks';
 
-const DashboardScreen = () => {
-  const [store] = useStore();
-  const [isTherapist] = useState(false);
-  const [isActivated] = useState(false);
+type Props = ScreenProps<'dashboardScreen'>;
+
+const DashboardScreen = ({ navigation }: Props) => {
+  const { store } = useStore();
+  const [isTherapist] = useState(true);
+  const [isActivated] = useState(true);
   const [isFiltering, setFiltering] = useState(false);
 
   const _keyboardDidShow = () => { setFiltering(true); };
   const _keyboardDidHide = () => { setFiltering(false); };
 
   useEffect(() => {
+    navigation.setOptions({
+      header: null,
+    });
+
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
 
@@ -37,11 +45,11 @@ const DashboardScreen = () => {
       </View>
 
       {isActivated && isTherapist && (
-        <View row justifyCenter alignCenter height={60}>
+        <View row justifyCenter alignCenter spacing={{ p: 4, pt: 3 }}>
           <Text variant="titleSmallWhite">Appointments</Text>
         </View>
       )}
-      {!isTherapist && <DashboardSearch name={store.authState.currentUser.username} />}
+      {!isTherapist && <DashboardSearch name={store.user.username} />}
 
       {!isFiltering && (
         <View scroll flex={1}>
@@ -52,10 +60,6 @@ const DashboardScreen = () => {
       )}
     </View>
   );
-};
-
-DashboardScreen.navigationOptions = {
-  header: null,
 };
 
 export default DashboardScreen;
