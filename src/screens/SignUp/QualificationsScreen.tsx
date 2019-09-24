@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
@@ -14,7 +14,7 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-const QualifiactionsScreen = () => {
+const QualificationsScreen = () => {
   const navigation = useNavigation();
   const userName = navigation.getParam('name', '');
   const [{ registrationState: { userInformation: { qualifications } } }, dispatch] = useStore();
@@ -58,14 +58,16 @@ const QualifiactionsScreen = () => {
             </View>
           ))}
         </View>
-        <View spacing={{ mt: 3 }}>
-          <Button
-            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-            onPress={handleButtonPress}
-            disabled={isButtonDisabled}
-          >
+        <View row>
+          <View flex={1}>
+            <Button
+              variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+              onPress={handleButtonPress}
+              disabled={isButtonDisabled}
+            >
           Continue
-          </Button>
+            </Button>
+          </View>
         </View>
       </View>
     </View>
@@ -73,7 +75,7 @@ const QualifiactionsScreen = () => {
 };
 
 
-QualifiactionsScreen.navigationOptions = () => ({
+QualificationsScreen.navigationOptions = () => ({
   headerTitle: <HeaderTitle title="Qualifications" />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
@@ -84,4 +86,4 @@ QualifiactionsScreen.navigationOptions = () => ({
   },
 });
 
-export default QualifiactionsScreen;
+export default QualificationsScreen;
