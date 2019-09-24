@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 
-import { useNavigation } from '@react-navigation/core';
 import useStore from '@src/hooks/useStore';
-
-
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import TermsOfServiceScreen from '@src/modals/TermsOfServiceScreen';
@@ -12,22 +9,22 @@ import TermsOfServiceScreen from '@src/modals/TermsOfServiceScreen';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
-import BackButton from '@src/components/BackButton';
-import HeaderTitle from '@src/components/HeaderTitle';
 import FormField from '@src/components/FormField';
 import ModalView from '@src/components/ModalView';
-
 
 import SecondaryLogoIcon from '@src/icons/SecondaryLogo';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
 
-import { Views, Spacing, Colors } from '@src/styles';
+import { ScreenProps } from '@src/stacks/AuthStack';
 
-const RegistrationScreen = () => {
-  const navigation = useNavigation();
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
-  const isPatient = userInformation.type === 'Patient';
+type Props = ScreenProps<'RegistrationScreen'>;
+
+const RegistrationScreen = ({ navigation }: Props) => {
+  navigation.setOptions({ title: 'Sign Up' });
+
+  const { store, dispatch } = useStore();
+  const isPatient = store.registrationState.userInformation.type === 'Patient';
 
   const surnameField = useRef(null);
   const emailField = useRef(null);
@@ -58,12 +55,12 @@ const RegistrationScreen = () => {
   };
 
   useEffect(() => {
-    if (Object.prototype.hasOwnProperty.call(userInformation, 'email')) {
-      const { email, surname, name, password } = userInformation;
+    if (Object.prototype.hasOwnProperty.call(store.registrationState.userInformation, 'email')) {
+      const { email, surname, name, password } = store.registrationState.userInformation;
 
       setFormFields({
         ...formFields,
-        ...(!isPatient && { medicalId: userInformation.medicalId }),
+        ...(!isPatient && { medicalId: store.registrationState.userInformation.medicalId }),
         surname,
         email,
         name,
@@ -110,7 +107,7 @@ const RegistrationScreen = () => {
   };
 
   const handleMedicareAgreement = () => {
-    navigation.navigate('InvalidMediCareScreen');
+    navigation.navigate('InvalidMedicareScreen');
   };
 
   const handleMedicareDisagreement = () => {
@@ -121,7 +118,7 @@ const RegistrationScreen = () => {
     }
   };
 
-  const handlePrivaryPress = () => navigation.navigate('');
+  const handlePrivaryPress = () => null; // navigation.navigate('');
 
   const handleTermsOfServicePress = () => {
     setIsModalVisible(true);
@@ -171,7 +168,7 @@ const RegistrationScreen = () => {
       behavior="padding"
       keyboardVerticalOffset={60}
     >
-      <View flex={1} scroll>
+      <View flex={1} scroll bgColor="white">
         <View safeArea flex={1} spacing={{ mt: 4 }} alignCenter>
           <View alignCenter>
             <SecondaryLogoIcon />
@@ -283,16 +280,5 @@ const RegistrationScreen = () => {
 
   );
 };
-
-RegistrationScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Sign up" />,
-  headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
 
 export default RegistrationScreen;

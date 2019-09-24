@@ -8,12 +8,13 @@ import registrationReducer, { RegistrationState } from '@src/store/reducers/Regi
 import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
 
+import { mockImg } from '@src/services/mock';
+
 export type StoreState = {
   user: UserState;
   conversations: ConversationState;
   registrationState: RegistrationState;
 };
-
 
 type StoreAction = UserAction | ConversationAction| RegistrationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
@@ -45,9 +46,10 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => ({
 
 const initialState: StoreState = {
   user: {
-    id: null,
-    username: '',
-    imageUrl: '',
+    id: '0',
+    username: 'John Doe',
+    imageUrl: mockImg,
+    type: 'patient',
   },
   conversations: [],
   registrationState: {

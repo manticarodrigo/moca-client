@@ -24,7 +24,7 @@ import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
 
-type Props = ScreenProps<'conversationScreen'>;
+type Props = ScreenProps<'ConversationScreen'>;
 
 type State = Conversation & {
   text: string;

@@ -15,9 +15,11 @@ import DashboardAlert from './DashboardAlert';
 import DashboardAppointments from './DashboardAppointments';
 import DashboardLinks from './DashboardLinks';
 
-type Props = ScreenProps<'dashboardScreen'>;
+type Props = ScreenProps<'DashboardScreen'>;
 
 const DashboardScreen = ({ navigation }: Props) => {
+  navigation.setOptions({ header: null });
+
   const { store } = useStore();
   const [isTherapist] = useState(false);
   const [isActivated] = useState(false);
@@ -27,10 +29,6 @@ const DashboardScreen = ({ navigation }: Props) => {
   const _keyboardDidHide = () => { setFiltering(false); };
 
   useEffect(() => {
-    navigation.setOptions({
-      header: null,
-    });
-
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
 

@@ -1,24 +1,25 @@
 import React, { useState, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 
-import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 import Text from '@src/components/Text';
-import HeaderTitle from '@src/components/HeaderTitle';
 
 import useStore from '@src/hooks/useStore';
-import { useNavigation } from '@react-navigation/core';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { Views, Spacing, Colors } from '@src/styles';
+import { ScreenProps } from '@src/stacks/AuthStack';
 
+type Props = ScreenProps<'AddressScreen'>;
 
-const AddressScreen = () => {
-  const navigation = useNavigation();
-  const [{ registrationState: { userInformation: { name } } }] = useStore();
+const AddressScreen = ({ navigation, route }: Props) => {
+  navigation.setOptions({ title: 'Your Address' });
+  const { name } = route.params;
+
+  const { store, dispatch } = useStore();
+  const { registrationState: { userInformation } } = store;
 
   const [formFields, setFormFields] = useState({
     street: '',
@@ -31,14 +32,14 @@ const AddressScreen = () => {
   const cityField = useRef(null);
   const stateField = useRef(null);
 
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const isAnyFieldEmpty = Object.values(formFields).includes('');
   const isButtonDisabled = isAnyFieldEmpty;
 
 
   const handleButtonPress = () => {
     dispatch(updateUserInfomation({ address: { ...formFields } }));
-    navigation.navigate('DashboardScreen');
+
+    // navigation.navigate('DashboardScreen');
   };
 
 
@@ -51,7 +52,7 @@ const AddressScreen = () => {
       behavior="padding"
       keyboardVerticalOffset={60}
     >
-      <View scroll>
+      <View scroll flex={1}>
         <View safeArea spacing={{ pt: 3 }} alignCenter>
           <View spacing={{ mx: 3 }}>
             <View alignCenter>
@@ -116,17 +117,5 @@ const AddressScreen = () => {
     </KeyboardAvoidingView>
   );
 };
-
-
-AddressScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Your Address" />,
-  headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
 
 export default AddressScreen;

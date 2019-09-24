@@ -9,11 +9,11 @@ import Header from '@src/components/Header';
 import ProfileScreen from '@src/screens/ProfileScreen';
 
 type ParamList = {
-  profileScreen: undefined;
+  ProfileScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'profileTab'>,
+  TabNavigationProp<'ProfileTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -26,11 +26,11 @@ const Stack = createStackNavigator<ParamList>();
 
 const ProfileStack = () => (
   <Stack.Navigator
-    initialRouteName="profileScreen"
+    initialRouteName="ProfileScreen"
     screenOptions={{ header: Header }}
     headerMode="screen"
   >
-    <Stack.Screen name="profileScreen" component={ProfileScreen} />
+    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
   </Stack.Navigator>
 );
 

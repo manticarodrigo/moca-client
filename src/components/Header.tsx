@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { HeaderProps } from '@react-navigation/stack/src/types';
 
 import { Colors } from '@src/styles';
@@ -12,14 +12,17 @@ import Text from '@src/components/Text';
 
 const Header = ({ scene, previous, navigation }: HeaderProps) => {
   const { options } = scene.descriptor;
-  const { headerStyle } = options;
+  const { headerStyle, headerTitleStyle } = options;
 
   const styles = useMemo(() => StyleSheet.create({
     container: {
       backgroundColor: Colors.primary,
       ...(headerStyle && headerStyle as ViewStyle),
     },
-  }), [headerStyle]);
+    title: {
+      ...(headerTitleStyle && headerTitleStyle as TextStyle),
+    },
+  }), [headerStyle, headerTitleStyle]);
 
 
   const HeaderTitle = options.headerTitle as React.ReactType;
@@ -30,7 +33,7 @@ const Header = ({ scene, previous, navigation }: HeaderProps) => {
       row
       justifyBetween
       alignCenter
-      spacing={{ p: 4, pt: 5 }}
+      spacing={{ px: 4, pt: 5, pb: 3 }}
       style={styles.container}
     >
       <View
@@ -44,11 +47,15 @@ const Header = ({ scene, previous, navigation }: HeaderProps) => {
       >
         {previous && <BackButtonIcon />}
       </View>
+
       {options.headerTitle ? (
         <HeaderTitle />
       ) : (
-        <Text variant="titleSmallWhite">{options.title || scene.route.name}</Text>
+        <Text variant="titleSmallWhite" style={styles.title}>
+          {options.title || scene.route.name}
+        </Text>
       )}
+
       <View
         column
         justifyCenter

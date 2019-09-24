@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 
-import ZipeCodeScreen from '@src/modals/ZipCodeScreen';
+import useStore from '@src/hooks/useStore';
+import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
 
-import { useNavigation } from '@react-navigation/core';
+import { Colors } from '@src/styles/index';
+
+import ZipeCodeScreen from '@src/modals/ZipCodeScreen';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import ModalView from '@src/components/ModalView';
 
-
 import PatientIcon from '@src/icons/PatientIcon';
 import TherapistIcon from '@src/icons/TherapistIcon';
 import TherapistSelectIcon from '@src/icons/TherapistSelectIcon';
 import PatientSelectIcon from '@src/icons/PatientSelectIcon';
 
-import { Colors } from '@src/styles/index';
+import { ScreenProps } from '@src/stacks/AuthStack';
 
-import useStore from '@src/hooks/useStore';
-import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
+type Props = ScreenProps<'SelectionScreen'>;
+type ColorKey = keyof typeof Colors;
 
-const SelectionScreen = () => {
-  type ColorKey = keyof typeof Colors;
+const SelectionScreen = ({ navigation }: Props) => {
+  navigation.setOptions({ header: null });
 
-  const navigation = useNavigation();
+  const { store, dispatch } = useStore();
   const [type, setType] = useState('');
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [screenName, setScreenName] = useState();
   const [shouldNavigate, setShouldNavigate] = useState(false);
@@ -33,7 +34,6 @@ const SelectionScreen = () => {
   const isPatient = type === 'Patient';
   const isTherapist = type === 'Therapist';
   const buttonDisabled = type === '';
-
 
   let buttonText = 'Select';
 
@@ -52,8 +52,8 @@ const SelectionScreen = () => {
 
 
   const handleButtonPress = () => {
-    if (Object.prototype.hasOwnProperty.call(userInformation, 'type')) {
-      if (userInformation.type !== type) dispatch(resetUserInformation());
+    if (Object.prototype.hasOwnProperty.call(store.registrationState.userInformation, 'type')) {
+      if (store.registrationState.userInformation.type !== type) dispatch(resetUserInformation());
     }
     dispatch(updateUserInfomation({ type }));
     setIsModalVisible(true);
@@ -84,7 +84,7 @@ const SelectionScreen = () => {
 
   return (
     <>
-      <View safeArea alignCenter flex={1} spacing={{ px: 3 }} width="100%">
+      <View safeArea alignCenter flex={1} spacing={{ px: 3 }} width="100%" bgColor="white">
         <View spacing={{ mt: 5 }} alignCenter>
           <Text variant="title">Please select your</Text>
           <View alignCenter row>
@@ -129,10 +129,5 @@ const SelectionScreen = () => {
     </>
   );
 };
-
-SelectionScreen.navigationOptions = {
-  header: null,
-};
-
 
 export default SelectionScreen;

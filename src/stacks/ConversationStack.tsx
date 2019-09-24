@@ -11,12 +11,12 @@ import ConversationScreen from '@src/screens/ConversationScreen';
 
 
 type ParamList = {
-  conversationListScreen: undefined;
-  conversationScreen: { conversation: Conversation };
+  ConversationListScreen: undefined;
+  ConversationScreen: { conversation: Conversation };
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'conversationTab'>,
+  TabNavigationProp<'ConversationTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -29,12 +29,12 @@ const Stack = createStackNavigator<ParamList>();
 
 const ConversationStack = () => (
   <Stack.Navigator
-    initialRouteName="conversationListScreen"
+    initialRouteName="ConversationListScreen"
     screenOptions={{ header: Header }}
     headerMode="screen"
   >
-    <Stack.Screen name="conversationListScreen" component={ConversationListScreen} />
-    <Stack.Screen name="conversationScreen" component={ConversationScreen} />
+    <Stack.Screen name="ConversationListScreen" component={ConversationListScreen} />
+    <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
   </Stack.Navigator>
 );
 

@@ -1,17 +1,18 @@
 /* eslint-disable max-len */
 import React, { useMemo } from 'react';
-import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
+import { StyleSheet, Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
 
 import { Spacing, SpacingProp, Typography, TypographyProp, Texts } from '@src/styles';
 
 type TextProps = RNTextProps & {
   variant?: keyof typeof Texts;
+  style?: TextStyle;
   spacing?: SpacingProp;
   typography?: TypographyProp;
   children: (string | JSX.Element) | (string | JSX.Element)[];
 };
 
-const Text = ({ variant, spacing, typography, children, ...textProps }: TextProps) => {
+const Text = ({ variant, style, spacing, typography, children, ...textProps }: TextProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
       ...Texts[variant],
@@ -21,7 +22,7 @@ const Text = ({ variant, spacing, typography, children, ...textProps }: TextProp
   }), [variant, spacing, typography]);
 
   return (
-    <RNText style={styles.text} {...textProps}>
+    <RNText style={[styles.text, style]} {...textProps}>
       {children}
     </RNText>
   );

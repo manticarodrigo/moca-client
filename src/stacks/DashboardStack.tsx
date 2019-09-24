@@ -11,12 +11,12 @@ import FilterScreen from '@src/screens/FilterScreen';
 
 
 type ParamList = {
-  dashboardScreen: undefined;
-  filterScreen: undefined;
+  DashboardScreen: undefined;
+  FilterScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'dashboardTab'>,
+  TabNavigationProp<'DashboardTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -29,12 +29,12 @@ const Stack = createStackNavigator<ParamList>();
 
 const DashboardStack = () => (
   <Stack.Navigator
-    initialRouteName="dashboardScreen"
+    initialRouteName="DashboardScreen"
     screenOptions={{ header: Header }}
     headerMode="screen"
   >
-    <Stack.Screen name="dashboardScreen" component={DashboardScreen} />
-    <Stack.Screen name="filterScreen" component={FilterScreen} />
+    <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+    <Stack.Screen name="FilterScreen" component={FilterScreen} />
   </Stack.Navigator>
 );
 

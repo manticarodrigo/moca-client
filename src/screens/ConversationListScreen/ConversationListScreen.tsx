@@ -13,7 +13,7 @@ import Text from '@src/components/Text';
 
 import ConversationListCard from './ConversationListCard';
 
-type Props = ScreenProps<'conversationListScreen'>;
+type Props = ScreenProps<'ConversationListScreen'>;
 
 const ConversationSectionList: SectionList<Conversation> = SectionList;
 
@@ -35,7 +35,7 @@ const ConversationListScreen = ({ navigation }: Props) => {
   }, [store.user, dispatch]);
 
   const handleCardPress = (conversation: Conversation) => {
-    navigation.push('conversationScreen', { conversation });
+    navigation.push('ConversationScreen', { conversation });
   };
 
   return (

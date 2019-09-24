@@ -1,26 +1,37 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/core';
+import { Colors } from '@src/styles';
 
+import Header from '@src/components/Header';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
+// import { ScreenProps } from '@src/stacks/AuthStack';
 
-const SitemapScreen = () => {
-  const navigation = useNavigation();
+// type Props = ScreenProps<'SitemapScreen'>;
 
-  const handleNavigate = (screenName) => navigation.navigate(screenName);
+const SitemapScreen = ({ navigation }) => {
+  navigation.setOptions({
+    title: 'Developer Sitemap',
+    header: Header,
+    headerStyle: {
+      backgroundColor: Colors.primary,
+      borderBottomColor: Colors.primary,
+    },
+    headerTitleStyle: {
+      color: Colors.white,
+    },
+  });
+
+  const handleNavigate = (screenName) => navigation.replace(screenName);
 
   const screensNames = [
-    'OnboardingScreen',
-    'DashboardScreen',
-    'ScheduleScreen',
-    'ConversationListScreen',
-    'ConversationScreen',
+    'AuthStack',
+    'TabStack',
   ];
 
   return (
-    <>
+    <View scroll column flex={1} bgColor="white">
       {screensNames.map((name: string) => {
         const handleCardPress = () => handleNavigate(name);
 
@@ -30,12 +41,8 @@ const SitemapScreen = () => {
           </View>
         );
       })}
-    </>
+    </View>
   );
-};
-
-SitemapScreen.navigationOptions = {
-  title: 'Developer Sitemap',
 };
 
 export default SitemapScreen;

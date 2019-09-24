@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 // import { StackActions, NavigationActions, Header } from 'react-navigation';
 import { KeyboardAvoidingView } from 'react-native';
 
-import { useNavigation } from '@react-navigation/core';
 import useStore from '@src/hooks/useStore';
 import { resetUserInformation } from '@src/store/actions/RegistrationAction';
 
@@ -10,20 +9,20 @@ import { resetUserInformation } from '@src/store/actions/RegistrationAction';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
-import HeaderTitle from '@src/components/HeaderTitle';
-import BackButton from '@src/components/BackButton';
 import FormField from '@src/components/FormField';
-
-
-import { Views, Spacing, Colors } from '@src/styles';
 
 import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
 import EmailIcon from '@src/assets/Icons/email.png';
 
-const InvalidZipCodeScreen = () => {
-  const navigation = useNavigation();
+import { ScreenProps } from '@src/stacks/AuthStack';
+
+type Props = ScreenProps<'InvalidZipCodeScreen'>;
+
+const InvalidZipCodeScreen = ({ navigation }: Props) => {
+  navigation.setOptions({ title: 'Location' });
+
+  const { dispatch } = useStore();
   const [email, setEmail] = useState('');
-  const [, dispatch] = useStore();
   const [isEmailValid, setIsEmailValid] = useState(true);
 
   const paddingOffset = 80;
@@ -109,14 +108,4 @@ const InvalidZipCodeScreen = () => {
   );
 };
 
-InvalidZipCodeScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Location" />,
-  headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
 export default InvalidZipCodeScreen;

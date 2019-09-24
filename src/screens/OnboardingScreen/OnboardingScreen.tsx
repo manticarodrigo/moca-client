@@ -1,8 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 
-import { useNavigation } from '@react-navigation/core';
-
 import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
@@ -14,32 +12,35 @@ import ShieldIcon from '@src/icons/ShieldIcon';
 import DeviceMapIcon from '@src/icons/DeviceMapIcon';
 import SettingsIcon from '@src/icons/SettingsIcon';
 
+import { ScreenProps } from '@src/stacks/AuthStack';
 
-const OnboardingScreen = () => {
-  const navigation = useNavigation();
+type Prop = ScreenProps<'OnboardingScreen'>;
 
-  const slides = [
-    {
-      icon: <ShieldIcon />,
-      title: 'Reliable',
-      text: 'Certified Physical Therapists.',
-    },
-    {
-      icon: <DeviceMapIcon />,
-      title: 'Hassle - Free',
-      text: 'Fixed costs, no hidden fees, no insurance needed.',
-    },
-    {
-      icon: <SettingsIcon />,
-      title: 'Personalized',
-      text: 'Direct medical access at your most convenient location.',
-    },
-  ];
+const slides = [
+  {
+    icon: <ShieldIcon />,
+    title: 'Reliable',
+    text: 'Certified Physical Therapists.',
+  },
+  {
+    icon: <DeviceMapIcon />,
+    title: 'Hassle - Free',
+    text: 'Fixed costs, no hidden fees, no insurance needed.',
+  },
+  {
+    icon: <SettingsIcon />,
+    title: 'Personalized',
+    text: 'Direct medical access at your most convenient location.',
+  },
+];
+
+const OnboardingScreen = ({ navigation }: Prop) => {
+  navigation.setOptions({ header: null });
 
   const handleButtonPress = () => navigation.navigate('SelectionScreen');
 
   return (
-    <View safeArea flex={1} alignCenter>
+    <View safeArea flex={1} alignCenter bgColor="white">
       <StatusBar barStyle="dark-content" />
       <View spacing={{ pt: 5 }}>
         <Image width={175} height={110} file={Logo} />
@@ -69,10 +70,6 @@ const OnboardingScreen = () => {
       </View>
     </View>
   );
-};
-
-OnboardingScreen.navigationOptions = {
-  header: null,
 };
 
 export default OnboardingScreen;

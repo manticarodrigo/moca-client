@@ -5,14 +5,12 @@ import Button from '@src/components/Button';
 
 import { ScreenProps } from '@src/stacks/ProfileStack';
 
-type Props = ScreenProps<'profileScreen'>;
+type Props = ScreenProps<'ProfileScreen'>;
 
 const ProfileScreen = ({ navigation }: Props) => {
-  navigation.setOptions({
-    title: 'Profile',
-  });
+  navigation.setOptions({ title: 'Profile' });
 
-  const handleButtonPress = () => navigation.jumpTo('conversationTab');
+  const handleButtonPress = () => navigation.jumpTo('ConversationTab');
 
   return (
     <View flex={1} justifyCenter alignCenter bgColor="lightGrey">

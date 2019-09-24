@@ -17,16 +17,12 @@ import {
 
 import { ScreenProps } from '@src/stacks/DashboardStack';
 
-type Props = ScreenProps<'filterScreen'>;
+type Props = ScreenProps<'FilterScreen'>;
 
 const FilterScreen = ({ navigation }: Props) => {
-  const [focus, setfocus] = useState([]);
+  navigation.setOptions({ title: 'Filters' });
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: 'Filters',
-    });
-  }, [navigation]);
+  const [focus, setfocus] = useState([]);
 
   const filterItems = {
     sortBy: {

@@ -10,14 +10,12 @@ import Tag from '@src/components/Tag';
 
 import { ScreenProps } from '@src/stacks/ScheduleStack';
 
-type Props = ScreenProps<'scheduleScreen'>;
+type Props = ScreenProps<'ScheduleScreen'>;
 
 const ScheduleScreen = ({ navigation }: Props) => {
-  const [items, setItems] = useState({});
+  navigation.setOptions({ title: 'Calendar' });
 
-  navigation.setOptions({
-    title: 'Calendar',
-  });
+  const [items, setItems] = useState({});
 
   const loadItems = (day) => {
     setTimeout(() => {

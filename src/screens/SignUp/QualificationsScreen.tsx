@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import HeaderTitle from '@src/components/HeaderTitle';
 import CheckBox from '@src/components/Checkbox';
 
 import useStore from '@src/hooks/useStore';
-import { useNavigation } from '@react-navigation/core';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { Views, Spacing, Colors } from '@src/styles';
+import { ScreenProps } from '@src/stacks/AuthStack';
 
-const QualifiactionsScreen = () => {
-  const navigation = useNavigation();
-  const userName = navigation.getParam('name', '');
-  const [{ registrationState: { userInformation: { qualifications } } }, dispatch] = useStore();
+type Props = ScreenProps<'QualificationsScreen'>;
+
+const QualifiactionsScreen = ({ navigation, route }: Props) => {
+  navigation.setOptions({ title: 'Qualifications' });
+  const { name } = route.params;
+
+  const { store, dispatch } = useStore();
+  const { qualifications } = store.registrationState.userInformation;
   const isButtonDisabled = !(qualifications.filter((x) => x.value === true).length > 0);
 
 
@@ -36,7 +37,7 @@ const QualifiactionsScreen = () => {
       <View spacing={{ mx: 3 }}>
         <View row wrap justifyCenter>
           <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up,</Text>
-          <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{userName}</Text>
+          <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{name}</Text>
         </View>
         <View alignCenter spacing={{ mt: 4 }} wrap>
           <Text variant="regular" typography={{ align: 'center' }}>
@@ -71,17 +72,5 @@ const QualifiactionsScreen = () => {
     </View>
   );
 };
-
-
-QualifiactionsScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Qualifications" />,
-  headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
 
 export default QualifiactionsScreen;

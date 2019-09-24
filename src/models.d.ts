@@ -2,6 +2,7 @@ declare type User = {
   id: string;
   username: string;
   imageUrl: string;
+  type: 'patient' | 'caregiver';
 };
 
 declare type Message = {

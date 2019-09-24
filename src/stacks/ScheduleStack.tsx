@@ -9,11 +9,11 @@ import Header from '@src/components/Header';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 
 type ParamList = {
-  scheduleScreen: undefined;
+  ScheduleScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'scheduleTab'>,
+  TabNavigationProp<'ScheduleTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -26,11 +26,11 @@ const Stack = createStackNavigator<ParamList>();
 
 const ScheduleStack = () => (
   <Stack.Navigator
-    initialRouteName="scheduleScreen"
+    initialRouteName="ScheduleScreen"
     screenOptions={{ header: Header }}
     headerMode="screen"
   >
-    <Stack.Screen name="scheduleScreen" component={ScheduleScreen} />
+    <Stack.Screen name="ScheduleScreen" component={ScheduleScreen} />
   </Stack.Navigator>
 );
 
