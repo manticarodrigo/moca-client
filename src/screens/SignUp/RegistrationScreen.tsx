@@ -123,7 +123,7 @@ const RegistrationScreen = () => {
     }
   };
 
-  const handlePrivaryPress = () => navigation.navigate('');
+  const handlePrivacyPress = () => navigation.navigate('');
 
   const handleTermsOfServicePress = () => {
     setIsModalVisible(true);
@@ -134,21 +134,23 @@ const RegistrationScreen = () => {
   };
 
   const mediCare = (
-    <View row spacing={{ px: 3, py: 4 }} justifyBetween width="100%" variant="borderTop">
-      <View>
-        <Text variant="title" typography={{ size: 2 }}>
-          {'Are you currently\n'}
-          covered by Medicare?
-        </Text>
-      </View>
-      <View row>
-        <Button variant="tertiary" onPress={handleMedicareAgreement}>
-          Yes
-        </Button>
-        <View spacing={{ ml: 3 }}>
-          <Button variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'} onPress={handleMedicareDisagreement}>
-            No
+    <View width="100%" variant="borderTop">
+      <View row spacing={{ mx: 3, py: 4 }}>
+        <View flex={1}>
+          <Text variant="title" typography={{ size: 2 }}>
+            {'Are you currently\n'}
+            covered by Medicare?
+          </Text>
+        </View>
+        <View row flex={1} justifyEnd>
+          <Button variant="tertiary" onPress={handleMedicareAgreement}>
+            Yes
           </Button>
+          <View spacing={{ ml: 3 }}>
+            <Button variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'} onPress={handleMedicareDisagreement}>
+              No
+            </Button>
+          </View>
         </View>
       </View>
     </View>
@@ -173,20 +175,20 @@ const RegistrationScreen = () => {
       behavior="padding"
       keyboardVerticalOffset={Header.HEIGHT + 60}
     >
-      <View flex={1} scroll>
-        <View safeArea flex={1} spacing={{ mt: 4 }} alignCenter>
-          <View alignCenter>
+      <View scroll>
+        <View safeArea spacing={{ mt: 4 }} alignCenter>
+          <View alignCenter spacing={{ mx: 3 }}>
             <SecondaryLogoIcon />
             <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
             <Text variant="regular" spacing={{ mt: 2 }}>
-            We need some infromation to
+              We need some information to
             </Text>
             <Text variant="regular" spacing={{ mt: 1, mb: 2 }}>
-            get you started.
+              get you started.
             </Text>
           </View>
           {isPatient && mediCare}
-          <View spacing={{ mb: 3 }}>
+          <View spacing={{ mb: 3, mx: 3 }} alignCenter>
             <FormField
               placeholder="Name"
               value={formFields.name}
@@ -218,6 +220,7 @@ const RegistrationScreen = () => {
                 handleFormFields('email', text);
                 setIsEmailValid(true);
               }}
+              error={!isEmailValid}
               ref={emailField}
               onSubmitEditing={() => passwordField.current.focus()}
               icon={EmailIcon}
@@ -238,14 +241,18 @@ const RegistrationScreen = () => {
               icon={PasswordIcon}
             />
           </View>
-          <View spacing={{ mx: 3 }}>
-            <Button
-              variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-              onPress={handleButtonPress}
-              disabled={isButtonDisabled}
-            >
-            Continue
-            </Button>
+          <View row spacing={{ mx: 3 }}>
+            <View flex={1}>
+              <Button
+                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                onPress={handleButtonPress}
+                disabled={isButtonDisabled}
+              >
+              Continue
+              </Button>
+            </View>
+          </View>
+          <View spacing={{ mx: 3 }} alignCenter>
             <View alignCenter row spacing={{ mt: 2 }}>
               <Text
                 variant="regular"
@@ -269,7 +276,7 @@ const RegistrationScreen = () => {
               </Text>
               <Text
                 variant="link"
-                onPress={handlePrivaryPress}
+                onPress={handlePrivacyPress}
                 typography={{ size: 1, color: 'secondary' }}
                 spacing={{ ml: 1 }}
               >
@@ -277,9 +284,9 @@ const RegistrationScreen = () => {
               </Text>
             </View>
           </View>
-          {TermsOfServiceModal}
-          <View flex={1} />
         </View>
+        {TermsOfServiceModal}
+        <View flex={1} />
       </View>
     </KeyboardAvoidingView>
 
