@@ -28,6 +28,8 @@ import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 
+import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
+
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
   cardShadowEnabled: false,
@@ -97,6 +99,7 @@ const AppStack = createSwitchNavigator(
     TabStack: createBottomTabNavigator({
 
       HomeTab: createStackNavigator({
+        WalletScreen,
         DashboardScreen,
         FilterScreen,
       }, defaultNavConfig),
