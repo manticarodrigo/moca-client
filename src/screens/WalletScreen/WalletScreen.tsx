@@ -24,7 +24,7 @@ const WalletScreen = () => {
               flex={1}
               bgColor={index === active ? 'secondary' : 'primary'}
               spacing={{ p: 2 }}
-              // variant={index === 0 ? 'roundedBorderLeft' : 'roundedBorderRight'}
+              variant={index === 0 ? 'roundedBorderLeft' : 'roundedBorderRight'}
               onPress={() => handlePress(index)}
             >
               <Text variant={index === active ? 'titleSmallWhite' : 'titleSmallSecondary'}>{value}</Text>

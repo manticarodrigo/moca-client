@@ -48,6 +48,22 @@ const roundedBorder: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
+const roundedBorderLeft: ViewStyle = {
+  borderTopLeftRadius: 5,
+  borderBottomLeftRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderRight: ViewStyle = {
+  borderTopRightRadius: 5,
+  borderBottomRightRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
 const backdrop: ViewStyle = {
   ...Spacing.getStyles({ p: 3 }),
   ...Borders.secondary,
@@ -230,6 +246,8 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderLeft,
+  roundedBorderRight,
   patientViewPressed,
   patientView,
 };

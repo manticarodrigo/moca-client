@@ -51,19 +51,30 @@ const CreditCardsTab = () => {
   const [selectedId, setSelectedId] = useState('512***************80');
   const [modalVisibility, setModalVisiblilty] = useState(false);
 
+  const [accountName, setAccountName] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [accountPassword, setAccountPassword] = useState('');
+
   const handleCardPress = (key) => {
     setSelectedId(key);
   };
 
-
   const handleModalVisibility = () => setModalVisiblilty(!modalVisibility);
-
 
   const onDelete = (key) => {
     const newAccountsList = [...accountsList];
     const index = newAccountsList.findIndex((card) => card.cardNumber === key);
     newAccountsList[index].deleted = true;
     setAccountsList(newAccountsList);
+  };
+
+  const handleAccountNameChange = (text) => setAccountName(text);
+  const handleAccountNumberChange = (text) => setAccountNumber(text);
+  const handleAccountPasswordChange = (text) => setAccountPassword(text);
+
+  const onFormSubmit = () => {
+    // api call
+    handleModalVisibility();
   };
 
   return (
@@ -105,42 +116,56 @@ const CreditCardsTab = () => {
         handleArrowClick={handleModalVisibility}
         onBackdropPress={handleModalVisibility}
       >
-        <View
-          variant="borderBottom"
-          alignCenter
-          justifyCenter
-          height={50}
-          width="100%"
-        >
-          <Text variant="titleSmallDark">Add New Card</Text>
+        <View width="100%">
+          <View
+            variant="borderBottom"
+            alignCenter
+            justifyCenter
+            height={50}
+          >
+            <Text variant="titleSmallDark">Add New Card</Text>
+          </View>
+          <View
+            variant="borderBottom"
+            row
+            alignCenter
+            justifyCenter
+            height={60}
+            width="100%"
+          >
+            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
+              <MasterCardIcon />
+            </View>
+            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
+              <VisaIcon />
+            </View>
+            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
+              <AmexIcon />
+            </View>
+            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
+              <MaestroIcon />
+            </View>
+          </View>
+          <View>
+            <FormField
+              placeholder="Account Name"
+              value={accountName}
+              onChangeText={(text) => handleAccountNameChange(text)}
+            />
+            <FormField
+              placeholder="Account Number"
+              value={accountNumber}
+              onChangeText={handleAccountNumberChange}
+            />
+            <FormField
+              placeholder="Password"
+              value={accountPassword}
+              onChangeText={handleAccountPasswordChange}
+            />
+            <Button spacing={{ mt: 2 }} onPress={onFormSubmit}>Add Account</Button>
+          </View>
         </View>
-        <View
-          variant="borderBottom"
-          row
-          alignCenter
-          justifyCenter
-          height={60}
-          width="100%"
-        >
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <MasterCardIcon />
-          </View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <VisaIcon />
-          </View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <AmexIcon />
-          </View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <MaestroIcon />
-          </View>
-        </View>
-        <View spacing={{ p: 3 }}>
-          <FormField placeholder="Account Name" value="" onChangeText={} />
-          <FormField placeholder="Account Number" value="" />
-          <FormField placeholder="Password" value="" />
-          <Button spacing={{ m: 4 }} onPress={handleModalVisibility}>Add Account</Button>
-        </View>
+
       </ModalView>
     </View>
   );

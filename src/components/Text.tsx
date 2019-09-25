@@ -10,6 +10,7 @@ const variants = {
   error: { ...Typography.getStyles({ color: 'error', size: 4, weight: '700' }) },
   errorSmall: { ...Typography.getStyles({ color: 'error', size: 1, weight: '500' }) },
   titleSecondary: { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondary' }) },
+  titlePrimary: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
   titleSecondaryLight: { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondaryLight' }) },
   titleWhite: { ...Typography.getStyles({ size: 4, weight: '700', color: 'white' }) },
   titlePrimaryLarge: { ...Typography.getStyles({ size: 5, weight: '700', color: 'primary' }) },
