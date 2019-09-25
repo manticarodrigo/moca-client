@@ -56,12 +56,27 @@ const ScheduleScreen = () => {
   };
 
   const renderItem = (item) => (
-    <View variant={item.isToday ? 'borderCardRight' : 'cardRight'} column flex={1} spacing={{ mt: 2, mr: 3 }}>
+    <View
+      variant={item.isToday ? 'borderCardRight' : 'cardRight'}
+      column
+      flex={1}
+      spacing={{ mt: 2, mr: 3 }}
+    >
       <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
-        <Tag icon="report" type="borderLight" placeholder={`${item.completedDocuments}/${item.documents}`} />
+        <Tag
+          icon="report"
+          type="borderLight"
+          placeholder={`${item.completedDocuments}/${item.documents}`}
+          spacing={{ ml: 2 }}
+        />
+        <Tag
+          icon="appointment"
+          type="fill"
+          placeholder={`${item.completedAppointments}/${item.appointments}`}
+          spacing={{ ml: 2 }}
+        />
       </View>
       <View row flex={1} justifyEnd>
-        <Tag icon="appointment" type="fill" placeholder={`${item.completedAppointments}/${item.appointments}`} />
         <Tag icon="clock" type="border" placeholder={item.timeSpent} spacing={{ ml: 2 }} />
         <Tag icon="dollar" type="fill" placeholder={item.earnings} spacing={{ ml: 2 }} />
       </View>
@@ -77,12 +92,18 @@ const ScheduleScreen = () => {
           <View row>
             <Text variant={isToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>{day.day}</Text>
             <View column spacing={{ ml: 2 }}>
-              <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>{format(day.timestamp, 'MMM')}</Text>
-              <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>{day.year}</Text>
+              <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>
+                {format(day.timestamp, 'MMM')}
+              </Text>
+              <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>
+                {day.year}
+              </Text>
             </View>
           </View>
 
-          <Text variant={isToday ? 'regularPrimary' : 'regularSecondary'}>{format(day.timestamp, 'dddd')}</Text>
+          <Text variant={isToday ? 'regularPrimary' : 'regularSecondary'}>
+            {format(day.timestamp, 'dddd')}
+          </Text>
         </View>
       );
     }
@@ -93,10 +114,10 @@ const ScheduleScreen = () => {
   const renderEmptyDate = () => (
     <View variant="cardRight" column flex={1} spacing={{ mt: 2, mr: 3 }}>
       <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
-        <Tag icon="report" placeholder="0/0" />
+        <Tag icon="report" placeholder="0/0" spacing={{ ml: 1 }} />
+        <Tag icon="appointment" placeholder="0/0" spacing={{ ml: 1 }} />
       </View>
       <View row flex={1} justifyEnd>
-        <Tag icon="appointment" placeholder="0/0" />
         <Tag icon="clock" placeholder="0" spacing={{ ml: 1 }} />
         <Tag icon="dollar" placeholder="0" spacing={{ ml: 1 }} />
       </View>
