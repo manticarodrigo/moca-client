@@ -25,7 +25,6 @@ const InvalidZipCodeScreen = () => {
   const [email, setEmail] = useState('');
   const [, dispatch] = useStore();
   const [isEmailValid, setIsEmailValid] = useState(true);
-
   const paddingOffset = 80;
   const isButtonDisabled = email === '' || !isEmailValid;
 
@@ -36,7 +35,7 @@ const InvalidZipCodeScreen = () => {
     return regexpEmail.test(email);
   };
 
-  const submitEmail = () => true; // Api call
+  const submitEmail = () => false; // Api call
 
   const handleButtonPress = () => {
     if (validateEmailAddress()) {
@@ -59,49 +58,54 @@ const InvalidZipCodeScreen = () => {
       behavior="padding"
       keyboardVerticalOffset={Header.HEIGHT + paddingOffset}
     >
-      <View safeArea flex={1} spacing={{ mt: 4, mx: 3 }} alignCenter justifyEnd>
-        <View alignCenter>
-          <BigEnvelopeRedIcon />
-          <Text variant="error" spacing={{ mt: 4 }}>
-            SORRY !
-          </Text>
-          <Text variant="regular" spacing={{ mt: 3 }} typography={{ size: 1, align: 'center' }}>
-            {'Thanks for your interest in Moca!\n'}
-            {'We are currently not available in your area, but\n'}
-            {'we are working hard to change that. Please\n'}
-            {'provide your email with us to receive updates\n'}
-            {'and therapy tips! You will receive a $50\n'}
-            {'discount on your first therapy session when\n'}
-            {'we become available in your area.\n'}
-          </Text>
-        </View>
-        <View alignCenter width="100%" spacing={{ mt: 3 }}>
-          <FormField
-            placeholder="Email address"
-            value={email}
-            returnKeyType="done"
-            keyboardType="email-address"
-            icon={EmailIcon}
-            onChangeText={(text) => {
-              setEmail(text);
-              setIsEmailValid(true);
-            }}
-          />
-          {!isEmailValid
+      <View safeArea alignCenter justifyEnd>
+        <View spacing={{ mt: 4, mx: 3 }} alignCenter>
+          <View alignCenter>
+            <BigEnvelopeRedIcon />
+            <Text variant="error" spacing={{ mt: 4 }}>
+              SORRY !
+            </Text>
+            <Text variant="regular" spacing={{ mt: 3 }} typography={{ size: 1, align: 'center' }}>
+              Thanks for your interest in Moca
+              We are currently not available in your area, but
+              we are working hard to change that. Please
+              provide your email with us to receive updates
+              and therapy tips! You will receive a $50
+              discount on your first therapy session when
+              we become available in your area.
+            </Text>
+          </View>
+          <View alignCenter spacing={{ mt: 3 }}>
+            <FormField
+              error={!isEmailValid}
+              placeholder="Email address"
+              value={email}
+              returnKeyType="done"
+              keyboardType="email-address"
+              icon={EmailIcon}
+              onChangeText={(text) => {
+                setEmail(text);
+                setIsEmailValid(true);
+              }}
+            />
+            {!isEmailValid
             && (
               <Text variant="errorSmall" spacing={{ mt: 1 }}>
                 Please enter a valid Email address
               </Text>
             )}
-        </View>
-        <View width="100%" spacing={{ mt: 3 }}>
-          <Button
-            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-            onPress={handleButtonPress}
-            disabled={isButtonDisabled}
-          >
-            Let us know
-          </Button>
+          </View>
+          <View row spacing={{ mt: 3 }}>
+            <View flex={1}>
+              <Button
+                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                onPress={handleButtonPress}
+                disabled={isButtonDisabled}
+              >
+                Let us know
+              </Button>
+            </View>
+          </View>
         </View>
         <View flex={1} />
       </View>

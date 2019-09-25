@@ -4,9 +4,11 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 const TermsOfServiceScreen = () => (
-  <View safeArea flex={1} width="100%">
-    <View variant="borderBottom" width="100%" height={48} alignCenter justifyCenter>
-      <Text variant="titleSmall">Terms & Service</Text>
+  <View safeArea>
+    <View row>
+      <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
+        <Text variant="titleSmall">Terms & Service</Text>
+      </View>
     </View>
     <View flex={1} spacing={{ m: 3 }}>
       <Text variant="regular">
