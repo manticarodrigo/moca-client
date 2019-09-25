@@ -136,7 +136,7 @@ const CreditCardsTab = () => {
           </View>
         </View>
         <View spacing={{ p: 3 }}>
-          <FormField placeholder="Account Name" value="" onChange={} />
+          <FormField placeholder="Account Name" value="" onChangeText={} />
           <FormField placeholder="Account Number" value="" />
           <FormField placeholder="Password" value="" />
           <Button spacing={{ m: 4 }} onPress={handleModalVisibility}>Add Account</Button>
