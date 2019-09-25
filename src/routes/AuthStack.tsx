@@ -2,10 +2,6 @@ import React from 'react';
 import { RouteProp } from '@react-navigation/core';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 
-import Header from '@src/components/Header';
-
-import { Colors, Views } from '@src/styles';
-
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
 import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
@@ -13,6 +9,8 @@ import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
 import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
+
+import { secondaryScreenOptions } from './config';
 
 export type ParamList = {
   OnboardingScreen: undefined;
@@ -34,15 +32,7 @@ const Stack = createStackNavigator<ParamList>();
 const AuthStack = () => (
   <Stack.Navigator
     initialRouteName="OnboardingScreen"
-    screenOptions={{
-      header: Header,
-      headerStyle: {
-        ...Views.borderBottom,
-        backgroundColor: Colors.white,
-      },
-      headerTitleStyle: { color: Colors.primary },
-    }}
-    headerMode="screen"
+    screenOptions={secondaryScreenOptions}
   >
     <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} options={{ header: null }} />
     <Stack.Screen name="SelectionScreen" component={SelectionScreen} />

@@ -16,7 +16,7 @@ import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
 
 // can't export actual image right now
 
-import { ScreenProps } from '@src/stacks/AuthStack';
+import { ScreenProps } from '@src/routes/AuthStack';
 
 type Props = ScreenProps<'InvalidMedicareScreen'>;
 

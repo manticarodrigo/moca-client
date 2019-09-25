@@ -8,7 +8,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import { ScreenProps } from '@src/stacks/ScheduleStack';
+import { ScreenProps } from '@src/routes/ScheduleStack';
 
 type Props = ScreenProps<'ScheduleScreen'>;
 

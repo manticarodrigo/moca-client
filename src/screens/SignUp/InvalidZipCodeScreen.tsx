@@ -14,7 +14,7 @@ import FormField from '@src/components/FormField';
 import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
 import EmailIcon from '@src/assets/Icons/email.png';
 
-import { ScreenProps } from '@src/stacks/AuthStack';
+import { ScreenProps } from '@src/routes/AuthStack';
 
 type Props = ScreenProps<'InvalidZipCodeScreen'>;
 

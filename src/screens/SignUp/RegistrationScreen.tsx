@@ -16,7 +16,7 @@ import SecondaryLogoIcon from '@src/icons/SecondaryLogo';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
 
-import { ScreenProps } from '@src/stacks/AuthStack';
+import { ScreenProps } from '@src/routes/AuthStack';
 
 type Props = ScreenProps<'RegistrationScreen'>;
 

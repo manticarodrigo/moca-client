@@ -15,7 +15,7 @@ import {
   BothGendersIcon,
 } from '@src/icons';
 
-import { ScreenProps } from '@src/stacks/DashboardStack';
+import { ScreenProps } from '@src/routes/DashboardStack';
 
 type Props = ScreenProps<'FilterScreen'>;
 

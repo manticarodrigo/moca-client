@@ -10,15 +10,13 @@ import useImageViewer from '@src/hooks/useImageViewer';
 import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
-import { Colors, Views } from '@src/styles';
-
 import { InfoIcon } from '@src/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
 
-import { ScreenProps } from '@src/stacks/ConversationStack';
+import { ScreenProps } from '@src/routes/ConversationStack';
 
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
@@ -44,6 +42,13 @@ const ConversationScreen = ({ navigation, route }: Props) => {
   const sections = useDateSections<Message>(state.messages, (message) => message.createdAt);
   const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
   const { viewer, onPressImage } = useImageViewer(state.messages);
+
+  useEffect(() => {
+    const parentNav = navigation.dangerouslyGetParent();
+    parentNav.setOptions({ tabBarVisible: false });
+
+    return () => parentNav.setOptions({ tabBarVisible: true });
+  }, []);
 
   useEffect(() => {
     const onMount = async () => {
@@ -75,10 +80,6 @@ const ConversationScreen = ({ navigation, route }: Props) => {
 
       navigation.setOptions({
         headerTitle,
-        headerStyle: {
-          ...Views.borderBottom,
-          backgroundColor: Colors.white,
-        },
         headerRight,
       });
     }

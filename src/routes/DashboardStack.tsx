@@ -2,18 +2,20 @@ import React from 'react';
 import { RouteProp, CompositeNavigationProp } from '@react-navigation/core';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 
-import { TabNavigationProp } from '@src/NavigationProvider';
+import { TabNavigationProp } from '@src/routes/TabStack';
 
-import Header from '@src/components/Header';
+import DashboardScreen from '@src/screens/DashboardScreen';
+import FilterScreen from '@src/screens/FilterScreen';
 
-import ProfileScreen from '@src/screens/ProfileScreen';
+import { primaryScreenOptions } from './config';
 
 type ParamList = {
-  ProfileScreen: undefined;
+  DashboardScreen: undefined;
+  FilterScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'ProfileTab'>,
+  TabNavigationProp<'DashboardTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -24,14 +26,14 @@ export type ScreenProps<ScreenName extends keyof ParamList> = {
 
 const Stack = createStackNavigator<ParamList>();
 
-const ProfileStack = () => (
+const DashboardStack = () => (
   <Stack.Navigator
-    initialRouteName="ProfileScreen"
-    screenOptions={{ header: Header }}
-    headerMode="screen"
+    initialRouteName="DashboardScreen"
+    screenOptions={primaryScreenOptions}
   >
-    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+    <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+    <Stack.Screen name="FilterScreen" component={FilterScreen} />
   </Stack.Navigator>
 );
 
-export default ProfileStack;
+export default DashboardStack;

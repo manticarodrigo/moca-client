@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
 
-import { ScreenProps } from '@src/stacks/ConversationStack';
+import { ScreenProps } from '@src/routes/ConversationStack';
 
 import { getConversations } from '@src/store/actions/ConversationActions';
 

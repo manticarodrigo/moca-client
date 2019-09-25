@@ -10,7 +10,7 @@ import Button from '@src/components/Button';
 import AddLocationBigIcon from '@src/icons/AddLocationBigIcon';
 import FormField from '@src/components/FormField';
 
-import { ParamList } from '@src/stacks/AuthStack';
+import { ParamList } from '@src/routes/AuthStack';
 
 type ZipCodeScreenProps = {
   navigateToScreen: (name: keyof ParamList) => void;

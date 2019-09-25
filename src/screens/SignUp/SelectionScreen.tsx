@@ -17,7 +17,7 @@ import TherapistIcon from '@src/icons/TherapistIcon';
 import TherapistSelectIcon from '@src/icons/TherapistSelectIcon';
 import PatientSelectIcon from '@src/icons/PatientSelectIcon';
 
-import { ScreenProps } from '@src/stacks/AuthStack';
+import { ScreenProps } from '@src/routes/AuthStack';
 
 type Props = ScreenProps<'SelectionScreen'>;
 type ColorKey = keyof typeof Colors;

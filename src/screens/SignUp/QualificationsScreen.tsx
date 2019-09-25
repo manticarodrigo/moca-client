@@ -9,7 +9,7 @@ import useStore from '@src/hooks/useStore';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { ScreenProps } from '@src/stacks/AuthStack';
+import { ScreenProps } from '@src/routes/AuthStack';
 
 type Props = ScreenProps<'QualificationsScreen'>;
 

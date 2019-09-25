@@ -12,7 +12,7 @@ const useDateSections = <Item extends object>
       // get current section key
       const key = format(createdAt, 'MMDDYYYY');
       // get current section props
-      const { title, data } = map[key] || { title: null, data: null };
+      const { title = null, data = null } = map[key] || {};
 
       // assign new values to current section
       const section: SectionListData<Item> = {

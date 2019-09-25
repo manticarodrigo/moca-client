@@ -2,18 +2,18 @@ import React from 'react';
 import { RouteProp, CompositeNavigationProp } from '@react-navigation/core';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 
-import { TabNavigationProp } from '@src/NavigationProvider';
+import { TabNavigationProp } from '@src/routes/TabStack';
 
-import Header from '@src/components/Header';
+import ProfileScreen from '@src/screens/ProfileScreen';
 
-import ScheduleScreen from '@src/screens/ScheduleScreen';
+import { primaryScreenOptions } from './config';
 
 type ParamList = {
-  ScheduleScreen: undefined;
+  ProfileScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
-  TabNavigationProp<'ScheduleTab'>,
+  TabNavigationProp<'ProfileTab'>,
   StackNavigationProp<ParamList, ScreenName>
 >;
 
@@ -24,14 +24,13 @@ export type ScreenProps<ScreenName extends keyof ParamList> = {
 
 const Stack = createStackNavigator<ParamList>();
 
-const ScheduleStack = () => (
+const ProfileStack = () => (
   <Stack.Navigator
-    initialRouteName="ScheduleScreen"
-    screenOptions={{ header: Header }}
-    headerMode="screen"
+    initialRouteName="ProfileScreen"
+    screenOptions={primaryScreenOptions}
   >
-    <Stack.Screen name="ScheduleScreen" component={ScheduleScreen} />
+    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
   </Stack.Navigator>
 );
 
-export default ScheduleStack;
+export default ProfileStack;

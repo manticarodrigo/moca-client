@@ -12,7 +12,7 @@ import ShieldIcon from '@src/icons/ShieldIcon';
 import DeviceMapIcon from '@src/icons/DeviceMapIcon';
 import SettingsIcon from '@src/icons/SettingsIcon';
 
-import { ScreenProps } from '@src/stacks/AuthStack';
+import { ScreenProps } from '@src/routes/AuthStack';
 
 type Prop = ScreenProps<'OnboardingScreen'>;
 

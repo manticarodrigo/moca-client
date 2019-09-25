@@ -8,7 +8,7 @@ import { LogoIcon } from '@src/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import { ScreenProps } from '@src/stacks/DashboardStack';
+import { ScreenProps } from '@src/routes/DashboardStack';
 
 import DashboardSearch from './DashboardSearch';
 import DashboardAlert from './DashboardAlert';
@@ -21,16 +21,13 @@ const DashboardScreen = ({ navigation }: Props) => {
   navigation.setOptions({ header: null });
 
   const { store } = useStore();
-  const [isTherapist] = useState(false);
+  const [isTherapist] = useState(true);
   const [isActivated] = useState(false);
   const [isFiltering, setFiltering] = useState(false);
 
-  const _keyboardDidShow = () => { setFiltering(true); };
-  const _keyboardDidHide = () => { setFiltering(false); };
-
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    Keyboard.addListener('keyboardDidShow', () => setFiltering(true));
+    Keyboard.addListener('keyboardDidHide', () => setFiltering(false));
 
     return Keyboard.removeAllListeners;
   }, []);
