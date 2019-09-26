@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import useStore from '@src/hooks/useStore';
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
@@ -55,11 +54,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   };
 
   return (
+
     <View
-      spacing={{ mt: 5, px: 4 }}
+      spacing={{ mt: 5, mx: 3 }}
       alignCenter
-      flex={1}
-      width="100%"
     >
       <View alignCenter>
         <AddLocationBigIcon />
@@ -71,8 +69,9 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
           availability in your area
         </Text>
       </View>
-      <View alignCenter width="100%" spacing={{ mt: 4 }}>
+      <View alignCenter spacing={{ mt: 4, mb: 4 }}>
         <FormField
+          error={!isZipCodeValid}
           placeholder="Zip code"
           value={zipCode}
           returnKeyType="done"
@@ -90,14 +89,16 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
             </Text>
           )}
       </View>
-      <View width="100%" flex={1} spacing={{ mt: 4 }}>
-        <Button
-          disabled={isButtonDisabled}
-          variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-          onPress={handleButtonPress}
-        >
+      <View row>
+        <View flex={1}>
+          <Button
+            disabled={isButtonDisabled}
+            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+            onPress={handleButtonPress}
+          >
           Continue
-        </Button>
+          </Button>
+        </View>
       </View>
     </View>
   );

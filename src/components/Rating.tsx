@@ -1,53 +1,33 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { StyleSheet, View, Image } from 'react-native';
-import { Spacing, Colors } from '@src/styles';
+import {
+  StarOneIcon,
+  StarTwoIcon,
+  StarThreeIcon,
+  StarFourIcon,
+  StarFiveIcon,
+} from '@src/icons';
 
-import OneStar from '@src/assets/Icons/1Star.png';
-import TwoStar from '@src/assets/Icons/2Star.png';
-import ThreeStar from '@src/assets/Icons/3Star.png';
-import FourStar from '@src/assets/Icons/4Star.png';
-import FiveStar from '@src/assets/Icons/5Star.png';
-
-// import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
-
+import View from './View';
 import Text from './Text';
 
 type RatingProps = {
   rate: string;
 }
 
-
 const Rating = ({ rate }: RatingProps) => {
-  const styles = useMemo(() => StyleSheet.create({
-    view: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      margin: Spacing.spaceSize[1],
-      padding: Spacing.spaceSize[2],
-    },
-    text: {
-      margin: Spacing.spaceSize[1],
-      fontSize: 16,
-      fontWeight: '700',
-      color: Colors.secondary,
-    },
-  }), []);
-
   const stars = {
-    1: OneStar,
-    2: TwoStar,
-    3: ThreeStar,
-    4: FourStar,
-    5: FiveStar,
+    1: <StarOneIcon />,
+    2: <StarTwoIcon />,
+    3: <StarThreeIcon />,
+    4: <StarFourIcon />,
+    5: <StarFiveIcon />,
   };
 
   return (
-    <View style={styles.view}>
-      <Text style={styles.text}>{rate}</Text>
-      <Image source={stars[rate]} />
+    <View row alignCenter spacing={{ m: 1, p: 2 }}>
+      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{rate}</Text>
+      {stars[rate]}
     </View>
   );
 };

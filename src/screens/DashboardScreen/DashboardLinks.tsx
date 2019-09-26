@@ -14,7 +14,7 @@ type Props = { isActivated: boolean; isTherapist: boolean }
 const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
   const navigation = useNavigation();
 
-  const handleButtonPress = () => navigation.navigate('ConversationListScreen');
+  const handlePress = (screen: string) => () => navigation.navigate(screen);
 
   const profilePercent = 50;
   const profilePercentString = `${100 - profilePercent}% of your profile information is missing`;
@@ -33,21 +33,21 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
     <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor={bgColor}>
 
       {!isTherapist && (
-        <LinkCard type="diagnosis" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+        <LinkCard type="diagnosis" spacing={{ mb: 2 }} onPress={handlePress('ProfileScreen')}>
           <Text variant="regularSmallGrey">
             Neck Hernia
           </Text>
         </LinkCard>
       )}
 
-      <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+      <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={handlePress('WalletScreen')}>
         <Text variant="regularSmallGrey">
           **** **** **** **** **54
         </Text>
       </LinkCard>
 
       {isActivated && (
-      <LinkCard type="messages" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+      <LinkCard type="messages" spacing={{ mb: 2 }} onPress={handlePress('ConversationListScreen')}>
         <>
           <Text variant="regularSmallDark">
             John Doe 10:30am / Today
@@ -60,7 +60,7 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
       )}
 
       {isActivated && (
-      <LinkCard type="history" spacing={{ mb: 2 }} onPress={handleButtonPress}>
+      <LinkCard type="history" spacing={{ mb: 2 }} onPress={handlePress('ProfileScreen')}>
         <Text>
           <Text variant="regularSmallGrey">Last: </Text>
           <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
@@ -73,7 +73,7 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
           type="contact"
           status={profileReady ? 'success' : 'error'}
           spacing={{ mb: 2 }}
-          onPress={handleButtonPress}
+          onPress={handlePress('ProfileScreen')}
         >
           <View>
             <Text variant={profileReady ? 'regularSmallSuccess' : 'regularSmallError'}>

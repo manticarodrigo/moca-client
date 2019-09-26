@@ -37,7 +37,10 @@ const AddressScreen = ({ navigation, route }: Props) => {
 
 
   const handleButtonPress = () => {
-    dispatch(updateUserInfomation({ address: { ...formFields } }));
+    const newAddress = userInformation.address.map((x) => ({ ...x }));
+    newAddress.push({ ...formFields });
+    dispatch(updateUserInfomation({ address: newAddress }));
+    navigation.navigate('DashboardScreen');
   };
 
   const handleFormFields = (fieldName: string, text: string) => {
@@ -46,12 +49,13 @@ const AddressScreen = ({ navigation, route }: Props) => {
 
   return (
     <KeyboardAvoidingView
+      style={{ flex: 1 }}
       behavior="padding"
       keyboardVerticalOffset={60}
     >
       <View scroll flex={1}>
         <View safeArea spacing={{ pt: 3 }} alignCenter>
-          <View spacing={{ mx: 3 }}>
+          <View spacing={{ mx: 3 }} alignCenter>
             <View alignCenter>
               <View row>
                 <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
@@ -61,7 +65,7 @@ const AddressScreen = ({ navigation, route }: Props) => {
               What is your preferred address for treatment?
               </Text>
             </View>
-            <View spacing={{ mb: 3, mt: 4 }}>
+            <View spacing={{ mb: 3, mt: 4 }} alignCenter>
               <FormField
                 placeholder="Street"
                 value={formFields.street}
@@ -98,14 +102,16 @@ const AddressScreen = ({ navigation, route }: Props) => {
                 selectTextOnFocus={false}
               />
             </View>
-            <View spacing={{ mt: 3, mx: 3 }}>
-              <Button
-                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
-                disabled={isButtonDisabled}
-              >
+            <View row>
+              <View flex={1}>
+                <Button
+                  variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                  onPress={handleButtonPress}
+                  disabled={isButtonDisabled}
+                >
                 Continue
-              </Button>
+                </Button>
+              </View>
             </View>
             <View flex={1} />
           </View>

@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
+import { KeyboardAvoidingView } from 'react-native';
+
 import OpenIcon from '@src/icons/OpenIcon';
 
 import { Colors } from '@src/styles';
@@ -35,9 +37,15 @@ const ModalView = ({
       <View alignCenter spacing={{ mt: 2 }} onPress={handleArrowClick}>
         <OpenIcon />
       </View>
-      <View alignCenter flex={1} width="100%">
-        {children}
-      </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={90}
+      >
+        <View alignCenter width="100%" justifyEnd safeArea>
+          {children}
+        </View>
+      </KeyboardAvoidingView>
     </View>
   </Modal>
 );

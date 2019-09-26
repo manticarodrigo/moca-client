@@ -59,14 +59,16 @@ const QualifiactionsScreen = ({ navigation, route }: Props) => {
             </View>
           ))}
         </View>
-        <View spacing={{ mt: 3 }}>
-          <Button
-            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-            onPress={handleButtonPress}
-            disabled={isButtonDisabled}
-          >
-          Continue
-          </Button>
+        <View row>
+          <View flex={1}>
+            <Button
+              variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+              onPress={handleButtonPress}
+              disabled={isButtonDisabled}
+            >
+              Continue
+            </Button>
+          </View>
         </View>
       </View>
     </View>

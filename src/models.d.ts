@@ -21,12 +21,7 @@ declare type RegistrationInformation = {
   medicalId?: string;
   email?: string;
   password?: string;
-  address?: {
-    street: string;
-    apartmentNumber: string;
-    city: string;
-    state: string;
-  };
+  address?: Array<string, string, string, string>;
   qualifications?: Array<string, boolean>; // to be changed later [add all types of checkBox items]
 };
 

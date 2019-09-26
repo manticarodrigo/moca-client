@@ -5,11 +5,13 @@ import { createStackNavigator, StackNavigationProp } from '@react-navigation/sta
 import { TabNavigationProp } from '@src/routes/TabStack';
 
 import ProfileScreen from '@src/screens/ProfileScreen';
+import WalletScreen from '@src/screens/WalletScreen';
 
 import { primaryScreenOptions } from './config';
 
 type ParamList = {
   ProfileScreen: undefined;
+  WalletScreen: undefined;
 };
 
 type NavigationProp<ScreenName extends keyof ParamList> = CompositeNavigationProp<
@@ -29,7 +31,8 @@ const ProfileStack = () => (
     initialRouteName="ProfileScreen"
     screenOptions={primaryScreenOptions}
   >
-    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+    <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ header: null }} />
+    <Stack.Screen name="WalletScreen" component={WalletScreen} />
   </Stack.Navigator>
 );
 

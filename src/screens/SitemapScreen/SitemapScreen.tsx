@@ -22,6 +22,13 @@ const SitemapScreen = ({ navigation }) => {
   const screensNames = [
     'AuthStack',
     'TabStack',
+    // 'OnboardingScreen',
+    // 'FilterScreen',
+    // 'DashboardScreen',
+    // 'ScheduleScreen',
+    // 'ConversationListScreen',
+    // 'ConversationScreen',
+    // 'ProfileScreen',
   ];
 
   return (

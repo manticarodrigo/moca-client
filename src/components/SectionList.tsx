@@ -2,7 +2,6 @@ import React, { forwardRef, useMemo } from 'react';
 import {
   StyleSheet,
   SectionList as RNSectionList,
-  SectionListStatic as RNSectionListStatic,
   SectionListProps as RNSectionListProps,
 } from 'react-native';
 
