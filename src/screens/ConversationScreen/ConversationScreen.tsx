@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionListData, StatusBar } from 'react-native';
 import { NavigationComponent } from 'react-navigation';
 
@@ -8,16 +8,16 @@ import useDateSections from '@src/hooks/useDateSections';
 import useScrollToStart from '@src/hooks/useScrollToStart';
 import useImageViewer from '@src/hooks/useImageViewer';
 
+import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
-import { Views, Spacing, Colors } from '@src/styles';
+import { Views, Colors } from '@src/styles';
 
-import { BackButtonIcon } from '@src/components/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Image from '@src/components/Image';
 import SectionList from '@src/components/SectionList';
 
-import ConversationHeader from './ConversationHeader';
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
@@ -56,16 +56,15 @@ const ConversationScreen: NavigationComponent = () => {
     onMount();
   }, [navigation.state, state]);
 
-  const setParams = useCallback(navigation.setParams, []);
-
   useEffect(() => {
     if (state.participants.length) {
       const otherParticipant = state.participants.find(({ id }) => id !== currentUser.id);
       const { username, imageUrl } = otherParticipant;
+      const setNavParams = navigation.setParams;
 
-      setParams({ title: username, img: imageUrl });
+      setNavParams({ title: username, img: imageUrl });
     }
-  }, [state, currentUser.id, setParams]);
+  }, [state, currentUser.id, navigation.setParams]);
 
   const _createMessage = (attachmentURI?: string): Message => ({
     id: `${Math.floor(Math.random() * 1000000000)}`,
@@ -142,16 +141,19 @@ const ConversationScreen: NavigationComponent = () => {
   );
 };
 
-const ConversationBackButton = (
-  <View shadow={{ color: 'secondary', blur: 2, alpha: 0.16 }}>
-    <BackButtonIcon />
+type TitleParams = { img?: string; title?: string }
+
+const Title = ({ img = mockImg, title = '' }: TitleParams) => (
+  <View row flex={1} alignCenter>
+    <Image rounded size={48} uri={img} />
+    <Text variant="titleSmall" spacing={{ ml: 3 }}>
+      {title}
+    </Text>
   </View>
 );
 
 ConversationScreen.navigationOptions = ({ navigation: { state } }) => ({
-  headerTitle: <ConversationHeader params={state.params} />,
-  headerBackImage: ConversationBackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
+  headerTitle: <Title {...state.params} />,
   headerStyle: {
     ...Views.borderBottom,
     backgroundColor: Colors.white,

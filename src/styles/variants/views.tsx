@@ -1,9 +1,28 @@
-import { ViewStyle, StyleSheet, Dimensions, View } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
+
+const rounded: ViewStyle = {
+  ...Borders.primary,
+};
+
+const progressBar: ViewStyle = {
+  ...rounded,
+  ...Spacing.getStyles({ p: 1 }),
+  height: 16,
+  maxWidth: 200,
+  backgroundColor: Colors.lightGrey,
+};
+
+const progressBarIndicator: ViewStyle = {
+  ...rounded,
+  flexDirection: 'row',
+  height: '100%',
+  backgroundColor: Colors.grey,
+};
 
 const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
@@ -45,6 +64,22 @@ const roundedBorder: ViewStyle = {
   borderRadius: 5,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderLeft: ViewStyle = {
+  borderTopLeftRadius: 5,
+  borderBottomLeftRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderRight: ViewStyle = {
+  borderTopRightRadius: 5,
+  borderBottomRightRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
@@ -206,6 +241,9 @@ const bottomBounceFill: ViewStyle = {
 };
 
 export {
+  rounded,
+  progressBar,
+  progressBarIndicator,
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
@@ -230,6 +268,8 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderLeft,
+  roundedBorderRight,
   patientViewPressed,
   patientView,
 };

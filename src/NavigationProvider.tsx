@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 
 import {
@@ -10,13 +9,21 @@ import {
   createAppContainer,
 } from 'react-navigation';
 
-import { Views, Typography, Colors } from '@src/styles';
-import { HomeTabIcon, ScheduleTabIcon, MessagesTabIcon, ProfileTabIcon } from '@src/components/icons';
+import { Views, Typography, Colors, Spacing } from '@src/styles';
+
+import {
+  HomeTabIcon,
+  ScheduleTabIcon,
+  MessagesTabIcon,
+  ProfileTabIcon,
+} from '@src/components/icons';
+
+import BackButton from '@src/components/BackButton';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
-import FilterScreen from '@src/screens/DashboardScreen/FilterScreen';
+import FilterScreen from '@src/screens/FilterScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
@@ -28,14 +35,11 @@ import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 
+import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
+
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
   cardShadowEnabled: false,
-  transitionConfig: () => ({
-    containerStyle: {
-      backgroundColor: Colors.primary,
-    },
-  }),
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
     headerStyle: {
@@ -44,6 +48,8 @@ const defaultNavConfig: StackNavigatorConfig = {
       backgroundColor: Colors.primary,
     },
     headerTintColor: Colors.primary,
+    headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
+    headerBackImage: BackButton,
     headerBackTitle: null,
     headerTitleStyle: {
       ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
@@ -53,6 +59,7 @@ const defaultNavConfig: StackNavigatorConfig = {
 
 const defaultTabConfig: TabNavigatorConfig = {
   defaultNavigationOptions: ({ navigation }) => ({
+    // eslint-disable-next-line react/display-name
     tabBarIcon: ({ focused }) => {
       const { routeName } = navigation.state;
 
@@ -112,6 +119,7 @@ const AppStack = createSwitchNavigator(
 
       ProfileTab: createStackNavigator({
         ProfileScreen,
+        WalletScreen,
       }, defaultNavConfig),
 
     }, defaultTabConfig),

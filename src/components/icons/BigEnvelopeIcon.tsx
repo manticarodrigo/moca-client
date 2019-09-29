@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { G, Circle, Path, Rect } from 'react-native-svg';
 
-const BigEnvelopIcon = () => (
+const BigEnvelopeIcon = () => (
   <Svg width={114} height={114}>
     <G
       transform="translate(1 1)"
@@ -26,4 +26,4 @@ const BigEnvelopIcon = () => (
   </Svg>
 );
 
-export default BigEnvelopIcon;
+export default BigEnvelopeIcon;

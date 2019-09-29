@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useMemo } from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
 
@@ -10,12 +11,18 @@ const variants = {
   error: { ...Typography.getStyles({ color: 'error', size: 4, weight: '700' }) },
   errorSmall: { ...Typography.getStyles({ color: 'error', size: 1, weight: '500' }) },
   titleSecondary: { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondary' }) },
+  titlePrimary: { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) },
   titleSecondaryLight: { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondaryLight' }) },
   titleWhite: { ...Typography.getStyles({ size: 4, weight: '700', color: 'white' }) },
   titlePrimaryLarge: { ...Typography.getStyles({ size: 5, weight: '700', color: 'primary' }) },
   titleSecondaryLarge: { ...Typography.getStyles({ size: 5, weight: '700', color: 'secondary' }) },
   titleSmall: { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) },
   titleSmallWhite: { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) },
+  titleSmallSecondary: { ...Typography.getStyles({ size: 3, weight: '700', color: 'secondary' }) },
+  titleSmallDark: { ...Typography.getStyles({ size: 3, weight: '700', color: 'dark' }) },
+  titleSmallSecondaryLight: { ...Typography.getStyles({ size: 3, weight: '700', color: 'secondaryLight' }) },
+  titleSmallSuccess: { ...Typography.getStyles({ size: 3, weight: '700', color: 'success' }) },
+  titleSmallError: { ...Typography.getStyles({ size: 3, weight: '700', color: 'error' }) },
   boldPrimary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary' }) },
   boldSecondary: { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) },
   boldWhite: { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) },
@@ -25,7 +32,10 @@ const variants = {
   regularSmall: { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) },
   regularSmallGrey: { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) },
   regularSmallSuccess: { ...Typography.getStyles({ size: 1, weight: '500', color: 'success' }) },
+  regularSmallError: { ...Typography.getStyles({ size: 1, weight: '500', color: 'error' }) },
   regularSmallDark: { ...Typography.getStyles({ size: 1, weight: '500', color: 'dark' }) },
+  regularPrimary: { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) },
+  regularSecondary: { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) },
   light: { ...Typography.getStyles({ size: 2, weight: '300', color: 'semiGrey' }) },
   lightPrimarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'primary' }) },
   lightSecondarySmallest: { ...Typography.getStyles({ size: 0, weight: '300', color: 'secondary' }) },

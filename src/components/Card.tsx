@@ -1,60 +1,83 @@
 import React, { useMemo } from 'react';
 
-import { StyleSheet, Image } from 'react-native';
-import { Spacing } from '@src/styles';
+import {
+  AddCardIcon,
+  ArrowRightIcon,
+  CheckedIcon,
+  AmexIcon,
+  MaestroIcon,
+  MasterCardIcon,
+  VisaIcon,
+} from '@src/components/icons';
 
-import ArrowIcon from '@src/assets/Icons/arrowRightLight.png';
 import Text from './Text';
 import View from './View';
 
 type CardProps = {
-  placeholder: string;
-  icon?: any;
+  type: string;
+  title?: string;
   details?: string;
   arrow?: boolean;
   large?: boolean;
   children?: JSX.Element | JSX.Element[];
   onPress?: () => void;
+  selected?: boolean;
 }
 
 
-const Card = ({ placeholder, icon, arrow, details, large, children }: CardProps) => {
-  const styles = useMemo(() => StyleSheet.create({
-    icon: {
-      margin: Spacing.spaceSize[3],
-    },
-    arrow: {
-      display: arrow ? 'flex' : 'none',
-      position: 'absolute',
-      top: large ? 30 : 17,
-      right: 30,
-    },
-  }), [arrow, large]);
+const Card = ({ type, title, arrow, details, large, onPress, selected }: CardProps) => {
+  const { icon, text } = useMemo(() => {
+    switch (type) {
+      case 'amex':
+        return { icon: <AmexIcon />, text: title || null };
+      case 'maestro':
+        return { icon: <MaestroIcon />, text: title || null };
+      case 'masterCard':
+        return { icon: <MasterCardIcon />, text: title || null };
+      case 'visa':
+        return { icon: <VisaIcon />, text: title || null };
+      case 'addCard':
+        return { icon: <AddCardIcon />, text: 'Add New Stripe Account' };
+      default:
+        return null;
+    }
+  }, [type, title]);
 
   return (
     <View
       row
-      alignCenter
+      justifyBetween
       width="100%"
       height={large ? 80 : 50}
       bgColor="white"
       variant="borderBottom"
+      spacing={{ p: 3 }}
+      onPress={onPress}
     >
-      <Image style={styles.icon} source={icon} />
-      <View column spacing={{ mr: 5 }}>
-        <Text
-          typography={{
-            size: 2,
-            weight: '700',
-            color: 'dark',
-          }}
-        >
-          {placeholder}
-        </Text>
-        {details ? <Text typography={{ size: 1, weight: '300', color: 'grey' }}>{details}</Text> : null}
+      <View row>
+        <View spacing={{ m: 2 }}>
+          {icon}
+        </View>
+        <View column spacing={{ mr: 5, ml: 3 }} justifyCenter={!details}>
+          <Text variant="titleSmall">
+            {text}
+          </Text>
+          {details && <Text typography={{ size: 2, weight: '300', color: 'grey' }} spacing={{ mt: 1 }}>{details}</Text>}
+        </View>
       </View>
       {/* {children} I don't understand why eslint is giving me a type error */}
-      <Image style={styles.arrow} source={ArrowIcon} />
+      {arrow
+        && (
+          <View spacing={{ m: 3 }}>
+            <ArrowRightIcon />
+          </View>
+        )}
+      {selected
+        && (
+          <View spacing={{ m: 2 }}>
+            <CheckedIcon />
+          </View>
+        )}
     </View>
   );
 };
