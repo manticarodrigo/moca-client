@@ -27,6 +27,8 @@ import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
 import InvalidMediCareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
+import AddAddressScreen from '@src/screens/ProfileScreen/AddAddressScreen';
+
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -48,6 +50,7 @@ const defaultNavConfig: StackNavigatorConfig = {
     headerTitleStyle: {
       ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
     },
+    headerRight: null,
   }),
 };
 
@@ -112,6 +115,8 @@ const AppStack = createSwitchNavigator(
 
       ProfileTab: createStackNavigator({
         ProfileScreen,
+        AddAddressScreen,
+        AddressScreen,
       }, defaultNavConfig),
 
     }, defaultTabConfig),

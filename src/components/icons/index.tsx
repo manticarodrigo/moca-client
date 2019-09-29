@@ -46,3 +46,8 @@ export { default as TherapistSelectIcon } from './TherapistSelectIcon';
 export { default as PatientSelectIcon } from './PatientSelectIcon';
 export { default as BigEnvelopeRedIcon } from './BigEnvelopeRedIcon';
 export { default as AddLocationBigIcon } from './AddLocationBigIcon';
+export { default as BuildingIcon } from './BuildingIcon';
+export { default as PinGreyIcon } from './PinGreyIcon';
+export { default as AddIcon } from './AddIcon';
+export { default as BinIcon } from './BinIcon';
+export { default as BinTransparent } from './BinTransparent';

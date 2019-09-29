@@ -28,7 +28,7 @@ const QualificationsScreen = () => {
   };
 
   const handleButtonPress = () => {
-    navigation.navigate('AddressScreen');
+    navigation.navigate('AddressScreen', { title: 'Address' });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { Header } from 'react-navigation';
 
@@ -16,6 +16,8 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
+import BinIcon from '@src/components/icons/BinIcon';
+
 
 const AddressScreen = () => {
   const navigation = useNavigation();
@@ -28,6 +30,9 @@ const AddressScreen = () => {
     state: '',
   });
 
+  const isAdditionalLocation = navigation.getParam('isAdditionalLocation', false);
+  const isExistingAddress = navigation.getParam('isExistingAddress', false);
+
   const apartmentField = useRef(null);
   const cityField = useRef(null);
   const stateField = useRef(null);
@@ -36,14 +41,50 @@ const AddressScreen = () => {
   const isAnyFieldEmpty = Object.values(formFields).includes('');
   const isButtonDisabled = isAnyFieldEmpty;
 
+  let buttonText = 'Continue';
+  if (isExistingAddress) {
+    buttonText = 'Update';
+  }
+  if (isAdditionalLocation) {
+    buttonText = 'ADD';
+  }
+
+  useEffect(() => {
+    if (isExistingAddress) {
+      const userAddress = navigation.getParam('userAddress', {});
+      const { street, state, city, apartmentNumber } = userAddress;
+
+      setFormFields({
+        ...formFields,
+        street,
+        state,
+        city,
+        apartmentNumber,
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const handleButtonPress = () => {
     const newAddress = userInformation.address.map((x) => ({ ...x }));
     newAddress.push({ ...formFields });
     dispatch(updateUserInfomation({ address: newAddress }));
-    navigation.navigate('DashboardScreen');
-  };
+    // this is moved to the else statment
 
+    if (isExistingAddress) {
+      // compare results with user store
+      // api call with new fields
+    }
+    if (isAdditionalLocation) {
+      navigation.navigate('AddAddressScreen');
+      // api call
+    } else {
+      // navigation.navigate('DashboardScreen');
+      // api call submitting user infromation
+      navigation.navigate('AddAddressScreen');
+    }
+  };
 
   const handleFormFields = (fieldName: string, text: string) => {
     setFormFields({ ...formFields, [fieldName]: text });
@@ -58,15 +99,18 @@ const AddressScreen = () => {
       <View scroll>
         <View safeArea spacing={{ pt: 3 }} alignCenter>
           <View spacing={{ mx: 3 }} alignCenter>
-            <View alignCenter>
-              <View row>
-                <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
-                <Text variant="title" spacing={{ mt: 3 }}>{name}</Text>
-              </View>
-              <Text variant="regular" spacing={{ mt: 1 }}>
-              What is your preferred address for treatment?
-              </Text>
-            </View>
+            {!isAdditionalLocation
+              && (
+                <View alignCenter>
+                  <View row>
+                    <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
+                    <Text variant="title" spacing={{ mt: 3 }}>{name}</Text>
+                  </View>
+                  <Text variant="regular" spacing={{ mt: 1 }}>
+                    What is your preferred address for treatment?
+                  </Text>
+                </View>
+              )}
             <View spacing={{ mb: 3, mt: 4 }} alignCenter>
               <FormField
                 placeholder="Street"
@@ -111,7 +155,7 @@ const AddressScreen = () => {
                   onPress={handleButtonPress}
                   disabled={isButtonDisabled}
                 >
-                Continue
+                  {buttonText}
                 </Button>
               </View>
             </View>
@@ -124,8 +168,8 @@ const AddressScreen = () => {
 };
 
 
-AddressScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Your Address" />,
+AddressScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: <HeaderTitle title={navigation.state.params.title} />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
   headerStyle: {
@@ -133,6 +177,21 @@ AddressScreen.navigationOptions = () => ({
     backgroundColor: Colors.white,
     height: 80,
   },
+  headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
+  headerRight: navigation.state.params.isExistingAddress
+  && !navigation.state.params.isOnlyAddress
+    ? (
+      <View
+        justifyCenter
+        alignCenter
+        onPress={() => {
+          navigation.state.params.handleDelete();
+          navigation.goBack();
+        }}
+      >
+        <BinIcon />
+      </View>
+    ) : null,
 });
 
 export default AddressScreen;

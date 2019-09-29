@@ -100,6 +100,7 @@ const RegistrationScreen = () => {
       if (isPatient) {
         navigation.navigate('AddressScreen', {
           name: formFields.name,
+          title: 'Address',
         });
       } else {
         navigation.navigate('QualificationsScreen', {
