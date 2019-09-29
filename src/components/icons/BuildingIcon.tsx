@@ -1,8 +1,7 @@
 import React from 'react';
-import Svg, { G, Rect, Path } from 'react-native-svg';
-/* SVGR has dropped some elements not supported by react-native-svg: title, desc */
+import Svg, { G, Path, Rect } from 'react-native-svg';
 
-const SvgComponent = () => (
+const BuildingIcon = () => (
   <Svg width="17px" height="22px" viewBox="0 0 17 22">
     <G id="Guide" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
       <G id="Assets" transform="translate(-56.000000, -958.000000)">
@@ -25,4 +24,4 @@ const SvgComponent = () => (
   </Svg>
 );
 
-export default SvgComponent;
+export default BuildingIcon;

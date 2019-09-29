@@ -1,9 +1,28 @@
-import { ViewStyle, StyleSheet, Dimensions, View } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
+
+const rounded: ViewStyle = {
+  ...Borders.primary,
+};
+
+const progressBar: ViewStyle = {
+  ...rounded,
+  ...Spacing.getStyles({ p: 1 }),
+  height: 16,
+  maxWidth: 200,
+  backgroundColor: Colors.lightGrey,
+};
+
+const progressBarIndicator: ViewStyle = {
+  ...rounded,
+  flexDirection: 'row',
+  height: '100%',
+  backgroundColor: Colors.grey,
+};
 
 const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
@@ -45,6 +64,22 @@ const roundedBorder: ViewStyle = {
   borderRadius: 5,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderLeft: ViewStyle = {
+  borderTopLeftRadius: 5,
+  borderBottomLeftRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderRight: ViewStyle = {
+  borderTopRightRadius: 5,
+  borderBottomRightRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
@@ -143,6 +178,35 @@ const shadowCard: ViewStyle = {
   ...card,
 };
 
+const profileSection: ViewStyle = {
+  ...Spacing.getStyles({ mb: 3 }),
+  backgroundColor: Colors.white,
+};
+
+const profileCard: ViewStyle = {
+  ...Spacing.getStyles({ pr: 4 }),
+  width: '100%',
+  height: 80,
+  backgroundColor: Colors.white,
+  alignItems: 'center',
+  borderBottomWidth: 1,
+  borderColor: Colors.secondary,
+};
+
+const profileIconCard: ViewStyle = {
+  ...profileCard,
+  ...Spacing.getStyles({ px: 3 }),
+  width: 56,
+};
+
+const profileData: ViewStyle = {
+  ...Spacing.getStyles({ pt: 3, pr: 4, pb: 4 }),
+  width: '100%',
+  backgroundColor: Colors.white,
+  borderBottomWidth: 1,
+  borderColor: Colors.secondary,
+};
+
 const iconButton: ViewStyle = {
   ...Spacing.getStyles({ p: 2 }),
   ...Shadow.getStyles({ color: 'primary', blur: 2, alpha: 0.08 }),
@@ -156,6 +220,17 @@ const iconButton: ViewStyle = {
   aspectRatio: 1,
 };
 
+const genderButton: ViewStyle = {
+  ...Spacing.getStyles({ m: 1 }),
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 32,
+  width: 64,
+  borderRadius: 6,
+  borderWidth: 1,
+  borderColor: Colors.secondaryLighter,
+};
+
 const bottomBounceFill: ViewStyle = {
   position: 'absolute',
   right: 0,
@@ -166,6 +241,9 @@ const bottomBounceFill: ViewStyle = {
 };
 
 export {
+  rounded,
+  progressBar,
+  progressBarIndicator,
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
@@ -182,9 +260,16 @@ export {
   borderCardLeft,
   borderCard,
   shadowCard,
+  profileCard,
+  profileData,
+  profileSection,
+  profileIconCard,
   iconButton,
+  genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderLeft,
+  roundedBorderRight,
   patientViewPressed,
   patientView,
 };

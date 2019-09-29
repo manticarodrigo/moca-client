@@ -1,8 +1,8 @@
 import React from 'react';
 import Svg, { G, Path, Polyline } from 'react-native-svg';
 
-const SvgComponent = () => (
-  <Svg width="20px" height="20px" viewBox="0 0 20 20">
+const BinIcon = () => (
+  <Svg width="24px" height="24px" viewBox="0 0 24 24">
     <G
       id="Guide"
       stroke="none"
@@ -14,27 +14,24 @@ const SvgComponent = () => (
     >
       <G
         id="Assets"
-        transform="translate(-462.000000, -837.000000)"
-        stroke="#F53E3F"
+        transform="translate(-119.000000, -527.000000)"
+        stroke="#FFFFFF"
         strokeWidth={2}
       >
-        <G id="bin" transform="translate(463.000000, 838.000000)">
+        <G id="bin-1" transform="translate(120.000000, 528.000000)">
           <Path
-            d="M15.5454545,6.54545455 L15.5454545,16.3636364 C15.5454545,17.267375 14.8128296,18 13.9090909,18 L4.09090909,18 C3.18717041,18 2.45454545,17.267375 2.45454545,16.3636364 L2.45454545,6.54545455"
+            d="M19,8 L19,20 C19,21.1045695 18.1045695,22 17,22 L5,22 C3.8954305,22 3,21.1045695 3,20 L3,8"
             id="Path"
           />
-          <Path d="M0,3.27272727 L18,3.27272727" id="Path" />
-          <Path d="M9,9 L9,13.9090909" id="Path" />
-          <Path d="M5.72727273,9 L5.72727273,13.9090909" id="Path" />
-          <Path d="M12.2727273,9 L12.2727273,13.9090909" id="Path" />
-          <Polyline
-            id="Path"
-            points="5.72727273 3.27272727 5.72727273 0 12.2727273 0 12.2727273 3.27272727"
-          />
+          <Path d="M0,4 L22,4" id="Path" />
+          <Path d="M11,11 L11,17" id="Path" />
+          <Path d="M7,11 L7,17" id="Path" />
+          <Path d="M15,11 L15,17" id="Path" />
+          <Polyline id="Path" points="7 4 7 0 15 0 15 4" />
         </G>
       </G>
     </G>
   </Svg>
 );
 
-export default SvgComponent;
+export default BinIcon;

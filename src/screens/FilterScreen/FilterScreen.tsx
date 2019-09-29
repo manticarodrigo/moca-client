@@ -150,11 +150,8 @@ const FilterScreen = () => {
   );
 };
 
-FilterScreen.navigationOptions = () => ({
+FilterScreen.navigationOptions = {
   title: 'Filter',
-  headerStyle: {
-    backgroundColor: 'transparent',
-  },
-});
+};
 
 export default FilterScreen;
