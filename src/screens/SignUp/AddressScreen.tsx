@@ -16,7 +16,7 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
-import BinIcon from '@src/components/icons/BinIcon';
+import BinIconRed from '@src/components/icons/BinIconRed';
 
 
 const AddressScreen = () => {
@@ -189,7 +189,7 @@ AddressScreen.navigationOptions = ({ navigation }) => ({
           navigation.goBack();
         }}
       >
-        <BinIcon />
+        <BinIconRed />
       </View>
     ) : null,
 });

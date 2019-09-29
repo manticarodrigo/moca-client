@@ -148,7 +148,10 @@ const RegistrationScreen = () => {
             Yes
           </Button>
           <View spacing={{ ml: 3 }}>
-            <Button variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'} onPress={handleMedicareDisagreement}>
+            <Button
+              variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'}
+              onPress={handleMedicareDisagreement}
+            >
               No
             </Button>
           </View>

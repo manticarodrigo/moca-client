@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Swipeable from 'react-native-swipeable-row';
 
 import useNavigation from '@src/hooks/useNavigation';
@@ -13,7 +13,7 @@ import ArrowRightIcon from '@src/components/icons/ArrowRightIcon';
 import PinGreyIcon from '@src/components/icons/PinGreyIcon';
 import AddIcon from '@src/components/icons/AddIcon';
 import BuildingIcon from '@src/components/icons/BuildingIcon';
-import BinTransparent from '@src/components/icons/BinTransparent';
+import BinIcon from '@src/components/icons/BinIcon';
 
 import useStore from '@src/hooks/useStore';
 import { Views, Spacing, Colors } from '@src/styles';
@@ -86,11 +86,17 @@ const AddAddressScreen = () => {
                   onPress={() => handleDeletePress(index)}
                   spacing={{ pl: 4 }}
                 >
-                  <BinTransparent />
+                  <BinIcon />
                 </View>,
               ]}
             >
-              <View key={index} row width="100%" variant="borderBottom" onPress={() => handleAddressPress(item, index)}>
+              <View
+                key={index}
+                row
+                width="100%"
+                variant="borderBottom"
+                onPress={() => handleAddressPress(item, index)}
+              >
                 <View row flex={1} spacing={{ p: 3 }}>
                   <View>
                     <Text variant="titleSmall" typography={{ size: 2 }}>
@@ -129,7 +135,14 @@ const AddAddressScreen = () => {
             </Swipeable>
           ))}
         </View>
-        <View variant="borderBottom" spacing={{ mt: 3, pb: 3 }} row alignCenter justifyBetween onPress={handleButtonPress}>
+        <View
+          variant="borderBottom"
+          spacing={{ mt: 3, pb: 3 }}
+          row
+          alignCenter
+          justifyBetween
+          onPress={handleButtonPress}
+        >
           <View spacing={{ ml: 3 }}>
             <AddIcon />
           </View>

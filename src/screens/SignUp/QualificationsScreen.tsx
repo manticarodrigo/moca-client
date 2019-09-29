@@ -47,8 +47,16 @@ const QualificationsScreen = () => {
         </View>
         <View spacing={{ mt: 3 }} scroll>
           {qualifications.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-            <View key={index} row justifyBetween alignCenter variant="borderTop" spacing={{ mb: 3 }} width="100%">
+            <View
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              row
+              justifyBetween
+              alignCenter
+              variant="borderTop"
+              spacing={{ mb: 3 }}
+              width="100%"
+            >
               <Text variant="titleSmall" spacing={{ mb: 2, mt: 3 }}>{item.name}</Text>
               <CheckBox
                 isChecked={item.value}
