@@ -4,6 +4,7 @@ import * as Spacing from '../global/spacing';
 import * as Borders from '../global/borders';
 import * as Typography from '../global/typography';
 import * as Colors from '../global/colors';
+import * as Shadow from '../global/shadow';
 
 type ButtonVariant = {
   view: ViewStyle;
@@ -49,6 +50,20 @@ const secondary: ButtonVariant = {
     ...Borders.primary,
     borderWidth: 2,
     borderColor: Colors.secondaryLightest,
+    backgroundColor: 'transparent',
+    width: '90%',
+  },
+  text: { ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
+const secondaryShadow: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 2 }),
+    ...Borders.primary,
+    ...Shadow.getStyles({ color: 'secondary', blur: 2, alpha: 0.16 }),
+    borderWidth: 1,
+    borderColor: Colors.secondary,
     backgroundColor: 'transparent',
     width: '90%',
   },
@@ -107,6 +122,19 @@ const buttonPressed: ButtonVariant = {
   underlayColor: Colors.secondaryLightest,
 };
 
+const logout: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 3 }),
+    ...Borders.primary,
+    borderWidth: 1,
+    borderColor: Colors.error,
+    backgroundColor: 'transparent',
+    width: '90%',
+  },
+  text: { ...Typography.getStyles({ color: 'error', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
 export {
   primary,
   tertiary,
@@ -116,4 +144,6 @@ export {
   secondary,
   buttonPressed,
   primaryDisabled,
+  secondaryShadow,
+  logout,
 };

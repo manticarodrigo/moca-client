@@ -15,7 +15,7 @@ const Button = ({ variant = 'primary', spacing, icon, children, ...buttonProps }
     view: {
       ...Buttons[variant].view,
       ...Spacing.getStyles(spacing),
-      ...(icon && { flexDirection: 'row', alignItems: 'center' }),
+      ...(icon && { flexDirection: 'row', justifyContent: 'center' }),
     },
     text: {
       ...Buttons[variant].text,
