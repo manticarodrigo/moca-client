@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import CreditCardsTab from './CreditCardsTab';
-import BillingHistoryTab from './BillingHistoryTab';
+// import CreditCardsTab from './CreditCardsTab';
+// import BillingHistoryTab from './BillingHistoryTab';
 
-const WalletScreen = () => {
+const HistoryScreen = () => {
   const [active, setActive] = useState(0);
 
-  const tabs = ['Accounts', 'Billing History'];
+  const tabs = ['Appointments', 'Notes'];
 
   const handlePress = (index) => setActive(index);
 
@@ -32,14 +32,13 @@ const WalletScreen = () => {
           ))}
         </View>
       </View>
-      {active ? <BillingHistoryTab /> : <CreditCardsTab />}
+      {/* {active ? <BillingHistoryTab /> : <CreditCardsTab />} */}
     </View>
   );
 };
 
-WalletScreen.navigationOptions = () => ({
-  headerTitle: 'Wallet',
+HistoryScreen.navigationOptions = () => ({
+  headerTitle: 'History',
 });
 
-
-export default WalletScreen;
+export default HistoryScreen;

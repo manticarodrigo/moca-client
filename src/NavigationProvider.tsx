@@ -36,6 +36,7 @@ import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 
 import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
+import HistoryScreen from '@src/screens/History/HistoryScreen';
 
 const defaultNavConfig: StackNavigatorConfig = {
   headerLayoutPreset: 'center',
@@ -120,6 +121,7 @@ const AppStack = createSwitchNavigator(
       ProfileTab: createStackNavigator({
         ProfileScreen,
         WalletScreen,
+        HistoryScreen,
       }, defaultNavConfig),
 
     }, defaultTabConfig),
