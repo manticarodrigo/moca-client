@@ -10,17 +10,17 @@ import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 
-import { ScreenProps } from '@src/routes/ProfileStack';
+import { TabScreenProps } from '@src/NavigationProvider';
 
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
-type Props = ScreenProps<'ProfileScreen'>;
+type Props = TabScreenProps<'ProfileScreen'>;
 
 const ProfileScreen = ({ navigation }: Props) => {
   navigation.setOptions({ title: 'Profile' });
 
-  const onPressRight = () => navigation.navigate('home');
+  const onPressRight = () => navigation.navigate('ConversationTab', { screen: 'ConversationScreen' });
 
   const { store } = useStore();
   const isTherapist = store.registrationState.userInformation.type === 'Therapist';

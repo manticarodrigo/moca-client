@@ -9,9 +9,9 @@ import useStore from '@src/hooks/useStore';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { ScreenProps } from '@src/routes/AuthStack';
+import { AuthScreenProps } from '@src/NavigationProvider';
 
-type Props = ScreenProps<'QualificationsScreen'>;
+type Props = AuthScreenProps<'QualificationsScreen'>;
 
 const QualifiactionsScreen = ({ navigation, route }: Props) => {
   navigation.setOptions({ title: 'Qualifications' });

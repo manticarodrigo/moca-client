@@ -12,9 +12,9 @@ import ShieldIcon from '@src/icons/ShieldIcon';
 import DeviceMapIcon from '@src/icons/DeviceMapIcon';
 import SettingsIcon from '@src/icons/SettingsIcon';
 
-import { ScreenProps } from '@src/routes/AuthStack';
+import { AuthScreenProps } from '@src/NavigationProvider';
 
-type Prop = ScreenProps<'OnboardingScreen'>;
+type Prop = AuthScreenProps<'OnboardingScreen'>;
 
 const slides = [
   {

@@ -10,9 +10,9 @@ import useStore from '@src/hooks/useStore';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { ScreenProps } from '@src/routes/AuthStack';
+import { AuthScreenProps } from '@src/NavigationProvider';
 
-type Props = ScreenProps<'AddressScreen'>;
+type Props = AuthScreenProps<'AddressScreen'>;
 
 const AddressScreen = ({ navigation, route }: Props) => {
   navigation.setOptions({ title: 'Your Address' });
@@ -40,7 +40,7 @@ const AddressScreen = ({ navigation, route }: Props) => {
     const newAddress = userInformation.address.map((x) => ({ ...x }));
     newAddress.push({ ...formFields });
     dispatch(updateUserInfomation({ address: newAddress }));
-    navigation.navigate('DashboardScreen');
+    navigation.navigate('TabStack', { name: 'DashboardTab', params: { name: 'DashboardScreen' } });
   };
 
   const handleFormFields = (fieldName: string, text: string) => {

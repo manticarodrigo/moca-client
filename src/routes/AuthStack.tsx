@@ -1,6 +1,5 @@
 import React from 'react';
-import { RouteProp } from '@react-navigation/core';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
@@ -22,18 +21,10 @@ export type ParamList = {
   QualificationsScreen: { name: string };
 };
 
-export type ScreenProps<ScreenName extends keyof ParamList> = {
-  navigation: StackNavigationProp<ParamList, ScreenName>;
-  route: RouteProp<ParamList, ScreenName>;
-}
-
 const Stack = createStackNavigator<ParamList>();
 
 const AuthStack = () => (
-  <Stack.Navigator
-    initialRouteName="OnboardingScreen"
-    screenOptions={secondaryScreenOptions}
-  >
+  <Stack.Navigator screenOptions={secondaryScreenOptions}>
     <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} options={{ header: null }} />
     <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
     <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />

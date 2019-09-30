@@ -6,5 +6,8 @@
     {"language":  "typescriptreact",  "autoFix":  true  }
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "search.exclude": {
+    "**/node_modules":false
+  },
 }

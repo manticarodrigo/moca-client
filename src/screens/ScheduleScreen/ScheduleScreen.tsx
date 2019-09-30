@@ -8,9 +8,9 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import { ScreenProps } from '@src/routes/ScheduleStack';
+import { TabScreenProps } from '@src/NavigationProvider';
 
-type Props = ScreenProps<'ScheduleScreen'>;
+type Props = TabScreenProps<'ScheduleScreen'>;
 
 const ScheduleScreen = ({ navigation }: Props) => {
   navigation.setOptions({ title: 'Calendar' });

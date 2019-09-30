@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
 
-import { ScreenProps } from '@src/routes/ConversationStack';
-
 import { getConversations } from '@src/store/actions/ConversationActions';
 
 import useStore from '@src/hooks/useStore';
@@ -11,9 +9,11 @@ import useDateSections from '@src/hooks/useDateSections';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
+import { TabScreenProps } from '@src/NavigationProvider';
+
 import ConversationListCard from './ConversationListCard';
 
-type Props = ScreenProps<'ConversationListScreen'>;
+type Props = TabScreenProps<'ConversationListScreen'>;
 
 const ConversationSectionList: SectionList<Conversation> = SectionList;
 

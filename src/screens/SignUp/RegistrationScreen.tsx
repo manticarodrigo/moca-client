@@ -16,9 +16,9 @@ import SecondaryLogoIcon from '@src/icons/SecondaryLogo';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
 
-import { ScreenProps } from '@src/routes/AuthStack';
+import { AuthScreenProps } from '@src/NavigationProvider';
 
-type Props = ScreenProps<'RegistrationScreen'>;
+type Props = AuthScreenProps<'RegistrationScreen'>;
 
 const RegistrationScreen = ({ navigation }: Props) => {
   navigation.setOptions({ title: 'Sign Up' });

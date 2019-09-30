@@ -8,20 +8,20 @@ import { LogoIcon } from '@src/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import { ScreenProps } from '@src/routes/DashboardStack';
+import { TabScreenProps } from '@src/NavigationProvider';
 
 import DashboardSearch from './DashboardSearch';
 import DashboardAlert from './DashboardAlert';
 import DashboardAppointments from './DashboardAppointments';
 import DashboardLinks from './DashboardLinks';
 
-type Props = ScreenProps<'DashboardScreen'>;
+type Props = TabScreenProps<'DashboardScreen'>;
 
 const DashboardScreen = ({ navigation }: Props) => {
   navigation.setOptions({ header: null });
 
   const { store } = useStore();
-  const [isTherapist] = useState(true);
+  const [isTherapist] = useState(false);
   const [isActivated] = useState(false);
   const [isFiltering, setFiltering] = useState(false);
 

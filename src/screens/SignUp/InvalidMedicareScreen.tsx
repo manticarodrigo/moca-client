@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { StackActions, NavigationActions } from 'react-navigation';
 import { KeyboardAvoidingView } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
@@ -16,9 +15,10 @@ import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
 
 // can't export actual image right now
 
-import { ScreenProps } from '@src/routes/AuthStack';
+import { AuthScreenProps } from '@src/NavigationProvider';
+import { baseScreenOptions } from '@src/routes/config';
 
-type Props = ScreenProps<'InvalidMedicareScreen'>;
+type Props = AuthScreenProps<'InvalidMedicareScreen'>;
 
 const InvalidMediCareScreen = ({ navigation }: Props) => {
   navigation.setOptions({ title: 'Medicare' });
@@ -45,10 +45,7 @@ const InvalidMediCareScreen = ({ navigation }: Props) => {
       submitEmail();
       dispatch(resetUserInformation());
 
-      // navigation.dispatch(StackActions.reset({
-      //   index: 0,
-      //   actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
-      // }));
+      navigation.reset({ routes: [{ name: 'OnboardingScreen' }] });
     } else {
       setIsEmailValid(false);
     }
@@ -59,7 +56,7 @@ const InvalidMediCareScreen = ({ navigation }: Props) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={paddingOffset}
+      keyboardVerticalOffset={baseScreenOptions.headerStyle.height + paddingOffset}
     >
       <View safeArea alignCenter justifyEnd>
         <View spacing={{ mt: 4, mx: 3 }} alignCenter>

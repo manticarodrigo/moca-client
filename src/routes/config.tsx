@@ -4,7 +4,7 @@ import { Spacing, Colors, Views, Texts } from '@src/styles';
 
 import BackButton from '@src/components/BackButton';
 
-const baseScreenOptions: StackNavigationOptions = {
+const baseScreenOptions = {
   headerBackTitleVisible: false,
   headerBackImage: BackButton,
   headerStyle: {
@@ -22,7 +22,6 @@ const primaryScreenOptions: StackNavigationOptions = {
   ...baseScreenOptions,
   headerStyle: {
     ...baseScreenOptions.headerStyle as {},
-    borderBottomWidth: 0,
     backgroundColor: Colors.primary,
   },
   headerTitleStyle: {
@@ -42,4 +41,4 @@ const secondaryScreenOptions: StackNavigationOptions = {
   },
 };
 
-export { primaryScreenOptions, secondaryScreenOptions };
+export { baseScreenOptions, primaryScreenOptions, secondaryScreenOptions };

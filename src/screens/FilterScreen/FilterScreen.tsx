@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -15,9 +15,9 @@ import {
   BothGendersIcon,
 } from '@src/icons';
 
-import { ScreenProps } from '@src/routes/DashboardStack';
+import { TabScreenProps } from '@src/NavigationProvider';
 
-type Props = ScreenProps<'FilterScreen'>;
+type Props = TabScreenProps<'FilterScreen'>;
 
 const FilterScreen = ({ navigation }: Props) => {
   navigation.setOptions({ title: 'Filters' });
@@ -116,7 +116,6 @@ const FilterScreen = ({ navigation }: Props) => {
       newFocus.splice(index, 1);
     } else {
       newFocus.push(key);
-      // newFocus.push(key);
     }
     setfocus(newFocus);
   };

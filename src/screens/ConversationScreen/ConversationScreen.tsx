@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, SectionList } from 'react-native';
-
+import { useFocusEffect } from '@react-navigation/core';
 
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
@@ -16,13 +16,13 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
 
-import { ScreenProps } from '@src/routes/ConversationStack';
+import { TabScreenProps } from '@src/NavigationProvider';
 
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
 
-type Props = ScreenProps<'ConversationScreen'>;
+type Props = TabScreenProps<'ConversationScreen'>;
 
 type State = Conversation & {
   text: string;
@@ -43,19 +43,21 @@ const ConversationScreen = ({ navigation, route }: Props) => {
   const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
   const { viewer, onPressImage } = useImageViewer(state.messages);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const parentNav = navigation.dangerouslyGetParent();
     parentNav.setOptions({ tabBarVisible: false });
 
     return () => parentNav.setOptions({ tabBarVisible: true });
-  }, []);
+  });
 
   useEffect(() => {
     const onMount = async () => {
-      const { conversation } = route.params;
+      if (route.params) {
+        const { conversation } = route.params;
 
-      if (conversation && !state.id) {
-        setState((prev) => ({ ...prev, ...conversation }));
+        if (conversation && !state.id) {
+          setState((prev) => ({ ...prev, ...conversation }));
+        }
       }
     };
 

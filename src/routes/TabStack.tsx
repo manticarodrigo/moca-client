@@ -1,10 +1,10 @@
 import React from 'react';
-import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import DashboardStack from '@src/routes/DashboardStack';
-import ScheduleStack from '@src/routes/ScheduleStack';
-import ConversationStack from '@src/routes/ConversationStack';
-import ProfileStack from '@src/routes/ProfileStack';
+import DashboardStack, { ParamList as DashboardParamList } from '@src/routes/DashboardStack';
+import ScheduleStack, { ParamList as ScheduleParamList } from '@src/routes/ScheduleStack';
+import ConversationStack, { ParamList as ConversationParamList } from '@src/routes/ConversationStack';
+import ProfileStack, { ParamList as ProfileParamList } from '@src/routes/ProfileStack';
 
 import { Views } from '@src/styles';
 
@@ -15,7 +15,13 @@ import {
   ProfileTabIcon,
 } from '@src/icons';
 
-type TabParamList = {
+export type StackParamList =
+  & DashboardParamList
+  & ScheduleParamList
+  & ConversationParamList
+  & ProfileParamList
+
+export type TabParamList = {
   DashboardTab: undefined;
   ScheduleTab: undefined;
   ConversationTab: undefined;
@@ -23,10 +29,6 @@ type TabParamList = {
 }
 
 const Tab = createBottomTabNavigator<TabParamList>();
-
-export type TabNavigationProp<
-  TabName extends keyof TabParamList
-> = BottomTabNavigationProp<TabParamList, TabName>;
 
 const TabStack = () => (
   <Tab.Navigator
