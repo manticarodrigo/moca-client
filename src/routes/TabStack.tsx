@@ -1,6 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import useStore from '@src/hooks/useStore';
+
 import DashboardStack, { ParamList as DashboardParamList } from '@src/routes/DashboardStack';
 import ScheduleStack, { ParamList as ScheduleParamList } from '@src/routes/ScheduleStack';
 import ConversationStack, { ParamList as ConversationParamList } from '@src/routes/ConversationStack';
@@ -30,34 +32,40 @@ export type TabParamList = {
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
-const TabStack = () => (
-  <Tab.Navigator
-    tabBarOptions={{
-      showLabel: false,
-      style: { ...Views.borderTop, height: 72 },
-    }}
-  >
-    <Tab.Screen
-      name="DashboardTab"
-      component={DashboardStack}
-      options={{ tabBarIcon: DashboardTabIcon }}
-    />
-    <Tab.Screen
-      name="ScheduleTab"
-      component={ScheduleStack}
-      options={{ tabBarIcon: ScheduleTabIcon }}
-    />
-    <Tab.Screen
-      name="ConversationTab"
-      component={ConversationStack}
-      options={{ tabBarIcon: ConversationTabIcon }}
-    />
-    <Tab.Screen
-      name="ProfileTab"
-      component={ProfileStack}
-      options={{ tabBarIcon: ProfileTabIcon }}
-    />
-  </Tab.Navigator>
-);
+const TabStack = () => {
+  const { store } = useStore();
+
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        showLabel: false,
+        style: { ...Views.borderTop, height: 72 },
+      }}
+    >
+      <Tab.Screen
+        name="DashboardTab"
+        component={DashboardStack}
+        options={{ tabBarIcon: DashboardTabIcon }}
+      />
+      {store.user.type === 'caregiver' && (
+        <Tab.Screen
+          name="ScheduleTab"
+          component={ScheduleStack}
+          options={{ tabBarIcon: ScheduleTabIcon }}
+        />
+      )}
+      <Tab.Screen
+        name="ConversationTab"
+        component={ConversationStack}
+        options={{ tabBarIcon: ConversationTabIcon }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileStack}
+        options={{ tabBarIcon: ProfileTabIcon }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 export default TabStack;
