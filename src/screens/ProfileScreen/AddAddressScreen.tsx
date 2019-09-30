@@ -32,9 +32,8 @@ const AddAddressScreen = () => {
   // to be changed to user store
   const swipableItems = useRef(Array.from({ length: address.length }, (a) => React.createRef()));
 
-
-  const handleButtonPress = () => {
-    navigation.navigate('AddressScreen', { isAdditionalLocation: true, title: 'Home' });
+  const handleNewAddressPress = () => {
+    navigation.navigate('AddressScreen', { isAdditionalAddress: true, title: 'Home' });
   };
 
 
@@ -64,6 +63,7 @@ const AddAddressScreen = () => {
       title,
       userAddress,
       isOnlyAddress,
+      index,
       handleDelete: () => handleDeletePress(index) });
   };
 
@@ -84,7 +84,7 @@ const AddAddressScreen = () => {
                   bgColor="error"
                   justifyCenter
                   onPress={() => handleDeletePress(index)}
-                  spacing={{ pl: 4 }}
+                  spacing={{ pl: 5 }}
                 >
                   <BinIcon />
                 </View>,
@@ -141,7 +141,7 @@ const AddAddressScreen = () => {
           row
           alignCenter
           justifyBetween
-          onPress={handleButtonPress}
+          onPress={handleNewAddressPress}
         >
           <View spacing={{ ml: 3 }}>
             <AddIcon />

@@ -21,23 +21,25 @@ import BinIconRed from '@src/components/icons/BinIconRed';
 
 const AddressScreen = () => {
   const navigation = useNavigation();
-  const [{ registrationState: { userInformation: { name } } }] = useStore();
-
   const [formFields, setFormFields] = useState({
     street: '',
     apartmentNumber: '',
     city: '',
     state: '',
+    zipCode: '',
   });
 
-  const isAdditionalLocation = navigation.getParam('isAdditionalLocation', false);
+  const isAdditionalAddress = navigation.getParam('isAdditionalAddress', false);
   const isExistingAddress = navigation.getParam('isExistingAddress', false);
+  const isRegistering = !(isExistingAddress || isAdditionalAddress);
 
   const apartmentField = useRef(null);
   const cityField = useRef(null);
   const stateField = useRef(null);
+  const zipCodeField = useRef(null);
 
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
+
+  const [{ registrationState: { userInformation: { name, address } } }, dispatch] = useStore();
   const isAnyFieldEmpty = Object.values(formFields).includes('');
   const isButtonDisabled = isAnyFieldEmpty;
 
@@ -45,14 +47,23 @@ const AddressScreen = () => {
   if (isExistingAddress) {
     buttonText = 'Update';
   }
-  if (isAdditionalLocation) {
+  if (isAdditionalAddress) {
     buttonText = 'ADD';
   }
 
+
   useEffect(() => {
+    if (isRegistering) {
+      const { zipCode } = address[0];
+      setFormFields({
+        ...formFields,
+        zipCode,
+      });
+    }
+
     if (isExistingAddress) {
       const userAddress = navigation.getParam('userAddress', {});
-      const { street, state, city, apartmentNumber } = userAddress;
+      const { street, state, city, apartmentNumber, zipCode } = userAddress;
 
       setFormFields({
         ...formFields,
@@ -60,6 +71,7 @@ const AddressScreen = () => {
         state,
         city,
         apartmentNumber,
+        zipCode,
       });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,22 +79,31 @@ const AddressScreen = () => {
 
 
   const handleButtonPress = () => {
-    const newAddress = userInformation.address.map((x) => ({ ...x }));
-    newAddress.push({ ...formFields });
-    dispatch(updateUserInfomation({ address: newAddress }));
-    // this is moved to the else statment
+    if (isRegistering) {
+      const newAddress = [];
+      newAddress.push({ ...formFields });
+      dispatch(updateUserInfomation({ address: newAddress }));
+      navigation.navigate('AddAddressScreen');
+      // dashboard
+    }
+
+    const newAddress = address.map((x) => ({ ...x }));
 
     if (isExistingAddress) {
-      // compare results with user store
-      // api call with new fields
+      const index = navigation.getParam('index');
+      newAddress[index] = { ...formFields };
+      dispatch(updateUserInfomation({ address: newAddress }));
+      navigation.goBack();
+      // api put request
+      // store used as an example
     }
-    if (isAdditionalLocation) {
-      navigation.navigate('AddAddressScreen');
-      // api call
-    } else {
-      // navigation.navigate('DashboardScreen');
-      // api call submitting user infromation
-      navigation.navigate('AddAddressScreen');
+
+    if (isAdditionalAddress) {
+      newAddress.push({ ...formFields });
+      dispatch(updateUserInfomation({ address: newAddress }));
+      navigation.goBack();
+      // api post request
+      // store used as an example
     }
   };
 
@@ -99,7 +120,7 @@ const AddressScreen = () => {
       <View scroll>
         <View safeArea spacing={{ pt: 3 }} alignCenter>
           <View spacing={{ mx: 3 }} alignCenter>
-            {!isAdditionalLocation
+            {isRegistering
               && (
                 <View alignCenter>
                   <View row>
@@ -139,13 +160,16 @@ const AddressScreen = () => {
                 placeholder="State"
                 value={formFields.state}
                 ref={stateField}
+                onSubmitEditing={() => zipCodeField.current.focus()}
                 onChangeText={(text) => handleFormFields('state', text)}
               />
               <FormField
                 placeholder="ZIP Code"
-                value={userInformation.zipCode}
-                editable={false}
+                value={formFields.zipCode}
+                editable={!isRegistering}
+                ref={zipCodeField}
                 selectTextOnFocus={false}
+                onChangeText={(text) => handleFormFields('zipCode', text)}
               />
             </View>
             <View row>
@@ -182,7 +206,6 @@ AddressScreen.navigationOptions = ({ navigation }) => ({
   && !navigation.state.params.isOnlyAddress
     ? (
       <View
-        justifyCenter
         alignCenter
         onPress={() => {
           navigation.state.params.handleDelete();

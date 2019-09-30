@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
 
-import { RadiusLocationIcon, CreditCardIcon, DiagnosisIcon, ArrowRightIcon } from '@src/components/icons';
+import {
+  RadiusLocationIcon,
+  CreditCardIcon,
+  DiagnosisIcon,
+  ArrowRightIcon,
+} from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
 

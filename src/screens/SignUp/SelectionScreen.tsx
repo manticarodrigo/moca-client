@@ -104,7 +104,12 @@ const SelectionScreen = () => {
               spacing={{ mr: 1 }}
             >
               {isPatient ? <PatientSelectIcon /> : <PatientIcon />}
-              <Text variant="title" typography={{ color: patientTextColor, weight: '900' }}>PATIENT</Text>
+              <Text
+                variant="title"
+                typography={{ color: patientTextColor, weight: '900' }}
+              >
+                PATIENT
+              </Text>
             </View>
             <View
               variant={isTherapist ? 'therapistViewtPressed' : 'therapistView'}
@@ -115,7 +120,12 @@ const SelectionScreen = () => {
               bgColor={therapistBgColor}
             >
               {isTherapist ? <TherapistSelectIcon /> : <TherapistIcon />}
-              <Text variant="title" typography={{ color: therapistTextColor, weight: '900' }}>THERAPIST</Text>
+              <Text
+                variant="title"
+                typography={{ color: therapistTextColor, weight: '900' }}
+              >
+                THERAPIST
+              </Text>
             </View>
           </View>
           <View row flex={1}>

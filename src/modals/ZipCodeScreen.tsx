@@ -26,10 +26,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   };
 
   useEffect(() => {
-    if (Object.prototype.hasOwnProperty.call(userInformation, 'zipCode')) {
-      setZipCode(userInformation.zipCode);
+    if (userInformation.address.length !== 0) {
+      setZipCode(userInformation.address[0]);
 
-      if (!validateZipCode(userInformation.zipCode)) {
+      if (!validateZipCode(userInformation.address[0])) {
         setIsZipCodeValid(false);
       }
     }
@@ -39,7 +39,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   const getLocation = () => true; // api call to check zipCode availability
 
   const handleButtonPress = () => {
-    dispatch(updateUserInfomation({ zipCode }));
+    const newAddress = [];
+    newAddress.push({ zipCode });
+
+    dispatch(updateUserInfomation({ address: newAddress }));
 
     if (validateZipCode(zipCode)) {
       setIsZipCodeValid(true);
