@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableHighlight } from 'react-native';
 
-import TickEmptyIcon from '@src/icons/TickEmptyIcon';
-import TickFilledIcon from '@src/icons/TickFilledIcon';
+import TickEmptyIcon from '@src/components/icons/TickEmptyIcon';
+import TickFilledIcon from '@src/components/icons/TickFilledIcon';
 
 
 import View from './View';

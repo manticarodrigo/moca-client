@@ -2,7 +2,7 @@ import React from 'react';
 
 import useStore from '@src/hooks/useStore';
 
-import { LogoIcon, StarsIcon, RightIcon } from '@src/icons';
+import { LogoIcon, StarsIcon, RightIcon } from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
 

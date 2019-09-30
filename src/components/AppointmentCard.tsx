@@ -7,7 +7,7 @@ import {
   InfoIcon,
   MessagesIcon,
   PinIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import View from './View';
 import Image from './Image';

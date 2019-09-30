@@ -3,7 +3,7 @@ import { Keyboard } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
 
-import { LogoIcon } from '@src/icons';
+import { LogoIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

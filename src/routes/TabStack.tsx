@@ -13,7 +13,7 @@ import {
   ScheduleTabIcon,
   ConversationTabIcon,
   ProfileTabIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 export type StackParamList =
   & DashboardParamList

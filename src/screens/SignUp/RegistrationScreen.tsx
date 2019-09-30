@@ -12,7 +12,7 @@ import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 import ModalView from '@src/components/ModalView';
 
-import SecondaryLogoIcon from '@src/icons/SecondaryLogo';
+import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
 

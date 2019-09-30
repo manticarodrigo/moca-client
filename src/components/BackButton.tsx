@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BackButtonIcon } from '@src/icons';
+import { BackButtonIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 

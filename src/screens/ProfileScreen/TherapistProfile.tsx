@@ -13,7 +13,7 @@ import {
   RateIcon,
   StatusIcon,
   SwitchIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import Text from '@src/components/Text';
 import View from '@src/components/View';

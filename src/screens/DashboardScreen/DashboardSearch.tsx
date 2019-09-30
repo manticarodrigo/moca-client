@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/core';
 
-import { FilterIcon, SearchIcon } from '@src/icons';
+import { FilterIcon, SearchIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

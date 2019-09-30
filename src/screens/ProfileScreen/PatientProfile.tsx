@@ -7,7 +7,7 @@ import {
   DiagnosisIcon,
   ArrowRightIcon,
   GenderIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
 

@@ -10,7 +10,7 @@ import useImageViewer from '@src/hooks/useImageViewer';
 import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
-import { InfoIcon } from '@src/icons';
+import { InfoIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

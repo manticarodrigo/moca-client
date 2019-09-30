@@ -8,7 +8,7 @@ import {
   MaestroIcon,
   MasterCardIcon,
   VisaIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import Text from './Text';
 import View from './View';

@@ -8,7 +8,7 @@ import {
   MasterCardIcon,
   VisaIcon,
   BinIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import Text from '@src/components/Text';
 import View from '@src/components/View';

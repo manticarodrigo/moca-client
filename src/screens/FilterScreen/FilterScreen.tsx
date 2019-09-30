@@ -13,7 +13,7 @@ import {
   MaleIcon,
   FemaleIcon,
   BothGendersIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import { TabScreenProps } from '@src/NavigationProvider';
 

@@ -6,7 +6,7 @@ import {
   StarThreeIcon,
   StarFourIcon,
   StarFiveIcon,
-} from '@src/icons';
+} from '@src/components/icons';
 
 import View from './View';
 import Text from './Text';

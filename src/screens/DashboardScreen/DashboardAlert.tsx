@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BigEnvelopeIcon } from '@src/icons';
+import { BigEnvelopeIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

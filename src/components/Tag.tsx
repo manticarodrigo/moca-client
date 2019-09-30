@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Spacing, SpacingProp, Colors } from '@src/styles';
 
-import { ReportIcon, AppointmentIcon, ClockSimpleIcon, DollarIcon } from '@src/icons';
+import { ReportIcon, AppointmentIcon, ClockSimpleIcon, DollarIcon } from '@src/components/icons';
 
 import Text from './Text';
 import View from './View';

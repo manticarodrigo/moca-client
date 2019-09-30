@@ -11,7 +11,7 @@ import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 
 import EmailIcon from '@src/assets/Icons/email.png';
-import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
+import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
 
 // can't export actual image right now
 

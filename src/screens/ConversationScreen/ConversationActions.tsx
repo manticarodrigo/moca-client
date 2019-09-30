@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DiagnosisIcon, PinIcon } from '@src/icons';
+import { DiagnosisIcon, PinIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';

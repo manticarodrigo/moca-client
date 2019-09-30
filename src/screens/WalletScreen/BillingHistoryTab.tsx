@@ -2,7 +2,7 @@ import React from 'react';
 
 import { format } from 'date-fns';
 
-import { ClockIcon, CreditCardIcon } from '@src/icons';
+import { ClockIcon, CreditCardIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';

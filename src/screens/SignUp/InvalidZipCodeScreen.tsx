@@ -10,7 +10,7 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 
-import BigEnvelopeRedIcon from '@src/icons/BigEnvelopeRedIcon';
+import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
 import EmailIcon from '@src/assets/Icons/email.png';
 
 import { AuthScreenProps } from '@src/NavigationProvider';
