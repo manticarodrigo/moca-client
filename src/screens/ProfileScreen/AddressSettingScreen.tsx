@@ -20,7 +20,7 @@ import { Views, Spacing, Colors } from '@src/styles';
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 
-const AddAddressScreen = () => {
+const AddressSettingScreen = () => {
   type Address = {
     street: string;
     city: string;
@@ -39,7 +39,7 @@ const AddAddressScreen = () => {
 
   const handleDeletePress = (index: number) => {
     // api call
-    swipableItems.current[index].recenter();
+    [...Array(address.length)].map((el, i) => swipableItems.current[i].recenter());
     const newAddress = address.map((x) => ({ ...x }));
     newAddress.splice(index, 1);
     dispatch(updateUserInfomation({ address: newAddress }));
@@ -128,9 +128,6 @@ const AddAddressScreen = () => {
                     </View>
                   </View>
                 </View>
-                <View justifyCenter flex={1}>
-                  <Text variant="title">Image goes here</Text>
-                </View>
               </View>
             </Swipeable>
           ))}
@@ -158,7 +155,7 @@ const AddAddressScreen = () => {
   );
 };
 
-AddAddressScreen.navigationOptions = () => ({
+AddressSettingScreen.navigationOptions = () => ({
   headerTitle: <HeaderTitle title="Address" />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
@@ -168,4 +165,4 @@ AddAddressScreen.navigationOptions = () => ({
     height: 80,
   },
 });
-export default AddAddressScreen;
+export default AddressSettingScreen;

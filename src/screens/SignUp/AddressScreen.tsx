@@ -83,7 +83,7 @@ const AddressScreen = () => {
       const newAddress = [];
       newAddress.push({ ...formFields });
       dispatch(updateUserInfomation({ address: newAddress }));
-      navigation.navigate('AddAddressScreen');
+      navigation.navigate('AddressSettingScreen');
       // dashboard
     }
 
