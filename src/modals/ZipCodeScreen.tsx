@@ -14,7 +14,7 @@ type ZipCodeScreenProps = {
 };
 
 const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
+  const [{ registrationState: { userInformation: { addresses } } }, dispatch] = useStore();
   const [zipCode, setZipCode] = useState('');
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
 
@@ -26,10 +26,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   };
 
   useEffect(() => {
-    if (userInformation.address.length !== 0) {
-      setZipCode(userInformation.address[0]);
+    if (addresses.length !== 0) {
+      setZipCode(addresses[0].zipCode);
 
-      if (!validateZipCode(userInformation.address[0])) {
+      if (!validateZipCode(addresses[0].zipCode)) {
         setIsZipCodeValid(false);
       }
     }
@@ -39,10 +39,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   const getLocation = () => true; // api call to check zipCode availability
 
   const handleButtonPress = () => {
-    const newAddress = [];
-    newAddress.push({ zipCode });
+    const newAddresses = [];
+    newAddresses.push({ zipCode });
 
-    dispatch(updateUserInfomation({ address: newAddress }));
+    dispatch(updateUserInfomation({ addresses: newAddresses }));
 
     if (validateZipCode(zipCode)) {
       setIsZipCodeValid(true);

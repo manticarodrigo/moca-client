@@ -19,7 +19,7 @@ declare type RegistrationInformation = {
   medicalId?: string;
   email?: string;
   password?: string;
-  address?: Array<string, string, string, string, string>;
+  addresses?: Array<string, string, string, string, string>;
   qualifications?: Array<string, boolean>; // to be changed later [add all types of checkBox items]
 };
 

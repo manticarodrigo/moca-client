@@ -28,6 +28,8 @@ const AddressScreen = () => {
     state: '',
     zipCode: '',
   });
+  const [isZipCodeValid, setIsZipCodeValid] = useState(true);
+
 
   const isAdditionalAddress = navigation.getParam('isAdditionalAddress', false);
   const isExistingAddress = navigation.getParam('isExistingAddress', false);
@@ -39,9 +41,9 @@ const AddressScreen = () => {
   const zipCodeField = useRef(null);
 
 
-  const [{ registrationState: { userInformation: { name, address } } }, dispatch] = useStore();
+  const [{ registrationState: { userInformation: { name, addresses } } }, dispatch] = useStore();
   const isAnyFieldEmpty = Object.values(formFields).includes('');
-  const isButtonDisabled = isAnyFieldEmpty;
+  const isButtonDisabled = isAnyFieldEmpty || !isZipCodeValid;
 
   let buttonText = 'Continue';
   if (isExistingAddress) {
@@ -51,10 +53,14 @@ const AddressScreen = () => {
     buttonText = 'ADD';
   }
 
+  const validateZipCode = (userInput: string) => {
+    const regexpNumber = new RegExp('^[+ 0-9]{5}$');
+    return regexpNumber.test(userInput);
+  };
 
   useEffect(() => {
     if (isRegistering) {
-      const { zipCode } = address[0];
+      const { zipCode } = addresses[0];
       setFormFields({
         ...formFields,
         zipCode,
@@ -80,30 +86,37 @@ const AddressScreen = () => {
 
   const handleButtonPress = () => {
     if (isRegistering) {
-      const newAddress = [];
-      newAddress.push({ ...formFields });
-      dispatch(updateUserInfomation({ address: newAddress }));
-      navigation.navigate('AddressSettingScreen');
-      // dashboard
+      const newAddresses = [];
+      newAddresses.push({ ...formFields });
+      dispatch(updateUserInfomation({ addresses: newAddresses }));
+      navigation.navigate('DashboardScreen');
     }
 
-    const newAddress = address.map((x) => ({ ...x }));
+    const newAddresses = addresses.map((x) => ({ ...x }));
 
     if (isExistingAddress) {
-      const index = navigation.getParam('index');
-      newAddress[index] = { ...formFields };
-      dispatch(updateUserInfomation({ address: newAddress }));
-      navigation.goBack();
+      if (validateZipCode(formFields.zipCode)) {
+        const index = navigation.getParam('index');
+        newAddresses[index] = { ...formFields };
+        dispatch(updateUserInfomation({ addresses: newAddresses }));
+        navigation.goBack();
       // api put request
       // store used as an example
+      } else {
+        setIsZipCodeValid(false);
+      }
     }
 
     if (isAdditionalAddress) {
-      newAddress.push({ ...formFields });
-      dispatch(updateUserInfomation({ address: newAddress }));
-      navigation.goBack();
+      if (validateZipCode(formFields.zipCode)) {
+        newAddresses.push({ ...formFields });
+        dispatch(updateUserInfomation({ addresses: newAddresses }));
+        navigation.goBack();
       // api post request
       // store used as an example
+      } else {
+        setIsZipCodeValid(false);
+      }
     }
   };
 
@@ -164,13 +177,23 @@ const AddressScreen = () => {
                 onChangeText={(text) => handleFormFields('state', text)}
               />
               <FormField
-                placeholder="ZIP Code"
+                error={!isZipCodeValid}
+                placeholder="Zip Code"
                 value={formFields.zipCode}
                 editable={!isRegistering}
                 ref={zipCodeField}
+                maxLength={5}
                 selectTextOnFocus={false}
-                onChangeText={(text) => handleFormFields('zipCode', text)}
+                onChangeText={(text) => {
+                  handleFormFields('zipCode', text);
+                  setIsZipCodeValid(true);
+                }}
               />
+              {!isZipCodeValid && (
+                <Text spacing={{ mt: 1 }} variant="errorSmall">
+                  Please enter a valid Zip code
+                </Text>
+              )}
             </View>
             <View row>
               <View flex={1}>

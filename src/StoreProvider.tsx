@@ -67,7 +67,7 @@ const initialState: StoreState = {
         { name: 'Ankle/Foot', value: 0 },
         { name: 'Other', value: 0 },
       ],
-      address: [],
+      addresses: [],
     },
   },
 };

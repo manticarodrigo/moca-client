@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Swipeable from 'react-native-swipeable-row';
 
 import useNavigation from '@src/hooks/useNavigation';
@@ -27,56 +27,76 @@ const AddressSettingScreen = () => {
     state: string;
     apartmentNumber: string;
   }
+
   const navigation = useNavigation();
-  const [{ registrationState: { userInformation: { address } } }, dispatch] = useStore();
-  // to be changed to user store
-  const swipableItems = useRef(Array.from({ length: address.length }, (a) => React.createRef()));
+  const [isOpen, setIsOpen] = useState(false);
+  const [{ registrationState: { userInformation: { addresses } } }, dispatch] = useStore();
+  const swipableItems = useRef(Array.from({ length: addresses.length }, (a) => React.createRef()));
+
+  const recenterItems = () => {
+    [...Array(addresses.length)].map((el, i) => swipableItems.current[i].recenter());
+  };
 
   const handleNewAddressPress = () => {
-    navigation.navigate('AddressScreen', { isAdditionalAddress: true, title: 'Home' });
+    recenterItems();
+    navigation.navigate('AddressScreen',
+      { isAdditionalAddress: true, title: `Home ${addresses.length}` });
   };
 
 
   const handleDeletePress = (index: number) => {
     // api call
-    [...Array(address.length)].map((el, i) => swipableItems.current[i].recenter());
-    const newAddress = address.map((x) => ({ ...x }));
-    newAddress.splice(index, 1);
-    dispatch(updateUserInfomation({ address: newAddress }));
+    recenterItems();
+    const newAddresses = addresses.map((x) => ({ ...x }));
+    newAddresses.splice(index, 1);
+    dispatch(updateUserInfomation({ addresses: newAddresses }));
   };
 
   const handleAddressPress = (userAddress: Address, index: number) => {
-    let title = '';
-    let isOnlyAddress = false;
+    if (!isOpen) {
+      let title = '';
+      let isOnlyAddress = false;
 
-    if (index === 0) {
-      title = 'Home';
+      if (index === 0) {
+        title = 'Home';
+      } else {
+        title = `Home ${index}`;
+      }
+
+      if (addresses.length === 1) {
+        isOnlyAddress = true;
+      }
+
+      navigation.navigate('AddressScreen', {
+        isExistingAddress: true,
+        title,
+        userAddress,
+        isOnlyAddress,
+        index,
+        handleDelete: () => handleDeletePress(index) });
     } else {
-      title = `Home ${index}`;
+      recenterItems();
+      setIsOpen(false);
     }
-
-    if (address.length === 1) {
-      isOnlyAddress = true;
-    }
-    navigation.navigate('AddressScreen', {
-      isExistingAddress: true,
-      title,
-      userAddress,
-      isOnlyAddress,
-      index,
-      handleDelete: () => handleDeletePress(index) });
   };
 
   return (
     <View safeArea flex={1}>
       <View scroll>
-        <View spacing={{ mt: 4 }}>
-          { address.map((item: Address, index) => (
+        <View>
+          { addresses.map((userAddress: Address, index) => (
             <Swipeable
               key={index}
               onRef={(ref) => { swipableItems.current[index] = ref; }}
               rightButtonWidth={100}
-              disable={address.length === 1}
+              disable={addresses.length === 1}
+              onRightButtonsCloseRelease={() => {
+                setIsOpen(false);
+              }}
+              onRightButtonsOpenRelease={() => {
+                setIsOpen(true);
+                recenterItems();
+              }}
               rightButtons={[
                 <View
                   key={index}
@@ -95,7 +115,7 @@ const AddressSettingScreen = () => {
                 row
                 width="100%"
                 variant="borderBottom"
-                onPress={() => handleAddressPress(item, index)}
+                onPress={() => handleAddressPress(userAddress, index)}
               >
                 <View row flex={1} spacing={{ p: 3 }}>
                   <View>
@@ -108,11 +128,11 @@ const AddressSettingScreen = () => {
                       </View>
                       <View wrap spacing={{ pr: 2 }}>
                         <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                          {item.street}
+                          {userAddress.street}
                           {', '}
-                          {item.city}
+                          {userAddress.city}
                           {', '}
-                          {item.state}
+                          {userAddress.state}
                         </Text>
                       </View>
                     </View>
@@ -122,7 +142,7 @@ const AddressSettingScreen = () => {
                       </View>
                       <View wrap>
                         <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                          {item.apartmentNumber}
+                          {userAddress.apartmentNumber}
                         </Text>
                       </View>
                     </View>
