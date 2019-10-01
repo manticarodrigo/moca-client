@@ -4,7 +4,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 // import CreditCardsTab from './CreditCardsTab';
-// import BillingHistoryTab from './BillingHistoryTab';
+import NotesTab from './NotesTab';
 
 const HistoryScreen = () => {
   const [active, setActive] = useState(0);
@@ -32,7 +32,7 @@ const HistoryScreen = () => {
           ))}
         </View>
       </View>
-      {/* {active ? <BillingHistoryTab /> : <CreditCardsTab />} */}
+      {active ? <NotesTab /> : null}
     </View>
   );
 };
