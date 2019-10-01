@@ -87,6 +87,7 @@ const AddressSettingScreen = () => {
           { addresses.map((userAddress: Address, index) => (
             <Swipeable
               key={index}
+              rightButtonsActivationDistance={20}
               onRef={(ref) => { swipableItems.current[index] = ref; }}
               rightButtonWidth={100}
               disable={addresses.length === 1}
@@ -95,6 +96,8 @@ const AddressSettingScreen = () => {
               }}
               onRightButtonsOpenRelease={() => {
                 setIsOpen(true);
+              }}
+              onRightButtonsActivate={() => {
                 recenterItems();
               }}
               rightButtons={[
