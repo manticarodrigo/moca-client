@@ -1,8 +1,8 @@
 import React, { useReducer, createContext, Reducer, ReactNode, Dispatch } from 'react';
 
-import { UserAction } from '@src/store/actions/UserActions';
+import { UserAction } from '@src/store/actions/UserAction';
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
-import { ConversationAction } from '@src/store/actions/ConversationActions';
+import { ConversationAction } from '@src/store/actions/ConversationAction';
 
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import userReducer, { UserState } from '@src/store/reducers/UserReducer';

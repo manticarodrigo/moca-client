@@ -1,4 +1,4 @@
-import { UserAction } from '@src/store/actions/UserActions';
+import { UserAction } from '@src/store/actions/UserAction';
 
 export type UserState = User;
 

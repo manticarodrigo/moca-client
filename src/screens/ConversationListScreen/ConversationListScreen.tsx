@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
 
-import { getConversations } from '@src/store/actions/ConversationActions';
+import { getConversations } from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';

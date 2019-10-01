@@ -1,4 +1,4 @@
-import { ConversationAction } from '@src/store/actions/ConversationActions';
+import { ConversationAction } from '@src/store/actions/ConversationAction';
 
 export type ConversationState = Conversation[];
 
