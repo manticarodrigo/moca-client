@@ -1,22 +1,14 @@
 import React from 'react';
-import {
-  createSwitchNavigator,
-  createAppContainer,
-} from 'react-navigation';
 
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import { Views, Typography, Colors, Spacing } from '@src/styles';
 
-import {
-  DashboardTabIcon,
-  ScheduleTabIcon,
-  ConversationTabIcon,
-  ProfileTabIcon,
-} from '@src/components/icons';
-
 import BackButton from '@src/components/BackButton';
+import TabBar from '@src/components/TabBar';
+import TabBarIcon from '@src/components/TabBarIcon';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
@@ -32,7 +24,6 @@ import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
 import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
-
 import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
 
 const defaultNavConfig = {
@@ -51,36 +42,6 @@ const defaultNavConfig = {
     headerBackTitle: null,
     headerTitleStyle: {
       ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
-    },
-  }),
-};
-
-const defaultTabConfig = {
-  defaultNavigationOptions: ({ navigation }) => ({
-    // eslint-disable-next-line react/display-name
-    tabBarIcon: ({ focused }) => {
-      const { routeName } = navigation.state;
-
-      switch (routeName) {
-        case 'DashboardTab':
-          return <DashboardTabIcon focused={focused} />;
-        case 'ScheduleTab':
-          return <ScheduleTabIcon focused={focused} />;
-        case 'ConversationTab':
-          return <ConversationTabIcon focused={focused} />;
-        case 'ProfileTab':
-          return <ProfileTabIcon focused={focused} />;
-        default:
-          return null;
-      }
-    },
-    tabBarVisible: navigation.state.index < 1,
-    tabBarOptions: {
-      showLabel: false,
-      style: {
-        ...Views.borderTop,
-        height: 72,
-      },
     },
   }),
 };
@@ -120,7 +81,19 @@ const AppStack = createSwitchNavigator(
         WalletScreen,
       }, defaultNavConfig),
 
-    }, defaultTabConfig),
+    }, {
+      defaultNavigationOptions: ({ navigation }) => ({
+        tabBarIcon: function Icon(props) {
+          return <TabBarIcon {...props} navigation={navigation} />;
+        },
+        tabBarVisible: navigation.state.index < 1,
+      }),
+      tabBarComponent: TabBar,
+      tabBarOptions: {
+        showLabel: false,
+        style: { ...Views.borderTop, height: 72 },
+      },
+    }),
 
   },
   { initialRouteName: 'SitemapScreen' },

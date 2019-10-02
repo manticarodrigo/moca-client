@@ -18,7 +18,7 @@ const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
   const onPressRight = () => navigation.navigate('ConversationScreen');
 
   const { store } = useStore();
-  const isTherapist = store.registrationState.userInformation.type === 'Therapist';
+  const isTherapist = store.user.type === 'caregiver';
 
   const name = 'John Connor Jacob'; // TODO: get the real value
 
