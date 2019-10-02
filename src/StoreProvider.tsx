@@ -49,7 +49,7 @@ const initialState: StoreState = {
     id: '0',
     username: 'John Doe',
     imageUrl: mockImg,
-    type: 'patient',
+    type: 'caregiver',
   },
   conversations: [],
   registrationState: {

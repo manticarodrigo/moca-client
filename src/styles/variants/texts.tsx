@@ -25,6 +25,7 @@ export const boldWhite = { ...Typography.getStyles({ size: 2, weight: '700', col
 export const boldDark = { ...Typography.getStyles({ size: 2, weight: '700', color: 'dark' }) };
 export const boldGrey = { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) };
 export const boldSmallGrey = { ...Typography.getStyles({ size: 1, weight: '700', color: 'grey' }) };
+export const boldWhiteSmallest = { ...Typography.getStyles({ size: 0, weight: '700', color: 'white' }) };
 export const regularSmall = { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) };
 export const regularSmallGrey = { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) };
 export const regularSmallSuccess = { ...Typography.getStyles({ size: 1, weight: '500', color: 'success' }) };

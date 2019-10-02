@@ -6,6 +6,7 @@ import useNavigation from '@src/hooks/useNavigation';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import LinkCard from '@src/components/LinkCard';
+import NotificationBadge from '@src/components/NotificationBadge';
 
 import * as Colors from '@src/styles/global/colors';
 
@@ -47,25 +48,30 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
       </LinkCard>
 
       {isActivated && (
-      <LinkCard type="messages" spacing={{ mb: 2 }} onPress={handlePress('ConversationListScreen')}>
-        <>
-          <Text variant="regularSmallDark">
-            John Doe 10:30am / Today
-          </Text>
-          <Text variant="light" numberOfLines={1}>
-            You can park beside my house...
-          </Text>
-        </>
-      </LinkCard>
+        <LinkCard
+          type="messages"
+          spacing={{ mb: 2 }}
+          onPress={handlePress('ConversationListScreen')}
+        >
+          <>
+            <Text variant="regularSmallDark">
+              John Doe 10:30am / Today
+            </Text>
+            <Text variant="light" numberOfLines={1}>
+              You can park beside my house...
+            </Text>
+            <NotificationBadge large />
+          </>
+        </LinkCard>
       )}
 
       {isActivated && (
-      <LinkCard type="history" spacing={{ mb: 2 }} onPress={handlePress('ProfileScreen')}>
-        <Text>
-          <Text variant="regularSmallGrey">Last: </Text>
-          <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
-        </Text>
-      </LinkCard>
+        <LinkCard type="history" spacing={{ mb: 2 }} onPress={handlePress('ProfileScreen')}>
+          <Text>
+            <Text variant="regularSmallGrey">Last: </Text>
+            <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
+          </Text>
+        </LinkCard>
       )}
 
       {!isActivated && ( // add a better check
