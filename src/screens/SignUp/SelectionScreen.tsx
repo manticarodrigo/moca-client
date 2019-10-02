@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
@@ -17,14 +18,9 @@ import TherapistIcon from '@src/components/icons/TherapistIcon';
 import TherapistSelectIcon from '@src/components/icons/TherapistSelectIcon';
 import PatientSelectIcon from '@src/components/icons/PatientSelectIcon';
 
-import { AuthScreenProps } from '@src/NavigationProvider';
-
-type Props = AuthScreenProps<'SelectionScreen'>;
 type ColorKey = keyof typeof Colors;
 
-const SelectionScreen = ({ navigation }: Props) => {
-  navigation.setOptions({ header: null });
-
+const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
   const [type, setType] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -73,7 +69,7 @@ const SelectionScreen = ({ navigation }: Props) => {
       handleArrowClick={() => setIsModalVisible(false)}
       onModalHide={() => {
         if (shouldNavigate) {
-          navigation.navigate(screenName);
+          navigation.push(screenName);
           setShouldNavigate(false);
         }
       }}
@@ -135,6 +131,10 @@ const SelectionScreen = ({ navigation }: Props) => {
     </>
 
   );
+};
+
+SelectionScreen.navigationOptions = {
+  header: null,
 };
 
 export default SelectionScreen;

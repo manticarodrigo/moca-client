@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -11,10 +12,6 @@ import Logo from '@src/assets/pngs/logo.png';
 import ShieldIcon from '@src/components/icons/ShieldIcon';
 import DeviceMapIcon from '@src/components/icons/DeviceMapIcon';
 import SettingsIcon from '@src/components/icons/SettingsIcon';
-
-import { AuthScreenProps } from '@src/NavigationProvider';
-
-type Prop = AuthScreenProps<'OnboardingScreen'>;
 
 const slides = [
   {
@@ -34,10 +31,8 @@ const slides = [
   },
 ];
 
-const OnboardingScreen = ({ navigation }: Prop) => {
-  navigation.setOptions({ header: null });
-
-  const handleButtonPress = () => navigation.navigate('SelectionScreen');
+const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
+  const handleButtonPress = () => navigation.push('SelectionScreen');
 
   return (
     <View safeArea flex={1} alignCenter bgColor="white">
@@ -70,6 +65,10 @@ const OnboardingScreen = ({ navigation }: Prop) => {
       </View>
     </View>
   );
+};
+
+OnboardingScreen.navigationOptions = {
+  header: null,
 };
 
 export default OnboardingScreen;

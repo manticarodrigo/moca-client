@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/core';
+
+import useNavigation from '@src/hooks/useNavigation';
 
 import {
   RadiusLocationIcon,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
@@ -16,13 +17,7 @@ import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
 import EmailIcon from '@src/assets/Icons/email.png';
 import PasswordIcon from '@src/assets/Icons/eye.png';
 
-import { AuthScreenProps } from '@src/NavigationProvider';
-
-type Props = AuthScreenProps<'RegistrationScreen'>;
-
-const RegistrationScreen = ({ navigation }: Props) => {
-  navigation.setOptions({ title: 'Sign Up' });
-
+const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
   const isPatient = store.registrationState.userInformation.type === 'Patient';
 
@@ -93,13 +88,9 @@ const RegistrationScreen = ({ navigation }: Props) => {
     if (validateEmailAddress(formFields.email)) {
       setIsEmailValid(true);
       if (isPatient) {
-        navigation.navigate('AddressScreen', {
-          name: formFields.name,
-        });
+        navigation.push('AddressScreen');
       } else {
-        navigation.navigate('QualificationsScreen', {
-          name: formFields.name,
-        });
+        navigation.push('QualificationsScreen');
       }
     } else {
       setIsEmailValid(false);
@@ -286,6 +277,10 @@ const RegistrationScreen = ({ navigation }: Props) => {
     </KeyboardAvoidingView>
 
   );
+};
+
+RegistrationScreen.navigationOptions = {
+  title: 'Sign Up',
 };
 
 export default RegistrationScreen;

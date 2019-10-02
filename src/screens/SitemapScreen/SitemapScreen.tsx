@@ -1,91 +1,56 @@
 import React from 'react';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import { primaryScreenOptions } from '@src/routes/config';
-
-const SitemapScreen = ({ navigation }) => {
-  navigation.setOptions({
-    ...primaryScreenOptions,
-    title: 'Developer Sitemap',
-  });
-
-  const onPressAuth = (screen: string) => {
-    navigation.navigate('AuthStack');
-    setTimeout(() => navigation.navigate(screen));
-  };
-
-  const onPressTab = (tab: string, screen: string) => {
-    navigation.navigate('TabStack');
-    setTimeout(() => navigation.navigate(tab));
-    setTimeout(() => navigation.navigate(screen));
-  };
-
-  const onPressDashboard = (screen: string) => onPressTab('DashboardTab', screen);
-  const onPressSchedule = (screen: string) => onPressTab('ScheduleTab', screen);
-  const onPressConversation = (screen: string) => onPressTab('ConversationTab', screen);
-  const onPressProfile = (screen: string) => onPressTab('ProfileTab', screen);
-
-  const AuthStack = [
-    'OnboardingScreen',
-    'SelectionScreen',
-    'InvalidZipCodeScreen',
-    'InvalidMedicareScreen',
-    'QualificationsScreen',
-    'RegistrationScreen',
-    'AddressScreen',
-  ];
-
-  const DashboardTab = [
-    'DashboardScreen',
-    'FilterScreen',
-  ];
-
-  const ScheduleTab = [
-    'ScheduleScreen',
-  ];
-
-  const ConversationTab = [
-    'ConversationListScreen',
-    'ConversationScreen',
-  ];
-
-  const ProfileTab = [
-    'ProfileScreen',
-  ];
+const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const onPress = (routeName: string) => navigation.navigate(routeName);
 
   const map = [
     {
       title: 'Auth Flow',
-      screens: AuthStack,
-      onPress: onPressAuth,
+      screens: [
+        'OnboardingScreen',
+        'SelectionScreen',
+        'InvalidZipCodeScreen',
+        'InvalidMedicareScreen',
+        'QualificationsScreen',
+        'RegistrationScreen',
+        'AddressScreen',
+      ],
     },
     {
       title: 'Dashboard',
-      screens: DashboardTab,
-      onPress: onPressDashboard,
+      screens: [
+        'DashboardScreen',
+        'FilterScreen',
+      ],
     },
     {
       title: 'Schedule',
-      screens: ScheduleTab,
-      onPress: onPressSchedule,
+      screens: [
+        'ScheduleScreen',
+      ],
     },
     {
       title: 'Conversations',
-      screens: ConversationTab,
-      onPress: onPressConversation,
+      screens: [
+        'ConversationListScreen',
+        'ConversationScreen',
+      ],
     },
     {
       title: 'Profile',
-      screens: ProfileTab,
-      onPress: onPressProfile,
+      screens: [
+        'ProfileScreen',
+      ],
     },
   ];
 
   return (
     <View scroll column flex={1} bgColor="white">
-      {map.map(({ title, screens, onPress }) => (
+      {map.map(({ title, screens }) => (
         <View key={title} spacing={{ p: 4 }}>
           <Text variant="titlePrimaryLarge">{title}</Text>
           <>
@@ -108,6 +73,10 @@ const SitemapScreen = ({ navigation }) => {
       ))}
     </View>
   );
+};
+
+SitemapScreen.navigationOptions = {
+  title: 'Developer Sitemap',
 };
 
 export default SitemapScreen;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { resetUserInformation } from '@src/store/actions/RegistrationAction';
@@ -13,14 +14,7 @@ import FormField from '@src/components/FormField';
 import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
 import EmailIcon from '@src/assets/Icons/email.png';
 
-import { AuthScreenProps } from '@src/NavigationProvider';
-import { baseScreenOptions } from '@src/routes/config';
-
-type Props = AuthScreenProps<'InvalidZipCodeScreen'>;
-
-const InvalidZipCodeScreen = ({ navigation }: Props) => {
-  navigation.setOptions({ title: 'Location' });
-
+const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { dispatch } = useStore();
   const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -42,7 +36,7 @@ const InvalidZipCodeScreen = ({ navigation }: Props) => {
       submitEmail();
       dispatch(resetUserInformation());
 
-      navigation.reset({ routes: [{ name: 'OnboardingScreen' }] });
+      navigation.popToTop();
     } else {
       setIsEmailValid(false);
     }
@@ -52,7 +46,7 @@ const InvalidZipCodeScreen = ({ navigation }: Props) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={baseScreenOptions.headerStyle.height + paddingOffset}
+      keyboardVerticalOffset={paddingOffset}
     >
       <View safeArea alignCenter justifyEnd>
         <View spacing={{ mt: 4, mx: 3 }} alignCenter>
@@ -107,6 +101,10 @@ const InvalidZipCodeScreen = ({ navigation }: Props) => {
       </View>
     </KeyboardAvoidingView>
   );
+};
+
+InvalidZipCodeScreen.navigationOptions = {
+  title: 'Location',
 };
 
 export default InvalidZipCodeScreen;

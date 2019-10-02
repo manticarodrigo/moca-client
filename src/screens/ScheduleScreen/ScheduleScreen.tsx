@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { Agenda } from 'react-native-calendars';
 import { format, addDays } from 'date-fns';
 
@@ -8,13 +9,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import { TabScreenProps } from '@src/NavigationProvider';
-
-type Props = TabScreenProps<'ScheduleScreen'>;
-
-const ScheduleScreen = ({ navigation }: Props) => {
-  navigation.setOptions({ title: 'Calendar' });
-
+const ScheduleScreen = () => {
   const [items, setItems] = useState({});
 
   const loadItems = (day) => {
@@ -160,6 +155,10 @@ const ScheduleScreen = ({ navigation }: Props) => {
       }}
     />
   );
+};
+
+ScheduleScreen.navigationOptions = {
+  title: 'Calendar',
 };
 
 export default ScheduleScreen;

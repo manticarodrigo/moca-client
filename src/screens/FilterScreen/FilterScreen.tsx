@@ -15,13 +15,7 @@ import {
   BothGendersIcon,
 } from '@src/components/icons';
 
-import { TabScreenProps } from '@src/NavigationProvider';
-
-type Props = TabScreenProps<'FilterScreen'>;
-
-const FilterScreen = ({ navigation }: Props) => {
-  navigation.setOptions({ title: 'Filters' });
-
+const FilterScreen = () => {
   const [focus, setfocus] = useState([]);
 
   const filterItems = {
@@ -152,6 +146,10 @@ const FilterScreen = ({ navigation }: Props) => {
       ))}
     </View>
   );
+};
+
+FilterScreen.navigationOptions = {
+  title: 'Filter',
 };
 
 export default FilterScreen;

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 
 import { getConversations } from '@src/store/actions/ConversationAction';
 
@@ -9,24 +10,16 @@ import useDateSections from '@src/hooks/useDateSections';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import { TabScreenProps } from '@src/NavigationProvider';
-
 import ConversationListCard from './ConversationListCard';
-
-type Props = TabScreenProps<'ConversationListScreen'>;
 
 const ConversationSectionList: SectionList<Conversation> = SectionList;
 
-const ConversationListScreen = ({ navigation }: Props) => {
+const ConversationListScreen = ({ navigation }: NavigationStackScreenProps) => {
   const { store, dispatch } = useStore();
   const sections = useDateSections(
     store.conversations,
     ({ messages }) => messages[messages.length - 1].createdAt,
   );
-
-  navigation.setOptions({
-    title: 'Messages',
-  });
 
   useEffect(() => {
     if (store.user.id) {
@@ -61,6 +54,10 @@ const ConversationListScreen = ({ navigation }: Props) => {
       />
     </View>
   );
+};
+
+ConversationListScreen.navigationOptions = {
+  title: 'Messages',
 };
 
 export default ConversationListScreen;

@@ -1,60 +1,129 @@
 import React from 'react';
-import { NavigationNativeContainer } from '@react-navigation/native';
-import { RouteProp, CompositeNavigationProp } from '@react-navigation/core';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import {
+  createSwitchNavigator,
+  createAppContainer,
+} from 'react-navigation';
+
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
+import { Views, Typography, Colors, Spacing } from '@src/styles';
+
+import {
+  DashboardTabIcon,
+  ScheduleTabIcon,
+  ConversationTabIcon,
+  ProfileTabIcon,
+} from '@src/components/icons';
+
+import BackButton from '@src/components/BackButton';
 
 import SitemapScreen from '@src/screens/SitemapScreen';
+import OnboardingScreen from '@src/screens/OnboardingScreen';
+import DashboardScreen from '@src/screens/DashboardScreen';
+import FilterScreen from '@src/screens/FilterScreen';
+import ScheduleScreen from '@src/screens/ScheduleScreen';
+import ConversationListScreen from '@src/screens/ConversationListScreen';
+import ConversationScreen from '@src/screens/ConversationScreen';
+import ProfileScreen from '@src/screens/ProfileScreen';
+import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
+import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
+import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/SignUp/AddressScreen';
+import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
 
-import AuthStack, { ParamList as AuthParamList } from '@src/routes/AuthStack';
-import TabStack, { TabParamList, StackParamList } from '@src/routes/TabStack';
+import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
 
-type RootParamList = {
-  SitemapScreen: undefined;
-  AuthStack: undefined;
-  TabStack: undefined;
-}
+const defaultNavConfig = {
+  // headerLayoutPreset: 'center',
+  cardShadowEnabled: false,
+  defaultNavigationOptions: ({ navigation }) => ({
+    title: navigation.state.routeName,
+    headerStyle: {
+      borderBottomWidth: 0,
+      height: 60,
+      backgroundColor: Colors.primary,
+    },
+    headerTintColor: Colors.primary,
+    headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
+    headerBackImage: BackButton,
+    headerBackTitle: null,
+    headerTitleStyle: {
+      ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
+    },
+  }),
+};
 
-type RootNavigationProp = StackNavigationProp<RootParamList>
+const defaultTabConfig = {
+  defaultNavigationOptions: ({ navigation }) => ({
+    // eslint-disable-next-line react/display-name
+    tabBarIcon: ({ focused }) => {
+      const { routeName } = navigation.state;
 
-type AuthNavigationProp<ScreenName extends keyof AuthParamList> = CompositeNavigationProp<
-  StackNavigationProp<AuthParamList, ScreenName>,
-  RootNavigationProp
->
+      switch (routeName) {
+        case 'DashboardTab':
+          return <DashboardTabIcon focused={focused} />;
+        case 'ScheduleTab':
+          return <ScheduleTabIcon focused={focused} />;
+        case 'ConversationTab':
+          return <ConversationTabIcon focused={focused} />;
+        case 'ProfileTab':
+          return <ProfileTabIcon focused={focused} />;
+        default:
+          return null;
+      }
+    },
+    tabBarVisible: navigation.state.index < 1,
+    tabBarOptions: {
+      showLabel: false,
+      style: {
+        ...Views.borderTop,
+        height: 72,
+      },
+    },
+  }),
+};
 
-type TabNavigationProp<ScreenName extends keyof StackParamList> = CompositeNavigationProp<
-  StackNavigationProp<StackParamList, ScreenName>,
-  CompositeNavigationProp<
-    BottomTabNavigationProp<TabParamList>,
-    RootNavigationProp
-  >
->
+const AppStack = createSwitchNavigator(
+  {
+    SitemapScreen,
 
-export type RootScreenProps<ScreenName extends keyof RootParamList> = {
-  navigation: RootNavigationProp;
-  route: RouteProp<RootParamList, ScreenName>;
-}
+    AuthStack: createStackNavigator({
+      OnboardingScreen,
+      SelectionScreen,
+      InvalidZipCodeScreen,
+      RegistrationScreen,
+      InvalidMedicareScreen,
+      AddressScreen,
+      QualificationsScreen,
+    }, defaultNavConfig),
 
-export type AuthScreenProps<ScreenName extends keyof AuthParamList> = {
-  navigation: AuthNavigationProp<ScreenName>;
-  route: RouteProp<AuthParamList, ScreenName>;
-}
+    TabStack: createBottomTabNavigator({
 
-export type TabScreenProps<ScreenName extends keyof StackParamList> = {
-  navigation: TabNavigationProp<ScreenName>;
-  route: RouteProp<StackParamList, ScreenName>;
-}
+      DashboardTab: createStackNavigator({
+        DashboardScreen,
+        FilterScreen,
+      }, defaultNavConfig),
 
-const Stack = createStackNavigator<RootParamList>();
+      ScheduleTab: createStackNavigator({
+        ScheduleScreen,
+      }, defaultNavConfig),
 
-const NavigationProvider = () => (
-  <NavigationNativeContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="SitemapScreen" component={SitemapScreen} />
-      <Stack.Screen name="TabStack" component={TabStack} options={{ header: null }} />
-      <Stack.Screen name="AuthStack" component={AuthStack} options={{ header: null }} />
-    </Stack.Navigator>
-  </NavigationNativeContainer>
+      ConversationTab: createStackNavigator({
+        ConversationListScreen,
+        ConversationScreen,
+      }, defaultNavConfig),
+
+      ProfileTab: createStackNavigator({
+        ProfileScreen,
+        WalletScreen,
+      }, defaultNavConfig),
+
+    }, defaultTabConfig),
+
+  },
+  { initialRouteName: 'SitemapScreen' },
 );
 
-export default NavigationProvider;
+export default createAppContainer(AppStack);

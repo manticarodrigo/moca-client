@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
@@ -9,16 +10,9 @@ import useStore from '@src/hooks/useStore';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { AuthScreenProps } from '@src/NavigationProvider';
-
-type Props = AuthScreenProps<'QualificationsScreen'>;
-
-const QualifiactionsScreen = ({ navigation, route }: Props) => {
-  navigation.setOptions({ title: 'Qualifications' });
-  const { name } = route.params;
-
+const QualifiactionsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const { qualifications } = store.registrationState.userInformation;
+  const { name, qualifications } = store.registrationState.userInformation;
   const isButtonDisabled = !(qualifications.filter((x) => x.value === true).length > 0);
 
 
@@ -29,7 +23,7 @@ const QualifiactionsScreen = ({ navigation, route }: Props) => {
   };
 
   const handleButtonPress = () => {
-    navigation.navigate('AddressScreen');
+    navigation.push('AddressScreen');
   };
 
   return (
@@ -73,6 +67,10 @@ const QualifiactionsScreen = ({ navigation, route }: Props) => {
       </View>
     </View>
   );
+};
+
+QualifiactionsScreen.navigationOptions = {
+  title: 'Qualifications',
 };
 
 export default QualifiactionsScreen;
