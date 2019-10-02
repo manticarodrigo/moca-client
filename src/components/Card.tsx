@@ -65,7 +65,6 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
           {details && <Text typography={{ size: 2, weight: '300', color: 'grey' }} spacing={{ mt: 1 }}>{details}</Text>}
         </View>
       </View>
-      {/* {children} I don't understand why eslint is giving me a type error */}
       {arrow
         && (
           <View spacing={{ m: 3 }}>

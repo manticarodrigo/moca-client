@@ -1,31 +1,28 @@
 import React, { useState } from 'react';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
+
+import useStore from '@src/hooks/useStore';
+import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
+
+import { Colors } from '@src/styles/index';
 
 import ZipeCodeScreen from '@src/modals/ZipCodeScreen';
-
-import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import ModalView from '@src/components/ModalView';
 
-
 import PatientIcon from '@src/components/icons/PatientIcon';
 import TherapistIcon from '@src/components/icons/TherapistIcon';
 import TherapistSelectIcon from '@src/components/icons/TherapistSelectIcon';
 import PatientSelectIcon from '@src/components/icons/PatientSelectIcon';
 
-import { Colors } from '@src/styles/index';
+type ColorKey = keyof typeof Colors;
 
-import useStore from '@src/hooks/useStore';
-import { updateUserInfomation, resetUserInformation } from '@src/store/actions/RegistrationAction';
-
-const SelectionScreen = () => {
-  type ColorKey = keyof typeof Colors;
-
-  const navigation = useNavigation();
+const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { store, dispatch } = useStore();
   const [type, setType] = useState('');
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [screenName, setScreenName] = useState();
   const [shouldNavigate, setShouldNavigate] = useState(false);
@@ -33,7 +30,6 @@ const SelectionScreen = () => {
   const isPatient = type === 'Patient';
   const isTherapist = type === 'Therapist';
   const buttonDisabled = type === '';
-
 
   let buttonText = 'Select';
 
@@ -52,8 +48,8 @@ const SelectionScreen = () => {
 
 
   const handleButtonPress = () => {
-    if (Object.prototype.hasOwnProperty.call(userInformation, 'type')) {
-      if (userInformation.type !== type) dispatch(resetUserInformation());
+    if (Object.prototype.hasOwnProperty.call(store.registrationState.userInformation, 'type')) {
+      if (store.registrationState.userInformation.type !== type) dispatch(resetUserInformation());
     }
     dispatch(updateUserInfomation({ type }));
     setIsModalVisible(true);
@@ -73,7 +69,7 @@ const SelectionScreen = () => {
       handleArrowClick={() => setIsModalVisible(false)}
       onModalHide={() => {
         if (shouldNavigate) {
-          navigation.navigate(screenName);
+          navigation.push(screenName);
           setShouldNavigate(false);
         }
       }}
@@ -140,6 +136,5 @@ const SelectionScreen = () => {
 SelectionScreen.navigationOptions = {
   header: null,
 };
-
 
 export default SelectionScreen;

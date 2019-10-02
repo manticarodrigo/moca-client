@@ -1,25 +1,23 @@
 import React, { useState, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-import { Header } from 'react-navigation';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 
-import BackButton from '@src/components/BackButton';
+import useStore from '@src/hooks/useStore';
+
+import { Views, Spacing, Colors } from '@src/styles';
+
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 import Text from '@src/components/Text';
+import BackButton from '@src/components/BackButton';
 import HeaderTitle from '@src/components/HeaderTitle';
-
-import useStore from '@src/hooks/useStore';
-import useNavigation from '@src/hooks/useNavigation';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { Views, Spacing, Colors } from '@src/styles';
-
-
-const AddressScreen = () => {
-  const navigation = useNavigation();
-  const [{ registrationState: { userInformation: { name } } }] = useStore();
+const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
+  const { store, dispatch } = useStore();
+  const { registrationState: { userInformation } } = store;
 
   const [formFields, setFormFields] = useState({
     street: '',
@@ -32,7 +30,6 @@ const AddressScreen = () => {
   const cityField = useRef(null);
   const stateField = useRef(null);
 
-  const [{ registrationState: { userInformation } }, dispatch] = useStore();
   const isAnyFieldEmpty = Object.values(formFields).includes('');
   const isButtonDisabled = isAnyFieldEmpty;
 
@@ -41,9 +38,8 @@ const AddressScreen = () => {
     const newAddress = userInformation.address.map((x) => ({ ...x }));
     newAddress.push({ ...formFields });
     dispatch(updateUserInfomation({ address: newAddress }));
-    navigation.navigate('DashboardScreen');
+    navigation.navigate('TabStack');
   };
-
 
   const handleFormFields = (fieldName: string, text: string) => {
     setFormFields({ ...formFields, [fieldName]: text });
@@ -53,15 +49,15 @@ const AddressScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + 60}
+      keyboardVerticalOffset={60}
     >
-      <View scroll>
+      <View scroll flex={1}>
         <View safeArea spacing={{ pt: 3 }} alignCenter>
           <View spacing={{ mx: 3 }} alignCenter>
             <View alignCenter>
               <View row>
                 <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
-                <Text variant="title" spacing={{ mt: 3 }}>{name}</Text>
+                <Text variant="title" spacing={{ mt: 3 }}>{userInformation.name}</Text>
               </View>
               <Text variant="regular" spacing={{ mt: 1 }}>
               What is your preferred address for treatment?
@@ -122,7 +118,6 @@ const AddressScreen = () => {
     </KeyboardAvoidingView>
   );
 };
-
 
 AddressScreen.navigationOptions = () => ({
   headerTitle: <HeaderTitle title="Your Address" />,
