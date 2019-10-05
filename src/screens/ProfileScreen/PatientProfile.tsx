@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import useNavigation from '@src/hooks/useNavigation';
 
 import {
@@ -7,6 +6,7 @@ import {
   CreditCardIcon,
   DiagnosisIcon,
   ArrowRightIcon,
+  GenderIcon,
 } from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
@@ -14,7 +14,6 @@ import { mockImg } from '@src/services/mock';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
-import GenderIcon from '@src/components/icons/GenderIcon';
 
 const PatientProfile = () => {
   const navigation = useNavigation();

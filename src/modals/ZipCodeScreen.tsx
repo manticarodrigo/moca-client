@@ -9,12 +9,14 @@ import Button from '@src/components/Button';
 import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 import FormField from '@src/components/FormField';
 
+import { ParamList } from '@src/routes/AuthStack';
+
 type ZipCodeScreenProps = {
-  navigateToScreen: (name: string) => void;
+  navigateToScreen: (name: keyof ParamList) => void;
 };
 
 const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
-  const [{ registrationState: { userInformation: { addresses } } }, dispatch] = useStore();
+  const { store, dispatch } = useStore();
   const [zipCode, setZipCode] = useState('');
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
 
@@ -26,10 +28,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   };
 
   useEffect(() => {
-    if (addresses.length !== 0) {
-      setZipCode(addresses[0].zipCode);
+    if (store.registrationState.userInformation.addresses.length !== 0) {
+      setZipCode(store.registrationState.userInformation.addresses[0].zipCode);
 
-      if (!validateZipCode(addresses[0].zipCode)) {
+      if (!validateZipCode(store.registrationState.userInformation.addresses[0].zipCode)) {
         setIsZipCodeValid(false);
       }
     }

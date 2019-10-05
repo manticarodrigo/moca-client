@@ -7,12 +7,13 @@ import {
   InfoIcon,
   MessagesIcon,
   PinIcon,
-} from './icons';
+} from '@src/components/icons';
 
 import View from './View';
 import Image from './Image';
 import Text from './Text';
 import Button from './Button';
+import NotificationBadge from './NotificationBadge';
 
 const AppointmentCardHeader = () => (
   <View row justifyBetween>
@@ -50,6 +51,7 @@ const AppointmentCardInfo = ({ current = false }) => (
       <View row>
         <View variant="iconButton" onPress={() => null}>
           <MessagesIcon size={0.5} />
+          <NotificationBadge />
         </View>
         <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
           <PinIcon size={0.8} />

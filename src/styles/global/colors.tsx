@@ -22,6 +22,7 @@ export const lightGrey = '#f3f2f7';
 export const greyishBrown = '#4a4a4a';
 export const error = '#f53e3f';
 export const errorLight = '#f3bfc3';
+export const errorLighter = '#fdecec';
 export const success = '#819e3f';
 export const successLight = '#99b366';
 export const warning = '#f7c92b';
