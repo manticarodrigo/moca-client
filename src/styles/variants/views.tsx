@@ -240,6 +240,31 @@ const bottomBounceFill: ViewStyle = {
   height: Dimensions.get('screen').height,
 };
 
+const notificationBadge: ViewStyle = {
+  position: 'absolute',
+  top: -5,
+  right: -5,
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: 22,
+  height: 22,
+  borderRadius: 11,
+  borderWidth: 1,
+  borderColor: Colors.white,
+  backgroundColor: Colors.error,
+};
+
+const notificationBadgeLarge: ViewStyle = {
+  ...notificationBadge,
+  top: 0,
+  right: 0,
+  width: 28,
+  height: 28,
+  borderRadius: 14,
+  borderWidth: 3,
+  borderColor: Colors.errorLighter,
+};
+
 export {
   rounded,
   progressBar,
@@ -272,4 +297,6 @@ export {
   roundedBorderRight,
   patientViewPressed,
   patientView,
+  notificationBadge,
+  notificationBadgeLarge,
 };

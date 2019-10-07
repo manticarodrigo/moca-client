@@ -3,7 +3,7 @@ import Svg, { G, Circle, Rect, Path } from 'react-native-svg';
 
 import { Colors } from '@src/styles';
 
-const HomeTabIcon = ({ focused }) => (
+const DashboardIcon = ({ focused }) => (
   <Svg width={48} height={48} viewBox="0 0 48 48">
     <G stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
       {focused && <Circle fill="#57B0CC" cx={24} cy={24} r={24} />}
@@ -25,4 +25,4 @@ const HomeTabIcon = ({ focused }) => (
   </Svg>
 );
 
-export default HomeTabIcon;
+export default DashboardIcon;

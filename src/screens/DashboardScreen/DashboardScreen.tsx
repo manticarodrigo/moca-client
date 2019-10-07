@@ -14,17 +14,14 @@ import DashboardAppointments from './DashboardAppointments';
 import DashboardLinks from './DashboardLinks';
 
 const DashboardScreen = () => {
-  const [store] = useStore();
-  const [isTherapist] = useState(false);
-  const [isActivated] = useState(false);
+  const { store } = useStore();
+  const [isTherapist] = useState(store.user.type === 'caregiver');
+  const [isActivated] = useState(true);
   const [isFiltering, setFiltering] = useState(false);
 
-  const _keyboardDidShow = () => { setFiltering(true); };
-  const _keyboardDidHide = () => { setFiltering(false); };
-
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    Keyboard.addListener('keyboardDidShow', () => setFiltering(true));
+    Keyboard.addListener('keyboardDidHide', () => setFiltering(false));
 
     return Keyboard.removeAllListeners;
   }, []);
@@ -37,11 +34,11 @@ const DashboardScreen = () => {
       </View>
 
       {isActivated && isTherapist && (
-        <View row justifyCenter alignCenter height={60}>
+        <View row justifyCenter alignCenter spacing={{ p: 4, pt: 3 }}>
           <Text variant="titleSmallWhite">Appointments</Text>
         </View>
       )}
-      {!isTherapist && <DashboardSearch name={store.authState.currentUser.username} />}
+      {!isTherapist && <DashboardSearch name={store.user.username} />}
 
       {!isFiltering && (
         <View scroll flex={1}>

@@ -78,10 +78,9 @@ const CreditCardsTab = () => {
   };
 
   return (
-    // pending linter review
     <View height="100%" scroll spacing={{ pt: 5 }}>
-      {accountsList.map((card) => (
-        !card.deleted ? (
+      <>
+        {accountsList.filter((card) => !card.deleted).map((card) => (
           <Swipeable
             key={card.cardNumber}
             rightButtons={[
@@ -106,8 +105,8 @@ const CreditCardsTab = () => {
               selected={selectedId === card.cardNumber}
             />
           </Swipeable>
-        ) : null
-      ))}
+        ))}
+      </>
       <Card type="addCard" arrow large onPress={handleModalVisibility} />
       <ModalView
         bgColor="white"

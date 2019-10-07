@@ -27,6 +27,6 @@ const SwitchIcon = ({ isOn = true }) => (
       </G>
     </G>
   </Svg>
-)
+);
 
 export default SwitchIcon;

@@ -15,7 +15,6 @@ import {
   BothGendersIcon,
 } from '@src/components/icons';
 
-
 const FilterScreen = () => {
   const [focus, setfocus] = useState([]);
 
@@ -111,7 +110,6 @@ const FilterScreen = () => {
       newFocus.splice(index, 1);
     } else {
       newFocus.push(key);
-      // newFocus.push(key);
     }
     setfocus(newFocus);
   };
