@@ -15,11 +15,13 @@ import HeaderTitle from '@src/components/HeaderTitle';
 
 import BinIconRed from '@src/components/icons/BinIconRed';
 
+import { validateZipCode } from '@src/utlities/validations';
+
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
   const { store, dispatch } = useStore();
-  const { registrationState: { userInformation } } = store;
+  const { registrationState: { addresses, name } } = store;
 
   const [formFields, setFormFields] = useState({
     street: '',
@@ -52,14 +54,9 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
     buttonText = 'ADD';
   }
 
-  const validateZipCode = (userInput: string) => {
-    const regexpNumber = new RegExp('^[+ 0-9]{5}$');
-    return regexpNumber.test(userInput);
-  };
-
   useEffect(() => {
     if (isRegistering) {
-      const { zipCode } = userInformation.addresses[0];
+      const { zipCode } = addresses[0];
       setFormFields({
         ...formFields,
         zipCode,
@@ -91,7 +88,7 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
       navigation.navigate('DashboardScreen');
     }
 
-    const newAddresses = userInformation.addresses.map((x) => ({ ...x }));
+    const newAddresses = addresses.map((x) => ({ ...x }));
 
     if (isExistingAddress) {
       if (validateZipCode(formFields.zipCode)) {
@@ -137,7 +134,7 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
                 <View alignCenter>
                   <View row>
                     <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
-                    <Text variant="title" spacing={{ mt: 3 }}>{userInformation.name}</Text>
+                    <Text variant="title" spacing={{ mt: 3 }}>{name}</Text>
                   </View>
                   <Text variant="regular" spacing={{ mt: 1 }}>
                     What is your preferred address for treatment?

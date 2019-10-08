@@ -53,18 +53,16 @@ const initialState: StoreState = {
   },
   conversations: [],
   registrationState: {
-    userInformation: {
-      qualifications: [
-        { name: 'Neck', value: 0 },
-        { name: 'Shoulder', value: 0 },
-        { name: 'Elbow', value: 0 },
-        { name: 'Low Back', value: 0 },
-        { name: 'Knee', value: 0 },
-        { name: 'Ankle/Foot', value: 0 },
-        { name: 'Other', value: 0 },
-      ],
-      addresses: [],
-    },
+    qualifications: [
+      { name: 'Neck', value: 0 },
+      { name: 'Shoulder', value: 0 },
+      { name: 'Elbow', value: 0 },
+      { name: 'Low Back', value: 0 },
+      { name: 'Knee', value: 0 },
+      { name: 'Ankle/Foot', value: 0 },
+      { name: 'Other', value: 0 },
+    ],
+    addresses: [],
   },
 };
 

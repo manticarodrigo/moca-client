@@ -11,6 +11,9 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 
+import { validateEmailAddress } from '@src/utlities/validations';
+
+
 import EmailIcon from '@src/assets/Icons/email.png';
 import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
 
@@ -25,20 +28,13 @@ const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   const isButtonDisabled = email === '' || !isEmailValid;
 
-  const validateEmailAddress = () => {
-    // eslint-disable-next-line no-useless-escape
-    const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
-    return regexpEmail.test(email);
-  };
-
   const submitEmail = () => true; // Api call
 
   const handleButtonPress = () => {
-    if (validateEmailAddress()) {
+    if (validateEmailAddress(email)) {
       setIsEmailValid(true);
       submitEmail();
       dispatch(resetUserInformation());
-
       navigation.popToTop();
     } else {
       setIsEmailValid(false);

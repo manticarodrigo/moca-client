@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import Swipeable from 'react-native-swipeable-row';
 
-import useNavigation from '@src/hooks/useNavigation';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -20,7 +20,7 @@ import { Views, Spacing, Colors } from '@src/styles';
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 
-const AddressSettingScreen = () => {
+const AddressSettingScreen = ({ navigation }: NavigationStackScreenProps) => {
   type Address = {
     street: string;
     city: string;
@@ -28,9 +28,8 @@ const AddressSettingScreen = () => {
     apartmentNumber: string;
   }
 
-  const navigation = useNavigation();
   const [isOpen, setIsOpen] = useState(false);
-  const [{ registrationState: { userInformation: { addresses } } }, dispatch] = useStore();
+  const { store: { registrationState: { addresses } }, dispatch } = useStore();
   const swipableItems = useRef(Array.from({ length: addresses.length }, (a) => React.createRef()));
 
   const recenterItems = () => {

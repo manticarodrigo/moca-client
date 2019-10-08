@@ -12,7 +12,7 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 const QualifiactionsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const { name, qualifications } = store.registrationState.userInformation;
+  const { name, qualifications } = store.registrationState;
   const isButtonDisabled = !(qualifications.filter((x) => x.value === true).length > 0);
 
 

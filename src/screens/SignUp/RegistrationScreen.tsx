@@ -4,8 +4,9 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
+import { validateEmailAddress } from '@src/utlities/validations';
 
-import TermsOfServiceScreen from '@src/modals/TermsOfServiceScreen';
+import TermsOfServiceModal from '@src/modals/TermsOfServiceModal';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -19,7 +20,8 @@ import PasswordIcon from '@src/assets/Icons/eye.png';
 
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const isPatient = store.registrationState.userInformation.type === 'Patient';
+  const { type } = store.registrationState;
+  const isPatient = type === 'Patient';
 
   const surnameField = useRef(null);
   const emailField = useRef(null);
@@ -44,18 +46,13 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     ? (isAnyFieldEmpty || !isMediCarePressed || !isEmailValid)
     : isAnyFieldEmpty || !isEmailValid;
 
-  const validateEmailAddress = (email: string) => {
-    const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
-    return regexpEmail.test(email);
-  };
-
   useEffect(() => {
-    if (Object.prototype.hasOwnProperty.call(store.registrationState.userInformation, 'email')) {
-      const { email, surname, name, password } = store.registrationState.userInformation;
+    if (Object.prototype.hasOwnProperty.call(store.registrationState, 'email')) {
+      const { email, surname, name, password } = store.registrationState;
 
       setFormFields({
         ...formFields,
-        ...(!isPatient && { medicalId: store.registrationState.userInformation.medicalId }),
+        ...(!isPatient && { medicalId: store.registrationState.medicalId }),
         surname,
         email,
         name,
@@ -71,14 +68,14 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   }, []);
 
 
-  const TermsOfServiceModal = (
+  const TermsOfServiceModalView = (
     <ModalView
       isVisible={isModalVisible}
       onBackdropPress={() => setIsModalVisible(false)}
       onSwipeComplete={() => setIsModalVisible(false)}
       handleArrowClick={() => setIsModalVisible(false)}
     >
-      <TermsOfServiceScreen />
+      <TermsOfServiceModal />
     </ModalView>
   );
 
@@ -277,7 +274,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
             </View>
           </View>
         </View>
-        {TermsOfServiceModal}
+        {TermsOfServiceModalView}
         <View flex={1} />
       </View>
     </KeyboardAvoidingView>

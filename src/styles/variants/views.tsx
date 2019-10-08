@@ -193,6 +193,11 @@ const profileCard: ViewStyle = {
   borderColor: Colors.secondary,
 };
 
+const profileCardLast: ViewStyle = {
+  ...profileCard,
+  borderColor: Colors.white,
+};
+
 const profileIconCard: ViewStyle = {
   ...profileCard,
   ...Spacing.getStyles({ px: 3 }),
@@ -205,6 +210,11 @@ const profileData: ViewStyle = {
   backgroundColor: Colors.white,
   borderBottomWidth: 1,
   borderColor: Colors.secondary,
+};
+
+const profileDataLast: ViewStyle = {
+  ...profileData,
+  borderBottomWidth: 0,
 };
 
 const iconButton: ViewStyle = {
@@ -299,4 +309,6 @@ export {
   patientView,
   notificationBadge,
   notificationBadgeLarge,
+  profileDataLast,
+  profileCardLast,
 };

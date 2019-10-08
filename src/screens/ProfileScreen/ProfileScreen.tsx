@@ -17,8 +17,8 @@ import TherapistProfile from './TherapistProfile';
 const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
   const onPressRight = () => navigation.navigate('ConversationScreen');
 
-  const { store } = useStore();
-  const isTherapist = store.user.type === 'caregiver';
+  const { store: { registrationState: { type } } } = useStore();
+  const isTherapist = type === 'Therapist';
 
   const name = 'John Connor Jacob'; // TODO: get the real value
 
@@ -58,8 +58,8 @@ const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
           </View>
         </View>
       </View>
-
-      { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
+      <TherapistProfile />
+      {/* { isTherapist ? <TherapistProfile /> : <PatientProfile /> } */}
 
     </View>
   );
