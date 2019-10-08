@@ -1,8 +1,20 @@
 declare type User = {
-  id: string;
-  username: string;
-  imageUrl: string;
-  type: 'patient' | 'caregiver';
+  id?: string;
+  username?: string;
+  imageUrl?: string;
+  type?: 'patient' | 'caregiver';
+  personalBio?: string;
+  yearsOfExperience?: string;
+  gender?: 'Male' | 'Female' | 'Other';
+  status?: 'available' | 'busy';
+  licenseNumber?: string;
+  serviceArea?: string;
+  areaOfSpecialty?: string;
+  interests?: string;
+  pricePerThirtyMinutes?: string;
+  pricePerSixtyMinutes?: string;
+  pricePerNintyMinutes?: stirng;
+  evaluationPrice?: string;
 };
 
 declare type Message = {
