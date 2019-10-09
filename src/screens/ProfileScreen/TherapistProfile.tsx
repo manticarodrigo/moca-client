@@ -21,14 +21,18 @@ import ServiceAreaModal from '@src/modals/ServiceAreaModel';
 import InterestsModal from '@src/modals/InterestsModal';
 import PersonalBio from '@src/modals/PersonalBioModal';
 import ExperienceModal from '@src/modals/ExperienceModal';
+import AreaOfSpecialtyModal from '@src/modals/AreaOfSpecialtyModal';
+
 
 import * as Colors from '@src/styles/global/colors';
 
 import ModalView from '@src/components/ModalView';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
+import Image from '@src/components/Image';
 
 import { updateUser } from '@src/store/actions/UserAction';
+import useImageViewer from '@src/hooks/useImageViewer';
 
 type priceSelection =
 'pricePerThirtyMinutes' |
@@ -40,6 +44,7 @@ type priceSelection =
 
 const TherapistProfile = () => {
   const { store: { user }, dispatch } = useStore();
+  const { viewer, onPressImage } = useImageViewer(user.certifications);
 
   const [isAvailable, setAvailable] = useState(user.status === 'available');
   const [isPriceModalVisible, setIsPriceModalVisible] = useState(false);
@@ -47,11 +52,10 @@ const TherapistProfile = () => {
   const [isInterestsModalVisible, setIsInterestsModalVisible] = useState(false);
   const [isPersonalBioVisible, setIsPersonalBioVisible] = useState(false);
   const [isExperienceModalVisible, setIsExperienceModalVisible] = useState(false);
+  const [isAreaOfSpecialtyVisible, setIsAreaOfSpecialtyVisible] = useState(false);
 
 
   const [priceSelection, setPriceSelection] = useState<priceSelection>('');
-
-
   const [gender, setGender] = useState(user.gender ? user.gender : '');
 
   const isMale = gender === 'Male';
@@ -59,7 +63,6 @@ const TherapistProfile = () => {
   const isOther = gender === 'Other';
 
   const reviewsNumber = '12';
-  const licenceNumber = '4789652';
 
   const maleBgColor = isMale ? 'secondaryLight' : 'white';
   const maleTextColor = isMale ? 'white' : 'secondaryLighter';
@@ -78,6 +81,7 @@ const TherapistProfile = () => {
   const closeInterestsModal = () => setIsInterestsModalVisible(false);
   const closePersonalBioModal = () => setIsPersonalBioVisible(false);
   const closeExperienceModal = () => setIsExperienceModalVisible(false);
+  const closeAreaOfSpecialtyModal = () => setIsAreaOfSpecialtyVisible(false);
 
 
   const pressStatus = (type: boolean) => {
@@ -161,6 +165,19 @@ const TherapistProfile = () => {
     </ModalView>
   );
 
+  const areaOfSpecialty = (
+    <ModalView
+      height={200}
+      isVisible={isAreaOfSpecialtyVisible}
+      onBackdropPress={() => setIsAreaOfSpecialtyVisible(false)}
+      onSwipeComplete={() => setIsAreaOfSpecialtyVisible(false)}
+      handleArrowClick={() => setIsAreaOfSpecialtyVisible(false)}
+    >
+      <AreaOfSpecialtyModal
+        closeAreaOfSpecialtyModal={closeAreaOfSpecialtyModal}
+      />
+    </ModalView>
+  );
 
   return (
     <View flex={1} scroll bgColor="lightGrey">
@@ -257,17 +274,23 @@ const TherapistProfile = () => {
           <View spacing={{ p: 3 }}>
             <RadiusLocationIcon />
           </View>
-          <View row variant="profileCard" onPress={() => setIsServiceAreaModalVisible(true)}>
-            <View flex={1} justifyCenter>
+          <View
+            flex={1}
+            row
+            variant="profileCard"
+            justifyBetween
+            onPress={() => setIsServiceAreaModalVisible(true)}
+          >
+            <View justifyCenter>
               <Text variant="boldDark">Service Area</Text>
             </View>
-            <View row flex={1} alignEnd>
-              <View flex={1} alignEnd justifyCenter>
+            <View row justifyCenter>
+              <View justifyCenter>
                 <Text variant="boldPrimary" spacing={{ mr: 2 }}>
                   {user.serviceArea ? `${user.serviceArea} miles` : 'add'}
                 </Text>
               </View>
-              <View flex={1}>
+              <View>
                 <ArrowRightIcon />
               </View>
             </View>
@@ -278,14 +301,14 @@ const TherapistProfile = () => {
           <View spacing={{ p: 3 }}>
             <StatusIcon />
           </View>
-          <View row variant="profileCard">
-            <View flex={1} justifyCenter>
+          <View row flex={1} justifyBetween variant="profileCard">
+            <View justifyCenter>
               <Text variant="boldDark">
                 Status
               </Text>
             </View>
-            <View row flex={1.5}>
-              <View flex={1} alignEnd justifyCenter>
+            <View row justifyCenter>
+              <View justifyCenter>
                 {isAvailable ? (
                   <Text spacing={{ mr: 2 }} variant="regularSmallSuccess">
                     Available
@@ -297,7 +320,6 @@ const TherapistProfile = () => {
                 )}
               </View>
               <View
-                flex={1}
                 onPress={() => pressStatus(!isAvailable)}
               >
                 <SwitchIcon isOn={isAvailable} />
@@ -310,9 +332,9 @@ const TherapistProfile = () => {
           <View spacing={{ p: 3 }}>
             <RateIcon />
           </View>
-          <View row variant="profileCard">
-            <View flex={1}><Text variant="boldDark">Reviews</Text></View>
-            <View flex={1} alignCenter><Text>{reviewsNumber}</Text></View>
+          <View row justifyBetween flex={1} variant="profileCard">
+            <View><Text variant="boldDark">Reviews</Text></View>
+            <View alignCenter><Text>{reviewsNumber}</Text></View>
           </View>
         </View>
 
@@ -371,7 +393,7 @@ const TherapistProfile = () => {
             <Text variant="boldDark">PT Licence Number</Text>
             <View spacing={{ pt: 2 }} width={295}>
               <Text variant="regularSmallGrey">
-                {licenceNumber}
+                {user.licenseNumber}
               </Text>
             </View>
           </View>
@@ -395,7 +417,7 @@ const TherapistProfile = () => {
           <View spacing={{ p: 3 }}>
             <InterestIcon />
           </View>
-          <View column variant="profileData">
+          <View column variant="profileData" onPress={() => setIsAreaOfSpecialtyVisible(true)}>
             <Text variant="boldDark">Areas of Specialty</Text>
             <View spacing={{ pt: 2 }} width={295}>
               <Text variant="regularSmallGrey">
@@ -409,8 +431,18 @@ const TherapistProfile = () => {
           <View spacing={{ p: 3 }}>
             <QualificationIcon />
           </View>
-          <View column variant="profileData">
+          <View column variant="profileDataLast">
             <Text variant="boldDark">Certifications</Text>
+            {user.certifications.map((item, index) => (
+              <View row flex={1} justifyBetween key={index} variant="profileData">
+                <View justifyCenter>
+                  <Text variant="regularSmallGrey">{item.description}</Text>
+                </View>
+                <View alignCenter spacing={{ mr: 2 }} onPress={() => onPressImage(item.attachmentURI)}>
+                  <Image width={40} height={40} uri={item.attachmentURI} />
+                </View>
+              </View>
+            ))}
           </View>
         </View>
 
@@ -433,6 +465,8 @@ const TherapistProfile = () => {
       {interestsModal}
       {personalBio}
       {experienceModal}
+      {areaOfSpecialty}
+      {viewer}
     </View>
   );
 };

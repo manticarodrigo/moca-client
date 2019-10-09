@@ -15,7 +15,13 @@ declare type User = {
   pricePerSixtyMinutes?: string;
   pricePerNintyMinutes?: stirng;
   evaluationPrice?: string;
+  certifications?: Certification[];
 };
+
+declare type Certification = {
+  description: string;
+  attachmentURI: string;
+}
 
 declare type Message = {
   id: string;
