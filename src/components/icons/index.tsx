@@ -71,13 +71,10 @@ export { default as PatientSelectIcon } from './PatientSelectIcon';
 export { default as BigEnvelopeIcon } from './BigEnvelopeIcon';
 export { default as BigEnvelopeRedIcon } from './BigEnvelopeRedIcon';
 export { default as AddLocationBigIcon } from './AddLocationBigIcon';
-<<<<<<< HEAD
 export { default as BuildingIcon } from './BuildingIcon';
 export { default as PinGreyIcon } from './PinGreyIcon';
 export { default as AddIcon } from './AddIcon';
 export { default as BinIcon } from './BinIcon';
 export { default as BinIconRed } from './BinIconRed';
-=======
 export { default as NoMessagesIcon } from './NoMessagesIcon';
 export { default as ScheduleSectionIcon } from './ScheduleSectionIcon';
->>>>>>> 19a77d7593b3a614151ad303e2639aa5ceb1306c
