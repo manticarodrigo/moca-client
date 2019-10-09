@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
 import { Agenda } from 'react-native-calendars';
-import { format, addDays, isToday as checkIsToday } from 'date-fns';
+import { format, addDays, isToday } from 'date-fns';
 
 import { Colors } from '@src/styles';
 
@@ -11,7 +11,6 @@ import Tag from '@src/components/Tag';
 
 type ScheduleItem = {
   dateString: string;
-  isToday: boolean;
   appointments: string;
   completedAppointments: string;
   timeSpent: string;
@@ -37,7 +36,7 @@ const ScheduleScreen = () => {
           const newItems = {};
 
           for (let i = -15; i < 85; i += 1) {
-            const dateString = format(addDays(date.timestamp, i + 1), 'YYYY-MM-DD');
+            const dateString = format(addDays(date.timestamp, i + 1), 'yyyy-MM-dd');
 
             if (!newItems[dateString]) {
               newItems[dateString] = [];
@@ -66,7 +65,7 @@ const ScheduleScreen = () => {
       rowHasChanged={(r1, r2) => r1.dateString !== r2.dateString}
       renderDay={(date, item?: ScheduleItem) => {
         if (date) {
-          const isToday = checkIsToday(date.dateString);
+          const isDateToday = isToday(date.timestamp);
 
           const {
             completedDocuments = '0',
@@ -79,7 +78,7 @@ const ScheduleScreen = () => {
 
           return (
             <View
-              variant={isToday ? 'borderShadowCard' : 'card'}
+              variant={isDateToday ? 'borderShadowCard' : 'card'}
               row
               flex={1}
               spacing={{ mt: 2, mx: 3 }}
@@ -87,21 +86,21 @@ const ScheduleScreen = () => {
             >
               <View column>
                 <View row>
-                  <Text variant={isToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>
+                  <Text variant={isDateToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>
                     {date.day.toString()}
                   </Text>
                   <View column spacing={{ ml: 2 }}>
-                    <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>
+                    <Text variant={isDateToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>
                       {format(date.timestamp, 'MMM')}
                     </Text>
-                    <Text variant={isToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>
+                    <Text variant={isDateToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}>
                       {date.year.toString()}
                     </Text>
                   </View>
                 </View>
 
-                <Text variant={isToday ? 'regularPrimary' : 'regularSecondary'}>
-                  {format(date.timestamp, 'dddd')}
+                <Text variant={isDateToday ? 'regularPrimary' : 'regularSecondary'}>
+                  {format(date.timestamp, 'cccc')}
                 </Text>
               </View>
 
