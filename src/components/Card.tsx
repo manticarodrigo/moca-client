@@ -8,6 +8,15 @@ import {
   MaestroIcon,
   MasterCardIcon,
   VisaIcon,
+  ChangePasswordIcon,
+  NotificationsIcon,
+  BookmarkIcon,
+  InviteFriendsIcon,
+  TermsAndConditionsIcon,
+  SupportAndFeedbackIcon,
+  InstagramIcon,
+  FacebookIcon,
+  TwitterIcon,
 } from '@src/components/icons';
 
 import Text from './Text';
@@ -38,6 +47,28 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
         return { icon: <VisaIcon />, text: title || null };
       case 'addCard':
         return { icon: <AddCardIcon />, text: 'Add New Stripe Account' };
+      case 'changePassword':
+        return { icon: <ChangePasswordIcon />, text: 'Change Password' };
+      case 'notifications':
+        return { icon: <NotificationsIcon />, text: 'Reminders / Notifications' };
+      case 'bookmark':
+        return { icon: <BookmarkIcon />, text: 'Bookmarked Therapist' };
+      case 'inviteFriends':
+        return { icon: <InviteFriendsIcon />, text: 'Invite Your Friends' };
+      case 'supportAndFeedback':
+        return { icon: <SupportAndFeedbackIcon />, text: 'Support & Feedback' };
+      case 'frequentQuestions':
+        return { icon: <SupportAndFeedbackIcon />, text: 'Frequently Asked Questions' };
+      case 'TermsAndConditions':
+        return { icon: <TermsAndConditionsIcon />, text: 'Terms & Conditions' };
+      case 'join':
+        return { icon: <SupportAndFeedbackIcon />, text: 'joinmoca.com' };
+      case 'facebook':
+        return { icon: <FacebookIcon />, text: 'Follow on Facebook' };
+      case 'twitter':
+        return { icon: <TwitterIcon />, text: 'Follow on Twitter' };
+      case 'instagram':
+        return { icon: <InstagramIcon />, text: 'Follow on Instagram' };
       default:
         return null;
     }
@@ -48,10 +79,10 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
       row
       justifyBetween
       width="100%"
-      height={large ? 80 : 50}
+      height={large ? 80 : 60}
       bgColor="white"
       variant="borderBottom"
-      spacing={{ p: 3 }}
+      spacing={{ p: large ? 3 : 2 }}
       onPress={onPress}
     >
       <View row>
@@ -59,15 +90,16 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
           {icon}
         </View>
         <View column spacing={{ mr: 5, ml: 3 }} justifyCenter={!details}>
-          <Text variant="titleSmall">
+          <Text variant={large ? 'titleSmall' : 'regularDark'}>
             {text}
           </Text>
           {details && <Text typography={{ size: 2, weight: '300', color: 'grey' }} spacing={{ mt: 1 }}>{details}</Text>}
         </View>
       </View>
+      {/* {children} I don't understand why eslint is giving me a type error */}
       {arrow
         && (
-          <View spacing={{ m: 3 }}>
+          <View spacing={{ m: 3, pb: large ? null : 3 }}>
             <ArrowRightIcon />
           </View>
         )}
