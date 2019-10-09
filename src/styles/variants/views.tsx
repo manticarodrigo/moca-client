@@ -113,7 +113,6 @@ const patientView: ViewStyle = {
   borderBottomLeftRadius: 16,
 };
 
-
 const patientViewPressed: ViewStyle = {
   ...patientView,
   borderColor: Colors.secondaryDarker,
@@ -147,24 +146,6 @@ const cardLeft: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
-const borderCardRight: ViewStyle = {
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
-  ...cardRight,
-  borderTopWidth: 1,
-  borderRightWidth: 1,
-  borderBottomWidth: 1,
-  borderColor: Colors.primary,
-};
-
-const borderCardLeft: ViewStyle = {
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
-  ...cardLeft,
-  borderTopWidth: 1,
-  borderLeftWidth: 1,
-  borderBottomWidth: 1,
-  borderColor: Colors.primary,
-};
-
 const borderCard: ViewStyle = {
   ...card,
   borderWidth: 2,
@@ -176,6 +157,13 @@ const borderCard: ViewStyle = {
 const shadowCard: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
   ...card,
+};
+
+const borderShadowCard: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...card,
+  borderWidth: 1,
+  borderColor: Colors.primary,
 };
 
 const profileSection: ViewStyle = {
@@ -291,10 +279,9 @@ export {
   card,
   cardRight,
   cardLeft,
-  borderCardRight,
-  borderCardLeft,
   borderCard,
   shadowCard,
+  borderShadowCard,
   profileCard,
   profileData,
   profileSection,
