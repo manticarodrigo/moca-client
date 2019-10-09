@@ -6,7 +6,7 @@ import View from '@src/components/View';
 import TextInput from '@src/components/TextInput';
 
 const ConversationInputs = ({ text, onChangeText, onPressCamera, onPressSend }) => (
-  <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }}>
+  <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }} bgColor="white">
     <View spacing={{ p: 1 }} onPress={onPressCamera}>
       <CameraIcon />
     </View>

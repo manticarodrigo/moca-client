@@ -7,12 +7,13 @@ import {
   InfoIcon,
   MessagesIcon,
   PinIcon,
-} from './icons';
+} from '@src/components/icons';
 
 import View from './View';
 import Image from './Image';
 import Text from './Text';
 import Button from './Button';
+import NotificationBadge from './NotificationBadge';
 
 const AppointmentCardHeader = () => (
   <View row justifyBetween>
@@ -50,6 +51,7 @@ const AppointmentCardInfo = ({ current = false }) => (
       <View row>
         <View variant="iconButton" onPress={() => null}>
           <MessagesIcon size={0.5} />
+          <NotificationBadge />
         </View>
         <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
           <PinIcon size={0.8} />
@@ -59,40 +61,35 @@ const AppointmentCardInfo = ({ current = false }) => (
   </View>
 );
 
-const AppointmentCardButton = () => (
-  <View row justifyCenter spacing={{ mt: 2, ml: 5 }}>
-    <Button variant="secondary">Begin Session</Button>
-  </View>
-);
-
-const CancelAppointmentButton = () => (
-  <View row justifyCenter spacing={{ mt: 2, ml: 5 }}>
-    <Button variant="secondary">Cancel Appointment</Button>
-  </View>
-);
-
 type AppointmentCardProps = {
   current?: boolean;
   isTherapist: boolean;
 };
 
 const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
-  const isStart = current && isTherapist;
-  const isCancel = !current && !isTherapist;
-  const isButton = isStart || isCancel;
+  const canStart = current && isTherapist;
+  const canCancel = !current && !isTherapist;
+  const hasButton = canStart || canCancel;
+
   return (
     <View
       column
       variant={current ? 'borderCard' : 'card'}
-      spacing={{ pb: !isButton && 0 }}
-      bgColor={!isButton ? 'whiteTranslucent' : null}
+      spacing={{ pb: (!current && isTherapist) && 0 }}
+      bgColor={!current ? 'whiteTranslucent' : null}
     >
       <AppointmentCardHeader />
 
       <AppointmentCardInfo current={current} />
 
-      {isStart && <AppointmentCardButton />}
-      {isCancel && <CancelAppointmentButton />}
+      {hasButton && (
+        <View row justifyCenter spacing={{ mt: 2, ml: 5 }}>
+          <Button variant="secondary" bgColor={canCancel ? 'white' : null} onPress={() => null}>
+            {canStart && 'Begin Session'}
+            {canCancel && 'Cancel Appointment'}
+          </Button>
+        </View>
+      )}
     </View>
   );
 };

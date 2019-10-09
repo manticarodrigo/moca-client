@@ -14,7 +14,7 @@ type ConversationMessageProps = {
 
 const ConversationMessage = ({ message, alignRight, onPressImage }: ConversationMessageProps) => {
   const { text, attachmentURI, createdAt } = message;
-  const time = useMemo(() => format(createdAt, 'hh:mm'), [createdAt]);
+  const time = useMemo(() => format(new Date(createdAt), 'hh:mm'), [createdAt]);
 
   const handlePressImage = () => onPressImage(attachmentURI);
 

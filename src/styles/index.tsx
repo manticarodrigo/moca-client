@@ -8,6 +8,7 @@ import * as Shadow from './global/shadow';
 // variants
 import * as Views from './variants/views';
 import * as Buttons from './variants/buttons';
+import * as Texts from './variants/texts';
 
 export { SpacingProp } from './global/spacing';
 export { PositionProp, PositionIndex } from './global/positions';
@@ -22,4 +23,5 @@ export {
   Shadow,
   Views,
   Buttons,
+  Texts,
 };

@@ -1,8 +1,12 @@
 import { useRef, useCallback } from 'react';
 import { SectionList } from 'react-native';
 
-const useScrollToStart = ({ offset }: { offset?: number }) => {
-  const scrollRef = useRef<SectionList<any>>();
+const useScrollToStart = <Item extends object>({ offset }: { offset?: number }) => {
+  const scrollRef = useRef<SectionList<Item>>();
+
+  const setRef = (ref) => {
+    scrollRef.current = ref;
+  };
 
   const scrollToStart = useCallback(() => {
     const { current } = scrollRef;
@@ -16,7 +20,7 @@ const useScrollToStart = ({ offset }: { offset?: number }) => {
     }
   }, [scrollRef, offset]);
 
-  return { scrollRef, scrollToStart };
+  return { setRef, scrollToStart };
 };
 
 export default useScrollToStart;

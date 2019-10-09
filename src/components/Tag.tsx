@@ -9,7 +9,7 @@ import Text from './Text';
 import View from './View';
 
 type TagProps = {
-  placeholder: string;
+  placeholder: string | number;
   icon?: 'report' | 'appointment' | 'clock' | 'dollar';
   type?: 'fill' | 'border' | 'borderLight';
   center?: boolean;
@@ -45,7 +45,8 @@ const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) 
       borderRadius: Spacing.spaceSize[5],
       borderWidth: 1,
       borderColor,
-      minWidth: 50,
+      width: 70,
+      height: 25,
     },
     text: {
       ...Spacing.getStyles({ ml: 1 }),
@@ -78,7 +79,7 @@ const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) 
       style={styles.view}
     >
       {iconType}
-      <Text style={styles.text}>{placeholder}</Text>
+      <Text style={styles.text}>{placeholder.toString()}</Text>
     </View>
   );
 };

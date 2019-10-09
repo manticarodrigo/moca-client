@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
-import { Colors } from '../../styles';
+import { Colors } from '@src/styles';
 
 const BothGendersIcon = ({ focused }) => (
   <Svg width="50px" height="28px" viewBox="0 0 50 28">

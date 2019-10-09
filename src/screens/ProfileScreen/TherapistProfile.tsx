@@ -2,7 +2,19 @@ import React, { useState } from 'react';
 
 import useNavigation from '@src/hooks/useNavigation';
 
-import { RadiusLocationIcon, ArrowRightIcon, Badge2Icon, BioIcon, GenderIcon, InterestIcon, PriceRateIcon, QualificationIcon, RateIcon, StatusIcon, SwitchIcon } from '@src/components/icons';
+import {
+  RadiusLocationIcon,
+  ArrowRightIcon,
+  Badge2Icon,
+  BioIcon,
+  GenderIcon,
+  InterestIcon,
+  PriceRateIcon,
+  QualificationIcon,
+  RateIcon,
+  StatusIcon,
+  SwitchIcon,
+} from '@src/components/icons';
 
 import Text from '@src/components/Text';
 import View from '@src/components/View';

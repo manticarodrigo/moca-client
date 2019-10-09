@@ -1,6 +1,6 @@
 import React from 'react';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 
-import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
 
 import { LogoIcon, StarsIcon, RightIcon } from '@src/components/icons';
@@ -14,12 +14,11 @@ import View from '@src/components/View';
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
-const ProfileScreen = () => {
-  const navigation = useNavigation();
-  const onPressRight = () => navigation.navigate('home');
+const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
+  const onPressRight = () => navigation.navigate('ConversationScreen');
 
-  const [{ registrationState: { userInformation } }] = useStore();
-  const isTherapist = userInformation.type === 'Therapist';
+  const { store } = useStore();
+  const isTherapist = store.user.type === 'caregiver';
 
   const name = 'John Connor Jacob'; // TODO: get the real value
 
