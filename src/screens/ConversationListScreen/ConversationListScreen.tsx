@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import { getConversations } from '@src/store/actions/ConversationAction';
 
@@ -14,7 +14,7 @@ import ConversationListCard from './ConversationListCard';
 
 const ConversationSectionList: SectionList<Conversation> = SectionList;
 
-const ConversationListScreen = ({ navigation }: NavigationStackScreenProps) => {
+const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
   const sections = useDateSections(
     store.conversations,
