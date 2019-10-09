@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { StackActions, NavigationActions, Header } from 'react-navigation';
 import { KeyboardAvoidingView } from 'react-native';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
-import useNavigation from '@src/hooks/useNavigation';
 import useStore from '@src/hooks/useStore';
 import { resetUserInformation } from '@src/store/actions/RegistrationAction';
 
@@ -10,20 +9,14 @@ import { resetUserInformation } from '@src/store/actions/RegistrationAction';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
-import HeaderTitle from '@src/components/HeaderTitle';
-import BackButton from '@src/components/BackButton';
 import FormField from '@src/components/FormField';
-
-
-import { Views, Spacing, Colors } from '@src/styles';
 
 import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
 import EmailIcon from '@src/assets/Icons/email.png';
 
-const InvalidZipCodeScreen = () => {
-  const navigation = useNavigation();
+const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { dispatch } = useStore();
   const [email, setEmail] = useState('');
-  const [, dispatch] = useStore();
   const [isEmailValid, setIsEmailValid] = useState(true);
   const paddingOffset = 80;
   const isButtonDisabled = email === '' || !isEmailValid;
@@ -43,10 +36,7 @@ const InvalidZipCodeScreen = () => {
       submitEmail();
       dispatch(resetUserInformation());
 
-      navigation.dispatch(StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })],
-      }));
+      navigation.popToTop();
     } else {
       setIsEmailValid(false);
     }
@@ -56,7 +46,7 @@ const InvalidZipCodeScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={Header.HEIGHT + paddingOffset}
+      keyboardVerticalOffset={paddingOffset}
     >
       <View safeArea alignCenter justifyEnd>
         <View spacing={{ mt: 4, mx: 3 }} alignCenter>
@@ -113,14 +103,8 @@ const InvalidZipCodeScreen = () => {
   );
 };
 
-InvalidZipCodeScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Location" />,
-  headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
+InvalidZipCodeScreen.navigationOptions = {
+  title: 'Location',
+};
+
 export default InvalidZipCodeScreen;

@@ -1,9 +1,28 @@
-import { ViewStyle, StyleSheet, Dimensions, View } from 'react-native';
+import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
 import * as Colors from '../global/colors';
+
+const rounded: ViewStyle = {
+  ...Borders.primary,
+};
+
+const progressBar: ViewStyle = {
+  ...rounded,
+  ...Spacing.getStyles({ p: 1 }),
+  height: 16,
+  maxWidth: 200,
+  backgroundColor: Colors.lightGrey,
+};
+
+const progressBarIndicator: ViewStyle = {
+  ...rounded,
+  flexDirection: 'row',
+  height: '100%',
+  backgroundColor: Colors.grey,
+};
 
 const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
@@ -45,6 +64,22 @@ const roundedBorder: ViewStyle = {
   borderRadius: 5,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderLeft: ViewStyle = {
+  borderTopLeftRadius: 5,
+  borderBottomLeftRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderRight: ViewStyle = {
+  borderTopRightRadius: 5,
+  borderBottomRightRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.secondary,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
@@ -112,24 +147,6 @@ const cardLeft: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
-const borderCardRight: ViewStyle = {
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
-  ...cardRight,
-  borderTopWidth: 1,
-  borderRightWidth: 1,
-  borderBottomWidth: 1,
-  borderColor: Colors.primary,
-};
-
-const borderCardLeft: ViewStyle = {
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
-  ...cardLeft,
-  borderTopWidth: 1,
-  borderLeftWidth: 1,
-  borderBottomWidth: 1,
-  borderColor: Colors.primary,
-};
-
 const borderCard: ViewStyle = {
   ...card,
   borderWidth: 2,
@@ -141,6 +158,13 @@ const borderCard: ViewStyle = {
 const shadowCard: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
   ...card,
+};
+
+const borderShadowCard: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...card,
+  borderWidth: 1,
+  borderColor: Colors.primary,
 };
 
 const profileSection: ViewStyle = {
@@ -205,7 +229,35 @@ const bottomBounceFill: ViewStyle = {
   height: Dimensions.get('screen').height,
 };
 
+const notificationBadge: ViewStyle = {
+  position: 'absolute',
+  top: -5,
+  right: -5,
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: 22,
+  height: 22,
+  borderRadius: 11,
+  borderWidth: 1,
+  borderColor: Colors.white,
+  backgroundColor: Colors.error,
+};
+
+const notificationBadgeLarge: ViewStyle = {
+  ...notificationBadge,
+  top: 0,
+  right: 0,
+  width: 28,
+  height: 28,
+  borderRadius: 14,
+  borderWidth: 3,
+  borderColor: Colors.errorLighter,
+};
+
 export {
+  rounded,
+  progressBar,
+  progressBarIndicator,
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
@@ -218,10 +270,9 @@ export {
   card,
   cardRight,
   cardLeft,
-  borderCardRight,
-  borderCardLeft,
   borderCard,
   shadowCard,
+  borderShadowCard,
   profileCard,
   profileData,
   profileSection,
@@ -230,6 +281,10 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderLeft,
+  roundedBorderRight,
   patientViewPressed,
   patientView,
+  notificationBadge,
+  notificationBadgeLarge,
 };

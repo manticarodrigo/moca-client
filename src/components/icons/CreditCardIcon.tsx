@@ -15,7 +15,7 @@ const CreditCardIcon = () => (
       <G
         id="Assets"
         transform="translate(-1114.000000, -688.000000)"
-        stroke="#819E3F"
+        stroke="#C5D2DC"
       >
         <G id="credit-card" transform="translate(1114.000000, 688.000000)">
           <Path d="M4.375,10.625 L8.125,10.625" id="Path" />
@@ -29,6 +29,6 @@ const CreditCardIcon = () => (
       </G>
     </G>
   </Svg>
-)
+);
 
 export default CreditCardIcon;

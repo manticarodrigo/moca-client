@@ -62,6 +62,6 @@ const StarsIcon = ({ number = 0 }) => (
       </G>
     </G>
   </Svg>
-)
+);
 
 export default StarsIcon;

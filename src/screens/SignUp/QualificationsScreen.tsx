@@ -1,23 +1,18 @@
 import React from 'react';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
-import BackButton from '@src/components/BackButton';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import HeaderTitle from '@src/components/HeaderTitle';
 import CheckBox from '@src/components/Checkbox';
 
 import useStore from '@src/hooks/useStore';
-import useNavigation from '@src/hooks/useNavigation';
 
 import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
-import { Views, Spacing, Colors } from '@src/styles';
-
-const QualificationsScreen = () => {
-  const navigation = useNavigation();
-  const userName = navigation.getParam('name', '');
-  const [{ registrationState: { userInformation: { qualifications } } }, dispatch] = useStore();
+const QualifiactionsScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { store, dispatch } = useStore();
+  const { name, qualifications } = store.registrationState.userInformation;
   const isButtonDisabled = !(qualifications.filter((x) => x.value === true).length > 0);
 
 
@@ -28,7 +23,7 @@ const QualificationsScreen = () => {
   };
 
   const handleButtonPress = () => {
-    navigation.navigate('AddressScreen');
+    navigation.push('AddressScreen');
   };
 
   return (
@@ -36,7 +31,7 @@ const QualificationsScreen = () => {
       <View spacing={{ mx: 3 }}>
         <View row wrap justifyCenter>
           <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up,</Text>
-          <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{userName}</Text>
+          <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{name}</Text>
         </View>
         <View alignCenter spacing={{ mt: 4 }} wrap>
           <Text variant="regular" typography={{ align: 'center' }}>
@@ -65,7 +60,7 @@ const QualificationsScreen = () => {
               onPress={handleButtonPress}
               disabled={isButtonDisabled}
             >
-          Continue
+              Continue
             </Button>
           </View>
         </View>
@@ -74,16 +69,8 @@ const QualificationsScreen = () => {
   );
 };
 
+QualifiactionsScreen.navigationOptions = {
+  title: 'Qualifications',
+};
 
-QualificationsScreen.navigationOptions = () => ({
-  headerTitle: <HeaderTitle title="Qualifications" />,
-  headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-    height: 80,
-  },
-});
-
-export default QualificationsScreen;
+export default QualifiactionsScreen;

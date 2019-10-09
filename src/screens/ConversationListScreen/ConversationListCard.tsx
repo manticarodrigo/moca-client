@@ -5,30 +5,26 @@ import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
-type ConversationListCardProps = {
-  currentUser: User;
+type Props = {
+  user: User;
   conversation: Conversation;
   onPress: (conversation: Conversation) => void;
 };
 
-const ConversationListCard = ({
-  currentUser,
-  conversation,
-  onPress,
-}: ConversationListCardProps) => {
+const ConversationListCard = ({ user, conversation, onPress }: Props) => {
   const handleCardPress = () => onPress(conversation);
 
   const { imageUrl, username, time, text } = useMemo(() => {
-    const otherParticipant = conversation.participants.find(({ id }) => id !== currentUser.id);
+    const otherParticipant = conversation.participants.find(({ id }) => id !== user.id);
     const latestMessage = conversation.messages[conversation.messages.length - 1];
 
     return {
       imageUrl: otherParticipant.imageUrl,
       username: otherParticipant.username,
-      time: format(latestMessage.createdAt, 'h:mm a / DD.MM.YYYY'),
+      time: format(new Date(latestMessage.createdAt), 'h:mm a / dd.MM.yyyy'),
       text: latestMessage.text,
     };
-  }, [conversation, currentUser.id]);
+  }, [conversation, user.id]);
 
   return (
     <View variant="borderBottom" spacing={{ p: 3 }} onPress={handleCardPress} bgColor="white">

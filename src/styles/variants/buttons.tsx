@@ -18,7 +18,9 @@ const primary: ButtonVariant = {
     ...Borders.primary,
     backgroundColor: Colors.primary,
   },
-  text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
+  text: {
+    ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' })
+  },
   underlayColor: Colors.secondary,
 };
 
@@ -40,7 +42,9 @@ const primaryDisabled: ButtonVariant = {
     ...Borders.primary,
     backgroundColor: Colors.buttonDisabled,
   },
-  text: { ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }) },
+  text: {
+    ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }),
+  },
   underlayColor: null,
 };
 
@@ -67,7 +71,9 @@ const secondaryShadow: ButtonVariant = {
     backgroundColor: 'transparent',
     width: '90%',
   },
-  text: { ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }) },
+  text: {
+    ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }),
+  },
   underlayColor: null,
 };
 
