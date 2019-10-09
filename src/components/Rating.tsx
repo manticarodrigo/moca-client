@@ -25,8 +25,8 @@ const Rating = ({ rate }: RatingProps) => {
   };
 
   return (
-    <View row alignCenter spacing={{ m: 1, p: 2 }}>
-      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{rate}</Text>
+    <View row alignCenter>
+      <Text variant="titleSmallSecondary" spacing={{ mr: 1 }}>{rate}</Text>
       {stars[rate]}
     </View>
   );

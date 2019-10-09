@@ -15,7 +15,7 @@ import DashboardLinks from './DashboardLinks';
 
 const DashboardScreen = () => {
   const { store } = useStore();
-  const [isTherapist] = useState(store.user.type === 'caregiver');
+  const [isTherapist] = useState(false);
   const [isActivated] = useState(true);
   const [isFiltering, setFiltering] = useState(false);
 

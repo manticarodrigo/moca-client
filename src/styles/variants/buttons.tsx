@@ -47,6 +47,21 @@ const primaryDisabled: ButtonVariant = {
   underlayColor: null,
 };
 
+const primaryBorder: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 2 }),
+    ...Borders.primary,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    backgroundColor: 'transparent',
+    width: '90%',
+  },
+  text: {
+    ...Typography.getStyles({ color: 'primary', size: 3, weight: '700', align: 'center' }),
+  },
+  underlayColor: null,
+};
+
 const secondary: ButtonVariant = {
   view: {
     ...Spacing.getStyles({ p: 2 }),
@@ -122,4 +137,5 @@ export {
   secondary,
   buttonPressed,
   primaryDisabled,
+  primaryBorder,
 };

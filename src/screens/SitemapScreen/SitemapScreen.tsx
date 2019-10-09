@@ -44,6 +44,7 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Profile',
       screens: [
         'ProfileScreen',
+        'HistoryScreen',
       ],
     },
   ];
