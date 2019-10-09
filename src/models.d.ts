@@ -19,6 +19,7 @@ declare type User = {
 };
 
 declare type Certification = {
+  id: string;
   description: string;
   attachmentURI: string;
 }

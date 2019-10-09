@@ -4,6 +4,8 @@ import * as Typography from '../global/typography';
 export const link = { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary', decoration: 'underline' }) };
 export const title = { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) };
 export const regular = { ...Typography.getStyles({ color: 'semiGrey', size: 2, weight: '500' }) };
+export const regularDark = { ...Typography.getStyles({ size: 2, weight: '500', color: 'dark' }) };
+export const regularSemiGrey = { ...Typography.getStyles({ size: 2, weight: '500', color: 'semiGrey' }) };
 export const error = { ...Typography.getStyles({ color: 'error', size: 4, weight: '700' }) };
 export const errorSmall = { ...Typography.getStyles({ color: 'error', size: 1, weight: '500' }) };
 export const titleWhite = { ...Typography.getStyles({ size: 4, weight: '700', color: 'white' }) };

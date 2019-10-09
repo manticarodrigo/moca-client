@@ -19,7 +19,7 @@ const primary: ButtonVariant = {
     backgroundColor: Colors.primary,
   },
   text: {
-    ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' })
+    ...Typography.getStyles({ color: 'white', size: 3, weight: '700', align: 'center' }),
   },
   underlayColor: Colors.secondary,
 };
@@ -132,6 +132,7 @@ const logout: ButtonVariant = {
   view: {
     ...Spacing.getStyles({ p: 3 }),
     ...Borders.primary,
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: Colors.error,
     backgroundColor: 'transparent',

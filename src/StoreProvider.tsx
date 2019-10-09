@@ -52,9 +52,9 @@ const initialState: StoreState = {
     imageUrl: mockImg,
     type: 'caregiver',
     certifications: [
-      { description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
-      { description: 'USMLE Certified', attachmentURI: certificate1 },
-      { description: 'ACLS Certified', attachmentURI: certificate1 },
+      { id: '1', description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
+      { id: '2', description: 'USMLE Certified', attachmentURI: certificate1 },
+      { id: '3', description: 'ACLS Certified', attachmentURI: certificate1 },
     ],
     licenseNumber: '1234123',
   },

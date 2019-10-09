@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 
@@ -14,13 +14,11 @@ import View from '@src/components/View';
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
-const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
-  const onPressRight = () => navigation.navigate('ConversationScreen');
+const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const onPressRight = () => navigation.navigate('ProfileSettingsScreen');
 
-  const { store: { registrationState: { type } } } = useStore();
-  const isTherapist = type === 'Therapist'; // to change to user store later
-
-  const name = 'John Connor Jacob'; // TODO: get the real value
+  const { store } = useStore();
+  const isTherapist = store.user.type === 'caregiver';
 
   const rating = 1; // TODO: get the real value
   let ratingTag = null;
@@ -34,28 +32,23 @@ const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
   }
 
   return (
-    <View flex={1} bgColor="primary">
+    <View safeArea flex={1} bgColor="primary">
 
       <View row justifyEnd absoluteFill spacing={{ mt: -6, mr: -5 }}>
         <LogoIcon size={2} />
       </View>
 
-      <View row alignCenter justifyCenter height={56} spacing={{ py: 2, mt: 5 }}>
-        <View column alignCenter width={271}>
-          <Text variant="titleSmallWhite">Profile</Text>
-        </View>
-        <View column alignEnd onPress={onPressRight}>
-          <RightIcon />
-        </View>
+      <View row justifyBetween alignCenter width="100%" spacing={{ p: 4, pt: 3 }}>
+        <View width={32} height={32} />
+        <Text variant="titleSmallWhite">Profile</Text>
+        <View onPress={onPressRight}><RightIcon /></View>
       </View>
 
-      <View alignCenter justifyCenter spacing={{ pt: 2, pb: 4 }}>
-        <View row justifyCenter spacing={{ pt: 4 }}>
-          <Image rounded size={80} uri={mockImg} />
-          <View column justifyCenter spacing={{ px: 2 }}>
-            <Text variant="titleWhite">{name}</Text>
-            {ratingTag}
-          </View>
+      <View row spacing={{ p: 4 }}>
+        <Image rounded size={80} uri={mockImg} />
+        <View column justifyCenter spacing={{ px: 3 }}>
+          <Text variant="titleWhite">{store.user.username}</Text>
+          {ratingTag}
         </View>
       </View>
       { isTherapist ? <TherapistProfile /> : <PatientProfile /> }

@@ -18,6 +18,7 @@ import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
+import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
 import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
 import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
 import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
@@ -80,6 +81,7 @@ const AppStack = createSwitchNavigator(
 
       ProfileTab: createStackNavigator({
         ProfileScreen,
+        ProfileSettingsScreen,
         AddressSettingScreen,
         AddressScreen,
         WalletScreen,
