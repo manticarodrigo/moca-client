@@ -9,6 +9,7 @@ import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
 
 import { mockImg } from '@src/services/mock';
+import { certificate1 } from '@src/utlities/images';
 
 export type StoreState = {
   user: UserState;
@@ -50,21 +51,25 @@ const initialState: StoreState = {
     username: 'John Doe',
     imageUrl: mockImg,
     type: 'caregiver',
+    certifications: [
+      { description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
+      { description: 'USMLE Certified', attachmentURI: certificate1 },
+      { description: 'ACLS Certified', attachmentURI: certificate1 },
+    ],
+    licenseNumber: '1234123',
   },
   conversations: [],
   registrationState: {
-    userInformation: {
-      qualifications: [
-        { name: 'Neck', value: 0 },
-        { name: 'Shoulder', value: 0 },
-        { name: 'Elbow', value: 0 },
-        { name: 'Low Back', value: 0 },
-        { name: 'Knee', value: 0 },
-        { name: 'Ankle/Foot', value: 0 },
-        { name: 'Other', value: 0 },
-      ],
-      address: [],
-    },
+    qualifications: [
+      { name: 'Neck', value: 0 },
+      { name: 'Shoulder', value: 0 },
+      { name: 'Elbow', value: 0 },
+      { name: 'Low Back', value: 0 },
+      { name: 'Knee', value: 0 },
+      { name: 'Ankle/Foot', value: 0 },
+      { name: 'Other', value: 0 },
+    ],
+    addresses: [],
   },
 };
 

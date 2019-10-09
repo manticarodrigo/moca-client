@@ -4,7 +4,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { resetUserInformation } from '@src/store/actions/RegistrationAction';
-
+import { validateEmailAddress } from '@src/utlities/validations';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -22,16 +22,10 @@ const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) =>
   const isButtonDisabled = email === '' || !isEmailValid;
 
 
-  const validateEmailAddress = () => {
-    // eslint-disable-next-line no-useless-escape
-    const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
-    return regexpEmail.test(email);
-  };
-
   const submitEmail = () => false; // Api call
 
   const handleButtonPress = () => {
-    if (validateEmailAddress()) {
+    if (validateEmailAddress(email)) {
       setIsEmailValid(true);
       submitEmail();
       dispatch(resetUserInformation());

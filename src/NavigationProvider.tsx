@@ -24,6 +24,7 @@ import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
 import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/SignUp/AddressScreen';
 import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
+import AddressSettingScreen from '@src/screens/ProfileScreen/AddressSettingScreen';
 import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
 
 const defaultNavConfig = {
@@ -43,6 +44,7 @@ const defaultNavConfig = {
     headerTitleStyle: {
       ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
     },
+    headerRight: null,
   }),
 };
 
@@ -78,6 +80,8 @@ const AppStack = createSwitchNavigator(
 
       ProfileTab: createStackNavigator({
         ProfileScreen,
+        AddressSettingScreen,
+        AddressScreen,
         WalletScreen,
       }, defaultNavConfig),
 

@@ -12,7 +12,7 @@ import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 
 const QualifiactionsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const { name, qualifications } = store.registrationState.userInformation;
+  const { name, qualifications } = store.registrationState;
   const isButtonDisabled = !(qualifications.filter((x) => x.value === true).length > 0);
 
 
@@ -23,7 +23,7 @@ const QualifiactionsScreen: NavigationStackScreenComponent = ({ navigation }) =>
   };
 
   const handleButtonPress = () => {
-    navigation.push('AddressScreen');
+    navigation.navigate('AddressScreen', { title: 'Address' });
   };
 
   return (
@@ -42,8 +42,16 @@ const QualifiactionsScreen: NavigationStackScreenComponent = ({ navigation }) =>
         </View>
         <View spacing={{ mt: 3 }} scroll>
           {qualifications.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-            <View key={index} row justifyBetween alignCenter variant="borderTop" spacing={{ mb: 3 }} width="100%">
+            <View
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              row
+              justifyBetween
+              alignCenter
+              variant="borderTop"
+              spacing={{ mb: 3 }}
+              width="100%"
+            >
               <Text variant="titleSmall" spacing={{ mb: 2, mt: 3 }}>{item.name}</Text>
               <CheckBox
                 isChecked={item.value}

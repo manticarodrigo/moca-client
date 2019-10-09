@@ -9,29 +9,24 @@ import Button from '@src/components/Button';
 import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 import FormField from '@src/components/FormField';
 
-import { ParamList } from '@src/routes/AuthStack';
+import { validateZipCode } from '@src/utlities/validations';
 
-type ZipCodeScreenProps = {
-  navigateToScreen: (name: keyof ParamList) => void;
+type ZipCodeModalProps = {
+  navigateToScreen: (name: string) => void;
 };
 
-const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
-  const { store, dispatch } = useStore();
+const ZipCodeModal = ({ navigateToScreen }: ZipCodeModalProps) => {
+  const { store: { registrationState: { addresses } }, dispatch } = useStore();
   const [zipCode, setZipCode] = useState('');
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
 
   const isButtonDisabled = zipCode === '' || !isZipCodeValid;
 
-  const validateZipCode = (userInput: string) => {
-    const regexpNumber = new RegExp('^[+ 0-9]{5}$');
-    return regexpNumber.test(userInput);
-  };
-
   useEffect(() => {
-    if (Object.prototype.hasOwnProperty.call(store.registrationState.userInformation, 'zipCode')) {
-      setZipCode(store.registrationState.userInformation.zipCode);
+    if (addresses.length !== 0) {
+      setZipCode(addresses[0].zipCode);
 
-      if (!validateZipCode(store.registrationState.userInformation.zipCode)) {
+      if (!validateZipCode(addresses[0].zipCode)) {
         setIsZipCodeValid(false);
       }
     }
@@ -41,7 +36,10 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   const getLocation = () => true; // api call to check zipCode availability
 
   const handleButtonPress = () => {
-    dispatch(updateUserInfomation({ zipCode }));
+    const newAddresses = [];
+    newAddresses.push({ zipCode });
+
+    dispatch(updateUserInfomation({ addresses: newAddresses }));
 
     if (validateZipCode(zipCode)) {
       setIsZipCodeValid(true);
@@ -104,7 +102,7 @@ const ZipCodeScreen = ({ navigateToScreen }: ZipCodeScreenProps) => {
   );
 };
 
-ZipCodeScreen.navigationOptions = {
+ZipCodeModal.navigationOptions = {
   header: null,
 };
-export default ZipCodeScreen;
+export default ZipCodeModal;
