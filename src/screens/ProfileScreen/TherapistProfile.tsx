@@ -438,7 +438,11 @@ const TherapistProfile = () => {
                 <View justifyCenter>
                   <Text variant="regularSmallGrey">{item.description}</Text>
                 </View>
-                <View alignCenter spacing={{ mr: 2 }} onPress={() => onPressImage(item.attachmentURI)}>
+                <View
+                  alignCenter
+                  spacing={{ mr: 2 }}
+                  onPress={() => onPressImage(item.attachmentURI)}
+                >
                   <Image width={40} height={40} uri={item.attachmentURI} />
                 </View>
               </View>
