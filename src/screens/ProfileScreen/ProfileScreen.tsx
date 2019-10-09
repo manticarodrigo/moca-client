@@ -18,7 +18,7 @@ const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
   const onPressRight = () => navigation.navigate('ConversationScreen');
 
   const { store: { registrationState: { type } } } = useStore();
-  const isTherapist = type === 'Therapist';
+  const isTherapist = type === 'Therapist'; // to change to user store later
 
   const name = 'John Connor Jacob'; // TODO: get the real value
 
@@ -58,8 +58,7 @@ const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
           </View>
         </View>
       </View>
-      <TherapistProfile />
-      {/* { isTherapist ? <TherapistProfile /> : <PatientProfile /> } */}
+      { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
 
     </View>
   );
