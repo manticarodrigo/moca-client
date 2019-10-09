@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js b/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js
+index aa31f4e..8aac256 100644
+--- a/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js
++++ b/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js
+@@ -64,9 +64,7 @@ class ReservationListItem extends Component {
+     return (
+       <View style={this.styles.container}>
+         {this.renderDate(date, reservation)}
+-        <View style={{flex:1}}>
+-          {content}
+-        </View>
++        {content}
+       </View>
+     );
+   }

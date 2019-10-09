@@ -14,12 +14,12 @@ const AwayCard = ({ dateStart, dateEnd }) => {
     endMonthYear,
     endDayOfWeek,
   } = useMemo(() => ({
-    startDayOfMonth: format(dateStart, 'DD'),
-    startMonthYear: format(dateStart, 'MMM YYYY'),
-    startDayOfWeek: format(dateStart, 'dddd'),
-    endDayOfMonth: format(dateEnd, 'DD'),
-    endMonthYear: format(dateEnd, 'MMM YYYY'),
-    endDayOfWeek: format(dateEnd, 'dddd'),
+    startDayOfMonth: format(dateStart, 'dd'),
+    startMonthYear: format(dateStart, 'MMM yyyy'),
+    startDayOfWeek: format(dateStart, 'cccc'),
+    endDayOfMonth: format(dateEnd, 'dd'),
+    endMonthYear: format(dateEnd, 'MMM yyyy'),
+    endDayOfWeek: format(dateEnd, 'cccc'),
   }), [dateStart, dateEnd]);
 
   return (
@@ -57,9 +57,11 @@ const AwayCard = ({ dateStart, dateEnd }) => {
 
       <View row justifyBetween variant="card" bgColor="warning">
         <NoMessagesIcon />
-        <Text variant="regularPrimary">
-          You are set as away. You will not receive messages or show up in search.
-        </Text>
+        <View row flex={1} spacing={{ px: 3 }}>
+          <Text variant="regularPrimary">
+            You are set as away. You will not receive messages or show up in search.
+          </Text>
+        </View>
       </View>
 
     </View>
