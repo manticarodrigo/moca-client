@@ -434,13 +434,13 @@ const TherapistProfile = () => {
           <View column variant="profileDataLast">
             <Text variant="boldDark">Certifications</Text>
             {user.certifications.map((item, index) => (
-              <View row flex={1} justifyBetween key={index} variant="profileData">
+              <View row flex={1} alignCenter justifyBetween key={index} variant="profileData">
                 <View justifyCenter>
                   <Text variant="regularSmallGrey">{item.description}</Text>
                 </View>
                 <View
-                  alignCenter
-                  spacing={{ mr: 2 }}
+                  justifyCenter
+                  spacing={{ mr: 4 }}
                   onPress={() => onPressImage(item.attachmentURI)}
                 >
                   <Image width={40} height={40} uri={item.attachmentURI} />
