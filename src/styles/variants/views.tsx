@@ -113,7 +113,6 @@ const patientView: ViewStyle = {
   borderBottomLeftRadius: 16,
 };
 
-
 const patientViewPressed: ViewStyle = {
   ...patientView,
   borderColor: Colors.secondaryDarker,

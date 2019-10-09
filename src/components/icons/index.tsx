@@ -73,4 +73,5 @@ export { default as PatientSelectIcon } from './PatientSelectIcon';
 export { default as BigEnvelopeIcon } from './BigEnvelopeIcon';
 export { default as BigEnvelopeRedIcon } from './BigEnvelopeRedIcon';
 export { default as AddLocationBigIcon } from './AddLocationBigIcon';
+export { default as NoMessagesIcon } from './NoMessagesIcon';
 export { default as ScheduleSectionIcon } from './ScheduleSectionIcon';
