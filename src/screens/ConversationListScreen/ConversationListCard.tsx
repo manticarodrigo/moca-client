@@ -5,17 +5,13 @@ import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
-type ConversationListCardProps = {
+type Props = {
   user: User;
   conversation: Conversation;
   onPress: (conversation: Conversation) => void;
 };
 
-const ConversationListCard = ({
-  user,
-  conversation,
-  onPress,
-}: ConversationListCardProps) => {
+const ConversationListCard = ({ user, conversation, onPress }: Props) => {
   const handleCardPress = () => onPress(conversation);
 
   const { imageUrl, username, time, text } = useMemo(() => {
@@ -25,7 +21,7 @@ const ConversationListCard = ({
     return {
       imageUrl: otherParticipant.imageUrl,
       username: otherParticipant.username,
-      time: format(latestMessage.createdAt, 'h:mm a / DD.MM.YYYY'),
+      time: format(new Date(latestMessage.createdAt), 'h:mm a / dd.MM.yyyy'),
       text: latestMessage.text,
     };
   }, [conversation, user.id]);

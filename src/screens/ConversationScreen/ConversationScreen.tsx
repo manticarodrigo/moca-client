@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, SectionList } from 'react-native';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
@@ -11,8 +11,6 @@ import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
 import { Views, Colors } from '@src/styles';
-
-import { InfoIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -26,7 +24,7 @@ type State = Conversation & { text: string }
 
 const ConversationSectionList: SectionList<Message> = SectionList;
 
-const ConversationScreen = ({ navigation }: NavigationStackScreenProps) => {
+const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store } = useStore();
   const [state, setState] = useState<State>({
     id: null,

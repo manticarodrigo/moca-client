@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { SectionListData } from 'react-native';
-import { format, distanceInWordsToNow } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 
 type SectionMap<Item> = { [key: string]: SectionListData<Item> }
 
@@ -8,15 +8,15 @@ const useDateSections = <Item extends object>
   (items: Item[], getItemDate: (item: Item) => string) => useMemo(() => {
     const sectionsMap: SectionMap<Item> = items.reduce((map, item) => {
       // get current item timestamp
-      const createdAt = getItemDate(item);
+      const createdAt = new Date(getItemDate(item));
       // get current section key
-      const key = format(createdAt, 'MMDDYYYY');
+      const key = format(createdAt, 'yyyy-MM-dd');
       // get current section props
       const { title = null, data = null } = map[key] || {};
 
       // assign new values to current section
       const section: SectionListData<Item> = {
-        title: title || distanceInWordsToNow(createdAt, { addSuffix: true }),
+        title: title || formatDistanceToNow(createdAt, { addSuffix: true }),
         data: Array.isArray(data) ? data.concat([item]) : [item],
       };
 
