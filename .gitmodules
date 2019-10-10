@@ -1,0 +1,3 @@
+[submodule "moca-api"]
+	path = moca-api
+	url = ssh://git@gitlab.approdite.io:2200/moca/moca-api.git
