@@ -1,19 +1,17 @@
 import React, { useMemo, forwardRef } from 'react';
 import {
   StyleSheet,
+  TextStyle,
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
 } from 'react-native';
 
 import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/styles';
 
-const variants = {
+const variants: { [key: string]: TextStyle } = {
   conversation: {
     height: '100%',
     borderRadius: 24,
-    backgroundColor: Colors.lightGrey,
-  },
-  search: {
     backgroundColor: Colors.lightGrey,
   },
 };

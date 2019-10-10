@@ -92,7 +92,6 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
         </LinkCard>
       )}
 
-
       {(!isTherapist || isActivated) && <View variant="bottomBounceFill" bgColor="lightGrey" />}
 
     </View>

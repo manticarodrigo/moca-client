@@ -27,13 +27,12 @@ const DashboardSearch = ({ name }: { name: string }) => {
           flex={1}
           row
           alignCenter
-          bgColor="lightGrey"
+          bgColor="white"
         >
           <View spacing={{ px: 3 }} onPress={onPressSearch}>
             <SearchIcon />
           </View>
           <TextInput
-            variant="search"
             typography={{ color: 'primary', weight: '700' }}
             onChangeText={onChangeText}
             placeholder="Therapists Search..."

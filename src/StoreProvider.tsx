@@ -50,7 +50,7 @@ const initialState: StoreState = {
     id: '0',
     username: 'John Doe',
     imageUrl: mockImg,
-    type: 'caregiver',
+    type: 'patient',
     certifications: [
       { id: '1', description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
       { id: '2', description: 'USMLE Certified', attachmentURI: certificate1 },
