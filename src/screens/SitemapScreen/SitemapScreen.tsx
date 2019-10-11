@@ -4,8 +4,48 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
+import api from '@src/services/api';
+
 const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPress = (routeName: string) => navigation.navigate(routeName);
+
+  React.useEffect(() => {
+    const register = async () => {
+      try {
+        // const { data } = await api.login({
+        //   email: 'moca-admin@approdite.com',
+        //   password: 'xL2L!!6rZ#',
+        // });
+  
+        // const { data } = await api.createANewPatient({
+        //   user: {
+        //     email: 'test@test.com',
+        //     firstName: 'Billy Bob',
+        //     lastName: 'Thorton',
+        //     password: 'password123',
+        //     gender: 'M',
+        //   },
+        //   addresses: [{
+        //     name: 'Home',
+        //     primary: true,
+        //     apartment: 'Mars',
+        //     text: 'awesome',
+        //     location: {
+        //       type: 'Point',
+        //       coordinates: [21.35, 0.53],
+        //     },
+        //   }],
+        //   fcmdeviceSet: [],
+        // });
+  
+        // console.log(data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    register();
+  }, []);
 
   const map = [
     {
