@@ -13,9 +13,12 @@ declare type User = {
   interests?: string;
   pricePerThirtyMinutes?: string;
   pricePerSixtyMinutes?: string;
-  pricePerNintyMinutes?: stirng;
+  pricePerNintyMinutes?: string;
   evaluationPrice?: string;
   certifications?: Certification[];
+  reviewsNumber?: string;
+  rating? : number;
+
 };
 
 declare type Certification = {

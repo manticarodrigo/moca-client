@@ -56,6 +56,8 @@ const initialState: StoreState = {
       { id: '2', description: 'USMLE Certified', attachmentURI: certificate1 },
       { id: '3', description: 'ACLS Certified', attachmentURI: certificate1 },
     ],
+    rating: 0,
+    reviewsNumber: '0',
     licenseNumber: '1234123',
   },
   conversations: [],
