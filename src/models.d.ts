@@ -9,13 +9,15 @@ declare type User = {
   status?: 'available' | 'busy';
   licenseNumber?: string;
   serviceArea?: string;
-  areaOfSpecialty?: string;
   interests?: string;
   pricePerThirtyMinutes?: string;
   pricePerSixtyMinutes?: string;
-  pricePerNintyMinutes?: stirng;
+  pricePerNintyMinutes?: string;
   evaluationPrice?: string;
   certifications?: Certification[];
+  reviewsNumber?: string;
+  rating? : number;
+  qualifications?: Array<string, boolean>;
 };
 
 declare type Certification = {

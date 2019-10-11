@@ -60,6 +60,31 @@ const borderRight: ViewStyle = {
   borderRightColor: Colors.secondaryLightest,
 };
 
+const star: ViewStyle = {
+  borderColor: Colors.secondaryLightest,
+  borderWidth: 1,
+  borderRightColor: Colors.lightGrey,
+  borderLeftColor: Colors.lightGrey,
+};
+
+const starFirst: ViewStyle = {
+  ...star,
+  borderRightWidth: 0,
+  borderTopLeftRadius: 8,
+  borderBottomLeftRadius: 8,
+  borderLeftColor: Colors.secondaryLightest,
+};
+
+const starLast: ViewStyle = {
+  ...star,
+  borderTopRightRadius: 8,
+  borderBottomRightRadius: 8,
+  borderLeftWidth: 0,
+  borderRightColor: Colors.secondaryLightest,
+
+};
+
+
 const roundedBorder: ViewStyle = {
   borderRadius: 5,
   borderWidth: 1,
@@ -298,4 +323,7 @@ export {
   notificationBadgeLarge,
   profileDataLast,
   profileCardLast,
+  star,
+  starFirst,
+  starLast,
 };
