@@ -13,7 +13,7 @@ const DashboardAppointments = ({ isTherapist, isAway = true }) => (
     )}
 
     <View column justifyCenter spacing={{ mb: 3 }}>
-      {isAway ? (
+      {isTherapist && isAway ? (
         <AwayCard dateStart={new Date()} dateEnd={new Date()} />
       ) : (
         <>
