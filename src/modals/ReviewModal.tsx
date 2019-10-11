@@ -20,7 +20,7 @@ const ReviewModal = () => {
 
   const handleButtonPress = () => {
     if (clickedIndex !== null) {
-      const ratingInput = clickedIndex + 1;
+      //  const ratingInput = clickedIndex + 1;
       // api call
       // close modal
     } else {

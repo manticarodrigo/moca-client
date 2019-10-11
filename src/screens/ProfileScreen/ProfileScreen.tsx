@@ -5,7 +5,7 @@ import useStore from '@src/hooks/useStore';
 
 import { LogoIcon, StarsIcon, RightIcon } from '@src/components/icons';
 
-// import ReviewModal from '@src/modals/ReviewModal';
+import ReviewModal from '@src/modals/ReviewModal';
 
 import { certificate1 } from '@src/utlities/images';
 import { mockImg } from '@src/services/mock';
@@ -35,7 +35,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
     );
   }
   const therapist = {
-    userName: 'John Doe',
+    username: 'John Doe',
     licenseNumber: '234423',
     reviewsNumber: '0',
     qualifications: [
@@ -77,7 +77,10 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
 
       {/* <ReviewModal /> */}
-      {<TherapistProfileModal therapist={therapist} isModalVisible closeInputModal="" />}
+      {/* Review modal example */}
+
+      {/* {<TherapistProfileModal therapist={therapist} isModalVisible closeInputModal="" />} */}
+      {/* Therapist modal example */}
     </View>
   );
 };

@@ -5,7 +5,7 @@ import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
-import { StarsIcon } from '@src/components/icons';
+import { StarsIcon, BookmarkIcon } from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
 
@@ -28,12 +28,16 @@ const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) =
       closeInputModal();
     }}
   >
-    <View row>
-      <View flex={1} column>
-        <View row spacing={{ p: 4 }}>
+
+    <View bgColor="lightGrey">
+      <View bgColor="white">
+        <View alignEnd spacing={{ mr: 3 }}>
+          <BookmarkIcon />
+        </View>
+        <View row spacing={{ p: 4 }} bgColor="white">
           <Image rounded size={80} uri={mockImg} />
           <View column justifyCenter spacing={{ px: 3 }}>
-            <Text variant="titleWhite">{therapist.username}</Text>
+            <Text variant="title">{therapist.username}</Text>
             <View row alignCenter>
               <Text
                 spacing={{ mr: 2 }}
@@ -45,10 +49,9 @@ const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) =
             </View>
           </View>
         </View>
-        <View>
+        <View flex={1} bgColor="white">
           <TherapistProfile therapist={therapist} modal />
         </View>
-
       </View>
     </View>
 
