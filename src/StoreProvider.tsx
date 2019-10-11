@@ -59,6 +59,15 @@ const initialState: StoreState = {
     rating: 0,
     reviewsNumber: '0',
     licenseNumber: '1234123',
+    qualifications: [
+      { name: 'Neck', value: 1 },
+      { name: 'Shoulder', value: 0 },
+      { name: 'Elbow', value: 1 },
+      { name: 'Low Back', value: 0 },
+      { name: 'Knee', value: 1 },
+      { name: 'Ankle/Foot', value: 1 },
+      { name: 'Other', value: 0 },
+    ],
   },
   conversations: [],
   registrationState: {

@@ -1,5 +1,8 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
+
+import { TouchableWithoutFeedback, TouchableHighlight, StyleSheet } from 'react-native';
 
 import {
   RadiusLocationIcon,
@@ -17,68 +20,49 @@ import {
 
 import useStore from '@src/hooks/useStore';
 
-import PriceModal from '@src/modals/PriceModal';
-import ServiceAreaModal from '@src/modals/ServiceAreaModel';
-import InterestsModal from '@src/modals/InterestsModal';
-import PersonalBio from '@src/modals/PersonalBioModal';
-import ExperienceModal from '@src/modals/ExperienceModal';
-import AreaOfSpecialtyModal from '@src/modals/AreaOfSpecialtyModal';
-
+import {
+  validateYearsOfExperience,
+  validateServiceArea,
+  validatePrice,
+} from '@src/utlities/validations';
 
 import * as Colors from '@src/styles/global/colors';
 
-import ModalView from '@src/components/ModalView';
+import InputModal from '@src/modals/InputModal';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 import Image from '@src/components/Image';
+import Button from '@src/components/Button';
+
 
 import { updateUser } from '@src/store/actions/UserAction';
 import useImageViewer from '@src/hooks/useImageViewer';
 
-type priceSelection =
-'pricePerThirtyMinutes' |
- 'pricePerSixtyMinutes' |
-  'pricePerNintyMinutes' |
-   'evaluationPrice' |
-    '';
-
 type TherapistProfileProps = {
-  therapist?: {
-    interests?: string;
-    personalBio?: string;
-    yearsOfExperience?: string;
-    status?: 'available' | 'busy';
-    licenseNumber?: string;
-    serviceArea?: string;
-    areaOfSpecialty?: string;
-    pricePerThirtyMinutes?: string;
-    pricePerSixtyMinutes?: string;
-    pricePerNintyMinutes?: string;
-    evaluationPrice?: string;
-    certifications?: Certification[];
-    reviewsNumber?: string;
-    gender?: 'Male' | 'Female' | 'Other';
-  };
+  therapist?: User;
   modal?: boolean;
 };
 
 
 const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const { store: { user }, dispatch } = useStore();
-  const { viewer, onPressImage } = useImageViewer(user.certifications ? user.certifications : []);
+  const { viewer, onPressImage } = useImageViewer(!modal
+    ? (user.certifications ? user.certifications : [])
+    : therapist.certifications);
+
   const [isAvailable, setAvailable] = useState(user.status ? user.status === 'available' : false);
 
-  const [isPriceModalVisible, setIsPriceModalVisible] = useState(false);
-  const [isServiceAreaModalVisible, setIsServiceAreaModalVisible] = useState(false);
-  const [isInterestsModalVisible, setIsInterestsModalVisible] = useState(false);
-  const [isPersonalBioVisible, setIsPersonalBioVisible] = useState(false);
-  const [isExperienceModalVisible, setIsExperienceModalVisible] = useState(false);
-  const [isAreaOfSpecialtyVisible, setIsAreaOfSpecialtyVisible] = useState(false);
+  const [modals, setModals] = useState({
+    isPricePerThirtyModalVisible: false,
+    isPricePerNintyModalVisible: false,
+    isPricePerSixtyModalVisible: false,
+    isEvaluationPriceModalVisible: false,
+    isServiceAreaModalVisible: false,
+    isPersonalBioModalVisible: false,
+    isExperienceModalVisible: false,
+  });
 
-
-  const [priceSelection, setPriceSelection] = useState<priceSelection>('');
   const [gender, setGender] = useState(user.gender ? user.gender : '');
-
   const isMale = gender === 'Male';
   const isFemale = gender === 'Female';
   const isOther = gender === 'Other';
@@ -96,13 +80,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     dispatch(updateUser({ gender: type }));
   };
 
-  const closePriceModal = () => setIsPriceModalVisible(false);
-  const closeServiceAreaModal = () => setIsServiceAreaModalVisible(false);
-  const closeInterestsModal = () => setIsInterestsModalVisible(false);
-  const closePersonalBioModal = () => setIsPersonalBioVisible(false);
-  const closeExperienceModal = () => setIsExperienceModalVisible(false);
-  const closeAreaOfSpecialtyModal = () => setIsAreaOfSpecialtyVisible(false);
+  const closeInputModal = (value: string) => setModals({ ...modals, [value]: false });
 
+  const handleMessageTherapist = () => {};
 
   // eslint-disable-next-line no-shadow
   const pressStatus = (type: boolean) => {
@@ -114,94 +94,104 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     }
   };
 
-  const priceModal = (
-    <ModalView
-      height={200}
-      isVisible={isPriceModalVisible}
-      onBackdropPress={() => setIsPriceModalVisible(false)}
-      onSwipeComplete={() => setIsPriceModalVisible(false)}
-      handleArrowClick={() => setIsPriceModalVisible(false)}
-    >
-      <PriceModal
-        closePriceModal={closePriceModal}
-        priceSelection={priceSelection}
-      />
-    </ModalView>
+  const pricePerThirtyModal = (
+    <InputModal
+      closeInputModal={() => closeInputModal('isPricePerThirtyModalVisible')}
+      title="Thirty minutes Price"
+      attribute="pricePerThirtyMinutes"
+      keyboardTypeNumber
+      placeHolder="price"
+      validate={validatePrice}
+      maxLength={3}
+      errorText="Please enter a valid price"
+      isModalVisible={modals.isPricePerThirtyModalVisible}
+    />
+  );
+
+  const pricePerSixtyModal = (
+    <InputModal
+      closeInputModal={() => closeInputModal('isPricePerSixtyModalVisible')}
+      title="Sixty Minutes Price"
+      attribute="pricePerSixtyMinutes"
+      keyboardTypeNumber
+      placeHolder="price"
+      validate={validatePrice}
+      maxLength={3}
+      errorText="Please enter a valid price"
+      isModalVisible={modals.isPricePerSixtyModalVisible}
+    />
+  );
+
+  const pricePerNintyModal = (
+    <InputModal
+      closeInputModal={() => closeInputModal('isPricePerNintyModalVisible')}
+      title="Ninty Minutes Price"
+      attribute="pricePerNintyMinutes"
+      keyboardTypeNumber
+      placeHolder="price"
+      validate={validatePrice}
+      maxLength={3}
+      errorText="Please enter a valid price"
+      isModalVisible={modals.isPricePerNintyModalVisible}
+    />
+  );
+
+  const evaluationPriceModal = (
+    <InputModal
+      closeInputModal={() => closeInputModal('isEvaluationPriceModalVisible')}
+      title="Evaluation Price"
+      attribute="evaluationPrice"
+      keyboardTypeNumber
+      placeHolder="price"
+      validate={validatePrice}
+      maxLength={3}
+      errorText="Please enter a valid price"
+      isModalVisible={modals.isEvaluationPriceModalVisible}
+    />
   );
 
   const serviceAreaModal = (
-    <ModalView
-      height={200}
-      isVisible={isServiceAreaModalVisible}
-      onBackdropPress={() => setIsServiceAreaModalVisible(false)}
-      onSwipeComplete={() => setIsServiceAreaModalVisible(false)}
-      handleArrowClick={() => setIsServiceAreaModalVisible(false)}
-    >
-      <ServiceAreaModal
-        closeServiceAreaModal={closeServiceAreaModal}
-      />
-    </ModalView>
-  );
-
-
-  const interestsModal = (
-    <ModalView
-      height={200}
-      isVisible={isInterestsModalVisible}
-      onBackdropPress={() => setIsInterestsModalVisible(false)}
-      onSwipeComplete={() => setIsInterestsModalVisible(false)}
-      handleArrowClick={() => setIsInterestsModalVisible(false)}
-    >
-      <InterestsModal
-        closeInterestsModal={closeInterestsModal}
-      />
-    </ModalView>
+    <InputModal
+      closeInputModal={() => closeInputModal('isServiceAreaModalVisible')}
+      title="Service Area"
+      attribute="serviceArea"
+      keyboardTypeNumber
+      placeHolder="service area"
+      validate={validateServiceArea}
+      errorText="Please enter a valid service area number"
+      isModalVisible={modals.isServiceAreaModalVisible}
+    />
   );
 
   const personalBio = (
-    <ModalView
-      height={200}
-      isVisible={isPersonalBioVisible}
-      onBackdropPress={() => setIsPersonalBioVisible(false)}
-      onSwipeComplete={() => setIsPersonalBioVisible(false)}
-      handleArrowClick={() => setIsPersonalBioVisible(false)}
-    >
-      <PersonalBio
-        closePersonalBioModal={closePersonalBioModal}
-      />
-    </ModalView>
+    <InputModal
+      closeInputModal={() => closeInputModal('isPersonalBioModalVisible')}
+      title="Personal Bio"
+      attribute="personalBio"
+      placeHolder="personal bio"
+      isModalVisible={modals.isPersonalBioModalVisible}
+    />
   );
 
   const experienceModal = (
-    <ModalView
-      height={200}
-      isVisible={isExperienceModalVisible}
-      onBackdropPress={() => setIsExperienceModalVisible(false)}
-      onSwipeComplete={() => setIsExperienceModalVisible(false)}
-      handleArrowClick={() => setIsExperienceModalVisible(false)}
-    >
-      <ExperienceModal
-        closeExperienceModal={closeExperienceModal}
-      />
-    </ModalView>
-  );
-
-  const areaOfSpecialty = (
-    <ModalView
-      height={200}
-      isVisible={isAreaOfSpecialtyVisible}
-      onBackdropPress={() => setIsAreaOfSpecialtyVisible(false)}
-      onSwipeComplete={() => setIsAreaOfSpecialtyVisible(false)}
-      handleArrowClick={() => setIsAreaOfSpecialtyVisible(false)}
-    >
-      <AreaOfSpecialtyModal
-        closeAreaOfSpecialtyModal={closeAreaOfSpecialtyModal}
-      />
-    </ModalView>
+    <InputModal
+      closeInputModal={() => closeInputModal('isExperienceModalVisible')}
+      title="Experience"
+      attribute="yearsOfExperience"
+      maxLength={2}
+      keyboardTypeNumber
+      placeHolder="years of experience"
+      validate={validateYearsOfExperience}
+      errorText="Please enter a valid number of years"
+      isModalVisible={modals.isExperienceModalVisible}
+    />
   );
 
   return (
     <View flex={1} scroll bgColor="lightGrey">
+      <TouchableWithoutFeedback style={StyleSheet.absoluteFill}>
+        <View />
+      </TouchableWithoutFeedback>
       <View variant="profileSection">
         <View row>
           <View spacing={{ p: 3 }}>
@@ -227,8 +217,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View
                   spacing={{ pt: 2 }}
                   {...(!modal ? { onPress: () => {
-                    setPriceSelection('pricePerThirtyMinutes');
-                    setIsPriceModalVisible(true);
+                    setModals({ ...modals, isPricePerThirtyModalVisible: true });
                   } } : '')}
                 >
                   {!modal
@@ -255,8 +244,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View
                   spacing={{ pt: 2 }}
                   {...(!modal ? { onPress: () => {
-                    setPriceSelection('pricePerSixtyMinutes');
-                    setIsPriceModalVisible(true);
+                    setModals({ ...modals, isPricePerSixtyModalVisible: true });
                   } } : '')}
                 >
                   {!modal
@@ -278,8 +266,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View
                   spacing={{ pt: 2 }}
                   {...(!modal ? { onPress: () => {
-                    setPriceSelection('pricePerNintyMinutes');
-                    setIsPriceModalVisible(true);
+                    setModals({ ...modals, isPricePerNintyModalVisible: true });
                   } } : '')}
                 >
                   {!modal
@@ -305,8 +292,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 column
                 flex={1}
                 {...(!modal ? { onPress: () => {
-                  setPriceSelection('evaluationPrice');
-                  setIsPriceModalVisible(true);
+                  setModals({ ...modals, isEvaluationPriceModalVisible: true });
                 } } : '')}
               >
                 {!modal
@@ -317,7 +303,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   )
                   : (
                     <Text variant="titleSecondaryLarge">
-                      {therapist.evaluationPrice ? `$${user.evaluationPrice}` : 'N/A'}
+                      {`$${therapist.evaluationPrice}`}
                     </Text>
                   )}
               </View>
@@ -337,7 +323,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 row
                 variant="profileCard"
                 justifyBetween
-                {...(!modal ? { onPress: () => setIsServiceAreaModalVisible(true) } : '')}
+                {...(!modal ? {
+                  onPress: () => setModals({ ...modals, isServiceAreaModalVisible: true }),
+                } : '')}
               >
                 <View justifyCenter>
                   <Text variant="boldDark">Service Area</Text>
@@ -365,18 +353,18 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
               <View row flex={1} justifyBetween variant="profileCard">
                 <View justifyCenter>
                   <Text variant="boldDark">
-                Status
+                    Status
                   </Text>
                 </View>
                 <View row justifyCenter>
                   <View justifyCenter>
                     {isAvailable ? (
                       <Text spacing={{ mr: 2 }} variant="regularSmallSuccess">
-                    Available
+                        Available
                       </Text>
                     ) : (
                       <Text spacing={{ mr: 2 }} variant="regularSmallGrey">
-                    not Available
+                         Unavailable
                       </Text>
                     )}
                   </View>
@@ -450,7 +438,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   <Text typography={{ color: otherTextColor }}>Other</Text>
                 </View>
               </View>
-            ) : <View alignCenter><Text>{therapist.gender ? therapist.gender : 'N/A'}</Text></View>}
+            ) : <View alignCenter><Text>{therapist.gender}</Text></View>}
           </View>
         </View>
       </View>
@@ -462,7 +450,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
           <View
             column
             variant="profileData"
-            {...(!modal ? { onPress: () => setIsPersonalBioVisible(true) } : '')}
+            {...(!modal ? {
+              onPress: () => setModals({ ...modals, isPersonalBioModalVisible: true }),
+            } : '')}
           >
             <Text variant="boldDark">Personal Bio</Text>
             <View spacing={{ pt: 2 }} width={295}>
@@ -510,7 +500,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
           <View
             column
             variant="profileData"
-            {...(!modal ? { onPress: () => setIsExperienceModalVisible(true) } : '')}
+            {...(!modal ? { onPress: () => setModals({ ...modals, isExperienceModalVisible: true }),
+            } : '')}
           >
             <Text variant="boldDark">Years of Experience</Text>
             <View spacing={{ pt: 2 }} width={295}>
@@ -535,20 +526,22 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
           <View
             column
             variant="profileData"
-            {...(!modal ? { onPress: () => setIsAreaOfSpecialtyVisible(true) } : '')}
           >
-            <Text variant="boldDark">Areas of Specialty</Text>
+            <Text variant="boldDark">Qualifications</Text>
             <View spacing={{ pt: 2 }} width={295}>
-              {!modal ? (
-                <Text variant="regularSmallGrey">
-                  {user.areaOfSpecialty ? user.areaOfSpecialty : 'Set Area Of Speciality'}
-                </Text>
-              )
-                : (
-                  <Text variant="regularSmallGrey">
-                    {therapist.areaOfSpecialty ? therapist.areaOfSpecialty : 'N/A'}
-                  </Text>
-                )}
+              {(!modal ? user.qualifications : therapist.qualifications).map(
+                (qualifiaciton, index) => (
+                  <View key={index}>
+                    {qualifiaciton.value === 1
+                      ? (
+                        <Text variant="regularSmallGrey" spacing={{ mr: 2 }}>
+                          {qualifiaciton.name}
+                        </Text>
+                      )
+                      : null}
+                  </View>
+                ),
+              )}
             </View>
           </View>
         </View>
@@ -582,9 +575,13 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     </View>
                   </View>
                 ))
-              ) : <Text variant="regularSmallGrey" spacing={{ mr: 2 }}>PENDING</Text>
-              ) : therapist.certifications ? (
-                therapist.certifications.map((item) => (
+              ) : (
+                <View variant="profileData">
+                  <Text variant="regularSmallGrey" spacing={{ mt: 2 }}>PENDING</Text>
+                </View>
+              )
+              )
+                : therapist.certifications.map((item) => (
                   <View
                     key={item.id}
                     row
@@ -604,44 +601,28 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       <Image width={40} height={40} uri={item.attachmentURI} />
                     </View>
                   </View>
-                ))
-              ) : <Text variant="regularSmallGrey" spacing={{ mr: 2 }}>PENDING</Text>}
+                ))}
             </>
           </View>
         </View>
-
-        <View row>
-          <View spacing={{ p: 3 }}>
-            <InterestIcon />
-          </View>
-          <View
-            column
-            variant="profileDataLast"
-            {...(!modal ? { onPress: () => setIsInterestsModalVisible(true) } : '')}
-          >
-            <Text variant="boldDark">Interest</Text>
-            <View spacing={{ pt: 2 }} width={295}>
-              {!modal ? (
-                <Text variant="regularSmallGrey">
-                  {user.interests ? user.interests : 'Set Your Interests'}
-                </Text>
-              )
-                : (
-                  <Text variant="regularSmallGrey">
-                    {therapist.interests ? therapist.interests : 'N/A'}
-                  </Text>
-                )}
-            </View>
-          </View>
-        </View>
       </View>
-      {priceModal}
+      {pricePerNintyModal}
+      {pricePerSixtyModal}
+      {pricePerThirtyModal}
+      {evaluationPriceModal}
       {serviceAreaModal}
-      {interestsModal}
       {personalBio}
       {experienceModal}
-      {areaOfSpecialty}
       {viewer}
+      {modal && (
+        <View row spacing={{ mt: 3, mb: 3, mx: 3 }}>
+          <View flex={1}>
+            <Button onPress={handleMessageTherapist}>
+              Message / Schedule
+            </Button>
+          </View>
+        </View>
+      )}
     </View>
   );
 };

@@ -60,7 +60,6 @@ const ReviewModal = () => {
             placeholder="Add review"
             value={review}
             returnKeyType="done"
-            maxLength={5}
             onChangeText={(text) => {
               setReview(text);
             }}

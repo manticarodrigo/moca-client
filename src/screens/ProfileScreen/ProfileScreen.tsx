@@ -5,9 +5,9 @@ import useStore from '@src/hooks/useStore';
 
 import { LogoIcon, StarsIcon, RightIcon } from '@src/components/icons';
 
-import ReviewModal from '@src/modals/ReviewModal';
+// import ReviewModal from '@src/modals/ReviewModal';
 
-
+import { certificate1 } from '@src/utlities/images';
 import { mockImg } from '@src/services/mock';
 
 
@@ -15,6 +15,7 @@ import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 
+import TherapistProfileModal from '@src/modals/TherapistProfileModal';
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
@@ -33,7 +34,26 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
     );
   }
-  const therapist = { licenseNumber: '234423', reviewsNumber: '0' };
+  const therapist = {
+    userName: 'John Doe',
+    licenseNumber: '234423',
+    reviewsNumber: '0',
+    qualifications: [
+      { name: 'Neck', value: 1 },
+      { name: 'Shoulder', value: 0 },
+      { name: 'Elbow', value: 1 },
+    ],
+    gender: 'Male',
+    evaluationPrice: '30',
+    pricePerThirtyMinutes: '40',
+    yearsOfExperience: '10',
+    rating: 4,
+    certifications: [
+      { id: '1', description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
+      { id: '2', description: 'USMLE Certified', attachmentURI: certificate1 },
+    ],
+  };
+
   return (
     <View safeArea flex={1} bgColor="primary">
 
@@ -54,8 +74,10 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
           {ratingTag}
         </View>
       </View>
-      { isTherapist ? <TherapistProfile modal therapist={therapist} /> : <PatientProfile /> }
-      <ReviewModal />
+      { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
+
+      {/* <ReviewModal /> */}
+      {<TherapistProfileModal therapist={therapist} isModalVisible closeInputModal="" />}
     </View>
   );
 };

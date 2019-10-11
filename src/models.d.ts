@@ -9,7 +9,6 @@ declare type User = {
   status?: 'available' | 'busy';
   licenseNumber?: string;
   serviceArea?: string;
-  areaOfSpecialty?: string;
   interests?: string;
   pricePerThirtyMinutes?: string;
   pricePerSixtyMinutes?: string;
@@ -18,7 +17,7 @@ declare type User = {
   certifications?: Certification[];
   reviewsNumber?: string;
   rating? : number;
-
+  qualifications?: Array<string, boolean>;
 };
 
 declare type Certification = {
