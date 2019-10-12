@@ -6,7 +6,7 @@ import { updateUserInfomation, resetUserInformation } from '@src/store/actions/R
 
 import { Colors } from '@src/styles/index';
 
-import ZipeCodeScreen from '@src/modals/ZipCodeScreen';
+import ZipCodeModal from '@src/modals/ZipCodeModal';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -22,6 +22,7 @@ type ColorKey = keyof typeof Colors;
 
 const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
+  const { registrationState } = store;
   const [type, setType] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [screenName, setScreenName] = useState();
@@ -48,8 +49,8 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
 
   const handleButtonPress = () => {
-    if (Object.prototype.hasOwnProperty.call(store.registrationState.userInformation, 'type')) {
-      if (store.registrationState.userInformation.type !== type) dispatch(resetUserInformation());
+    if (Object.prototype.hasOwnProperty.call(registrationState, 'type')) {
+      if (registrationState.type !== type) dispatch(resetUserInformation());
     }
     dispatch(updateUserInfomation({ type }));
     setIsModalVisible(true);
@@ -61,7 +62,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
     setShouldNavigate(true);
   };
 
-  const ZipCodeModal = (
+  const ZipCodeModalView = (
     <ModalView
       isVisible={isModalVisible}
       onBackdropPress={() => setIsModalVisible(false)}
@@ -74,7 +75,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
         }
       }}
     >
-      <ZipeCodeScreen navigateToScreen={navigateToScreen} />
+      <ZipCodeModal navigateToScreen={navigateToScreen} />
     </ModalView>
   );
 
@@ -100,7 +101,12 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
               spacing={{ mr: 1 }}
             >
               {isPatient ? <PatientSelectIcon /> : <PatientIcon />}
-              <Text variant="title" typography={{ color: patientTextColor, weight: '900' }}>PATIENT</Text>
+              <Text
+                variant="title"
+                typography={{ color: patientTextColor, weight: '900' }}
+              >
+                PATIENT
+              </Text>
             </View>
             <View
               variant={isTherapist ? 'therapistViewtPressed' : 'therapistView'}
@@ -111,7 +117,12 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
               bgColor={therapistBgColor}
             >
               {isTherapist ? <TherapistSelectIcon /> : <TherapistIcon />}
-              <Text variant="title" typography={{ color: therapistTextColor, weight: '900' }}>THERAPIST</Text>
+              <Text
+                variant="title"
+                typography={{ color: therapistTextColor, weight: '900' }}
+              >
+                THERAPIST
+              </Text>
             </View>
           </View>
           <View row flex={1}>
@@ -127,7 +138,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </View>
         </View>
       </View>
-      {ZipCodeModal}
+      {ZipCodeModalView}
     </>
 
   );

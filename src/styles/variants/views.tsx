@@ -67,6 +67,31 @@ const borderRight: ViewStyle = {
   borderRightColor: Colors.secondaryLightest,
 };
 
+const star: ViewStyle = {
+  borderColor: Colors.secondaryLightest,
+  borderWidth: 1,
+  borderRightColor: Colors.lightGrey,
+  borderLeftColor: Colors.lightGrey,
+};
+
+const starFirst: ViewStyle = {
+  ...star,
+  borderRightWidth: 0,
+  borderTopLeftRadius: 8,
+  borderBottomLeftRadius: 8,
+  borderLeftColor: Colors.secondaryLightest,
+};
+
+const starLast: ViewStyle = {
+  ...star,
+  borderTopRightRadius: 8,
+  borderBottomRightRadius: 8,
+  borderLeftWidth: 0,
+  borderRightColor: Colors.secondaryLightest,
+
+};
+
+
 const roundedBorder: ViewStyle = {
   borderRadius: 5,
   borderWidth: 1,
@@ -188,6 +213,11 @@ const profileCard: ViewStyle = {
   borderColor: Colors.secondary,
 };
 
+const profileCardLast: ViewStyle = {
+  ...profileCard,
+  borderColor: Colors.white,
+};
+
 const profileIconCard: ViewStyle = {
   ...profileCard,
   ...Spacing.getStyles({ px: 3 }),
@@ -200,6 +230,11 @@ const profileData: ViewStyle = {
   backgroundColor: Colors.white,
   borderBottomWidth: 1,
   borderColor: Colors.secondary,
+};
+
+const profileDataLast: ViewStyle = {
+  ...profileData,
+  borderBottomWidth: 0,
 };
 
 const iconButton: ViewStyle = {
@@ -294,4 +329,9 @@ export {
   patientView,
   notificationBadge,
   notificationBadgeLarge,
+  profileDataLast,
+  profileCardLast,
+  star,
+  starFirst,
+  starLast,
 };

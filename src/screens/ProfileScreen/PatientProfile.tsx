@@ -18,7 +18,7 @@ import View from '@src/components/View';
 const PatientProfile = () => {
   const navigation = useNavigation();
 
-  const onPressAdress = () => navigation.navigate('AddressScreen');
+  const onPressAdress = () => navigation.navigate('AddressSettingScreen');
   const onPressDiagnosis = () => navigation.navigate('DiagnosisScreen');
   const onPressPayment = () => navigation.navigate('PaymentScreen');
 

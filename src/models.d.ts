@@ -1,9 +1,30 @@
 declare type User = {
-  id: string;
-  username: string;
-  imageUrl: string;
-  type: 'patient' | 'caregiver';
+  id?: string;
+  username?: string;
+  imageUrl?: string;
+  type?: 'patient' | 'caregiver';
+  personalBio?: string;
+  yearsOfExperience?: string;
+  gender?: 'Male' | 'Female' | 'Other';
+  status?: 'available' | 'busy';
+  licenseNumber?: string;
+  serviceArea?: string;
+  interests?: string;
+  pricePerThirtyMinutes?: string;
+  pricePerSixtyMinutes?: string;
+  pricePerNintyMinutes?: string;
+  evaluationPrice?: string;
+  certifications?: Certification[];
+  reviewsNumber?: string;
+  rating? : number;
+  qualifications?: Array<string, boolean>;
 };
+
+declare type Certification = {
+  id: string;
+  description: string;
+  attachmentURI: string;
+}
 
 declare type Message = {
   id: string;
@@ -17,11 +38,10 @@ declare type RegistrationInformation = {
   type?: string;
   name?: string;
   surname?: string;
-  zipCode?: string;
   medicalId?: string;
   email?: string;
   password?: string;
-  address?: Array<string, string, string, string>;
+  addresses?: Array<string, string, string, string, string>;
   qualifications?: Array<string, boolean>; // to be changed later [add all types of checkBox items]
 };
 
