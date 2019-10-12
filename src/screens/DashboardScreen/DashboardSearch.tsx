@@ -8,12 +8,25 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import TextInput from '@src/components/TextInput';
 
-const DashboardSearch = ({ name }: { name: string }) => {
+type DashboardSearchProps = {
+  name: string;
+  handleFiltering: (value: boolean) => void;
+}
+
+const DashboardSearch = ({ name, handleFiltering }: DashboardSearchProps) => {
   const navigation = useNavigation();
   const [text, setText] = useState('');
 
-  const onChangeText = (val: string) => setText(val);
-  const onPressSearch = () => setText('');
+  const onChangeText = (val: string) => {
+    setText(val);
+    if (text === '') {
+      handleFiltering(false);
+    } else {
+      handleFiltering(true);
+    }
+  };
+
+  // const onPressSearch = () => setText('');
   const onPressFilter = () => navigation.navigate('FilterScreen');
 
   return (
@@ -29,7 +42,7 @@ const DashboardSearch = ({ name }: { name: string }) => {
           alignCenter
           bgColor="lightGrey"
         >
-          <View spacing={{ px: 3 }} onPress={onPressSearch}>
+          <View spacing={{ px: 3 }}>
             <SearchIcon />
           </View>
           <TextInput
