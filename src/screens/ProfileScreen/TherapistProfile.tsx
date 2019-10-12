@@ -29,6 +29,8 @@ import {
 import * as Colors from '@src/styles/global/colors';
 
 import InputModal from '@src/modals/InputModal';
+import QualificationsModal from '@src/modals/QualificationsModal';
+
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -60,6 +62,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     isServiceAreaModalVisible: false,
     isPersonalBioModalVisible: false,
     isExperienceModalVisible: false,
+    isQualificationModalVisible: false,
   });
 
   const [gender, setGender] = useState(user.gender ? user.gender : '');
@@ -184,6 +187,13 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
       validate={validateYearsOfExperience}
       errorText="Please enter a valid number of years"
       isModalVisible={modals.isExperienceModalVisible}
+    />
+  );
+
+  const qualificationsModal = (
+    <QualificationsModal
+      isModalVisible={modals.isQualificationModalVisible}
+      closeInputModal={() => closeInputModal('isQualificationModalVisible')}
     />
   );
 
@@ -529,13 +539,16 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View
                   column
                   variant="profileData"
+                  {...(!modal ? { onPress: () => setModals({ ...modals,
+                    isQualificationModalVisible: true }),
+                  } : '')}
                 >
                   <Text variant="boldDark">Qualifications</Text>
                   <View spacing={{ pt: 2 }} width={295}>
                     {(!modal ? user.qualifications : therapist.qualifications).map(
                       (qualifiaciton, index) => (
                         <View key={index}>
-                          {qualifiaciton.value === 1
+                          {qualifiaciton.value === true
                             ? (
                               <Text variant="regularSmallGrey" spacing={{ mr: 2 }}>
                                 {qualifiaciton.name}
@@ -615,6 +628,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
             {evaluationPriceModal}
             {serviceAreaModal}
             {personalBio}
+            {qualificationsModal}
             {experienceModal}
             {viewer}
             {modal && (
