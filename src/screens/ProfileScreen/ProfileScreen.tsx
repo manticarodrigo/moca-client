@@ -37,12 +37,13 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const therapist = {
     username: 'John Doe',
     licenseNumber: '234423',
-    reviewsNumber: '0',
+    reviewsNumber: '4',
     qualifications: [
-      { name: 'Neck', value: 1 },
-      { name: 'Shoulder', value: 0 },
-      { name: 'Elbow', value: 1 },
+      { name: 'Neck', value: true },
+      { name: 'Shoulder', value: false },
+      { name: 'Elbow', value: true },
     ],
+    licenseDate: new Date('2010-10-11'),
     gender: 'Male',
     evaluationPrice: '30',
     pricePerThirtyMinutes: '40',

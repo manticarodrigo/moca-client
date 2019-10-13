@@ -57,7 +57,7 @@ const initialState: StoreState = {
       { id: '3', description: 'ACLS Certified', attachmentURI: certificate1 },
     ],
     rating: 0,
-    reviewsNumber: '0',
+    reviewsNumber: 4,
     licenseNumber: '1234123',
     qualifications: [
       { name: 'Neck', value: true },
