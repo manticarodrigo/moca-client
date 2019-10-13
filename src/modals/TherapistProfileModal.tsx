@@ -16,7 +16,7 @@ import TherapistProfile from '@src/screens/ProfileScreen/TherapistProfile';
 const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) => (
   <ModalView
     propagateSwipe
-    height={200}
+    height={100}
     isVisible={isModalVisible}
     onBackdropPress={() => {
       closeInputModal();

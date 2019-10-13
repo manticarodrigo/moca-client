@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 import FormField from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
@@ -38,7 +39,11 @@ const InputModal = (
 ) => {
   const { store: { user }, dispatch } = useStore();
 
-  const [formField, setFormField] = useState(user[attribute] ? user[attribute] : '');
+  const [formField, setFormField] = useState(
+    // eslint-disable-next-line no-nested-ternary
+    user[attribute]
+      ? user[attribute] : '',
+  );
   const [isValid, setIsValid] = useState(true);
 
   const isButtonDisabled = formField === '' || !isValid;

@@ -15,8 +15,9 @@ declare type User = {
   pricePerNintyMinutes?: string;
   evaluationPrice?: string;
   certifications?: Certification[];
-  reviewsNumber?: string;
+  reviewsNumber?: number;
   rating? : number;
+  licenseDate? : Date;
   qualifications?: Array<string, boolean>;
 };
 

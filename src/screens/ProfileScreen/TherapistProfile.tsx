@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
+import { format, differenceInYears } from 'date-fns';
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
@@ -18,10 +19,10 @@ import {
   SwitchIcon,
 } from '@src/components/icons';
 
+import DatePicker from 'react-native-datepicker';
 import useStore from '@src/hooks/useStore';
 
 import {
-  validateYearsOfExperience,
   validateServiceArea,
   validatePrice,
 } from '@src/utlities/validations';
@@ -29,6 +30,9 @@ import {
 import * as Colors from '@src/styles/global/colors';
 
 import InputModal from '@src/modals/InputModal';
+import QualificationsModal from '@src/modals/QualificationsModal';
+import ReviewsModal from '@src/modals/ReviewsModal';
+
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -52,6 +56,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
   const [isAvailable, setAvailable] = useState(user.status ? user.status === 'available' : false);
 
+
   const [modals, setModals] = useState({
     isPricePerThirtyModalVisible: false,
     isPricePerNintyModalVisible: false,
@@ -59,7 +64,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     isEvaluationPriceModalVisible: false,
     isServiceAreaModalVisible: false,
     isPersonalBioModalVisible: false,
-    isExperienceModalVisible: false,
+    isQualificationModalVisible: false,
+    isReviewsModalVisible: false,
   });
 
   const [gender, setGender] = useState(user.gender ? user.gender : '');
@@ -97,7 +103,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const pricePerThirtyModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerThirtyModalVisible')}
-      title="Thirty minutes Price"
+      title="Thirty Minutes Price"
       attribute="pricePerThirtyMinutes"
       keyboardTypeNumber
       placeHolder="price"
@@ -122,6 +128,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     />
   );
 
+
   const pricePerNintyModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerNintyModalVisible')}
@@ -133,6 +140,13 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
       maxLength={3}
       errorText="Please enter a valid price"
       isModalVisible={modals.isPricePerNintyModalVisible}
+    />
+  );
+
+  const reviewsModal = (
+    <ReviewsModal
+      isModalVisible={modals.isReviewsModalVisible}
+      closeInputModal={() => closeInputModal('isReviewsModalVisible')}
     />
   );
 
@@ -173,17 +187,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     />
   );
 
-  const experienceModal = (
-    <InputModal
-      closeInputModal={() => closeInputModal('isExperienceModalVisible')}
-      title="Experience"
-      attribute="yearsOfExperience"
-      maxLength={2}
-      keyboardTypeNumber
-      placeHolder="years of experience"
-      validate={validateYearsOfExperience}
-      errorText="Please enter a valid number of years"
-      isModalVisible={modals.isExperienceModalVisible}
+  const qualificationsModal = (
+    <QualificationsModal
+      isModalVisible={modals.isQualificationModalVisible}
+      closeInputModal={() => closeInputModal('isQualificationModalVisible')}
     />
   );
 
@@ -354,18 +361,18 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     <View row flex={1} justifyBetween variant="profileCard">
                       <View justifyCenter>
                         <Text variant="boldDark">
-                    Status
+                        Status
                         </Text>
                       </View>
                       <View row justifyCenter>
                         <View justifyCenter>
                           {isAvailable ? (
                             <Text spacing={{ mr: 2 }} variant="regularSmallSuccess">
-                        Available
+                              Available
                             </Text>
                           ) : (
                             <Text spacing={{ mr: 2 }} variant="regularSmallGrey">
-                         Unavailable
+                              Unavailable
                             </Text>
                           )}
                         </View>
@@ -384,7 +391,16 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View spacing={{ p: 3 }}>
                   <RateIcon />
                 </View>
-                <View row justifyBetween flex={1} variant="profileCard">
+                <View
+                  row
+                  justifyBetween
+                  flex={1}
+                  variant="profileCard"
+                  {... (((modal && therapist.reviewsNumber) > 0 || user.reviewsNumber > 0)
+                    ? {
+                      onPress: () => setModals({ ...modals, isReviewsModalVisible: true }),
+                    } : null)}
+                >
                   <View><Text variant="boldDark">Reviews</Text></View>
                   <View alignCenter>
                     {!modal
@@ -393,7 +409,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                           variant="boldPrimary"
                           spacing={{ mr: 2 }}
                         >
-                          {user.reviewsNumber}
+                          {user.reviewsNumber.toString()}
                         </Text>
                       )
                       : (
@@ -401,7 +417,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                           variant="boldPrimary"
                           spacing={{ mr: 2 }}
                         >
-                          {therapist.reviewsNumber}
+                          {therapist.reviewsNumber.toString()}
 
                         </Text>
                       )}
@@ -494,6 +510,52 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 </View>
               </View>
 
+              <View row alignCenter={!modal}>
+                <View spacing={{ p: 3 }}>
+                  <InterestIcon />
+                </View>
+                <View
+                  row={!modal}
+                  variant="profileData"
+                  alignCenter={!modal}
+                  spacing={!modal ? { mt: 2 } : null}
+                >
+                  <View flex={1}>
+                    <Text variant="boldDark">Licence date</Text>
+                  </View>
+                  {!modal ? (
+                    <View flex={1} spacing={{ pt: 2, mb: 2, mr: 3 }}>
+                      <DatePicker
+                        style={{ width: 150 }}
+                        date={user.licenseDate ? user.licenseDate : ''}
+                        mode="date"
+                        placeholder="select date"
+                        format="YYYY-MM-DD"
+                        maxDate={new Date()}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        onDateChange={(date) => {
+                          dispatch(updateUser({ licenseDate: new Date(date) }));
+                        }}
+                        customStyles={{
+                          dateIcon: {
+                            width: 0,
+                            height: 0,
+                          },
+                        }}
+                      />
+                    </View>
+                  )
+                    : (
+                      <View spacing={{ mt: 2 }}>
+                        <Text variant="regularSmallGrey">
+                          {format(therapist.licenseDate, 'yyyy-MM-dd') }
+                        </Text>
+                      </View>
+                    )}
+                </View>
+              </View>
+
               <View row>
                 <View spacing={{ p: 3 }}>
                   <InterestIcon />
@@ -501,21 +563,18 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View
                   column
                   variant="profileData"
-                  {...(!modal ? { onPress: () => setModals({ ...modals,
-                    isExperienceModalVisible: true }),
-                  } : '')}
                 >
                   <Text variant="boldDark">Years of Experience</Text>
                   <View spacing={{ pt: 2 }} width={295}>
                     {!modal ? (
                       <Text variant="regularSmallGrey">
-                        {user.yearsOfExperience
-                          ? user.yearsOfExperience : 'Set Years Of Experience'}
+                        {user.licenseDate
+                          ? differenceInYears(new Date(), user.licenseDate).toString() : 'N/A'}
                       </Text>
                     )
                       : (
                         <Text variant="regularSmallGrey">
-                          {therapist.yearsOfExperience ? therapist.yearsOfExperience : 'N/A'}
+                          {differenceInYears(new Date(), therapist.licenseDate).toString()}
                         </Text>
                       )}
                   </View>
@@ -529,13 +588,16 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View
                   column
                   variant="profileData"
+                  {...(!modal ? { onPress: () => setModals({ ...modals,
+                    isQualificationModalVisible: true }),
+                  } : '')}
                 >
                   <Text variant="boldDark">Qualifications</Text>
                   <View spacing={{ pt: 2 }} width={295}>
                     {(!modal ? user.qualifications : therapist.qualifications).map(
                       (qualifiaciton, index) => (
                         <View key={index}>
-                          {qualifiaciton.value === 1
+                          {qualifiaciton.value === true
                             ? (
                               <Text variant="regularSmallGrey" spacing={{ mr: 2 }}>
                                 {qualifiaciton.name}
@@ -615,13 +677,14 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
             {evaluationPriceModal}
             {serviceAreaModal}
             {personalBio}
-            {experienceModal}
+            {qualificationsModal}
             {viewer}
+            {reviewsModal}
             {modal && (
             <View row spacing={{ mt: 3, mb: 3, mx: 3 }}>
               <View flex={1}>
                 <Button onPress={handleMessageTherapist}>
-              Message / Schedule
+                    Message / Schedule
                 </Button>
               </View>
             </View>
