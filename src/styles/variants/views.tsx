@@ -93,9 +93,16 @@ const starLast: ViewStyle = {
 
 
 const roundedBorder: ViewStyle = {
-  borderRadius: 5,
+  borderRadius: 20,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderGrey: ViewStyle = {
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.semiGreyAlt,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
@@ -323,6 +330,7 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderGrey,
   roundedBorderLeft,
   roundedBorderRight,
   patientViewPressed,

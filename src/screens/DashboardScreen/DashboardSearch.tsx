@@ -11,9 +11,10 @@ import TextInput from '@src/components/TextInput';
 type DashboardSearchProps = {
   name: string;
   handleFiltering: (value: boolean) => void;
+  handleModalVisibility: (value: boolean) => void;
 }
 
-const DashboardSearch = ({ name, handleFiltering }: DashboardSearchProps) => {
+const DashboardSearch = ({ name, handleFiltering, handleModalVisibility }: DashboardSearchProps) => {
   const navigation = useNavigation();
   const [text, setText] = useState('');
 
@@ -27,7 +28,7 @@ const DashboardSearch = ({ name, handleFiltering }: DashboardSearchProps) => {
   };
 
   // const onPressSearch = () => setText('');
-  const onPressFilter = () => navigation.navigate('FilterScreen');
+  const onPressFilter = () => handleModalVisibility(true);
 
   return (
     <View column>
