@@ -16,6 +16,8 @@ import Text from '@src/components/Text';
 import View from '@src/components/View';
 
 import TherapistProfileModal from '@src/modals/TherapistProfileModal';
+import PatientProfileModal from '@src/modals/PatientProfileModal';
+
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
@@ -34,7 +36,6 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
     );
   }
-
 
   // const therapist = {
   //   username: 'John Doe',
@@ -90,6 +91,9 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
       {/* {<TherapistProfileModal therapist={therapist} isModalVisible closeInputModal="" />} */}
       {/* Therapist modal example */}
+
+      {<PatientProfileModal patient={{ username: user.username, gender: 'Male' }} isModalVisible closeInputModal="" />}
+
     </View>
   );
 };
