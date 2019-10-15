@@ -8,17 +8,14 @@ import Text from '@src/components/Text';
 import ModalView from '@src/components/ModalView';
 
 
-import { updateUser } from '@src/store/actions/UserAction';
-import useStore from '@src/hooks/useStore';
-
-
 type InputModalProps = {
   closeInputModal: () => void;
   isModalVisible: boolean;
   title: string;
   placeHolder: string;
-  attribute: string;
+  formFieldValue: string;
   validate?: (value: string) => boolean;
+  onSubmit?: (value: string) => void;
   errorText?: string;
   maxLength?: number;
   keyboardTypeNumber?: boolean;
@@ -28,36 +25,31 @@ const InputModal = (
   {
     title,
     closeInputModal,
+    onSubmit,
     isModalVisible = false,
     validate,
     placeHolder,
-    attribute,
+    formFieldValue,
     errorText,
     maxLength,
     keyboardTypeNumber,
   }: InputModalProps,
 ) => {
-  const { store: { user }, dispatch } = useStore();
-
-  const [formField, setFormField] = useState(
-    // eslint-disable-next-line no-nested-ternary
-    user[attribute]
-      ? user[attribute] : '',
-  );
+  const [formField, setFormField] = useState(formFieldValue);
   const [isValid, setIsValid] = useState(true);
 
   const isButtonDisabled = formField === '' || !isValid;
-  const buttonText = user[attribute] ? 'Update' : 'Add';
+  const buttonText = formFieldValue !== '' ? 'Update' : 'Add';
 
 
   const handleButtonPress = () => {
     if (validate) {
       if (validate(formField)) {
-        dispatch(updateUser({ [attribute]: formField }));
+        onSubmit(formField);
         closeInputModal();
       } else { setIsValid(false); }
     } else {
-      dispatch(updateUser({ [attribute]: formField }));
+      onSubmit(formField);
       closeInputModal();
     }
   };
@@ -69,17 +61,17 @@ const InputModal = (
       onBackdropPress={() => {
         closeInputModal();
         setIsValid(true);
-        setFormField(user[attribute] ? user[attribute] : '');
+        setFormField(formFieldValue);
       }}
       onSwipeComplete={() => {
         closeInputModal();
         setIsValid(true);
-        setFormField(user[attribute] ? user[attribute] : '');
+        setFormField(formFieldValue);
       }}
       handleArrowClick={() => {
         closeInputModal();
         setIsValid(true);
-        setFormField(user[attribute] ? user[attribute] : '');
+        setFormField(formFieldValue);
       }}
     >
       <View alignCenter>
