@@ -24,15 +24,15 @@ import TherapistProfile from './TherapistProfile';
 const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPressRight = () => navigation.navigate('ProfileSettingsScreen');
 
-  const { store: { user } } = useStore();
-  const isTherapist = user.type === 'caregiver';
+  const { store } = useStore();
+  const isTherapist = store.user.type === 'PT';
 
   let ratingTag = null;
   if (isTherapist) {
     ratingTag = (
       <View row alignCenter>
-        <Text spacing={{ mr: 2 }} variant="lightTextCenter">{user.rating.toString()}</Text>
-        <StarsIcon number={user.rating} />
+        <Text spacing={{ mr: 2 }} variant="lightTextCenter">3</Text>
+        <StarsIcon number={3} />
       </View>
     );
   }
@@ -80,7 +80,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <View row spacing={{ p: 4 }}>
         <Image rounded size={80} uri={mockImg} />
         <View column justifyCenter spacing={{ px: 3 }}>
-          <Text variant="titleWhite">{user.username}</Text>
+          <Text variant="titleWhite">{store.user.firstName}</Text>
           {ratingTag}
         </View>
       </View>

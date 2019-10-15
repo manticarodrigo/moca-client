@@ -1,16 +1,38 @@
 import { Dispatch } from 'react';
 
-export type UserAction = |{type: 'UPDATE_USER'; payload: User}| { type: 'SET_USER'; payload: User };
+import api from '@src/services/api';
+import { Patient, PatientCreate } from '@src/services/openapi';
+import { UserState } from '@src/store/reducers/UserReducer';
 
-const setUser = (user: User) => (async (dispatch: Dispatch<UserAction>) => {
-  dispatch({ type: 'SET_USER', payload: user });
+export type UserAction =
+  | { type: 'SET_USER'; payload: UserState }
+  | { type: 'UPDATE_USER'; payload: UserState }
+  | { type: 'REGISTER_PATIENT_SUCCESS'; payload: Patient }
+
+const setUser = (state: UserState) => (async (dispatch: Dispatch<UserAction>) => {
+  dispatch({ type: 'SET_USER', payload: state });
 });
 
-const updateUser = (user: User) => (async (dispatch: Dispatch<UserAction>) => {
-  dispatch({ type: 'UPDATE_USER', payload: user });
+const updateUser = (partialState: UserState) => (async (dispatch: Dispatch<UserAction>) => {
+  dispatch({ type: 'UPDATE_USER', payload: partialState });
 });
+
+const registerPatient = (form: PatientCreate) => async (
+  dispatch: Dispatch<UserAction>) => {
+  const { email, password, firstName, lastName } = form.user;
+  const { data } = await api.user.userPatientCreate({
+    user: {
+      email,
+      password,
+      firstName,
+      lastName,
+    },
+  });
+  dispatch({ type: 'REGISTER_PATIENT_SUCCESS', payload: data });
+};
 
 export {
   setUser,
   updateUser,
+  registerPatient,
 };

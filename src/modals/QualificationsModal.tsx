@@ -1,6 +1,6 @@
 import React from 'react';
 
-import QualificationsContent from '@src/screens/SignUp/QualifationsContent';
+import QualificationsContent from '@src/screens/QualificationsScreen/QualificationsContent';
 
 import ModalView from '@src/components/ModalView';
 import View from '@src/components/View';

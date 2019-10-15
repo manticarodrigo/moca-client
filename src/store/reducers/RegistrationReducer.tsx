@@ -1,28 +1,23 @@
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 
+import { User, Therapist, Address } from '@src/services/openapi';
 
-export type RegistrationState = RegistrationInformation;
+type RegisterAddress = Omit<Partial<Address>, 'location'> & {
+  location?: { type: string; coordinates: [number, number] };
+}
 
-const reducer = (state: RegistrationState = {}, action: RegistrationAction) => {
+export type RegistrationState = Partial<User> & {
+  address?: RegisterAddress;
+  preferredAilments?: Therapist['preferredAilments'];
+  licenseNumber?: Therapist['licenseNumber'];
+}
+
+const reducer = (state: RegistrationState, action: RegistrationAction) => {
   switch (action.type) {
-    case 'UPDATE_USER':
-      return {
-        ...state,
-        ...action.payLoad,
-      };
-    case 'RESET_USER':
-      return {
-        qualifications: [
-          { name: 'Neck', value: 0 },
-          { name: 'Shoulder', value: 0 },
-          { name: 'Elbow', value: 0 },
-          { name: 'Low Back', value: 0 },
-          { name: 'Knee', value: 0 },
-          { name: 'Ankle/Foot', value: 0 },
-          { name: 'Other', value: 0 },
-        ],
-        addresses: [],
-      };
+    case 'UPDATE_REGISTRATION_FIELDS':
+      return { ...state, ...action.payload };
+    case 'RESET_REGISTRATION_FIELDS':
+      return {};
     default:
       return state;
   }

@@ -1,14 +1,15 @@
 import { Dispatch } from 'react';
 
-export type RegistrationAction = { type: 'UPDATE_USER'; payLoad: RegistrationInformation } |
-{ type: 'RESET_USER' };
+import { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 
-export const updateUserInfomation = (information: RegistrationInformation) => (async (
-  dispatch: Dispatch<RegistrationAction>) => {
-  dispatch({ type: 'UPDATE_USER', payLoad: information });
-});
+export type RegistrationAction =
+  | { type: 'UPDATE_REGISTRATION_FIELDS'; payload: Partial<RegistrationState> }
+  | { type: 'RESET_REGISTRATION_FIELDS' };
 
-export const resetUserInformation = () => (async (
-  dispatch: Dispatch<RegistrationAction>) => {
-  dispatch({ type: 'RESET_USER' });
-});
+export const updateRegistration = (partialState: RegistrationState) => async (
+  dispatch: Dispatch<RegistrationAction>) => dispatch(
+  { type: 'UPDATE_REGISTRATION_FIELDS', payload: partialState },
+);
+
+export const resetRegistration = () => async (
+  dispatch: Dispatch<RegistrationAction>) => dispatch({ type: 'RESET_REGISTRATION_FIELDS' });

@@ -7,6 +7,7 @@ import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Slider from '@src/components/Slider';
 import Button from '@src/components/Button';
+import ContainedView from '@src/components/ContainedView';
 
 import Logo from '@src/assets/pngs/logo.png';
 import ShieldIcon from '@src/components/icons/ShieldIcon';
@@ -72,32 +73,35 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
   return (
     <View safeArea flex={1} alignCenter bgColor="white">
       <StatusBar barStyle="dark-content" />
-      <View spacing={{ pt: 5 }}>
-        <Image width={175} height={110} file={Logo} />
-      </View>
-      <Slider slides={slides.map(({ icon, title, text }) => (
-        <View key={title} column flex={1} justifyCenter alignCenter spacing={{ px: 5 }}>
-          <View>
-            {icon}
+      <ContainedView>
+
+        <View spacing={{ pt: 5 }}>
+          <Image width={175} height={110} file={Logo} />
+        </View>
+        <Slider slides={slides.map(({ icon, title, text }) => (
+          <View key={title} column flex={1} justifyCenter alignCenter spacing={{ px: 5 }}>
+            <View>
+              {icon}
+            </View>
+            <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
+              {title}
+            </Text>
+            <Text variant="regular" typography={{ align: 'center' }}>
+              {text}
+            </Text>
           </View>
-          <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
-            {title}
-          </Text>
-          <Text variant="regular" typography={{ align: 'center' }}>
-            {text}
-          </Text>
+        ))}
+        />
+        <View width="100%" spacing={{ px: 4, pb: 4 }}>
+          <Button onPress={handleSignUpPress}>
+            Signup
+          </Button>
+          <View row justifyCenter spacing={{ mt: 4 }}>
+            <Text variant="regular">Already have an account?</Text>
+            <Text variant="link" spacing={{ ml: 1 }} onPress={handleLoginPress}>Login</Text>
+          </View>
         </View>
-      ))}
-      />
-      <View width="100%" spacing={{ px: 4, pb: 4 }}>
-        <Button onPress={handleSignUpPress}>
-          Signup
-        </Button>
-        <View row justifyCenter spacing={{ mt: 4 }}>
-          <Text variant="regular">Already have an account?</Text>
-          <Text variant="link" spacing={{ ml: 1 }} onPress={handleLoginPress}>Login</Text>
-        </View>
-      </View>
+      </ContainedView>
       {loginModal}
     </View>
   );

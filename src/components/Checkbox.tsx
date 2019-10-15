@@ -7,25 +7,19 @@ import TickFilledIcon from '@src/components/icons/TickFilledIcon';
 
 import View from './View';
 
-type CheckBoxProps = {
-  handleCheckBoxClick: (checked: boolean, index: number) => void;
-  isChecked?: boolean;
-  index?: number;
+type Props = {
+  value: string;
+  isChecked: boolean;
+  onClick: (checked: boolean, value: string) => void;
 };
 
-const CheckBox = ({
-  handleCheckBoxClick,
-  isChecked,
-  index,
-}: CheckBoxProps) => {
-  const handleClick = () => {
-    handleCheckBoxClick(!isChecked, index);
-  };
+const CheckBox = ({ value, isChecked, onClick }: Props) => {
+  const handleClick = () => onClick(!isChecked, value);
 
   return (
     <View>
       <TouchableHighlight
-        onPress={() => handleClick()}
+        onPress={handleClick}
         underlayColor="transparent"
       >
         {isChecked

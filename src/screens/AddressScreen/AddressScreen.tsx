@@ -17,15 +17,14 @@ import BinIconRed from '@src/components/icons/BinIconRed';
 
 import { validateZipCode } from '@src/utlities/validations';
 
-import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
+import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
 const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
   const { store, dispatch } = useStore();
-  const { registrationState: { addresses, name } } = store;
 
-  const [formFields, setFormFields] = useState({
+  const [formFields, setFormFields] = useState<typeof store.registration.address>({
     street: '',
-    apartmentNumber: '',
+    apartment: '',
     city: '',
     state: '',
     zipCode: '',
@@ -47,57 +46,47 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
   const isButtonDisabled = isAnyFieldEmpty || !isZipCodeValid;
 
   let buttonText = 'Continue';
+
   if (isExistingAddress) {
     buttonText = 'Update';
   }
   if (isAdditionalAddress) {
-    buttonText = 'ADD';
+    buttonText = 'Add';
   }
 
   useEffect(() => {
     if (isRegistering) {
-      const { zipCode } = addresses[0];
-      setFormFields({
-        ...formFields,
-        zipCode,
-      });
+      const { zipCode } = store.registration.address;
+
+      setFormFields({ ...formFields, zipCode });
     }
 
     if (isExistingAddress) {
       const userAddress = navigation.getParam('userAddress', {});
-      const { street, state, city, apartmentNumber, zipCode } = userAddress;
+      const { street, state, city, apartment, zipCode } = userAddress;
 
       setFormFields({
         ...formFields,
         street,
-        state,
+        apartment,
         city,
-        apartmentNumber,
+        state,
         zipCode,
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
   const handleButtonPress = () => {
     if (isRegistering) {
-      const newAddresses = [];
-      newAddresses.push({ ...formFields });
-      dispatch(updateUserInfomation({ addresses: newAddresses }));
+      dispatch(updateRegistration({ address: formFields }));
       navigation.navigate('DashboardScreen');
     }
 
-    const newAddresses = addresses.map((x) => ({ ...x }));
-
     if (isExistingAddress) {
       if (validateZipCode(formFields.zipCode)) {
-        const index = navigation.getParam('index');
-        newAddresses[index] = { ...formFields };
-        dispatch(updateUserInfomation({ addresses: newAddresses }));
+        dispatch(updateRegistration({ address: formFields }));
         navigation.goBack();
-      // api put request
-      // store used as an example
       } else {
         setIsZipCodeValid(false);
       }
@@ -105,18 +94,15 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
 
     if (isAdditionalAddress) {
       if (validateZipCode(formFields.zipCode)) {
-        newAddresses.push({ ...formFields });
-        dispatch(updateUserInfomation({ addresses: newAddresses }));
+        dispatch(updateRegistration({ address: formFields }));
         navigation.goBack();
-      // api post request
-      // store used as an example
       } else {
         setIsZipCodeValid(false);
       }
     }
   };
 
-  const handleFormFields = (fieldName: string, text: string) => {
+  const handleFormFields = (fieldName: keyof typeof store.registration.address, text: string) => {
     setFormFields({ ...formFields, [fieldName]: text });
   };
 
@@ -134,7 +120,9 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
                 <View alignCenter>
                   <View row>
                     <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
-                    <Text variant="title" spacing={{ mt: 3 }}>{name}</Text>
+                    <Text variant="title" spacing={{ mt: 3 }}>
+                      {store.user.firstName}
+                    </Text>
                   </View>
                   <Text variant="regular" spacing={{ mt: 1 }}>
                     What is your preferred address for treatment?
@@ -151,11 +139,11 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
               />
               <FormField
                 placeholder="Apartment Number"
-                value={formFields.apartmentNumber}
+                value={formFields.apartment}
                 returnKeyType="next"
                 onSubmitEditing={() => cityField.current.focus()}
                 ref={apartmentField}
-                onChangeText={(text) => handleFormFields('apartmentNumber', text)}
+                onChangeText={(text) => handleFormFields('apartment', text)}
               />
               <FormField
                 placeholder="City"

@@ -141,7 +141,7 @@ const therapistView: ViewStyle = {
   borderBottomRightRadius: 16,
 };
 
-const therapistViewtPressed: ViewStyle = {
+const therapistViewPressed: ViewStyle = {
   ...therapistView,
   borderColor: Colors.secondaryDarker,
 };
@@ -315,7 +315,7 @@ export {
   backdrop,
   modal,
   therapistView,
-  therapistViewtPressed,
+  therapistViewPressed,
   card,
   cardRight,
   cardLeft,

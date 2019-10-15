@@ -8,34 +8,43 @@ import Button from '@src/components/Button';
 import Text from '@src/components/Text';
 import CheckBox from '@src/components/Checkbox';
 
-import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
 import { updateUser } from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
 
 
-type QualificationsContentProps = {
+const qualificationOptions = [
+  'Neck',
+  'Shoulder',
+  'Elbow',
+  'Low Back',
+  'Knee',
+  'Ankle/Foot',
+  'Other',
+];
+
+type Props = {
   navigation?: NavigationStackProp;
   modal?: boolean;
   closeInputModal?: () => void;
 }
 
 const QualificationsContent = (
-  { navigation, modal, closeInputModal }: QualificationsContentProps,
+  { navigation, modal, closeInputModal }: Props,
 ) => {
   const { store, dispatch } = useStore();
-  const { qualifications } = !modal ? store.registrationState : store.user;
-  const { name } = store.registrationState;
-  const isButtonDisabled = !(qualifications.filter((x) => x.value === true).length > 0);
+  const { firstName, preferredAilments } = store.user;
+  const isButtonDisabled = preferredAilments.length <= 0;
 
-  const handleCheckBoxClick = (checked: boolean, index: number) => {
-    const newState = qualifications.map((x) => ({ ...x }));
-    newState[index].value = checked;
-    if (modal) {
-      dispatch(updateUser({ qualifications: newState }));
+  const handleCheckBoxClick = (checked: boolean, value: string) => {
+    if (checked) {
+      preferredAilments.push(value);
     } else {
-      dispatch(updateUserInfomation({ qualifications: newState }));
+      const index = preferredAilments.findIndex((item) => item === value);
+      if (index) delete preferredAilments[index];
     }
+
+    dispatch(updateUser({ preferredAilments }));
   };
 
   const handleButtonPress = () => {
@@ -56,7 +65,7 @@ const QualificationsContent = (
                     <View>
                       <View row wrap justifyCenter>
                         <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up,</Text>
-                        <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{name}</Text>
+                        <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{firstName}</Text>
                       </View>
                       <View alignCenter spacing={{ mt: 4 }} wrap>
                         <Text variant="regular" typography={{ align: 'center' }}>
@@ -69,10 +78,9 @@ const QualificationsContent = (
                   )
                   : null}
                 <View spacing={{ mt: 3 }}>
-                  {qualifications.map((item, index) => (
+                  {qualificationOptions.map((item, index) => (
                     <View
-              // eslint-disable-next-line react/no-array-index-key
-                      key={index}
+                      key={item}
                       row
                       justifyBetween
                       alignCenter
@@ -80,11 +88,11 @@ const QualificationsContent = (
                       spacing={{ mb: 3 }}
                       width="100%"
                     >
-                      <Text variant="titleSmall" spacing={{ mb: 2, mt: 3 }}>{item.name}</Text>
+                      <Text variant="titleSmall" spacing={{ mb: 2, mt: 3 }}>{item}</Text>
                       <CheckBox
-                        isChecked={item.value}
-                        index={index}
-                        handleCheckBoxClick={handleCheckBoxClick}
+                        value={item}
+                        isChecked={preferredAilments.includes(item)}
+                        onClick={handleCheckBoxClick}
                       />
                     </View>
                   ))}
