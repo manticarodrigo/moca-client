@@ -61,59 +61,62 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
     <>
       <View safeArea alignCenter>
         <View spacing={{ mx: 3 }} alignCenter>
-          <View spacing={{ mt: 5 }} alignCenter>
-            <Text variant="title">Please select your</Text>
-            <View alignCenter row>
-              <Text variant="title" typography={{ color: 'secondary' }}>MOCA</Text>
-              <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
+          <ContainedView>
+
+            <View spacing={{ mt: 5 }} alignCenter>
+              <Text variant="title">Please select your</Text>
+              <View alignCenter row>
+                <Text variant="title" typography={{ color: 'secondary' }}>MOCA</Text>
+                <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
+              </View>
             </View>
-          </View>
-          <View row spacing={{ mt: 6 }}>
-            <View
-              variant={isPatient ? 'patientViewPressed' : 'patientView'}
-              alignCenter
-              flex={1}
-              justifyBetween
-              {...(!isPatient ? { onPress: () => setType(UserTypeEnum.PA) } : '')}
-              bgColor={patientBgColor}
-              spacing={{ mr: 1 }}
-            >
-              {isPatient ? <PatientSelectIcon /> : <PatientIcon />}
-              <Text
-                variant="title"
-                typography={{ color: patientTextColor, weight: '900' }}
+            <View row spacing={{ mt: 6 }}>
+              <View
+                variant={isPatient ? 'patientViewPressed' : 'patientView'}
+                alignCenter
+                flex={1}
+                justifyBetween
+                {...(!isPatient ? { onPress: () => setType(UserTypeEnum.PA) } : '')}
+                bgColor={patientBgColor}
+                spacing={{ mr: 1 }}
               >
-                PATIENT
-              </Text>
-            </View>
-            <View
-              variant={isTherapist ? 'therapistViewPressed' : 'therapistView'}
-              alignCenter
-              flex={1}
-              justifyBetween
-              {...(!isTherapist ? { onPress: () => setType(UserTypeEnum.PT) } : '')}
-              bgColor={therapistBgColor}
-            >
-              {isTherapist ? <TherapistSelectIcon /> : <TherapistIcon />}
-              <Text
-                variant="title"
-                typography={{ color: therapistTextColor, weight: '900' }}
+                {isPatient ? <PatientSelectIcon /> : <PatientIcon />}
+                <Text
+                  variant="title"
+                  typography={{ color: patientTextColor, weight: '900' }}
+                >
+                  PATIENT
+                </Text>
+              </View>
+              <View
+                variant={isTherapist ? 'therapistViewPressed' : 'therapistView'}
+                alignCenter
+                flex={1}
+                justifyBetween
+                {...(!isTherapist ? { onPress: () => setType(UserTypeEnum.PT) } : '')}
+                bgColor={therapistBgColor}
               >
-                THERAPIST
-              </Text>
+                {isTherapist ? <TherapistSelectIcon /> : <TherapistIcon />}
+                <Text
+                  variant="title"
+                  typography={{ color: therapistTextColor, weight: '900' }}
+                >
+                  THERAPIST
+                </Text>
+              </View>
             </View>
-          </View>
-          <View row flex={1}>
-            <View flex={1} justifyEnd spacing={{ mb: 3 }}>
-              <Button
-                variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
-                disabled={buttonDisabled}
-              >
-                {buttonText}
-              </Button>
+            <View row flex={1}>
+              <View flex={1} justifyEnd spacing={{ mb: 3 }}>
+                <Button
+                  variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
+                  onPress={handleButtonPress}
+                  disabled={buttonDisabled}
+                >
+                  {buttonText}
+                </Button>
+              </View>
             </View>
-          </View>
+          </ContainedView>
         </View>
       </View>
       <ZipCodeModal
