@@ -16,6 +16,8 @@ import Text from '@src/components/Text';
 import View from '@src/components/View';
 
 import TherapistProfileModal from '@src/modals/TherapistProfileModal';
+import PatientProfileModal from '@src/modals/PatientProfileModal';
+
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
@@ -34,26 +36,33 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
     );
   }
-  const therapist = {
-    username: 'John Doe',
-    licenseNumber: '234423',
-    reviewsNumber: '4',
-    qualifications: [
-      { name: 'Neck', value: true },
-      { name: 'Shoulder', value: false },
-      { name: 'Elbow', value: true },
-    ],
-    licenseDate: new Date('2010-10-11'),
-    gender: 'Male',
-    evaluationPrice: '30',
-    pricePerThirtyMinutes: '40',
-    yearsOfExperience: '10',
-    rating: 4,
-    certifications: [
-      { id: '1', description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
-      { id: '2', description: 'USMLE Certified', attachmentURI: certificate1 },
-    ],
-  };
+
+  // const therapist = {
+  //   username: 'John Doe',
+  //   licenseNumber: '234423',
+  //   reviewsNumber: '4',
+  //   qualifications: [
+  //     { name: 'Neck', value: true },
+  //     { name: 'Shoulder', value: false },
+  //     { name: 'Elbow', value: true },
+  //   ],
+  //   licenseDate: new Date('2010-10-11'),
+  //   gender: 'Male',
+  //   evaluationPrice: '30',
+  //   pricePerThirtyMinutes: '40',
+  //   yearsOfExperience: '10',
+  //   rating: 4,
+  //   certifications: [
+  //     { id: '1', description: 'American Board of Internal Medicine', attachmentURI: certificate1 },
+  //     { id: '2', description: 'USMLE Certified', attachmentURI: certificate1 },
+  //   ],
+  // };
+
+  // const appointment = {
+  //   appointmentDuration: '30',
+  //   appointmentPrice: 40,
+  //   name: 'Ahmed',
+  // };
 
   return (
     <View safeArea flex={1} bgColor="primary">
@@ -77,11 +86,18 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
       { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
 
-      {/* <ReviewModal /> */}
+      {/* <ReviewModal appointment={appointment} /> */}
       {/* Review modal example */}
 
       {/* {<TherapistProfileModal therapist={therapist} isModalVisible closeInputModal="" />} */}
       {/* Therapist modal example */}
+
+      {/* {<PatientProfileModal
+        patient={{ username: user.username, gender: 'Male' }}
+        isModalVisible
+        closeInputModal=""
+      />} */}
+
     </View>
   );
 };
