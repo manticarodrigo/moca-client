@@ -92,7 +92,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       {/* {<TherapistProfileModal therapist={therapist} isModalVisible closeInputModal="" />} */}
       {/* Therapist modal example */}
 
-      {<PatientProfileModal patient={{ username: user.username, gender: 'Male' }} isModalVisible closeInputModal="" />}
+      {/* {<PatientProfileModal patient={{ username: user.username, gender: 'Male' }} isModalVisible closeInputModal="" />} */}
 
     </View>
   );
