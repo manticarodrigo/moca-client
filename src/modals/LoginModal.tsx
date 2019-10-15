@@ -9,6 +9,8 @@ import ModalView from '@src/components/ModalView';
 
 import { validateEmailAddress } from '@src/utlities/validations';
 
+import ForgotPasswordModal from '@src/modals/ForgotPasswordModal';
+
 import { EmailIcon, ChangePasswordIcon } from '@src/components/icons';
 
 type LoginModalProps = {
@@ -16,7 +18,6 @@ type LoginModalProps = {
   isModalVisible: boolean;
   sumbitLogin: () => void;
   onModalHide: () => void;
-  handleRecoverPasswrod: () => void;
 };
 
 const LoginModal = ({
@@ -24,11 +25,12 @@ const LoginModal = ({
   isModalVisible,
   sumbitLogin,
   onModalHide,
-  handleRecoverPasswrod,
 }: LoginModalProps) => {
   const [email, setEmail] = useState('');
   const [password, setPasswrod] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isPasswordModal, setIsPasswordModal] = useState(false);
+
 
   const emailField = useRef(null);
   const passwordField = useRef(null);
@@ -42,8 +44,23 @@ const LoginModal = ({
     }
   };
 
+
+  const sumbitForgotPassword = () => {
+    // api
+    setIsPasswordModal(false);
+  };
+
+  const passwordModal = (
+    <ForgotPasswordModal
+      isModalVisible={isPasswordModal}
+      closeInputModal={() => setIsPasswordModal(false)}
+      submitForgotPassword={sumbitForgotPassword}
+    />
+  );
+
   return (
     <ModalView
+      propagateSwipe
       height={100}
       isVisible={isModalVisible}
       onBackdropPress={() => closeInputModal()}
@@ -51,11 +68,12 @@ const LoginModal = ({
       handleArrowClick={() => closeInputModal()}
       onModalHide={onModalHide}
     >
+
       <View alignCenter>
         <View row>
           <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
             <Text variant="titleSmall">
-              Welcome Back
+                    Welcome Back
             </Text>
           </View>
         </View>
@@ -94,7 +112,7 @@ const LoginModal = ({
               <Text
                 variant="link"
                 spacing={{ ml: 1 }}
-                onPress={() => handleRecoverPasswrod()}
+                onPress={() => setIsPasswordModal(true)}
               >
                 Forgot Password ?
               </Text>
@@ -107,10 +125,11 @@ const LoginModal = ({
                 onPress={handleButtonPress}
                 disabled={isButtonDisabled}
               >
-               Login
+                Login
               </Button>
             </View>
           </View>
+          {passwordModal}
         </View>
       </View>
     </ModalView>

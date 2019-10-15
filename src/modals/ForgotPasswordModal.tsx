@@ -15,13 +15,11 @@ type PasswordModalProps = {
   closeInputModal: () => void;
   isModalVisible: boolean;
   submitForgotPassword: () => void;
-  onModalHide: () => void;
 };
 
 const ForgotPasswordModal = ({
   closeInputModal,
   isModalVisible,
-  onModalHide,
   submitForgotPassword,
 }: PasswordModalProps) => {
   const [email, setEmail] = useState('');
@@ -44,7 +42,6 @@ const ForgotPasswordModal = ({
       onBackdropPress={() => closeInputModal()}
       onSwipeComplete={() => closeInputModal()}
       handleArrowClick={() => closeInputModal()}
-      onModalHide={onModalHide}
     >
       <View alignCenter>
         <View row>

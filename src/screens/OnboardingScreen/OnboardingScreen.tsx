@@ -14,7 +14,6 @@ import DeviceMapIcon from '@src/components/icons/DeviceMapIcon';
 import SettingsIcon from '@src/components/icons/SettingsIcon';
 
 import LoginModal from '@src/modals/LoginModal';
-import ForgotPasswordModal from '@src/modals/ForgotPasswordModal';
 
 const slides = [
   {
@@ -37,15 +36,12 @@ const slides = [
 
 const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
   const [isLoginModal, setIsLoginModal] = useState(false);
-  const [isPasswordModal, setIsPasswordModal] = useState(false);
-  const [resetPassword, setRestPassword] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
 
   const handleSignUpPress = () => navigation.push('SelectionScreen');
   const handleLoginPress = () => setIsLoginModal(true);
   const closeLoginModal = () => setIsLoginModal(false);
-  const closePasswordModal = () => setIsPasswordModal(false);
 
 
   const sumbitLogin = () => {
@@ -57,27 +53,13 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
     setIsLoginModal(false);
   };
 
-  const submitForgotPassword = () => {
-    // api call
-
-    setIsPasswordModal(false);
-  };
-
 
   const loginModal = (
     <LoginModal
       isModalVisible={isLoginModal}
       closeInputModal={closeLoginModal}
       sumbitLogin={() => sumbitLogin()}
-      handleRecoverPasswrod={() => {
-        setRestPassword(true);
-        closeLoginModal();
-      }}
       onModalHide={() => {
-        if (resetPassword) {
-          setIsPasswordModal(true);
-          setRestPassword(false);
-        }
         if (isLoginSuccess) {
           navigation.push('DashboardScreen');
           setIsLoginSuccess(false);
@@ -86,14 +68,6 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
     />
   );
 
-  const passwordModal = (
-    <ForgotPasswordModal
-      isModalVisible={isPasswordModal}
-      closeInputModal={closePasswordModal}
-      submitForgotPassword={submitForgotPassword}
-      onModalHide={() => setIsLoginModal(true)}
-    />
-  );
 
   return (
     <View safeArea flex={1} alignCenter bgColor="white">
@@ -124,7 +98,6 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
           <Text variant="link" spacing={{ ml: 1 }} onPress={handleLoginPress}>Login</Text>
         </View>
       </View>
-      {passwordModal}
       {loginModal}
     </View>
   );
