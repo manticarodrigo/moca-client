@@ -9,9 +9,10 @@ import ModalView from '@src/components/ModalView';
 
 import { validateEmailAddress } from '@src/utlities/validations';
 
-import ForgotPasswordModal from '@src/modals/ForgotPasswordModal';
+import InputModal from '@src/modals/InputModal';
 
 import { EmailIcon, ChangePasswordIcon } from '@src/components/icons';
+
 
 type LoginModalProps = {
   closeInputModal: () => void;
@@ -45,16 +46,22 @@ const LoginModal = ({
   };
 
 
-  const sumbitForgotPassword = () => {
+  const sumbitForgotPassword = (value: string) => {
     // api
     setIsPasswordModal(false);
   };
 
   const passwordModal = (
-    <ForgotPasswordModal
-      isModalVisible={isPasswordModal}
+    <InputModal
       closeInputModal={() => setIsPasswordModal(false)}
-      submitForgotPassword={sumbitForgotPassword}
+      title="Recover Password"
+      formFieldValue=""
+      placeHolder="Email"
+      validate={validateEmailAddress}
+      isModalVisible={isPasswordModal}
+      errorText="Please enter a valid Email"
+      onSubmit={(value) => sumbitForgotPassword(value)}
+      buttonTextValue="Continue"
     />
   );
 

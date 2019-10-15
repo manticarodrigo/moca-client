@@ -92,21 +92,27 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
   const submitPricePerThirtyMinutes = (value: string) => {
     dispatch(updateUser({ pricePerThirtyMinutes: value }));
+    setModals({ ...modals, isPricePerThirtyModalVisible: false });
   };
   const submitPricePerSixtyMinutes = (value: string) => {
     dispatch(updateUser({ pricePerSixtyMinutes: value }));
+    setModals({ ...modals, isPricePerSixtyModalVisible: false });
   };
   const submitPricePerNintyMinutes = (value: string) => {
     dispatch(updateUser({ pricePerNintyMinutes: value }));
+    setModals({ ...modals, isPricePerNintyModalVisible: false });
   };
   const submitEvaluationPrice = (value: string) => {
     dispatch(updateUser({ evaluationPrice: value }));
+    setModals({ ...modals, isEvaluationPriceModalVisible: false });
   };
   const submitServiceArea = (value: string) => {
     dispatch(updateUser({ serviceArea: value }));
+    setModals({ ...modals, isServiceAreaModalVisible: false });
   };
   const submitPersonalBio = (value: string) => {
     dispatch(updateUser({ personalBio: value }));
+    setModals({ ...modals, isPersonalBioModalVisible: false });
   };
 
 

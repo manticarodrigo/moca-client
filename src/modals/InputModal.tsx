@@ -19,6 +19,8 @@ type InputModalProps = {
   errorText?: string;
   maxLength?: number;
   keyboardTypeNumber?: boolean;
+  buttonTextValue?: string;
+  password?: boolean;
 };
 
 const InputModal = (
@@ -33,6 +35,8 @@ const InputModal = (
     errorText,
     maxLength,
     keyboardTypeNumber,
+    buttonTextValue,
+    password,
   }: InputModalProps,
 ) => {
   const [formField, setFormField] = useState(formFieldValue);
@@ -46,7 +50,6 @@ const InputModal = (
     if (validate) {
       if (validate(formField)) {
         onSubmit(formField);
-        closeInputModal();
       } else { setIsValid(false); }
     } else {
       onSubmit(formField);
@@ -85,11 +88,13 @@ const InputModal = (
         <View alignCenter spacing={{ mx: 3 }}>
           <FormField
             spacing={{ mt: 6 }}
+            error={!isValid}
             placeholder={placeHolder}
             value={formField}
             keyboardType={keyboardTypeNumber ? 'number-pad' : 'default'}
             maxLength={maxLength || 200}
             returnKeyType="done"
+            secureTextEntry={password}
             onChangeText={(text) => {
               setFormField(text);
               setIsValid(true);
@@ -109,7 +114,7 @@ const InputModal = (
                 onPress={handleButtonPress}
                 disabled={isButtonDisabled}
               >
-                {buttonText}
+                {buttonTextValue || buttonText}
               </Button>
             </View>
           </View>
