@@ -28,7 +28,7 @@ const ConsentModal = ({ visible, onPressButton }: ConsentModalProps) => {
     >
       <View
         flex={1}
-        variant="roundedBorder"
+        variant="curveBorder"
         bgColor="white"
         spacing={{ my: 8, p: 3 }}
       >
