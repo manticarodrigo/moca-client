@@ -50,6 +50,13 @@ const borderTop: ViewStyle = {
   borderTopColor: Colors.secondaryLightest,
 };
 
+const borderTopAndRight: ViewStyle = {
+  borderTopWidth: 1,
+  borderRightWidth: 1,
+  borderTopColor: Colors.secondaryLightest,
+  borderRightColor: Colors.secondaryLightest,
+};
+
 const borderBottom: ViewStyle = {
   borderBottomWidth: 1,
   borderBottomColor: Colors.secondaryLightest,
@@ -86,9 +93,16 @@ const starLast: ViewStyle = {
 
 
 const roundedBorder: ViewStyle = {
-  borderRadius: 5,
+  borderRadius: 20,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderGrey: ViewStyle = {
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.semiGreyAlt,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
@@ -295,6 +309,7 @@ export {
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
+  borderTopAndRight,
   borderBottom,
   borderRight,
   backdrop,
@@ -315,6 +330,7 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderGrey,
   roundedBorderLeft,
   roundedBorderRight,
   patientViewPressed,

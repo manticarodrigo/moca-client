@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 import FormField from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
@@ -7,74 +8,73 @@ import Text from '@src/components/Text';
 import ModalView from '@src/components/ModalView';
 
 
-import { updateUser } from '@src/store/actions/UserAction';
-import useStore from '@src/hooks/useStore';
-
-
 type InputModalProps = {
   closeInputModal: () => void;
   isModalVisible: boolean;
   title: string;
   placeHolder: string;
-  attribute: string;
+  formFieldValue: string;
   validate?: (value: string) => boolean;
+  onSubmit?: (value: string) => void;
   errorText?: string;
   maxLength?: number;
   keyboardTypeNumber?: boolean;
+  buttonTextValue?: string;
+  password?: boolean;
 };
 
 const InputModal = (
   {
     title,
     closeInputModal,
+    onSubmit,
     isModalVisible = false,
     validate,
     placeHolder,
-    attribute,
+    formFieldValue,
     errorText,
     maxLength,
     keyboardTypeNumber,
+    buttonTextValue,
+    password,
   }: InputModalProps,
 ) => {
-  const { store: { user }, dispatch } = useStore();
-
-  const [formField, setFormField] = useState(user[attribute] ? user[attribute] : '');
+  const [formField, setFormField] = useState(formFieldValue);
   const [isValid, setIsValid] = useState(true);
 
   const isButtonDisabled = formField === '' || !isValid;
-  const buttonText = user[attribute] ? 'Update' : 'Add';
+  const buttonText = formFieldValue !== '' ? 'Update' : 'Add';
 
 
   const handleButtonPress = () => {
     if (validate) {
       if (validate(formField)) {
-        dispatch(updateUser({ [attribute]: formField }));
-        closeInputModal();
+        onSubmit(formField);
       } else { setIsValid(false); }
     } else {
-      dispatch(updateUser({ [attribute]: formField }));
+      onSubmit(formField);
       closeInputModal();
     }
   };
 
   return (
     <ModalView
-      height={200}
+      height={100}
       isVisible={isModalVisible}
       onBackdropPress={() => {
         closeInputModal();
         setIsValid(true);
-        setFormField(user[attribute] ? user[attribute] : '');
+        setFormField(formFieldValue);
       }}
       onSwipeComplete={() => {
         closeInputModal();
         setIsValid(true);
-        setFormField(user[attribute] ? user[attribute] : '');
+        setFormField(formFieldValue);
       }}
       handleArrowClick={() => {
         closeInputModal();
         setIsValid(true);
-        setFormField(user[attribute] ? user[attribute] : '');
+        setFormField(formFieldValue);
       }}
     >
       <View alignCenter>
@@ -88,11 +88,13 @@ const InputModal = (
         <View alignCenter spacing={{ mx: 3 }}>
           <FormField
             spacing={{ mt: 6 }}
+            error={!isValid}
             placeholder={placeHolder}
             value={formField}
             keyboardType={keyboardTypeNumber ? 'number-pad' : 'default'}
             maxLength={maxLength || 200}
             returnKeyType="done"
+            secureTextEntry={password}
             onChangeText={(text) => {
               setFormField(text);
               setIsValid(true);
@@ -112,7 +114,7 @@ const InputModal = (
                 onPress={handleButtonPress}
                 disabled={isButtonDisabled}
               >
-                {buttonText}
+                {buttonTextValue || buttonText}
               </Button>
             </View>
           </View>

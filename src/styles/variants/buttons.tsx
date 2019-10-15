@@ -55,7 +55,7 @@ const secondary: ButtonVariant = {
     borderWidth: 2,
     borderColor: Colors.secondaryLightest,
     backgroundColor: 'transparent',
-    width: '90%',
+    width: '80%',
   },
   text: { ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }) },
   underlayColor: null,

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TouchableWithoutFeedback, TouchableHighlight, Dimensions } from 'react-native';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -15,7 +16,8 @@ import {
   BothGendersIcon,
 } from '@src/components/icons';
 
-const FilterScreen = () => {
+
+const FilterScreen = ({ getActiveFilters }) => {
   const [focus, setfocus] = useState([]);
 
   const filterItems = {
@@ -112,39 +114,49 @@ const FilterScreen = () => {
       newFocus.push(key);
     }
     setfocus(newFocus);
+    getActiveFilters(newFocus);
   };
 
   return (
-    <View scroll flex={1} bgColor="white">
-      {Object.keys(filterItems).map((key) => (
-        <View key={key} column bgColor="white" variant="borderBottom" height={200}>
-          <Text variant="boldGrey" spacing={{ m: 3 }}>{filterItems[key].title}</Text>
-          <View
-            row
-            variant="roundedBorder"
-            height={(key === 'Session Length') || (key === 'Desired Cost') ? 80 : 100}
-            spacing={{ mx: 3 }}
-            bgColor="semiGrey"
-          >
-            {filterItems[key].items.map((item) => (
-              <View
-                alignCenter
-                justifyCenter
-                variant="borderRight"
-                key={item.firstLine}
-                flex={1}
-                bgColor={focus.includes(item.firstLine) ? 'secondary' : 'white'}
-                onPress={() => handlePress(item.firstLine)}
-              >
-                {item.icon ? item.icon : null}
-                <Text spacing={item.icon ? { mt: 2 } : null} variant={focus.includes(item.firstLine) ? 'boldWhite' : 'boldSecondary'}>{item.firstLine}</Text>
-                {item.secondLine && <Text variant={focus.includes(item.firstLine) ? 'boldWhite' : 'boldSecondary'}>{item.secondLine}</Text>}
-              </View>
-            ))}
-          </View>
-        </View>
-      ))}
+    <View>
+      <View width={Dimensions.get('window').width}>
+        <TouchableWithoutFeedback>
+          <TouchableHighlight>
+            <View scroll>
+              {Object.keys(filterItems).map((key) => (
+                <View key={key} column bgColor="white" variant="borderBottom" height={200}>
+                  <Text variant="boldGrey" spacing={{ m: 3 }}>{filterItems[key].title}</Text>
+                  <View
+                    row
+                    variant="roundedBorder"
+                    height={(key === 'Session Length') || (key === 'Desired Cost') ? 80 : 100}
+                    spacing={{ mx: 3 }}
+                    bgColor="semiGrey"
+                  >
+                    {filterItems[key].items.map((item) => (
+                      <View
+                        alignCenter
+                        justifyCenter
+                        variant="borderRight"
+                        key={item.firstLine}
+                        flex={1}
+                        bgColor={focus.includes(item.firstLine) ? 'secondary' : 'white'}
+                        onPress={() => handlePress(item.firstLine)}
+                      >
+                        {item.icon ? item.icon : null}
+                        <Text spacing={item.icon ? { mt: 2 } : null} variant={focus.includes(item.firstLine) ? 'boldWhite' : 'boldSecondary'}>{item.firstLine}</Text>
+                        {item.secondLine && <Text variant={focus.includes(item.firstLine) ? 'boldWhite' : 'boldSecondary'}>{item.secondLine}</Text>}
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ))}
+            </View>
+          </TouchableHighlight>
+        </TouchableWithoutFeedback>
+      </View>
     </View>
+
   );
 };
 

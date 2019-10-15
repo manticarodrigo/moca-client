@@ -1,8 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
+import { format, differenceInYears } from 'date-fns';
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
+
+import { updateUser } from '@src/store/actions/UserAction';
 
 import {
   RadiusLocationIcon,
@@ -18,10 +21,10 @@ import {
   SwitchIcon,
 } from '@src/components/icons';
 
+import DatePicker from 'react-native-datepicker';
 import useStore from '@src/hooks/useStore';
 
 import {
-  validateYearsOfExperience,
   validateServiceArea,
   validatePrice,
 } from '@src/utlities/validations';
@@ -29,13 +32,15 @@ import {
 import * as Colors from '@src/styles/global/colors';
 
 import InputModal from '@src/modals/InputModal';
+import QualificationsModal from '@src/modals/QualificationsModal';
+import ReviewsModal from '@src/modals/ReviewsModal';
+
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Button from '@src/components/Button';
 
 
-import { updateUser } from '@src/store/actions/UserAction';
 import useImageViewer from '@src/hooks/useImageViewer';
 
 type TherapistProfileProps = {
@@ -46,11 +51,13 @@ type TherapistProfileProps = {
 
 const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const { store: { user }, dispatch } = useStore();
-  const { viewer, onPressImage } = useImageViewer(!modal
-    ? (user.certifications ? user.certifications : [])
-    : therapist.certifications);
+  const userInfo = !modal ? user : therapist;
 
-  const [isAvailable, setAvailable] = useState(user.status ? user.status === 'available' : false);
+
+  const { viewer, onPressImage } = useImageViewer(userInfo.certifications);
+  const [isAvailable, setAvailable] = useState(userInfo.status
+    ? userInfo.status === 'available' : false);
+
 
   const [modals, setModals] = useState({
     isPricePerThirtyModalVisible: false,
@@ -59,10 +66,11 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     isEvaluationPriceModalVisible: false,
     isServiceAreaModalVisible: false,
     isPersonalBioModalVisible: false,
-    isExperienceModalVisible: false,
+    isQualificationModalVisible: false,
+    isReviewsModalVisible: false,
   });
 
-  const [gender, setGender] = useState(user.gender ? user.gender : '');
+  const [gender, setGender] = useState(userInfo.gender ? userInfo.gender : '');
   const isMale = gender === 'Male';
   const isFemale = gender === 'Female';
   const isOther = gender === 'Other';
@@ -79,10 +87,34 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     setGender(type);
     dispatch(updateUser({ gender: type }));
   };
-
   const closeInputModal = (value: string) => setModals({ ...modals, [value]: false });
-
   const handleMessageTherapist = () => {};
+
+  const submitPricePerThirtyMinutes = (value: string) => {
+    dispatch(updateUser({ pricePerThirtyMinutes: value }));
+    setModals({ ...modals, isPricePerThirtyModalVisible: false });
+  };
+  const submitPricePerSixtyMinutes = (value: string) => {
+    dispatch(updateUser({ pricePerSixtyMinutes: value }));
+    setModals({ ...modals, isPricePerSixtyModalVisible: false });
+  };
+  const submitPricePerNintyMinutes = (value: string) => {
+    dispatch(updateUser({ pricePerNintyMinutes: value }));
+    setModals({ ...modals, isPricePerNintyModalVisible: false });
+  };
+  const submitEvaluationPrice = (value: string) => {
+    dispatch(updateUser({ evaluationPrice: value }));
+    setModals({ ...modals, isEvaluationPriceModalVisible: false });
+  };
+  const submitServiceArea = (value: string) => {
+    dispatch(updateUser({ serviceArea: value }));
+    setModals({ ...modals, isServiceAreaModalVisible: false });
+  };
+  const submitPersonalBio = (value: string) => {
+    dispatch(updateUser({ personalBio: value }));
+    setModals({ ...modals, isPersonalBioModalVisible: false });
+  };
+
 
   // eslint-disable-next-line no-shadow
   const pressStatus = (type: boolean) => {
@@ -97,14 +129,15 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const pricePerThirtyModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerThirtyModalVisible')}
-      title="Thirty minutes Price"
-      attribute="pricePerThirtyMinutes"
+      title="Thirty Minutes Price"
+      formFieldValue={userInfo.pricePerThirtyMinutes ? userInfo.pricePerThirtyMinutes : ''}
       keyboardTypeNumber
       placeHolder="price"
       validate={validatePrice}
       maxLength={3}
       errorText="Please enter a valid price"
       isModalVisible={modals.isPricePerThirtyModalVisible}
+      onSubmit={(value) => submitPricePerThirtyMinutes(value)}
     />
   );
 
@@ -112,27 +145,39 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerSixtyModalVisible')}
       title="Sixty Minutes Price"
-      attribute="pricePerSixtyMinutes"
+      formFieldValue={userInfo.pricePerSixtyMinutes ? userInfo.pricePerSixtyMinutes : ''}
       keyboardTypeNumber
       placeHolder="price"
       validate={validatePrice}
       maxLength={3}
       errorText="Please enter a valid price"
       isModalVisible={modals.isPricePerSixtyModalVisible}
+      onSubmit={(value) => submitPricePerSixtyMinutes(value)}
+
     />
   );
+
 
   const pricePerNintyModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerNintyModalVisible')}
       title="Ninty Minutes Price"
-      attribute="pricePerNintyMinutes"
+      formFieldValue={userInfo.pricePerNintyMinutes ? userInfo.pricePerNintyMinutes : ''}
       keyboardTypeNumber
       placeHolder="price"
       validate={validatePrice}
       maxLength={3}
       errorText="Please enter a valid price"
       isModalVisible={modals.isPricePerNintyModalVisible}
+      onSubmit={(value) => submitPricePerNintyMinutes(value)}
+
+    />
+  );
+
+  const reviewsModal = (
+    <ReviewsModal
+      isModalVisible={modals.isReviewsModalVisible}
+      closeInputModal={() => closeInputModal('isReviewsModalVisible')}
     />
   );
 
@@ -140,13 +185,15 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     <InputModal
       closeInputModal={() => closeInputModal('isEvaluationPriceModalVisible')}
       title="Evaluation Price"
-      attribute="evaluationPrice"
+      formFieldValue={userInfo.evaluationPrice ? userInfo.evaluationPrice : ''}
       keyboardTypeNumber
       placeHolder="price"
       validate={validatePrice}
       maxLength={3}
       errorText="Please enter a valid price"
       isModalVisible={modals.isEvaluationPriceModalVisible}
+      onSubmit={(value) => submitEvaluationPrice(value)}
+
     />
   );
 
@@ -154,12 +201,14 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     <InputModal
       closeInputModal={() => closeInputModal('isServiceAreaModalVisible')}
       title="Service Area"
-      attribute="serviceArea"
+      formFieldValue={userInfo.serviceArea ? userInfo.serviceArea : ''}
       keyboardTypeNumber
       placeHolder="service area"
       validate={validateServiceArea}
       errorText="Please enter a valid service area number"
       isModalVisible={modals.isServiceAreaModalVisible}
+      onSubmit={(value) => submitServiceArea(value)}
+
     />
   );
 
@@ -167,23 +216,17 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     <InputModal
       closeInputModal={() => closeInputModal('isPersonalBioModalVisible')}
       title="Personal Bio"
-      attribute="personalBio"
+      formFieldValue={userInfo.personalBio ? userInfo.personalBio : ''}
       placeHolder="personal bio"
       isModalVisible={modals.isPersonalBioModalVisible}
+      onSubmit={(value) => submitPersonalBio(value)}
     />
   );
 
-  const experienceModal = (
-    <InputModal
-      closeInputModal={() => closeInputModal('isExperienceModalVisible')}
-      title="Experience"
-      attribute="yearsOfExperience"
-      maxLength={2}
-      keyboardTypeNumber
-      placeHolder="years of experience"
-      validate={validateYearsOfExperience}
-      errorText="Please enter a valid number of years"
-      isModalVisible={modals.isExperienceModalVisible}
+  const qualificationsModal = (
+    <QualificationsModal
+      isModalVisible={modals.isQualificationModalVisible}
+      closeInputModal={() => closeInputModal('isQualificationModalVisible')}
     />
   );
 
@@ -220,19 +263,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                           setModals({ ...modals, isPricePerThirtyModalVisible: true });
                         } } : '')}
                       >
-                        {!modal
-                          ? (
-                            <Text variant="titleSecondaryLarge">
-                              {user.pricePerThirtyMinutes
-                                ? `$${user.pricePerThirtyMinutes}` : 'Set'}
-                            </Text>
-                          )
-                          : (
-                            <Text variant="titleSecondaryLarge">
-                              { therapist.pricePerThirtyMinutes
-                                ? `$${therapist.pricePerThirtyMinutes}` : 'N/A'}
-                            </Text>
-                          )}
+                        <Text variant="titleSecondaryLarge">
+                          {userInfo.pricePerThirtyMinutes
+                            ? `$${userInfo.pricePerThirtyMinutes}` : modal ? 'N/A' : 'Set'}
+                        </Text>
                       </View>
                     </View>
                     <View
@@ -248,18 +282,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                           setModals({ ...modals, isPricePerSixtyModalVisible: true });
                         } } : '')}
                       >
-                        {!modal
-                          ? (
-                            <Text variant="titleSecondaryLarge">
-                              {user.pricePerSixtyMinutes ? `$${user.pricePerSixtyMinutes}` : 'Set'}
-                            </Text>
-                          )
-                          : (
-                            <Text variant="titleSecondaryLarge">
-                              { therapist.pricePerSixtyMinutes
-                                ? `$${therapist.pricePerSixtyMinutes}` : 'N/A'}
-                            </Text>
-                          )}
+                        <Text variant="titleSecondaryLarge">
+                          {userInfo.pricePerSixtyMinutes
+                            ? `$${userInfo.pricePerSixtyMinutes}` : modal ? 'N/A' : 'Set'}
+                        </Text>
                       </View>
                     </View>
                     <View column alignCenter flex={1}>
@@ -270,18 +296,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                           setModals({ ...modals, isPricePerNintyModalVisible: true });
                         } } : '')}
                       >
-                        {!modal
-                          ? (
-                            <Text variant="titleSecondaryLarge">
-                              {user.pricePerNintyMinutes ? `$${user.pricePerNintyMinutes}` : 'Set'}
-                            </Text>
-                          )
-                          : (
-                            <Text variant="titleSecondaryLarge">
-                              { therapist.pricePerNintyMinutes
-                                ? `$${therapist.pricePerNintyMinutes}` : 'N/A'}
-                            </Text>
-                          )}
+                        <Text variant="titleSecondaryLarge">
+                          {userInfo.pricePerNintyMinutes
+                            ? `$${userInfo.pricePerNintyMinutes}` : modal ? 'N/A' : 'Set'}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -296,17 +314,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         setModals({ ...modals, isEvaluationPriceModalVisible: true });
                       } } : '')}
                     >
-                      {!modal
-                        ? (
-                          <Text variant="titleSecondaryLarge">
-                            {user.evaluationPrice ? `$${user.evaluationPrice}` : 'Set'}
-                          </Text>
-                        )
-                        : (
-                          <Text variant="titleSecondaryLarge">
-                            {`$${therapist.evaluationPrice}`}
-                          </Text>
-                        )}
+                      <Text variant="titleSecondaryLarge">
+                        {userInfo.evaluationPrice
+                          ? `$${userInfo.evaluationPrice}` : modal ? 'N/A' : 'Set'}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -324,9 +335,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       row
                       variant="profileCard"
                       justifyBetween
-                      {...(!modal ? {
-                        onPress: () => setModals({ ...modals, isServiceAreaModalVisible: true }),
-                      } : '')}
+                      onPress={() => setModals({ ...modals, isServiceAreaModalVisible: true })}
                     >
                       <View justifyCenter>
                         <Text variant="boldDark">Service Area</Text>
@@ -334,7 +343,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       <View row justifyCenter>
                         <View justifyCenter>
                           <Text variant="boldPrimary" spacing={{ mr: 2 }}>
-                            {user.serviceArea ? `${user.serviceArea} miles` : 'add'}
+                            {userInfo.serviceArea ? `${userInfo.serviceArea} miles` : 'add'}
                           </Text>
                         </View>
                         <View>
@@ -354,23 +363,23 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     <View row flex={1} justifyBetween variant="profileCard">
                       <View justifyCenter>
                         <Text variant="boldDark">
-                    Status
+                        Status
                         </Text>
                       </View>
                       <View row justifyCenter>
                         <View justifyCenter>
                           {isAvailable ? (
                             <Text spacing={{ mr: 2 }} variant="regularSmallSuccess">
-                        Available
+                              Available
                             </Text>
                           ) : (
                             <Text spacing={{ mr: 2 }} variant="regularSmallGrey">
-                         Unavailable
+                              Unavailable
                             </Text>
                           )}
                         </View>
                         <View
-                          {...(!modal ? { onPress: () => pressStatus(!isAvailable) } : '')}
+                          onPress={() => pressStatus(!isAvailable)}
                         >
                           <SwitchIcon isOn={isAvailable} />
                         </View>
@@ -384,27 +393,24 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View spacing={{ p: 3 }}>
                   <RateIcon />
                 </View>
-                <View row justifyBetween flex={1} variant="profileCard">
+                <View
+                  row
+                  justifyBetween
+                  flex={1}
+                  variant="profileCard"
+                  {...(userInfo.reviewsNumber > 0
+                    ? {
+                      onPress: () => setModals({ ...modals, isReviewsModalVisible: true }),
+                    } : null)}
+                >
                   <View><Text variant="boldDark">Reviews</Text></View>
                   <View alignCenter>
-                    {!modal
-                      ? (
-                        <Text
-                          variant="boldPrimary"
-                          spacing={{ mr: 2 }}
-                        >
-                          {user.reviewsNumber}
-                        </Text>
-                      )
-                      : (
-                        <Text
-                          variant="boldPrimary"
-                          spacing={{ mr: 2 }}
-                        >
-                          {therapist.reviewsNumber}
-
-                        </Text>
-                      )}
+                    <Text
+                      variant="boldPrimary"
+                      spacing={{ mr: 2 }}
+                    >
+                      {userInfo.reviewsNumber.toString()}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -439,7 +445,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         <Text typography={{ color: otherTextColor }}>Other</Text>
                       </View>
                     </View>
-                  ) : <View alignCenter><Text>{therapist.gender}</Text></View>}
+                  ) : <View alignCenter><Text>{userInfo.gender}</Text></View>}
                 </View>
               </View>
             </View>
@@ -457,17 +463,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 >
                   <Text variant="boldDark">Personal Bio</Text>
                   <View spacing={{ pt: 2 }} width={295}>
-                    {!modal
-                      ? (
-                        <Text variant="regularSmallGrey">
-                          {user.personalBio ? user.personalBio : 'Set Personal Bio'}
-                        </Text>
-                      )
-                      : (
-                        <Text variant="regularSmallGrey">
-                          {therapist.personalBio ? therapist.personalBio : 'N/A'}
-                        </Text>
-                      )}
+                    <Text variant="regularSmallGrey">
+                      {userInfo.personalBio
+                        ? userInfo.personalBio : modal ? 'N/A' : 'Set Personal Bio'}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -479,17 +478,73 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View column variant="profileData">
                   <Text variant="boldDark">PT Licence Number</Text>
                   <View spacing={{ pt: 2 }} width={295}>
-                    {!modal
-                      ? (
+                    <Text variant="regularSmallGrey">
+                      {userInfo.licenseNumber}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              <View row alignCenter={!modal}>
+                <View spacing={{ p: 3 }}>
+                  <InterestIcon />
+                </View>
+                <View
+                  row={!modal}
+                  variant="profileData"
+                  alignCenter={!modal}
+                  spacing={!modal ? { mt: 2 } : null}
+                >
+                  <View flex={1}>
+                    <Text variant="boldDark">Licence date</Text>
+                  </View>
+                  {!modal ? (
+                    <View flex={1} spacing={{ pt: 2, mb: 2, mr: 3 }}>
+                      <DatePicker
+                        style={{ width: 150 }}
+                        date={userInfo.licenseDate ? userInfo.licenseDate : ''}
+                        mode="date"
+                        placeholder="select date"
+                        format="YYYY-MM-DD"
+                        maxDate={new Date()}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        onDateChange={(date) => {
+                          dispatch(updateUser({ licenseDate: new Date(date) }));
+                        }}
+                        customStyles={{
+                          dateIcon: {
+                            width: 0,
+                            height: 0,
+                          },
+                        }}
+                      />
+                    </View>
+                  )
+                    : (
+                      <View spacing={{ mt: 2 }}>
                         <Text variant="regularSmallGrey">
-                          {user.licenseNumber}
+                          {format(userInfo.licenseDate, 'yyyy-MM-dd') }
                         </Text>
-                      )
-                      : (
-                        <Text variant="regularSmallGrey">
-                          {therapist.licenseNumber}
-                        </Text>
-                      )}
+                      </View>
+                    )}
+                </View>
+              </View>
+
+              <View row>
+                <View spacing={{ p: 3 }}>
+                  <InterestIcon />
+                </View>
+                <View
+                  column
+                  variant="profileData"
+                >
+                  <Text variant="boldDark">Years of Experience</Text>
+                  <View spacing={{ pt: 2 }} width={295}>
+                    <Text variant="regularSmallGrey">
+                      {userInfo.licenseDate
+                        ? differenceInYears(new Date(), userInfo.licenseDate).toString() : 'N/A'}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -502,40 +557,15 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   column
                   variant="profileData"
                   {...(!modal ? { onPress: () => setModals({ ...modals,
-                    isExperienceModalVisible: true }),
+                    isQualificationModalVisible: true }),
                   } : '')}
-                >
-                  <Text variant="boldDark">Years of Experience</Text>
-                  <View spacing={{ pt: 2 }} width={295}>
-                    {!modal ? (
-                      <Text variant="regularSmallGrey">
-                        {user.yearsOfExperience
-                          ? user.yearsOfExperience : 'Set Years Of Experience'}
-                      </Text>
-                    )
-                      : (
-                        <Text variant="regularSmallGrey">
-                          {therapist.yearsOfExperience ? therapist.yearsOfExperience : 'N/A'}
-                        </Text>
-                      )}
-                  </View>
-                </View>
-              </View>
-
-              <View row>
-                <View spacing={{ p: 3 }}>
-                  <InterestIcon />
-                </View>
-                <View
-                  column
-                  variant="profileData"
                 >
                   <Text variant="boldDark">Qualifications</Text>
                   <View spacing={{ pt: 2 }} width={295}>
-                    {(!modal ? user.qualifications : therapist.qualifications).map(
+                    {(userInfo.qualifications).map(
                       (qualifiaciton, index) => (
                         <View key={index}>
-                          {qualifiaciton.value === 1
+                          {qualifiaciton.value === true
                             ? (
                               <Text variant="regularSmallGrey" spacing={{ mr: 2 }}>
                                 {qualifiaciton.name}
@@ -556,8 +586,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 <View column variant="profileDataLast">
                   <Text variant="boldDark">Certifications</Text>
                   <>
-                    {!modal ? (user.certifications ? (
-                      user.certifications.map((item) => (
+                    {userInfo.certifications ? (
+                      userInfo.certifications.map((item) => (
                         <View
                           key={item.id}
                           row
@@ -582,29 +612,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       <View variant="profileData">
                         <Text variant="regularSmallGrey" spacing={{ mt: 2 }}>PENDING</Text>
                       </View>
-                    )
-                    )
-                      : therapist.certifications.map((item) => (
-                        <View
-                          key={item.id}
-                          row
-                          flex={1}
-                          alignCenter
-                          justifyBetween
-                          variant="profileData"
-                        >
-                          <View justifyCenter>
-                            <Text variant="regularSmallGrey">{item.description}</Text>
-                          </View>
-                          <View
-                            justifyCenter
-                            spacing={{ mr: 4 }}
-                            onPress={() => onPressImage(item.attachmentURI)}
-                          >
-                            <Image width={40} height={40} uri={item.attachmentURI} />
-                          </View>
-                        </View>
-                      ))}
+                    )}
                   </>
                 </View>
               </View>
@@ -615,13 +623,14 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
             {evaluationPriceModal}
             {serviceAreaModal}
             {personalBio}
-            {experienceModal}
+            {qualificationsModal}
             {viewer}
+            {reviewsModal}
             {modal && (
             <View row spacing={{ mt: 3, mb: 3, mx: 3 }}>
               <View flex={1}>
                 <Button onPress={handleMessageTherapist}>
-              Message / Schedule
+                    Message / Schedule
                 </Button>
               </View>
             </View>

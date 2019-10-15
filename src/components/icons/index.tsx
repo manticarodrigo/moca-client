@@ -89,3 +89,5 @@ export { default as BinIconRed } from './BinIconRed';
 export { default as NoMessagesIcon } from './NoMessagesIcon';
 export { default as ScheduleSectionIcon } from './ScheduleSectionIcon';
 export { default as StarIcon } from './StarIcon';
+export { default as ArrowDown } from './ArrowDown';
+export { default as ArrowUp } from './ArrowUp';

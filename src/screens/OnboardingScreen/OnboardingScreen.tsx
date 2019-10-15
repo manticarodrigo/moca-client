@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 
@@ -12,6 +12,8 @@ import Logo from '@src/assets/pngs/logo.png';
 import ShieldIcon from '@src/components/icons/ShieldIcon';
 import DeviceMapIcon from '@src/components/icons/DeviceMapIcon';
 import SettingsIcon from '@src/components/icons/SettingsIcon';
+
+import LoginModal from '@src/modals/LoginModal';
 
 const slides = [
   {
@@ -31,8 +33,41 @@ const slides = [
   },
 ];
 
+
 const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
-  const handleButtonPress = () => navigation.push('SelectionScreen');
+  const [isLoginModal, setIsLoginModal] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+
+
+  const handleSignUpPress = () => navigation.push('SelectionScreen');
+  const handleLoginPress = () => setIsLoginModal(true);
+  const closeLoginModal = () => setIsLoginModal(false);
+
+
+  const sumbitLogin = () => {
+    // api call
+
+    // set user
+    // success
+    setIsLoginSuccess(true);
+    setIsLoginModal(false);
+  };
+
+
+  const loginModal = (
+    <LoginModal
+      isModalVisible={isLoginModal}
+      closeInputModal={closeLoginModal}
+      sumbitLogin={() => sumbitLogin()}
+      onModalHide={() => {
+        if (isLoginSuccess) {
+          navigation.push('DashboardScreen');
+          setIsLoginSuccess(false);
+        }
+      }}
+    />
+  );
+
 
   return (
     <View safeArea flex={1} alignCenter bgColor="white">
@@ -55,14 +90,15 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
       ))}
       />
       <View width="100%" spacing={{ px: 4, pb: 4 }}>
-        <Button onPress={handleButtonPress}>
+        <Button onPress={handleSignUpPress}>
           Signup
         </Button>
         <View row justifyCenter spacing={{ mt: 4 }}>
           <Text variant="regular">Already have an account?</Text>
-          <Text variant="link" spacing={{ ml: 1 }} onPress={handleButtonPress}>Login</Text>
+          <Text variant="link" spacing={{ ml: 1 }} onPress={handleLoginPress}>Login</Text>
         </View>
       </View>
+      {loginModal}
     </View>
   );
 };
