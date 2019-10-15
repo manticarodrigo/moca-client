@@ -64,7 +64,7 @@ const InputModal = (
 
   return (
     <ModalView
-      height={200}
+      height={100}
       isVisible={isModalVisible}
       onBackdropPress={() => {
         closeInputModal();
