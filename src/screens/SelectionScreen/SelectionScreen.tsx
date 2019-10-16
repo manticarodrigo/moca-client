@@ -17,8 +17,6 @@ import ContainedView from '@src/components/ContainedView';
 
 import PatientIcon from '@src/components/icons/PatientIcon';
 import TherapistIcon from '@src/components/icons/TherapistIcon';
-import TherapistSelectIcon from '@src/components/icons/TherapistSelectIcon';
-import PatientSelectIcon from '@src/components/icons/PatientSelectIcon';
 
 
 type ColorKey = keyof typeof Colors;
@@ -63,14 +61,14 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <View spacing={{ mx: 3 }} alignCenter>
           <ContainedView>
 
-            <View spacing={{ mt: 5 }} alignCenter>
+            <View spacing={{ p: 4 }} alignCenter>
               <Text variant="title">Please select your</Text>
               <View alignCenter row>
                 <Text variant="title" typography={{ color: 'secondary' }}>MOCA</Text>
                 <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
               </View>
             </View>
-            <View row spacing={{ mt: 6 }}>
+            <View flex={1} row alignCenter width="100%" spacing={{ py: 4 }}>
               <View
                 variant={isPatient ? 'patientViewPressed' : 'patientView'}
                 alignCenter
@@ -80,7 +78,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 bgColor={patientBgColor}
                 spacing={{ mr: 1 }}
               >
-                {isPatient ? <PatientSelectIcon /> : <PatientIcon />}
+                <PatientIcon focused={isPatient} />
                 <Text
                   variant="title"
                   typography={{ color: patientTextColor, weight: '900' }}
@@ -96,7 +94,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 {...(!isTherapist ? { onPress: () => setType(UserTypeEnum.PT) } : '')}
                 bgColor={therapistBgColor}
               >
-                {isTherapist ? <TherapistSelectIcon /> : <TherapistIcon />}
+                <TherapistIcon focused={isTherapist} />
                 <Text
                   variant="title"
                   typography={{ color: therapistTextColor, weight: '900' }}
@@ -105,16 +103,15 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <View row flex={1}>
-              <View flex={1} justifyEnd spacing={{ mb: 3 }}>
-                <Button
-                  variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
-                  onPress={handleButtonPress}
-                  disabled={buttonDisabled}
-                >
-                  {buttonText}
-                </Button>
-              </View>
+            <View row spacing={{ p: 4 }}>
+              <Button
+                width="100%"
+                variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
+                onPress={handleButtonPress}
+                disabled={buttonDisabled}
+              >
+                {buttonText}
+              </Button>
             </View>
           </ContainedView>
         </View>
