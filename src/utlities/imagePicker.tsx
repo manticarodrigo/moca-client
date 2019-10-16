@@ -29,7 +29,7 @@ const getImage = async (callback: (response: ImagePicker.ImagePickerResult) => v
   ActionSheet.showActionSheetWithOptions({
     options: options.map(({ title }) => title),
     cancelButtonIndex: lastIndex,
-    tintColor: Colors.primary,
+    tintColor: Colors.secondary,
   }, async (index) => {
     let response: ImagePicker.ImagePickerResult = { cancelled: true };
 

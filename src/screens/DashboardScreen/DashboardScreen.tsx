@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Keyboard, FlatList } from 'react-native';
+import { Keyboard, FlatList } from 'react-native';
 
 import useStore from '@src/hooks/useStore';
 
@@ -32,9 +32,10 @@ import DashboardAlert from './DashboardAlert';
 import DashboardAppointments from './DashboardAppointments';
 import DashboardLinks from './DashboardLinks';
 
+
 const DashboardScreen = () => {
   const { store } = useStore();
-  const [isTherapist] = useState(store.user.type === 'patient');
+  const [isTherapist] = useState(store.user.type === 'PA');
   const [isActivated] = useState(true);
   const [isFiltering, setFiltering] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
@@ -128,7 +129,7 @@ const DashboardScreen = () => {
       {!isTherapist
         && (
           <DashboardSearch
-            name={store.user.username}
+            name={store.user.firstName}
             handleFiltering={handleFiltering}
             handleModalVisibility={handleModalVisibility}
           />

@@ -1,5 +1,5 @@
 declare type User = {
-  id?: string;
+  id?: number | string;
   username?: string;
   imageUrl?: string;
   type?: 'patient' | 'caregiver';
@@ -15,8 +15,9 @@ declare type User = {
   pricePerNintyMinutes?: string;
   evaluationPrice?: string;
   certifications?: Certification[];
-  reviewsNumber?: string;
+  reviewsNumber?: number;
   rating? : number;
+  licenseDate? : Date;
   qualifications?: Array<string, boolean>;
 };
 
@@ -32,17 +33,6 @@ declare type Message = {
   text: string;
   attachmentURI?: string;
   createdAt: string;
-};
-
-declare type RegistrationInformation = {
-  type?: string;
-  name?: string;
-  surname?: string;
-  medicalId?: string;
-  email?: string;
-  password?: string;
-  addresses?: Array<string, string, string, string, string>;
-  qualifications?: Array<string, boolean>; // to be changed later [add all types of checkBox items]
 };
 
 declare type Conversation = {

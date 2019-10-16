@@ -5,15 +5,12 @@ import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
-import { StarsIcon, BookmarkIcon } from '@src/components/icons';
-
 import { mockImg } from '@src/services/mock';
 
+import PatientProfile from '@src/screens/ProfileScreen/PatientProfile';
 
-import TherapistProfile from '@src/screens/ProfileScreen/TherapistProfile';
 
-
-const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) => (
+const PatientProfileModal = ({ patient, closeInputModal, isModalVisible }) => (
   <ModalView
     propagateSwipe
     height={100}
@@ -31,26 +28,14 @@ const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) =
 
     <View bgColor="lightGrey">
       <View bgColor="white">
-        <View alignEnd spacing={{ mr: 3 }}>
-          <BookmarkIcon />
-        </View>
-        <View row spacing={{ p: 4 }} bgColor="white">
+        <View row spacing={{ p: 4, ml: 3 }} bgColor="white">
           <Image rounded size={80} uri={mockImg} />
           <View column justifyCenter spacing={{ px: 3 }}>
-            <Text variant="title">{therapist.username}</Text>
-            <View row alignCenter>
-              <Text
-                spacing={{ mr: 2 }}
-                variant="lightTextCenter"
-              >
-                {therapist.rating.toString()}
-              </Text>
-              <StarsIcon number={therapist.rating} />
-            </View>
+            <Text variant="title">{patient.username}</Text>
           </View>
         </View>
         <View flex={1} bgColor="white">
-          <TherapistProfile therapist={therapist} modal />
+          <PatientProfile patient={patient} modal />
         </View>
       </View>
     </View>
@@ -58,4 +43,4 @@ const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) =
   </ModalView>
 );
 
-export default TherapistProfileModal;
+export default PatientProfileModal;

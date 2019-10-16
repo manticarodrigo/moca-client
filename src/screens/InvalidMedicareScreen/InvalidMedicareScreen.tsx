@@ -3,7 +3,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
-import { resetUserInformation } from '@src/store/actions/RegistrationAction';
+import { resetRegistration } from '@src/store/actions/RegistrationAction';
 
 
 import View from '@src/components/View';
@@ -34,7 +34,7 @@ const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) =
     if (validateEmailAddress(email)) {
       setIsEmailValid(true);
       submitEmail();
-      dispatch(resetUserInformation());
+      dispatch(resetRegistration());
       navigation.popToTop();
     } else {
       setIsEmailValid(false);

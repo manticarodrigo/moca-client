@@ -3,10 +3,13 @@ import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
-import { updateUserInfomation } from '@src/store/actions/RegistrationAction';
+import { updateRegistration } from '@src/store/actions/RegistrationAction';
+import { registerUser } from '@src/store/actions/UserAction';
 import { validateEmailAddress } from '@src/utlities/validations';
 
 import TermsOfServiceModal from '@src/modals/TermsOfServiceModal';
+
+import { Colors, Views } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -20,20 +23,20 @@ import PasswordIcon from '@src/assets/Icons/eye.png';
 
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const { type } = store.registrationState;
-  const isPatient = type === 'Patient';
+
+  const isPatient = store.registration.type === 'PA';
 
   const surnameField = useRef(null);
   const emailField = useRef(null);
   const passwordField = useRef(null);
   const medicalIdField = useRef(null);
 
-  const [formFields, setFormFields] = useState({
-    surname: '',
+  const [formFields, setFormFields] = useState<typeof store.registration>({
     email: '',
-    name: '',
     password: '',
-    ...(!isPatient && { medicalId: '' }),
+    firstName: '',
+    lastName: '',
+    ...(!isPatient && { licenseNumber: '' }),
   });
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -47,24 +50,24 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     : isAnyFieldEmpty || !isEmailValid;
 
   useEffect(() => {
-    if (Object.prototype.hasOwnProperty.call(store.registrationState, 'email')) {
-      const { email, surname, name, password } = store.registrationState;
+    if (store.registration && store.registration.email) {
+      const { email, firstName, lastName, password } = store.registration;
 
       setFormFields({
         ...formFields,
-        ...(!isPatient && { medicalId: store.registrationState.medicalId }),
-        surname,
+        ...(!isPatient && { medicalId: store.registration.licenseNumber }),
         email,
-        name,
         password,
+        firstName,
+        lastName,
       });
+
       setIsMediCarePressed(true);
 
       if (!validateEmailAddress(email)) {
         setIsEmailValid(false);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
@@ -79,83 +82,43 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     </ModalView>
   );
 
-  const handleButtonPress = () => {
-    dispatch(updateUserInfomation({ ...formFields }));
+  const handleButtonPress = async () => {
+    const { email, password, firstName, lastName } = formFields;
 
-    if (validateEmailAddress(formFields.email)) {
+    dispatch(updateRegistration({ ...formFields }));
+
+    if (email && validateEmailAddress(email)) {
       setIsEmailValid(true);
-      if (isPatient) {
-        navigation.navigate('AddressScreen', {
-          name: formFields.name,
-          title: 'Address',
-        });
-      } else {
-        navigation.push('QualificationsScreen');
+
+      const { type } = store.registration;
+
+      try {
+        await dispatch(registerUser({ type, email, password, firstName, lastName }));
+
+        if (isPatient) {
+          navigation.push('AddressScreen', { title: 'Primary Address' });
+        } else {
+          navigation.push('QualificationsScreen');
+        }
+      } catch (error) {
+        console.log('ERROR', JSON.stringify(error));
       }
     } else {
       setIsEmailValid(false);
     }
   };
 
-  const handleMedicareAgreement = () => {
-    navigation.navigate('InvalidMedicareScreen');
-  };
+  const handleMedicareAgreement = () => navigation.push('InvalidMedicareScreen');
 
-  const handleMedicareDisagreement = () => {
-    if (isMediCarePressed) {
-      setIsMediCarePressed(false);
-    } else {
-      setIsMediCarePressed(true);
-    }
-  };
+  const handleMedicareDisagreement = () => setIsMediCarePressed(!isMediCarePressed);
 
   const handlePrivacyPress = () => navigation.navigate('ProfileScreen');
 
-  const handleTermsOfServicePress = () => {
-    setIsModalVisible(true);
+  const handleTermsOfServicePress = () => setIsModalVisible(true);
+
+  const handleFormFields = (name: keyof typeof store.registration, text: string) => {
+    setFormFields({ ...formFields, [name as string]: text });
   };
-
-  const handleFormFields = (name: string, text: string) => {
-    setFormFields({ ...formFields, [name]: text });
-  };
-
-  const mediCare = (
-    <View width="100%" variant="borderTop">
-      <View row spacing={{ mx: 3, py: 4 }}>
-        <View flex={1}>
-          <Text variant="title" typography={{ size: 2 }}>
-            {'Are you currently\n'}
-            covered by Medicare?
-          </Text>
-        </View>
-        <View row flex={1} justifyEnd>
-          <Button variant="tertiary" onPress={handleMedicareAgreement}>
-            Yes
-          </Button>
-          <View spacing={{ ml: 3 }}>
-            <Button
-              variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'}
-              onPress={handleMedicareDisagreement}
-            >
-              No
-            </Button>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-
-  const medicalId = (
-    <FormField
-      placeholder="Medical Id"
-      value={formFields.medicalId}
-      returnKeyType="done"
-      keyboardType="numeric"
-      ref={medicalIdField}
-      onSubmitEditing={() => emailField.current.focus()}
-      onChangeText={(text) => handleFormFields('medicalId', text)}
-    />
-  );
 
   return (
 
@@ -176,20 +139,44 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               get you started.
             </Text>
           </View>
-          {isPatient && mediCare}
+          {isPatient && (
+            <View width="100%" variant="borderTop">
+              <View row spacing={{ mx: 3, py: 4 }}>
+                <View flex={1}>
+                  <Text variant="title" typography={{ size: 2 }}>
+                    {'Are you currently\n'}
+                    covered by Medicare?
+                  </Text>
+                </View>
+                <View row flex={1} justifyEnd>
+                  <Button variant="tertiary" onPress={handleMedicareAgreement}>
+                    Yes
+                  </Button>
+                  <View spacing={{ ml: 3 }}>
+                    <Button
+                      variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'}
+                      onPress={handleMedicareDisagreement}
+                    >
+                      No
+                    </Button>
+                  </View>
+                </View>
+              </View>
+            </View>
+          )}
           <View spacing={{ mb: 3, mx: 3 }} alignCenter>
             <FormField
-              placeholder="Name"
-              value={formFields.name}
+              placeholder="First Name"
+              value={formFields.firstName}
               returnKeyType="next"
-              onChangeText={(text) => handleFormFields('name', text)}
+              onChangeText={(text) => handleFormFields('firstName', text)}
               onSubmitEditing={() => surnameField.current.focus()}
             />
             <FormField
-              placeholder="Surname"
-              value={formFields.surname}
+              placeholder="Last Name"
+              value={formFields.lastName}
               returnKeyType="next"
-              onChangeText={(text) => handleFormFields('surname', text)}
+              onChangeText={(text) => handleFormFields('lastName', text)}
               ref={surnameField}
               onSubmitEditing={() => {
                 if (isPatient) {
@@ -199,7 +186,17 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 }
               }}
             />
-            {!isPatient && medicalId}
+            {!isPatient && (
+              <FormField
+                placeholder="Medical ID"
+                value={formFields.licenseNumber}
+                returnKeyType="done"
+                keyboardType="numeric"
+                ref={medicalIdField}
+                onSubmitEditing={() => emailField.current.focus()}
+                onChangeText={(text) => handleFormFields('licenseNumber', text)}
+              />
+            )}
             <FormField
               placeholder="Email address"
               value={formFields.email}
@@ -221,7 +218,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </Text>
             )}
             <FormField
-              placeholder="password"
+              placeholder="Password"
               value={formFields.password}
               secureTextEntry
               returnKeyType="done"
@@ -282,8 +279,16 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-RegistrationScreen.navigationOptions = {
+RegistrationScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Sign Up',
-};
+  headerTitleStyle: {
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    ...Views.borderBottom,
+    backgroundColor: Colors.white,
+  },
+});
 
 export default RegistrationScreen;
