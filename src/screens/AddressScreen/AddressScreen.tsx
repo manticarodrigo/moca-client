@@ -2,14 +2,17 @@ import React, { useState, useRef, useEffect } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
+import { AddressCreate } from '@src/services/openapi';
 import useStore from '@src/hooks/useStore';
+// import { updateRegistration } from '@src/store/actions/RegistrationAction';
+import { addUserAddress } from '@src/store/actions/UserAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
-import FormField from '@src/components/FormField';
 import Text from '@src/components/Text';
+import FormField from '@src/components/FormField';
 import BackButton from '@src/components/BackButton';
 import HeaderTitle from '@src/components/HeaderTitle';
 
@@ -17,17 +20,19 @@ import BinIconRed from '@src/components/icons/BinIconRed';
 
 import { validateZipCode } from '@src/utlities/validations';
 
-import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
 const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
-  const [formFields, setFormFields] = useState<typeof store.registration.address>({
+  const [formFields, setFormFields] = useState<AddressCreate>({
+    name: '',
     street: '',
     apartment: '',
     city: '',
     state: '',
     zipCode: '',
+    primary: true,
+    location: 'test',
   });
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
 
@@ -79,13 +84,13 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const handleButtonPress = () => {
     if (isRegistering) {
-      dispatch(updateRegistration({ address: formFields }));
+      dispatch(addUserAddress(formFields));
       navigation.navigate('DashboardScreen');
     }
 
     if (isExistingAddress) {
       if (validateZipCode(formFields.zipCode)) {
-        dispatch(updateRegistration({ address: formFields }));
+        // dispatch(updateRegistration({ address: formFields }));
         navigation.goBack();
       } else {
         setIsZipCodeValid(false);
@@ -94,7 +99,7 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     if (isAdditionalAddress) {
       if (validateZipCode(formFields.zipCode)) {
-        dispatch(updateRegistration({ address: formFields }));
+        // dispatch(updateRegistration({ address: formFields }));
         navigation.goBack();
       } else {
         setIsZipCodeValid(false);
@@ -102,7 +107,7 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
   };
 
-  const handleFormFields = (fieldName: keyof typeof store.registration.address, text: string) => {
+  const handleFormFields = (fieldName: keyof AddressCreate, text: string) => {
     setFormFields({ ...formFields, [fieldName]: text });
   };
 
@@ -130,6 +135,13 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 </View>
               )}
             <View spacing={{ mb: 3, mt: 4 }} alignCenter>
+              <FormField
+                placeholder="Name"
+                value={formFields.name}
+                returnKeyType="next"
+                onSubmitEditing={() => apartmentField.current.focus()}
+                onChangeText={(text) => handleFormFields('name', text)}
+              />
               <FormField
                 placeholder="Street"
                 value={formFields.street}

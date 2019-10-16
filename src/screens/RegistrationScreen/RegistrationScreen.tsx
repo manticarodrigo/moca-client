@@ -90,7 +90,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     if (email && validateEmailAddress(email)) {
       setIsEmailValid(true);
 
-      const { type } = store.user;
+      const { type } = store.registration;
 
       try {
         await dispatch(registerUser({ type, email, password, firstName, lastName }));

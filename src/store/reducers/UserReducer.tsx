@@ -11,17 +11,21 @@ function flattenUserPayload(state, { user, ...rest }) {
   return { ...state, ...user, ...rest };
 }
 
+function appendAddress(state, payload) {
+  return { ...state, addresses: [...state.addresses, payload] };
+}
+
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'SET_USER_STATE':
-      return { ...state, ...action.payload };
     case 'LOGIN_USER_SUCCESS':
       return { ...state, ...action.payload };
     case 'UPDATE_USER_SUCCESS':
       return flattenUserPayload(state, action.payload);
-    case 'REGISTER_USER_SUCCESS': {
+    case 'REGISTER_USER_SUCCESS':
       return flattenUserPayload(state, action.payload);
-    }
+    case 'ADD_USER_ADDRESS_SUCCESS':
+      return appendAddress(state, action.payload);
     default:
       return state;
   }

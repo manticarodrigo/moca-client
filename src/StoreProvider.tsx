@@ -17,11 +17,14 @@ export type StoreState = {
 type StoreAction = UserAction | ConversationAction| RegistrationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
-type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>, store: StoreState) => Promise<object>;
+type ProviderAsyncAction = (
+  dispatch: Dispatch<StoreAction>,
+  store: StoreState,
+) => Promise<object | void>;
 
 export type ProviderDispatch = (
-  action: StoreAction | ProviderAsyncAction
-) => void | Promise<object>;
+  action: StoreAction | ProviderAsyncAction,
+) => void | Promise<object | void>;
 
 type ProviderValue = [StoreState, ProviderDispatch];
 

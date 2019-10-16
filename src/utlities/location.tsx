@@ -11,7 +11,7 @@ const alertFail = (message: string, onClose: () => void) => Alert.alert(
   }],
 );
 
-const getLocation = async (onFail) => {
+const getLocation = async (onFail?) => {
   const { status } = await Permissions.askAsync(Permissions.LOCATION);
   if (status !== 'granted') {
     alertFail(

@@ -3,13 +3,23 @@ import { Dispatch } from 'react';
 import api from '@src/services/api';
 import { StoreState } from '@src/StoreProvider';
 import { UserState } from '@src/store/reducers/UserReducer';
-import { User, Patient, PatientCreate, Therapist, TherapistCreate } from '@src/services/openapi';
+import { getLocation } from '@src/utlities/location';
+
+import {
+  User,
+  Patient,
+  PatientCreate,
+  Therapist,
+  TherapistCreate,
+  AddressCreate,
+} from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'SET_USER_STATE'; payload: UserState }
   | { type: 'LOGIN_USER_SUCCESS'; payload: UserState }
   | { type: 'REGISTER_USER_SUCCESS'; payload: PatientCreate | TherapistCreate }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Patient | Therapist }
+  | { type: 'ADD_USER_ADDRESS_SUCCESS'; payload: AddressCreate }
 
 
 const setUser = (state: UserState) => (async (dispatch: Dispatch<UserAction>) => {
@@ -61,10 +71,31 @@ const updateUser = (partialState: UserState) => async (
   return data;
 };
 
+const addUserAddress = (address: AddressCreate) => async (
+  dispatch: Dispatch<UserAction>,
+  store: StoreState,
+) => {
+  const body = { ...address };
+  const options = { headers: { Authorization: `Token ${store.user.token}` } };
+
+  const location = await getLocation();
+
+  if (location) {
+    const { latitude, longitude } = location.coords;
+
+    body.location = JSON.stringify({ type: 'Point', coordinates: [latitude, longitude] });
+  }
+  const { data } = await api.address.addressAddCreate(body, options);
+
+  dispatch({ type: 'ADD_USER_ADDRESS_SUCCESS', payload: data });
+
+  return data;
+};
 
 export {
   setUser,
   loginUser,
   registerUser,
   updateUser,
+  addUserAddress,
 };
