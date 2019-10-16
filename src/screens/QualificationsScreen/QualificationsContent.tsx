@@ -43,7 +43,6 @@ const QualificationsContent = (
     } else {
       delete preferredAilments[index];
     }
-
     setPreferredAilments(preferredAilments);
   };
 
