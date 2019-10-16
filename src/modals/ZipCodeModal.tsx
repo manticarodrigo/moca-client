@@ -23,7 +23,7 @@ type Props = {
 };
 
 const ZipCodeModal = ({ isVisible, navigation, onClose }: Props) => {
-  const { store: { registration }, dispatch } = useStore();
+  const { store, dispatch } = useStore();
   const [zipCode, setZipCode] = useState('');
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
   const [screenName, setScreenName] = useState();
@@ -34,6 +34,8 @@ const ZipCodeModal = ({ isVisible, navigation, onClose }: Props) => {
   useEffect(() => {
     const onMount = async () => {
       const location = await getLocation(() => {
+        // if no location,
+        // pop back to onboarding
         navigation.popToTop();
       });
 
@@ -48,10 +50,10 @@ const ZipCodeModal = ({ isVisible, navigation, onClose }: Props) => {
         dispatch(updateRegistration({ address: partialAddress }));
       }
 
-      if (registration.address) {
-        setZipCode(registration.address.zipCode);
+      if (store.registration.address) {
+        setZipCode(store.registration.address.zipCode);
 
-        if (!validateZipCode(registration.address.zipCode)) {
+        if (!validateZipCode(store.registration.address.zipCode)) {
           setIsZipCodeValid(false);
         }
       }

@@ -5,8 +5,8 @@ import View from './View';
 
 const styles = StyleSheet.create({
   containedView: {
-    maxWidth: 400,
-    maxHeight: 600,
+    maxWidth: 500,
+    maxHeight: 700,
   },
 });
 

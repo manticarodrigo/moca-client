@@ -4,16 +4,22 @@ import { User, Patient, Therapist } from '@src/services/openapi';
 
 export type UserState = Omit<User, 'email'> & Omit<Patient, 'user'> & Omit<Therapist, 'user'> & {
   email?: string;
+  token?: string;
 };
+
+function flattenUserPayload({ user, ...rest }) {
+  return { ...user, ...rest };
+}
 
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
-    case 'SET_USER':
+    case 'SET_USER_STATE':
       return { ...state, ...action.payload };
-    case 'UPDATE_USER':
-      return { ...state, ...action.payload };
-    case 'REGISTER_PATIENT_SUCCESS':
-      return { ...action.payload };
+    case 'UPDATE_USER_SUCCESS':
+      return flattenUserPayload(action.payload);
+    case 'REGISTER_USER_SUCCESS': {
+      return flattenUserPayload(action.payload);
+    }
     default:
       return state;
   }

@@ -1,11 +1,11 @@
-import React, { useReducer, createContext, Reducer, ReactNode, Dispatch } from 'react';
+import React, { useReducer, createContext, Reducer, Dispatch } from 'react';
 
 import { UserAction } from '@src/store/actions/UserAction';
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 import { ConversationAction } from '@src/store/actions/ConversationAction';
 
-import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import userReducer, { UserState } from '@src/store/reducers/UserReducer';
+import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
 
 export type StoreState = {
@@ -17,8 +17,8 @@ export type StoreState = {
 type StoreAction = UserAction | ConversationAction| RegistrationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
-type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>) => void;
-export type ProviderDispatch = (action: StoreAction | ProviderAsyncAction) => void;
+type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>, store: StoreState) => Promise<void>;
+export type ProviderDispatch = (action: StoreAction | ProviderAsyncAction) => void | Promise<void>;
 type ProviderValue = [StoreState, ProviderDispatch];
 
 type AsyncReducer = (
@@ -30,7 +30,7 @@ const useAsyncReducer: AsyncReducer = (reducer, initialState) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const asyncDispatch = async (action) => typeof action === 'function'
-    ? action(asyncDispatch)
+    ? action(asyncDispatch, state)
     : dispatch(action);
 
   return [state, asyncDispatch];
@@ -50,7 +50,7 @@ const initialState: StoreState = {
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);
 
-const StoreProvider = ({ children }: { children: ReactNode }) => (
+const StoreProvider = ({ children }: { children: JSX.Element[] }) => (
   <StoreContext.Provider value={useAsyncReducer(rootReducer, initialState)}>
     {children}
   </StoreContext.Provider>

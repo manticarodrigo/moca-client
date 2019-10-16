@@ -11,12 +11,12 @@ const alertFail = (message: string, onClose: () => void) => Alert.alert(
   }],
 );
 
-const getLocation = async (onAlertClose) => {
+const getLocation = async (onFail) => {
   const { status } = await Permissions.askAsync(Permissions.LOCATION);
   if (status !== 'granted') {
     alertFail(
       'Permission to access location was denied. Please update your phone settings to use the app with location services enabled.',
-      onAlertClose,
+      onFail,
     );
 
     return false;

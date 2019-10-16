@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
@@ -33,24 +33,32 @@ const QualificationsContent = (
   { navigation, modal, closeInputModal }: Props,
 ) => {
   const { store, dispatch } = useStore();
-  const { firstName, preferredAilments } = store.user;
-  const isButtonDisabled = preferredAilments.length <= 0;
+  const [preferredAilments, setPreferredAilments] = useState([]);
 
-  const handleCheckBoxClick = (checked: boolean, value: string) => {
+  const isButtonDisabled = !!preferredAilments.length;
+
+  const handleCheckBoxClick = (index: number, value: string, checked: boolean) => {
     if (checked) {
       preferredAilments.push(value);
     } else {
-      const index = preferredAilments.findIndex((item) => item === value);
-      if (index) delete preferredAilments[index];
+      delete preferredAilments[index];
     }
 
-    dispatch(updateUser({ preferredAilments }));
+    setPreferredAilments(preferredAilments);
   };
 
-  const handleButtonPress = () => {
-    if (modal) {
-      closeInputModal();
-    } else { navigation.navigate('AddressScreen', { title: 'Address' }); }
+  const handleButtonPress = async () => {
+    try {
+      dispatch(updateUser({ preferredAilments }));
+
+      if (modal) {
+        closeInputModal();
+      } else {
+        navigation.navigate('AddressScreen', { title: 'Address' });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -65,7 +73,7 @@ const QualificationsContent = (
                     <View>
                       <View row wrap justifyCenter>
                         <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up,</Text>
-                        <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{firstName}</Text>
+                        <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{store.user.firstName}</Text>
                       </View>
                       <View alignCenter spacing={{ mt: 4 }} wrap>
                         <Text variant="regular" typography={{ align: 'center' }}>
@@ -90,8 +98,9 @@ const QualificationsContent = (
                     >
                       <Text variant="titleSmall" spacing={{ mb: 2, mt: 3 }}>{item}</Text>
                       <CheckBox
+                        index={index}
                         value={item}
-                        isChecked={preferredAilments.includes(item)}
+                        checked={preferredAilments.includes(item)}
                         onClick={handleCheckBoxClick}
                       />
                     </View>

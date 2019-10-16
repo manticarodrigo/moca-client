@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 
@@ -19,7 +19,7 @@ import { validateZipCode } from '@src/utlities/validations';
 
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
-const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
+const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
   const [formFields, setFormFields] = useState<typeof store.registration.address>({
@@ -199,14 +199,14 @@ const AddressScreen = ({ navigation }: NavigationStackScreenProps) => {
 };
 
 
-AddressScreen.navigationOptions = ({ navigation }) => ({
+AddressScreen.navigationOptions = ({ navigation, navigationOptions }) => ({
   headerTitle: <HeaderTitle title={navigation.state.params.title} />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
   headerStyle: {
+    ...navigationOptions.headerStyle as {},
     ...Views.borderBottom,
     backgroundColor: Colors.white,
-    height: 80,
   },
   headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
   headerRight: navigation.state.params.isExistingAddress

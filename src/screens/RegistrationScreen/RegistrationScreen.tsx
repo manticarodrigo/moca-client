@@ -4,10 +4,12 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
-import { registerPatient } from '@src/store/actions/UserAction';
+import { registerUser } from '@src/store/actions/UserAction';
 import { validateEmailAddress } from '@src/utlities/validations';
 
 import TermsOfServiceModal from '@src/modals/TermsOfServiceModal';
+
+import { Colors, Views } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -21,8 +23,8 @@ import PasswordIcon from '@src/assets/Icons/eye.png';
 
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const { type } = store.registration;
-  const isPatient = type === 'PA';
+
+  const isPatient = store.registration.type === 'PA';
 
   const surnameField = useRef(null);
   const emailField = useRef(null);
@@ -80,49 +82,39 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     </ModalView>
   );
 
-  const handleButtonPress = () => {
+  const handleButtonPress = async () => {
+    const { email, password, firstName, lastName } = formFields;
+
     dispatch(updateRegistration({ ...formFields }));
 
-    if (formFields.email && validateEmailAddress(formFields.email)) {
+    if (email && validateEmailAddress(email)) {
       setIsEmailValid(true);
-      const { email, password, firstName, lastName } = formFields;
 
-      if (isPatient) {
-        dispatch(registerPatient({
-          user: {
-            email,
-            password,
-            firstName,
-            lastName,
-          },
-        }));
+      const { type } = store.user;
 
-        navigation.navigate('AddressScreen', { title: 'Primary Address' });
-      } else {
-        navigation.push('QualificationsScreen');
+      try {
+        await dispatch(registerUser({ type, email, password, firstName, lastName }));
+
+        if (isPatient) {
+          navigation.push('AddressScreen', { title: 'Primary Address' });
+        } else {
+          navigation.push('QualificationsScreen');
+        }
+      } catch (error) {
+        console.log('ERROR', JSON.stringify(error));
       }
     } else {
       setIsEmailValid(false);
     }
   };
 
-  const handleMedicareAgreement = () => {
-    navigation.navigate('InvalidMedicareScreen');
-  };
+  const handleMedicareAgreement = () => navigation.push('InvalidMedicareScreen');
 
-  const handleMedicareDisagreement = () => {
-    if (isMediCarePressed) {
-      setIsMediCarePressed(false);
-    } else {
-      setIsMediCarePressed(true);
-    }
-  };
+  const handleMedicareDisagreement = () => setIsMediCarePressed(!isMediCarePressed);
 
   const handlePrivacyPress = () => navigation.navigate('ProfileScreen');
 
-  const handleTermsOfServicePress = () => {
-    setIsModalVisible(true);
-  };
+  const handleTermsOfServicePress = () => setIsModalVisible(true);
 
   const handleFormFields = (name: keyof typeof store.registration, text: string) => {
     setFormFields({ ...formFields, [name as string]: text });
@@ -287,8 +279,16 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-RegistrationScreen.navigationOptions = {
+RegistrationScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Sign Up',
-};
+  headerTitleStyle: {
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    ...Views.borderBottom,
+    backgroundColor: Colors.white,
+  },
+});
 
 export default RegistrationScreen;
