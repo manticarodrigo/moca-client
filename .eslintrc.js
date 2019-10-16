@@ -29,7 +29,7 @@ module.exports =  {
     'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/prop-types': 'off', // TODO: Find a way to autogenerate prop types from TypeScript definitions
-    'react/jsx-filename-extension': [1, { 'extensions': ['.tsx'] }],
+    'react/jsx-filename-extension': [1, { 'extensions': ['.tsx', '.ts'] }],
     'react/jsx-props-no-spreading': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
@@ -46,7 +46,7 @@ module.exports =  {
         map: [
           ['@src', path.resolve(__dirname, 'src')],
         ],
-        extensions: ['.tsx'],
+        extensions: ['.tsx', '.ts'],
       },
     },
   },

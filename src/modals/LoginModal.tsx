@@ -15,20 +15,15 @@ import { EmailIcon, ChangePasswordIcon } from '@src/components/icons';
 
 
 type LoginModalProps = {
-  closeInputModal: () => void;
-  isModalVisible: boolean;
-  sumbitLogin: () => void;
+  visible: boolean;
+  onLogin: (email: string, password: string) => void;
+  onClose: () => void;
   onModalHide: () => void;
 };
 
-const LoginModal = ({
-  closeInputModal,
-  isModalVisible,
-  sumbitLogin,
-  onModalHide,
-}: LoginModalProps) => {
+const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps) => {
   const [email, setEmail] = useState('');
-  const [password, setPasswrod] = useState('');
+  const [password, setPassword] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordModal, setIsPasswordModal] = useState(false);
 
@@ -37,9 +32,10 @@ const LoginModal = ({
   const passwordField = useRef(null);
   const isButtonDisabled = !((email && password) !== '') || !isEmailValid;
 
+
   const handleButtonPress = () => {
     if (validateEmailAddress(email)) {
-      sumbitLogin();
+      onLogin(email, password);
     } else {
       setIsEmailValid(false);
     }
@@ -69,10 +65,10 @@ const LoginModal = ({
     <ModalView
       propagateSwipe
       height={100}
-      isVisible={isModalVisible}
-      onBackdropPress={() => closeInputModal()}
-      onSwipeComplete={() => closeInputModal()}
-      handleArrowClick={() => closeInputModal()}
+      isVisible={visible}
+      onBackdropPress={onClose}
+      onSwipeComplete={onClose}
+      handleArrowClick={onClose}
       onModalHide={onModalHide}
     >
 
@@ -80,12 +76,13 @@ const LoginModal = ({
         <View row>
           <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
             <Text variant="titleSmall">
-                    Welcome Back
+              Welcome Back
             </Text>
           </View>
         </View>
         <View alignCenter spacing={{ mt: 4, mx: 5 }}>
           <FormField
+            ref={emailField}
             placeholder="Email address"
             value={email}
             returnKeyType="next"
@@ -95,7 +92,6 @@ const LoginModal = ({
               setIsEmailValid(true);
             }}
             error={!isEmailValid}
-            ref={emailField}
             onSubmitEditing={() => passwordField.current.focus()}
             icon={EmailIcon}
           />
@@ -106,13 +102,13 @@ const LoginModal = ({
               </Text>
             )}
           <FormField
-            placeholder="password"
-            value={password}
             secureTextEntry
-            returnKeyType="done"
             ref={passwordField}
-            onChangeText={(text) => setPasswrod(text)}
             icon={ChangePasswordIcon}
+            placeholder="Password"
+            value={password}
+            returnKeyType="done"
+            onChangeText={(text) => setPassword(text)}
           />
           <View row spacing={{ mt: 3 }}>
             <View flex={1} alignEnd>

@@ -8,7 +8,7 @@ const TabBar: typeof BottomTabBar = ({ navigation, ...rest }) => {
   const { state } = navigation;
 
   // filter tabs items
-  const routes = store.user.type === 'patient'
+  const routes = store.user.type === 'PA'
     ? state.routes.filter((route) => route.routeName !== 'ScheduleTab')
     : state.routes;
 

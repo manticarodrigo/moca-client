@@ -19,17 +19,16 @@ import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
-import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
-import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
-import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
-import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
-import AddressScreen from '@src/screens/SignUp/AddressScreen';
-import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
-import AddressSettingScreen from '@src/screens/ProfileScreen/AddressSettingScreen';
-import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
+import SelectionScreen from '@src/screens/SelectionScreen';
+import InvalidZipCodeScreen from '@src/screens/InvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/RegistrationScreen';
+import InvalidMedicareScreen from '@src/screens/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/AddressScreen';
+import QualificationsScreen from '@src/screens/QualificationsScreen';
+import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
+import WalletScreen from '@src/screens/WalletScreen';
 
 const defaultNavConfig = {
-  // headerLayoutPreset: 'center',
   cardShadowEnabled: false,
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
@@ -82,7 +81,7 @@ const AppStack = createSwitchNavigator(
       ProfileTab: createStackNavigator({
         ProfileScreen,
         ProfileSettingsScreen,
-        AddressSettingScreen,
+        AddressSettingsScreen,
         AddressScreen,
         WalletScreen,
       }, defaultNavConfig),
