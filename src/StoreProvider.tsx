@@ -17,8 +17,12 @@ export type StoreState = {
 type StoreAction = UserAction | ConversationAction| RegistrationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
-type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>, store: StoreState) => Promise<void>;
-export type ProviderDispatch = (action: StoreAction | ProviderAsyncAction) => void | Promise<void>;
+type ProviderAsyncAction = (dispatch: Dispatch<StoreAction>, store: StoreState) => Promise<object>;
+
+export type ProviderDispatch = (
+  action: StoreAction | ProviderAsyncAction
+) => void | Promise<object>;
+
 type ProviderValue = [StoreState, ProviderDispatch];
 
 type AsyncReducer = (

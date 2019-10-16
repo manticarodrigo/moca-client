@@ -7,18 +7,20 @@ export type UserState = Omit<User, 'email'> & Omit<Patient, 'user'> & Omit<Thera
   token?: string;
 };
 
-function flattenUserPayload({ user, ...rest }) {
-  return { ...user, ...rest };
+function flattenUserPayload(state, { user, ...rest }) {
+  return { ...state, ...user, ...rest };
 }
 
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'SET_USER_STATE':
       return { ...state, ...action.payload };
+    case 'LOGIN_USER_SUCCESS':
+      return { ...state, ...action.payload };
     case 'UPDATE_USER_SUCCESS':
-      return flattenUserPayload(action.payload);
+      return flattenUserPayload(state, action.payload);
     case 'REGISTER_USER_SUCCESS': {
-      return flattenUserPayload(action.payload);
+      return flattenUserPayload(state, action.payload);
     }
     default:
       return state;
