@@ -20,7 +20,6 @@ const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) 
     store.conversations,
     ({ messages }) => messages[messages.length - 1].createdAt,
   );
-
   useEffect(() => {
     if (store.user.id) {
       dispatch(getConversations(store.user));
@@ -33,25 +32,33 @@ const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) 
 
   return (
     <View column flex={1} bgColor="lightGrey">
-      <ConversationSectionList
-        renderItem={({ item }) => (
-          <ConversationListCard
-            user={store.user}
-            conversation={item}
-            onPress={handleCardPress}
-          />
-        )}
-        renderSectionHeader={({ section }) => (
-          <View spacing={{ ml: 3, py: 3 }}>
-            <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
-              {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
-            </Text>
-          </View>
-        )}
-        stickySectionHeadersEnabled={false}
-        keyExtractor={(item) => item.id}
-        sections={sections}
-      />
+      {!sections.length ? (
+        <View flex={1} justifyCenter alignCenter>
+          <Text variant="titleSecondary" typography={{ align: 'center' }}>
+            You have not started any conversations.
+          </Text>
+        </View>
+      ) : (
+        <ConversationSectionList
+          renderItem={({ item }) => (
+            <ConversationListCard
+              user={store.user}
+              conversation={item}
+              onPress={handleCardPress}
+            />
+          )}
+          renderSectionHeader={({ section }) => (
+            <View spacing={{ ml: 3, py: 3 }}>
+              <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+                {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
+              </Text>
+            </View>
+          )}
+          stickySectionHeadersEnabled={false}
+          keyExtractor={(item) => item.id}
+          sections={sections}
+        />
+      )}
     </View>
   );
 };

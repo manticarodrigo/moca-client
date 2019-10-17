@@ -5,6 +5,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import useStore from '@src/hooks/useStore';
 import { resetRegistration } from '@src/store/actions/RegistrationAction';
 
+import { Colors, Views } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -104,8 +105,16 @@ const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) =
   );
 };
 
-InvalidMedicareScreen.navigationOptions = {
+InvalidMedicareScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Medicare',
-};
+  headerTitleStyle: {
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    ...Views.borderBottom,
+    backgroundColor: Colors.white,
+  },
+});
 
 export default InvalidMedicareScreen;

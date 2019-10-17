@@ -39,7 +39,7 @@ const slides = [
 
 
 const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
-  const { dispatch } = useStore();
+  const { store, dispatch } = useStore();
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
@@ -67,7 +67,13 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
       onLogin={sumbitLogin}
       onModalHide={() => {
         if (isLoginSuccess) {
-          navigation.navigate('DashboardScreen');
+          if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
+            navigation.navigate('QualificationsScreen');
+          } else if (store.user.addresses.length === 0) {
+            navigation.push('AddressScreen', { title: 'Address' });
+          } else {
+            navigation.navigate('DashboardScreen');
+          }
           setIsLoginSuccess(false);
         }
       }}
