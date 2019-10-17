@@ -96,7 +96,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         await dispatch(registerUser({ type, email, password, firstName, lastName }));
 
         if (isPatient) {
-          navigation.push('AddressScreen', { title: 'Primary Address' });
+          navigation.push('AddressScreen', { title: 'Address' });
         } else {
           navigation.push('QualificationsScreen');
         }
@@ -227,7 +227,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               icon={PasswordIcon}
             />
           </View>
-          <View row spacing={{ mx: 3 }}>
+          <View row spacing={{ mx: 3, pt: 3 }}>
             <View flex={1}>
               <Button
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
@@ -238,14 +238,14 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </Button>
             </View>
           </View>
-          <View spacing={{ mx: 3 }} alignCenter>
+          <View spacing={{ mx: 3, pb: 3 }} alignCenter>
             <View alignCenter row spacing={{ mt: 2 }}>
               <Text
                 variant="regular"
                 spacing={{ mt: 1 }}
                 typography={{ size: 1 }}
               >
-                {'By continuing, I accept the Moca'}
+                By continuing, I accept the Moca
               </Text>
               <Text
                 variant="link"
