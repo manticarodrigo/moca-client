@@ -35,16 +35,18 @@ const QualificationsContent = (
   const { store, dispatch } = useStore();
   const [preferredAilments, setPreferredAilments] = useState([]);
 
-  const isButtonDisabled = !!preferredAilments.length;
+  const isButtonDisabled = !preferredAilments.length;
 
   const handleCheckBoxClick = (index: number, value: string, checked: boolean) => {
+    let updated = [...preferredAilments];
+
     if (checked) {
-      preferredAilments.push(value);
+      updated.push(value);
     } else {
-      delete preferredAilments[index];
+      updated = updated.filter((v) => v === value);
     }
 
-    setPreferredAilments(preferredAilments);
+    setPreferredAilments(updated);
   };
 
   const handleButtonPress = async () => {
@@ -93,10 +95,10 @@ const QualificationsContent = (
                       justifyBetween
                       alignCenter
                       {...(modal && index === 0 ? '' : { variant: 'borderTop' })}
-                      spacing={{ mb: 3 }}
+                      spacing={{ py: 3 }}
                       width="100%"
                     >
-                      <Text variant="titleSmall" spacing={{ mb: 2, mt: 3 }}>{item}</Text>
+                      <Text variant="titleSmall">{item}</Text>
                       <CheckBox
                         index={index}
                         value={item}
@@ -107,7 +109,7 @@ const QualificationsContent = (
                   ))}
                 </View>
                 <View row>
-                  <View flex={1}>
+                  <View flex={1} spacing={{ py: 3 }}>
                     <Button
                       variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
                       onPress={handleButtonPress}

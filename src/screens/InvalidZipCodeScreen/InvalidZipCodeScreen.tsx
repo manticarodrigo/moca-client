@@ -6,6 +6,8 @@ import useStore from '@src/hooks/useStore';
 import { resetRegistration } from '@src/store/actions/RegistrationAction';
 import { validateEmailAddress } from '@src/utlities/validations';
 
+import { Colors, Views } from '@src/styles';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
@@ -97,8 +99,16 @@ const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) =>
   );
 };
 
-InvalidZipCodeScreen.navigationOptions = {
+InvalidZipCodeScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Location',
-};
+  headerTitleStyle: {
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    ...Views.borderBottom,
+    backgroundColor: Colors.white,
+  },
+});
 
 export default InvalidZipCodeScreen;

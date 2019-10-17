@@ -10,13 +10,14 @@ import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceS
 import ErrorIcon from '@src/assets/Icons/warning.png';
 
 import TextInput from './TextInput';
+import Text from './Text';
 
-type FormFieldProps = TextInputProps & {
+export type FormFieldProps = TextInputProps & {
   placeholder: string;
   icon?: object;
   value: string;
   spacing?: SpacingProp;
-  error?: boolean;
+  error?: boolean | string;
   width?: number | string;
   height?: number | string;
 }
@@ -29,7 +30,6 @@ const FormField = ({
   height,
   spacing,
   error,
-
   ...textInputProps
 }: FormFieldProps, ref: React.Ref<any>) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -96,24 +96,31 @@ const FormField = ({
   };
 
   return (
-    <Wrapper row>
-      <Wrapper flex={1}>
-        <View style={styles.view}>
-          <Animated.Text style={placeholderStyle}>
-            {placeholder}
-          </Animated.Text>
-          <TextInput
-            style={styles.text}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            {...textInputProps}
-            value={value}
-            ref={ref}
-          />
-          <Image source={error ? ErrorIcon : icon} />
-        </View>
+    <>
+      <Wrapper row>
+        <Wrapper flex={1}>
+          <View style={styles.view}>
+            <Animated.Text style={placeholderStyle}>
+              {placeholder}
+            </Animated.Text>
+            <TextInput
+              style={styles.text}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              {...textInputProps}
+              value={value}
+              ref={ref}
+            />
+            <Image source={error ? ErrorIcon : icon} />
+          </View>
+        </Wrapper>
       </Wrapper>
-    </Wrapper>
+      {typeof error === 'string' && (
+        <Text spacing={{ mt: 1 }} variant="errorSmall">
+          Please enter a valid Zip code
+        </Text>
+      )}
+    </>
   );
 };
 
