@@ -37,6 +37,7 @@
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.9.3",
     "react-navigation-tabs": "^2.5.5",
+    "stripe-client": "^1.1.5",
     "url": "^0.11.0"
   },
   "devDependencies": {

@@ -45,9 +45,7 @@ const ScheduleDateModal = ({ selectedDate, onClose }) => {
   return (
     <Modal
       isVisible={!!selectedDate}
-      onBackdropPress={onClose}
-      onSwipeComplete={onClose}
-      onKnobPress={onClose}
+      onToggle={onClose}
       bgColor="lightGrey"
     >
       <View column flex={1} width="100%">
