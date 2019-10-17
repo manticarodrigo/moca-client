@@ -71,9 +71,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   });
 
   const [gender, setGender] = useState(userInfo.gender ? userInfo.gender : '');
-  const isMale = gender === 'Male';
-  const isFemale = gender === 'Female';
-  const isOther = gender === 'Other';
+  const isMale = gender === 'M';
+  const isFemale = gender === 'F';
+  const isOther = gender === 'O';
 
   const maleBgColor = isMale ? 'secondaryLight' : 'white';
   const maleTextColor = isMale ? 'white' : 'secondaryLighter';
@@ -83,12 +83,17 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const otherTextColor = isOther ? 'white' : 'secondaryLighter';
 
   // eslint-disable-next-line no-shadow
-  const pressGender = (type: 'Male' | 'Female' | 'Other') => {
-    setGender(type);
-    // dispatch(updateUser({ gender: type }));
-  };
   const closeInputModal = (value: string) => setModals({ ...modals, [value]: false });
   const handleMessageTherapist = () => {};
+
+  const pressGender = (type: 'M' | 'F' | 'O') => {
+    try {
+      dispatch(updateUser({ gender: type }));
+      setGender(type);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const submitPricePerThirtyMinutes = (value: string) => {
     // dispatch(updateUser({ pricePerThirtyMinutes: value }));
@@ -107,12 +112,20 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     setModals({ ...modals, isEvaluationPriceModalVisible: false });
   };
   const submitServiceArea = (value: string) => {
-    // dispatch(updateUser({ serviceArea: value }));
-    setModals({ ...modals, isServiceAreaModalVisible: false });
+    try {
+      dispatch(updateUser({ operationRadius: Number(value) }));
+      setModals({ ...modals, isServiceAreaModalVisible: false });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const submitPersonalBio = (value: string) => {
-    // dispatch(updateUser({ personalBio: value }));
-    setModals({ ...modals, isPersonalBioModalVisible: false });
+    try {
+      dispatch(updateUser({ bio: value }));
+      setModals({ ...modals, isPersonalBioModalVisible: false });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
@@ -120,11 +133,19 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const pressStatus = (type: boolean) => {
     setAvailable(type);
     if (isAvailable) {
-      // dispatch(updateUser({ status: 'busy' }));
-      setAvailable(false);
+      try {
+        dispatch(updateUser({ status: 'B' }));
+        setAvailable(false);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      // dispatch(updateUser({ status: 'available' }));
-      setAvailable(true);
+      try {
+        dispatch(updateUser({ status: 'A' }));
+        setAvailable(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -411,7 +432,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       variant="boldPrimary"
                       spacing={{ mr: 2 }}
                     >
-                      {userInfo.reviewCount.toString()}
+                      {/* {userInfo.reviewCount.toString()} */}
+                      3
                     </Text>
                   </View>
                 </View>
@@ -427,21 +449,21 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     <View row flex={3}>
                       <View
                         variant="genderButton"
-                        {...(!isMale ? { onPress: () => pressGender('Male') } : '')}
+                        {...(!isMale ? { onPress: () => pressGender('M') } : '')}
                         bgColor={maleBgColor}
                       >
                         <Text typography={{ color: maleTextColor }}>Male</Text>
                       </View>
                       <View
                         variant="genderButton"
-                        {...(!isFemale ? { onPress: () => pressGender('Female') } : '')}
+                        {...(!isFemale ? { onPress: () => pressGender('F') } : '')}
                         bgColor={femaleBgColor}
                       >
                         <Text typography={{ color: femaleTextColor }}>Female</Text>
                       </View>
                       <View
                         variant="genderButton"
-                        {...(!isOther ? { onPress: () => pressGender('Other') } : '')}
+                        {...(!isOther ? { onPress: () => pressGender('O') } : '')}
                         bgColor={otherBgColor}
                       >
                         <Text typography={{ color: otherTextColor }}>Other</Text>
@@ -577,7 +599,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 </View>
               </View>
 
-              <View row>
+              {/* <View row>
                 <View spacing={{ p: 3 }}>
                   <QualificationIcon />
                 </View>
@@ -612,8 +634,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       </View>
                     )}
                   </>
-                </View>
-              </View>
+                </View> */}
+              {/* </View> */}
             </View>
             {pricePerNintyModal}
             {pricePerSixtyModal}

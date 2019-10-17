@@ -68,7 +68,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         setIsEmailValid(false);
       }
     }
-  }, []);
+  }, [formFields, isPatient, store.registration]);
 
 
   const TermsOfServiceModalView = (

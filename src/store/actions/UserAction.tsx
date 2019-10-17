@@ -29,9 +29,8 @@ const setUser = (state: UserState) => (async (dispatch: Dispatch<UserAction>) =>
 
 const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
   const { data } = await api.auth.authenticateLoginCreate({ email, password });
-
+  console.log(data);
   dispatch({ type: 'LOGIN_USER_SUCCESS', payload: data });
-
   return data;
 };
 
@@ -56,16 +55,24 @@ const updateUser = (partialState: UserState) => async (
   store: StoreState,
 ) => {
   const { email, password, firstName, lastName, ...rest } = partialState;
+  const user = {
+    email: email || store.user.email,
+    firstName: firstName || store.user.firstName,
+    lastName: lastName || store.user.lastName,
+    password: password || store.user.password,
+  };
 
   const method = partialState.type === 'PA'
     ? api.user.userPatientPartialUpdate
     : api.user.userTherapistPartialUpdate;
 
-  const body = { user: { email, password, firstName, lastName }, ...rest };
+  const body = { user, ...rest };
+
+  console.log(body);
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
-  const { data } = await method(store.user.id.toString(), body, options);
 
+  const { data } = await method(store.user.id.toString(), body, options);
   dispatch({ type: 'UPDATE_USER_SUCCESS', payload: data });
 
   return data;
