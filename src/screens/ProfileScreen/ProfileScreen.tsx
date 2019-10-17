@@ -25,14 +25,15 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPressRight = () => navigation.navigate('ProfileSettingsScreen');
 
   const { store } = useStore();
+  console.log(store.user);
   const isTherapist = store.user.type === 'PT';
 
   let ratingTag = null;
   if (isTherapist) {
     ratingTag = (
       <View row alignCenter>
-        <Text spacing={{ mr: 2 }} variant="lightTextCenter">3</Text>
-        <StarsIcon number={3} />
+        <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating.toString()}</Text>
+        <StarsIcon number={store.user.rating} />
       </View>
     );
   }

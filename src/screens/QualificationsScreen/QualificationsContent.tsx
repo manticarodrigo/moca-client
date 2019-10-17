@@ -33,7 +33,9 @@ const QualificationsContent = (
   { navigation, modal, closeInputModal }: Props,
 ) => {
   const { store, dispatch } = useStore();
-  const [preferredAilments, setPreferredAilments] = useState([]);
+  const [preferredAilments, setPreferredAilments] = useState(
+    store.user ? store.user.preferredAilments : [],
+  );
 
   const isButtonDisabled = !!preferredAilments.length;
 
@@ -52,6 +54,7 @@ const QualificationsContent = (
 
       if (modal) {
         closeInputModal();
+        // api call
       } else {
         navigation.navigate('AddressScreen', { title: 'Address' });
       }
