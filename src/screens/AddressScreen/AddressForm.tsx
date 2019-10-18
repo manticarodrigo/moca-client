@@ -10,6 +10,7 @@ import PlacesSearch from '@src/components/PlacesSearch';
 import FormField from '@src/components/FormField';
 
 import { validateZipCode } from '@src/utlities/validations';
+import { Checkbox } from '@src/components/Checkbox';
 
 type Props = {
   existingFields?: Partial<AddAddressForm>;
@@ -28,7 +29,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     city: '',
     state: '',
     zipCode: '',
-    primary: true,
+    primary: isRegistering,
     coordinates: [0, 0],
   });
 
@@ -144,6 +145,17 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               onChangeText={updateFormField('zipCode')}
             />
           </View>
+          {!isRegistering && (
+            <View variant="borderTop" row spacing={{ py: 4 }}>
+              <View flex={1} row justifyEnd alignCenter>
+                <Text variant="regularDark" spacing={{ pr: 2 }}>Set as primary?</Text>
+                <Checkbox
+                  checked={formFields.primary}
+                  onChange={updateFormField('primary')}
+                />
+              </View>
+            </View>
+          )}
           <View row spacing={{ py: 4 }}>
             <View flex={1}>
               <Button
