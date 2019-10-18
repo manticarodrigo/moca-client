@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-
-import Swipeable from 'react-native-swipeable-row';
-
-import { BinIcon } from '@src/components/icons';
+import { FlatList } from 'react-native';
 
 import View from '@src/components/View';
 import Card from '@src/components/Card';
+import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
 import BankCardModal from '@src/modals/BankCardModal';
 
@@ -15,27 +13,23 @@ const CreditCardsTab = () => {
       type: 'amex',
       bankName: 'Bank of America',
       cardNumber: '512***************80',
-      deleted: false,
     },
     {
       type: 'maestro',
       bankName: 'ING',
       cardNumber: '**** **** **** **** **54',
-      deleted: false,
 
     },
     {
       type: 'masterCard',
       bankName: 'BBVA',
       cardNumber: '**** **** **** **** *324',
-      deleted: false,
 
     },
     {
       type: 'visa',
       bankName: 'Wells Fargo',
       cardNumber: '439***************23',
-      deleted: false,
     },
   ];
 
@@ -49,43 +43,34 @@ const CreditCardsTab = () => {
 
   const handleModalVisibility = () => setModalVisiblilty(!modalVisibility);
 
-  const onDelete = (key) => {
+  const onDelete = (index: number) => {
     const newAccountsList = [...accountsList];
-    const index = newAccountsList.findIndex((card) => card.cardNumber === key);
-    newAccountsList[index].deleted = true;
+    newAccountsList.splice(index, 1);
+
     setAccountsList(newAccountsList);
   };
 
   return (
-    <View width="100%" height="100%" scroll spacing={{ pt: 5 }}>
-      <>
-        {accountsList.filter((card) => !card.deleted).map((card) => (
-          <Swipeable
-            key={card.cardNumber}
-            rightButtons={[
-              <View
-                key={1}
-                spacing={{ pl: 4 }}
-                justifyCenter
-                bgColor="error"
-                height={80}
-                onPress={() => onDelete(card.cardNumber)}
-              >
-                <BinIcon />
-              </View>,
-            ]}
+    <View width="100%" height="100%" scroll>
+      <FlatList
+        data={accountsList}
+        keyExtractor={(item) => item.cardNumber}
+        renderItem={({ item, index }) => (
+          <SwipeRow
+            disabled={accountsList.length === 1}
+            onPress={() => handleCardPress(item.cardNumber)}
           >
+            <BinRow onPress={() => onDelete(index)} />
             <Card
               large
-              type={card.type}
-              title={card.bankName}
-              details={card.cardNumber}
-              onPress={() => handleCardPress(card.cardNumber)}
-              selected={selectedId === card.cardNumber}
+              type={item.type}
+              title={item.bankName}
+              details={item.cardNumber}
+              selected={selectedId === item.cardNumber}
             />
-          </Swipeable>
-        ))}
-      </>
+          </SwipeRow>
+        )}
+      />
       <Card type="addCard" arrow large onPress={handleModalVisibility} />
       <BankCardModal isVisible={modalVisibility} onToggle={handleModalVisibility} />
     </View>

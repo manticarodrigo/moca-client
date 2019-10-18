@@ -1,23 +1,24 @@
-import React, { useRef, useState } from 'react';
-import Swipeable from 'react-native-swipeable-row';
-
+import React, { useState } from 'react';
+import { FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
+
+import useStore from '@src/hooks/useStore';
+import { updateUser } from '@src/store/actions/UserAction';
+
+import { Views, Spacing, Colors } from '@src/styles';
+
+import {
+  ArrowRightIcon,
+  PinGreyIcon,
+  AddIcon,
+  BuildingIcon,
+} from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
-
-import ArrowRightIcon from '@src/components/icons/ArrowRightIcon';
-import PinGreyIcon from '@src/components/icons/PinGreyIcon';
-import AddIcon from '@src/components/icons/AddIcon';
-import BuildingIcon from '@src/components/icons/BuildingIcon';
-import BinIcon from '@src/components/icons/BinIcon';
-
-import useStore from '@src/hooks/useStore';
-import { Views, Spacing, Colors } from '@src/styles';
-import { updateRegistration } from '@src/store/actions/RegistrationAction';
-
+import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
 const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   type Address = {
@@ -28,26 +29,21 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   }
 
   const [isOpen, setIsOpen] = useState(false);
-  const { store: { registration: { addresses } }, dispatch } = useStore();
-  const swipableItems = useRef(Array.from({ length: addresses.length }, (a) => React.createRef()));
-
-  const recenterItems = () => {
-    [...Array(addresses.length)].map((el, i) => swipableItems.current[i].recenter());
-  };
+  const { store, dispatch } = useStore();
 
   const handleNewAddressPress = () => {
-    recenterItems();
-    navigation.navigate('AddressScreen',
-      { isAdditionalAddress: true, title: `Home ${addresses.length}` });
+    navigation.navigate('AddressScreen', { isAdditionalAddress: true, title: 'New Address' });
   };
 
-
   const handleDeletePress = (index: number) => {
-    // api call
-    recenterItems();
-    const newAddresses = addresses.map((x) => ({ ...x }));
-    newAddresses.splice(index, 1);
-    dispatch(updateRegistration({ addresses: newAddresses }));
+    const updated = [...store.user.addresses];
+    updated.splice(index, 1);
+
+    if (store.user.addresses.length > 1) {
+
+    }
+
+    dispatch(updateUser({ addresses: updated }));
   };
 
   const handleAddressPress = (userAddress: Address, index: number) => {
@@ -61,7 +57,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
         title = `Home ${index}`;
       }
 
-      if (addresses.length === 1) {
+      if (store.user.addresses.length === 1) {
         isOnlyAddress = true;
       }
 
@@ -73,7 +69,6 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
         index,
         handleDelete: () => handleDeletePress(index) });
     } else {
-      recenterItems();
       setIsOpen(false);
     }
   };
@@ -82,44 +77,20 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
     <View safeArea flex={1}>
       <View scroll>
         <View>
-          { addresses.map((userAddress: Address, index) => {
-            const key = `${userAddress.street}-${userAddress.apartment}-${userAddress.city}`;
-
-            return (
-              <Swipeable
-                key={key}
-                rightButtonsActivationDistance={20}
-                onRef={(ref) => { swipableItems.current[index] = ref; }}
-                rightButtonWidth={100}
-                disable={addresses.length === 1}
-                onRightButtonsCloseRelease={() => {
-                  setIsOpen(false);
-                }}
-                onRightButtonsOpenRelease={() => {
-                  setIsOpen(true);
-                }}
-                onRightButtonsActivate={() => {
-                  recenterItems();
-                }}
-                rightButtons={[
-                  <View
-                    key={key}
-                    flex={1}
-                    bgColor="error"
-                    justifyCenter
-                    onPress={() => handleDeletePress(index)}
-                    spacing={{ pl: 5 }}
-                  >
-                    <BinIcon />
-                  </View>,
-                ]}
+          <FlatList
+            data={store.user.addresses}
+            keyExtractor={(item) => item.id.toString() || item.street}
+            renderItem={({ item, index }) => (
+              <SwipeRow
+                disabled={store.user.addresses.length === 1}
+                onPress={() => handleAddressPress(item, index)}
               >
+                <BinRow onPress={() => handleDeletePress(index)} />
                 <View
-                  key={key}
                   row
                   width="100%"
                   variant="borderBottom"
-                  onPress={() => handleAddressPress(userAddress, index)}
+                  bgColor="white"
                 >
                   <View row flex={1} spacing={{ p: 3 }}>
                     <View>
@@ -132,11 +103,13 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                         </View>
                         <View wrap spacing={{ pr: 2 }}>
                           <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                            {userAddress.street}
+                            {item.street}
+                            {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
                             {', '}
-                            {userAddress.city}
+                            {item.city}
+                            {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
                             {', '}
-                            {userAddress.state}
+                            {item.state}
                           </Text>
                         </View>
                       </View>
@@ -146,16 +119,16 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                         </View>
                         <View wrap>
                           <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                            {userAddress.apartment}
+                            {item.apartment}
                           </Text>
                         </View>
                       </View>
                     </View>
                   </View>
                 </View>
-              </Swipeable>
-            );
-          })}
+              </SwipeRow>
+            )}
+          />
         </View>
         <View
           variant="borderBottom"
