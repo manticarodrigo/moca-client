@@ -79,7 +79,15 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
     onSelect({ ...formObject, coordinates: [lat, lng] });
   };
 
-  const { street, city, state, zipCode } = store.registration.address;
+  const getDefaultValue = () => {
+    const { street, city, state, zipCode } = store.registration.address;
+
+    if (!Object.keys(store.registration.address).length) {
+      return '';
+    }
+
+    return `${street}, ${city}, ${state}, ${zipCode}`;
+  };
 
   return (
     <GooglePlacesAutocomplete
@@ -87,7 +95,7 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
       currentLocation
       styles={styles}
       predefinedPlacesAlwaysVisible
-      getDefaultValue={() => `${street}, ${city}, ${state}, ${zipCode}`}
+      getDefaultValue={getDefaultValue}
       placeholderTextColor={Colors.semiGrey}
       placeholder="Search"
       minLength={2} // minimum length of text to search
