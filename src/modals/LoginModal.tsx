@@ -82,6 +82,7 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps)
         </View>
         <View alignCenter spacing={{ mt: 4, mx: 5 }}>
           <FormField
+            icon="email"
             ref={emailField}
             placeholder="Email address"
             value={email}
@@ -93,7 +94,6 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps)
             }}
             error={!isEmailValid}
             onSubmitEditing={() => passwordField.current.focus()}
-            icon={EmailIcon}
           />
           {!isEmailValid
             && (
@@ -102,9 +102,9 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps)
               </Text>
             )}
           <FormField
+            icon="password"
             secureTextEntry
             ref={passwordField}
-            icon={ChangePasswordIcon}
             placeholder="Password"
             value={password}
             returnKeyType="done"
@@ -136,7 +136,6 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps)
         </View>
       </View>
     </ModalView>
-
   );
 };
 

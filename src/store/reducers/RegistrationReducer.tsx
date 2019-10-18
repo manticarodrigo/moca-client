@@ -1,15 +1,12 @@
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
+import { AddAddressForm } from '@src/store/actions/UserAction';
 
-import { User, Therapist, Address } from '@src/services/openapi';
+import { User } from '@src/services/openapi';
 
-type RegisterAddress = Omit<Partial<Address>, 'location'> & {
-  location?: { type: string; coordinates: [number, number] };
-}
-
-export type RegistrationState = Partial<User> & {
-  address?: RegisterAddress;
-  preferredAilments?: Therapist['preferredAilments'];
-  licenseNumber?: Therapist['licenseNumber'];
+export type RegistrationState = {
+  type?: User['type'];
+  address?: Partial<AddAddressForm>;
+  licenseNumber?: string;
 }
 
 const reducer = (state: RegistrationState, action: RegistrationAction) => {

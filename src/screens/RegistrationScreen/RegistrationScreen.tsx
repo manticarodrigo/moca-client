@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
+
+import { User } from '@src/services/openapi/api';
 
 import useStore from '@src/hooks/useStore';
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
@@ -18,8 +20,6 @@ import FormField from '@src/components/FormField';
 import ModalView from '@src/components/ModalView';
 
 import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
-import EmailIcon from '@src/assets/Icons/email.png';
-import PasswordIcon from '@src/assets/Icons/eye.png';
 
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
@@ -31,7 +31,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const passwordField = useRef(null);
   const medicalIdField = useRef(null);
 
-  const [formFields, setFormFields] = useState<typeof store.registration>({
+  const [formFields, setFormFields] = useState<User>({
     email: '',
     password: '',
     firstName: '',
@@ -49,6 +49,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     ? (isAnyFieldEmpty || !isMediCarePressed || !isEmailValid)
     : isAnyFieldEmpty || !isEmailValid;
 
+<<<<<<< HEAD
   useEffect(() => {
     if (store.registration && store.registration.email) {
       const { email, firstName, lastName, password } = store.registration;
@@ -70,6 +71,8 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
   }, [formFields, isPatient, store.registration]);
 
+=======
+>>>>>>> 8ab86ea29bbe208ba43b507a5b5f41d57c9a07a8
 
   const TermsOfServiceModalView = (
     <ModalView
@@ -116,8 +119,8 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const handleTermsOfServicePress = () => setIsModalVisible(true);
 
-  const handleFormFields = (name: keyof typeof store.registration, text: string) => {
-    setFormFields({ ...formFields, [name as string]: text });
+  const updateFormField = (key: keyof User) => (text: string) => {
+    setFormFields({ ...formFields, [key]: text });
   };
 
   return (
@@ -129,7 +132,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     >
       <View scroll>
         <View safeArea spacing={{ mt: 4 }} alignCenter>
-          <View alignCenter spacing={{ mx: 3 }}>
+          <View alignCenter spacing={{ py: 4, px: 3 }}>
             <SecondaryLogoIcon />
             <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
             <Text variant="regular" spacing={{ mt: 2 }}>
@@ -169,14 +172,14 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               placeholder="First Name"
               value={formFields.firstName}
               returnKeyType="next"
-              onChangeText={(text) => handleFormFields('firstName', text)}
+              onChangeText={updateFormField('firstName')}
               onSubmitEditing={() => surnameField.current.focus()}
             />
             <FormField
               placeholder="Last Name"
               value={formFields.lastName}
               returnKeyType="next"
-              onChangeText={(text) => handleFormFields('lastName', text)}
+              onChangeText={updateFormField('lastName')}
               ref={surnameField}
               onSubmitEditing={() => {
                 if (isPatient) {
@@ -186,7 +189,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 }
               }}
             />
-            {!isPatient && (
+            {/* {!isPatient && (
               <FormField
                 placeholder="Medical ID"
                 value={formFields.licenseNumber}
@@ -194,22 +197,19 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 keyboardType="numeric"
                 ref={medicalIdField}
                 onSubmitEditing={() => emailField.current.focus()}
-                onChangeText={(text) => handleFormFields('licenseNumber', text)}
+                onChangeText={updateFormField('licenseNumber')}
               />
-            )}
+            )} */}
             <FormField
+              icon="email"
               placeholder="Email address"
               value={formFields.email}
               returnKeyType="next"
               keyboardType="email-address"
-              onChangeText={(text) => {
-                handleFormFields('email', text);
-                setIsEmailValid(true);
-              }}
+              onChangeText={updateFormField('email')}
               error={!isEmailValid}
               ref={emailField}
               onSubmitEditing={() => passwordField.current.focus()}
-              icon={EmailIcon}
             />
             {!isEmailValid
             && (
@@ -218,13 +218,13 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </Text>
             )}
             <FormField
+              icon="password"
               placeholder="Password"
               value={formFields.password}
               secureTextEntry
               returnKeyType="done"
               ref={passwordField}
-              onChangeText={(text) => handleFormFields('password', text)}
-              icon={PasswordIcon}
+              onChangeText={updateFormField('password')}
             />
           </View>
           <View row spacing={{ mx: 3, pt: 3 }}>

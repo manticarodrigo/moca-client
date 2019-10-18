@@ -1,20 +1,25 @@
 import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
-import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
-import { Spacing, SpacingProp, Colors } from '@src/styles';
+import {
+  StyleSheet,
+  View,
+  Animated,
+  TextInputProps,
+  TextInput as RNInput,
+} from 'react-native';
+
+import { ErrorIcon, EmailIcon, EyeIcon } from '@src/components/icons';
+
+import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
 
 import Wrapper from '@src/components/View';
-
-import { widthPercentageToDP, heightPercentageToDP } from '@src/utlities/deviceSize';
-
-import ErrorIcon from '@src/assets/Icons/warning.png';
 
 import TextInput from './TextInput';
 import Text from './Text';
 
 export type FormFieldProps = TextInputProps & {
   placeholder: string;
-  icon?: object;
+  icon?: 'email' | 'password';
   value: string;
   spacing?: SpacingProp;
   error?: boolean | string;
@@ -31,7 +36,7 @@ const FormField = ({
   spacing,
   error,
   ...textInputProps
-}: FormFieldProps, ref: React.Ref<any>) => {
+}: FormFieldProps, ref: React.Ref<RNInput>) => {
   const [isFocused, setIsFocused] = useState(false);
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
 
@@ -52,6 +57,8 @@ const FormField = ({
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
+      width,
+      height,
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -60,29 +67,31 @@ const FormField = ({
       borderWidth: error ? 1 : null,
       borderColor: error ? Colors.error : null,
       margin: 0,
-      width,
-      height,
       marginTop: Spacing.spaceSize[2],
       paddingRight: Spacing.spaceSize[3],
       paddingLeft: Spacing.spaceSize[3],
-      ...Spacing.getStyles(spacing),
       backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
+      ...Spacing.getStyles(spacing),
     },
     text: {
-      color: Colors.black,
-      paddingTop: heightPercentageToDP(3.0),
+      ...Texts.regular,
+      color: Colors.semiGrey,
+      paddingTop: 10,
       fontSize: 16,
-      width: widthPercentageToDP(70),
-      height: heightPercentageToDP(8.3),
+      width: '100%',
+      height: 60,
     },
   }), [error, width, height, spacing, isFocused]);
 
   const placeholderStyle = {
     position: 'absolute',
-    left: widthPercentageToDP(4.2),
+    left: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [20, 16],
+    }),
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [heightPercentageToDP(2.7), heightPercentageToDP(1.0)],
+      outputRange: [20, 5],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -95,6 +104,22 @@ const FormField = ({
     color: Colors.semiGrey,
   };
 
+
+  const renderIcon = useMemo(() => {
+    if (error) {
+      return <ErrorIcon />;
+    }
+
+    switch (icon) {
+      case 'email':
+        return <EmailIcon />;
+      case 'password':
+        return <EyeIcon />;
+      default:
+        return null;
+    }
+  }, [error, icon]);
+
   return (
     <>
       <Wrapper row>
@@ -104,14 +129,16 @@ const FormField = ({
               {placeholder}
             </Animated.Text>
             <TextInput
+              ref={ref}
               style={styles.text}
+              value={value}
               onFocus={handleFocus}
               onBlur={handleBlur}
               {...textInputProps}
-              value={value}
-              ref={ref}
             />
-            <Image source={error ? ErrorIcon : icon} />
+            <View style={{ position: 'absolute', top: 20, right: 20 }}>
+              {renderIcon}
+            </View>
           </View>
         </Wrapper>
       </Wrapper>

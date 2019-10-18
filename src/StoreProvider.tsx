@@ -55,7 +55,9 @@ const initialState: StoreState = {
     preferredAilments: [],
   },
   conversations: [],
-  registration: {},
+  registration: {
+    address: {},
+  },
 };
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);

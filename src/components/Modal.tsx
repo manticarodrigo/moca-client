@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, KeyboardAvoidingView as RNKeyboardAvoidingView } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import RNModal, { ModalProps } from 'react-native-modal';
 
 import OpenIcon from '@src/components/icons/OpenIcon';
@@ -8,20 +8,9 @@ import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 
-const KeyboardAvoidingView = ({ children }) => (
-  <RNKeyboardAvoidingView
-    style={{ flex: 1 }}
-    behavior="padding"
-    keyboardVerticalOffset={90}
-  >
-    {children}
-  </RNKeyboardAvoidingView>
-);
-
 type Props = ModalProps & {
   children: JSX.Element | JSX.Element[];
   marginTop?: number;
-  avoidKeyboard?: boolean;
   bgColor?: keyof typeof Colors;
   onToggle: () => void;
 };
@@ -29,7 +18,6 @@ type Props = ModalProps & {
 const Modal = ({
   children,
   marginTop = 100,
-  avoidKeyboard,
   bgColor = 'white',
   onToggle,
   ...modalProps
@@ -37,13 +25,6 @@ const Modal = ({
   const styles = useMemo(() => StyleSheet.create({
     modal: { margin: 0, marginTop },
   }), [marginTop]);
-
-  const ChildrenWrapper = useMemo(
-    () => avoidKeyboard
-      ? KeyboardAvoidingView
-      : React.Fragment,
-    [avoidKeyboard],
-  );
 
   return (
     <RNModal
@@ -63,9 +44,9 @@ const Modal = ({
         <View alignCenter spacing={{ my: 3 }} onPress={onToggle}>
           <OpenIcon />
         </View>
-        <ChildrenWrapper>
+        <>
           {children}
-        </ChildrenWrapper>
+        </>
       </View>
     </RNModal>
   );

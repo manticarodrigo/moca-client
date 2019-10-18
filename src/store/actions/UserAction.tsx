@@ -4,7 +4,6 @@ import { Dispatch } from 'react';
 import api from '@src/services/api';
 import { StoreState } from '@src/StoreProvider';
 import { UserState } from '@src/store/reducers/UserReducer';
-import { getLocation } from '@src/services/location';
 
 import {
   User,
@@ -13,7 +12,11 @@ import {
   Therapist,
   TherapistCreate,
   AddressCreate,
+<<<<<<< HEAD
   Price,
+=======
+  Address,
+>>>>>>> 8ab86ea29bbe208ba43b507a5b5f41d57c9a07a8
 } from '@src/services/openapi';
 
 export type UserAction =
@@ -104,21 +107,18 @@ const updateUser = (partialState: UserState) => async (
   return data;
 };
 
+export type AddAddressForm = Omit<Address, 'location'> & {
+  coordinates?: [number, number];
+}
 
-const addUserAddress = (address: Omit<AddressCreate, 'location'>) => async (
+const addUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
   dispatch: Dispatch<UserAction>,
   store: StoreState,
 ) => {
-  const body = { ...address, location: '' };
+  const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
+
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
-  const location = await getLocation();
-
-  if (location) {
-    const { latitude, longitude } = location.coords;
-
-    body.location = JSON.stringify({ type: 'Point', coordinates: [latitude, longitude] });
-  }
   const { data } = await api.address.addressAddCreate(body, options);
 
   dispatch({ type: 'ADD_USER_ADDRESS_SUCCESS', payload: data });
