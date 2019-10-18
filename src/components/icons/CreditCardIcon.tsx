@@ -6,7 +6,7 @@ const CreditCardIcon = () => (
     <G
       id="Guide"
       stroke="none"
-      strokeWidth={1}
+      strokeWidth={2}
       fill="none"
       fillRule="evenodd"
       strokeLinecap="round"

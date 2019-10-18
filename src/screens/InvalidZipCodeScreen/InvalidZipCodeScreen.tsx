@@ -6,13 +6,14 @@ import useStore from '@src/hooks/useStore';
 import { resetRegistration } from '@src/store/actions/RegistrationAction';
 import { validateEmailAddress } from '@src/utlities/validations';
 
+import { Colors, Views } from '@src/styles';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 
-import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
-import EmailIcon from '@src/assets/Icons/email.png';
+import { BigEnvelopeRedIcon } from '@src/components/icons';
 
 const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { dispatch } = useStore();
@@ -61,12 +62,12 @@ const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) =>
           </View>
           <View alignCenter spacing={{ mt: 3 }}>
             <FormField
+              icon="email"
               error={!isEmailValid}
               placeholder="Email address"
               value={email}
               returnKeyType="done"
               keyboardType="email-address"
-              icon={EmailIcon}
               onChangeText={(text) => {
                 setEmail(text);
                 setIsEmailValid(true);
@@ -97,8 +98,16 @@ const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) =>
   );
 };
 
-InvalidZipCodeScreen.navigationOptions = {
+InvalidZipCodeScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Location',
-};
+  headerTitleStyle: {
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    ...Views.borderBottom,
+    backgroundColor: Colors.white,
+  },
+});
 
 export default InvalidZipCodeScreen;

@@ -29,4 +29,31 @@ const CheckBox = ({ index, value, checked, onClick }: Props) => {
   );
 };
 
+type NewProps = {
+  checked: boolean;
+  onChange: (checked?: boolean) => void;
+}
+
+const CheckboxNoRef = ({ checked, onChange }: NewProps, ref) => {
+  const handleClick = () => onChange(!checked);
+
+  return (
+    <View>
+      <TouchableHighlight
+        ref={ref}
+        onPress={handleClick}
+        underlayColor="transparent"
+      >
+        {checked ? <TickFilledIcon /> : <TickEmptyIcon />}
+      </TouchableHighlight>
+    </View>
+  );
+};
+
+const Checkbox = React.forwardRef(CheckboxNoRef);
+
 export default CheckBox;
+
+export {
+  Checkbox,
+};

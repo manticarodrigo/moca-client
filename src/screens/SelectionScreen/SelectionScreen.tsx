@@ -4,11 +4,11 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { UserTypeEnum } from '@src/services/openapi';
 
 import useStore from '@src/hooks/useStore';
-import { updateRegistration, resetRegistration } from '@src/store/actions/RegistrationAction';
+import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
 import { Colors } from '@src/styles/index';
 
-import ZipCodeModal from '@src/modals/ZipCodeModal';
+import AddressModal from '@src/modals/AddressModal';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -23,13 +23,11 @@ type ColorKey = keyof typeof Colors;
 
 const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const { registration } = store;
-  const [type, setType] = useState<typeof registration.type>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAddressModalVisible, setIsAddressModalVisible] = useState(false);
 
-  const isPatient = type === 'PA';
-  const isTherapist = type === 'PT';
-  const buttonDisabled = type === null;
+  const isPatient = store.registration.type === 'PA';
+  const isTherapist = store.registration.type === 'PT';
+  const buttonDisabled = store.registration.type === null;
 
   let buttonText = 'Select';
 
@@ -46,13 +44,25 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const patientTextColor: ColorKey = isPatient ? 'primary' : 'white';
   const therapistTextColor: ColorKey = isTherapist ? 'primary' : 'white';
 
+  const onPressType = (type: UserTypeEnum) => () => dispatch(updateRegistration({ type }));
 
-  const handleButtonPress = () => {
-    if (registration && registration.type) {
-      if (registration.type !== type) dispatch(resetRegistration());
+  const onPressContinue = () => setIsAddressModalVisible(true);
+
+  const onCloseAddressModal = () => setIsAddressModalVisible(false);
+
+  const onSubmitAddressModal = (address) => {
+    dispatch(updateRegistration({ address }));
+
+    // TODO: check against moca's available zip codes
+    const isAreaAvailable = () => true;
+
+    if (isAreaAvailable()) {
+      navigation.push('RegistrationScreen');
+    } else {
+      navigation.push('InvalidZipCodeScreen');
     }
-    dispatch(updateRegistration({ type }));
-    setIsModalVisible(true);
+
+    setIsAddressModalVisible(false);
   };
 
   return (
@@ -74,7 +84,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 alignCenter
                 flex={1}
                 justifyBetween
-                {...(!isPatient ? { onPress: () => setType(UserTypeEnum.PA) } : '')}
+                onPress={onPressType(UserTypeEnum.PA)}
                 bgColor={patientBgColor}
                 spacing={{ mr: 1 }}
               >
@@ -91,7 +101,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 alignCenter
                 flex={1}
                 justifyBetween
-                {...(!isTherapist ? { onPress: () => setType(UserTypeEnum.PT) } : '')}
+                onPress={onPressType(UserTypeEnum.PT)}
                 bgColor={therapistBgColor}
               >
                 <TherapistIcon focused={isTherapist} />
@@ -107,7 +117,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
               <Button
                 width="100%"
                 variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
+                onPress={onPressContinue}
                 disabled={buttonDisabled}
               >
                 {buttonText}
@@ -116,10 +126,10 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </ContainedView>
         </View>
       </View>
-      <ZipCodeModal
-        isVisible={isModalVisible}
-        navigation={navigation}
-        onClose={() => setIsModalVisible(false)}
+      <AddressModal
+        isVisible={isAddressModalVisible}
+        onClose={onCloseAddressModal}
+        onSubmit={onSubmitAddressModal}
       />
     </>
 

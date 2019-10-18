@@ -56,8 +56,12 @@ export { default as StarTwoIcon } from './StarTwoIcon';
 export { default as StarThreeIcon } from './StarThreeIcon';
 export { default as StarFourIcon } from './StarFourIcon';
 export { default as StarFiveIcon } from './StarFiveIcon';
-export { default as EmailIcon } from './EmailIcon';
+
+// FormField icons
 export { default as ErrorIcon } from './ErrorIcon';
+export { default as EmailIcon } from './EmailIcon';
+export { default as EyeIcon } from './EyeIcon';
+
 export { default as AmexIcon } from './AmexIcon';
 export { default as MaestroIcon } from './MaestroIcon';
 export { default as MasterCardIcon } from './MasterCardIcon';

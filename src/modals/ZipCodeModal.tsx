@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavigationStackProp } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
-import { updateRegistration } from '@src/store/actions/RegistrationAction';
+import { updateUserState } from '@src/store/actions/UserAction';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import ModalView from '@src/components/ModalView';
 
-import { getLocation } from '@src/utlities/location';
+import { getLocationPermissions } from '@src/services/location';
 
 import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 import FormField from '@src/components/FormField';
@@ -33,22 +33,11 @@ const ZipCodeModal = ({ isVisible, navigation, onClose }: Props) => {
 
   useEffect(() => {
     const onMount = async () => {
-      const location = await getLocation(() => {
+      await getLocationPermissions(() => {
         // if no location,
         // pop back to onboarding
         navigation.popToTop();
       });
-
-      if (location) {
-        const { latitude, longitude } = location.coords;
-        const partialAddress = {
-          location: {
-            type: 'Point',
-            coordinates: [latitude, longitude] as [number, number],
-          },
-        };
-        dispatch(updateRegistration({ address: partialAddress }));
-      }
 
       if (store.registration.address) {
         setZipCode(store.registration.address.zipCode);
@@ -72,7 +61,7 @@ const ZipCodeModal = ({ isVisible, navigation, onClose }: Props) => {
   const getAvailability = () => true; // api call to check zipCode availability
 
   const handleButtonPress = () => {
-    dispatch(updateRegistration({ address: { zipCode } }));
+    dispatch(updateUserState({ addresses: [{ zipCode }] }));
 
     if (validateZipCode(zipCode)) {
       setIsZipCodeValid(true);
@@ -105,7 +94,7 @@ const ZipCodeModal = ({ isVisible, navigation, onClose }: Props) => {
           <AddLocationBigIcon />
           <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
           <Text variant="regular" spacing={{ mt: 2 }}>
-            {"Enter your zip code to check MOCA's"}
+            Enter your zip code to check MOCA&apos;s
           </Text>
           <Text variant="regular">
             availability in your area

@@ -50,9 +50,14 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => ({
 });
 
 const initialState: StoreState = {
-  user: {},
+  user: {
+    addresses: [],
+    preferredAilments: [],
+  },
   conversations: [],
-  registration: {},
+  registration: {
+    address: {},
+  },
 };
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);

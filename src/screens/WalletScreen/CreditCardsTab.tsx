@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 
 import Swipeable from 'react-native-swipeable-row';
 
-import {
-  AmexIcon,
-  MaestroIcon,
-  MasterCardIcon,
-  VisaIcon,
-  BinIcon,
-} from '@src/components/icons';
+import { BinIcon } from '@src/components/icons';
 
-import Text from '@src/components/Text';
 import View from '@src/components/View';
 import Card from '@src/components/Card';
-import Button from '@src/components/Button';
-import FormField from '@src/components/FormField';
-import ModalView from '@src/components/ModalView';
+
+import BankCardModal from '@src/modals/BankCardModal';
 
 const CreditCardsTab = () => {
   const previewList = [
@@ -48,12 +40,8 @@ const CreditCardsTab = () => {
   ];
 
   const [accountsList, setAccountsList] = useState(previewList);
-  const [selectedId, setSelectedId] = useState('512***************80');
+  const [selectedId, setSelectedId] = useState('****************4580');
   const [modalVisibility, setModalVisiblilty] = useState(false);
-
-  const [accountName, setAccountName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [accountPassword, setAccountPassword] = useState('');
 
   const handleCardPress = (key) => {
     setSelectedId(key);
@@ -68,17 +56,8 @@ const CreditCardsTab = () => {
     setAccountsList(newAccountsList);
   };
 
-  const handleAccountNameChange = (text) => setAccountName(text);
-  const handleAccountNumberChange = (text) => setAccountNumber(text);
-  const handleAccountPasswordChange = (text) => setAccountPassword(text);
-
-  const onFormSubmit = () => {
-    // api call
-    handleModalVisibility();
-  };
-
   return (
-    <View height="100%" scroll spacing={{ pt: 5 }}>
+    <View width="100%" height="100%" scroll spacing={{ pt: 5 }}>
       <>
         {accountsList.filter((card) => !card.deleted).map((card) => (
           <Swipeable
@@ -97,10 +76,10 @@ const CreditCardsTab = () => {
             ]}
           >
             <Card
+              large
               type={card.type}
               title={card.bankName}
               details={card.cardNumber}
-              large
               onPress={() => handleCardPress(card.cardNumber)}
               selected={selectedId === card.cardNumber}
             />
@@ -108,64 +87,7 @@ const CreditCardsTab = () => {
         ))}
       </>
       <Card type="addCard" arrow large onPress={handleModalVisibility} />
-      <ModalView
-        bgColor="white"
-        height={400}
-        isVisible={modalVisibility}
-        handleArrowClick={handleModalVisibility}
-        onBackdropPress={handleModalVisibility}
-      >
-        <View width="100%">
-          <View
-            variant="borderBottom"
-            alignCenter
-            justifyCenter
-            height={50}
-          >
-            <Text variant="titleSmallDark">Add New Card</Text>
-          </View>
-          <View
-            variant="borderBottom"
-            row
-            alignCenter
-            justifyCenter
-            height={60}
-            width="100%"
-          >
-            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-              <MasterCardIcon />
-            </View>
-            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-              <VisaIcon />
-            </View>
-            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-              <AmexIcon />
-            </View>
-            <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-              <MaestroIcon />
-            </View>
-          </View>
-          <View>
-            <FormField
-              placeholder="Account Name"
-              value={accountName}
-              onChangeText={(text) => handleAccountNameChange(text)}
-            />
-            <FormField
-              placeholder="Account Number"
-              value={accountNumber}
-              onChangeText={handleAccountNumberChange}
-            />
-            <FormField
-              placeholder="Password"
-              value={accountPassword}
-              onChangeText={handleAccountPasswordChange}
-            />
-            <Button spacing={{ mt: 2 }} onPress={onFormSubmit}>Add Account</Button>
-          </View>
-        </View>
-
-      </ModalView>
+      <BankCardModal isVisible={modalVisibility} onToggle={handleModalVisibility} />
     </View>
   );
 };
