@@ -15,6 +15,7 @@ import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
 import FilterScreen from '@src/screens/FilterScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
+import ScheduleDayScreen from '@src/screens/ScheduleDayScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
@@ -71,6 +72,7 @@ const AppStack = createSwitchNavigator(
 
       ScheduleTab: createStackNavigator({
         ScheduleScreen,
+        ScheduleDayScreen,
       }, defaultNavConfig),
 
       ConversationTab: createStackNavigator({

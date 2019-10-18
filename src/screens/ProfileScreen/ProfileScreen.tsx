@@ -31,7 +31,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   if (isTherapist) {
     ratingTag = (
       <View row alignCenter>
-        <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating.toString()}</Text>
+        <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating}</Text>
         <StarsIcon number={store.user.rating} />
       </View>
     );

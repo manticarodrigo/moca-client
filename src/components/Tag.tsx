@@ -16,7 +16,7 @@ type TagProps = {
   spacing?: SpacingProp;
 }
 
-const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) => {
+const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagProps) => {
   const borderColor = useMemo(() => {
     switch (type) {
       case 'fill':

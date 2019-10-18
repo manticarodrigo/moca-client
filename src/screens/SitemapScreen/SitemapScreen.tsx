@@ -31,6 +31,7 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Schedule',
       screens: [
         'ScheduleScreen',
+        'ScheduleDayScreen',
       ],
     },
     {

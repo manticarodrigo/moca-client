@@ -19,7 +19,13 @@ const BinRow = ({ onPress }) => (
   </View>
 );
 
-const SwipeRow = ({ children, disabled, onPress }) => (
+type Props = {
+  children: JSX.Element | JSX.Element[];
+  disabled: boolean;
+  onPress?: () => void;
+}
+
+const SwipeRow = ({ children, disabled, onPress }: Props) => (
   <RNSwipeRow
     preview
     disableLeftSwipe

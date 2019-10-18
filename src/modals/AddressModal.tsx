@@ -2,8 +2,7 @@ import React from 'react';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
-import Modal from '@src/components/Modal';
-import ModalScrollView from '@src/components/ModalScrollView';
+import Modal, { ModalScrollView } from '@src/components/Modal';
 import PlacesSearch from '@src/components/PlacesSearch';
 
 import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';

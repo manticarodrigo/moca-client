@@ -9,7 +9,7 @@ import { Dimensions } from 'react-native';
 import { ArrowDown, ArrowUp } from '@src/components/icons';
 import Button from '@src/components/Button';
 
-const CancellationModal = ({ visible, handleModalVisibility }) => {
+const CancellationModal = ({ visible, onToggle }) => {
   const [isOpen, setIsOpen] = useState([]);
   const [checked, setChecked] = useState(null);
 
@@ -54,8 +54,8 @@ const CancellationModal = ({ visible, handleModalVisibility }) => {
   return (
     <ModalView
       isVisible={visible}
-      handleArrowClick={handleModalVisibility}
-      onBackdropPress={handleModalVisibility}
+      handleArrowClick={onToggle}
+      onBackdropPress={onToggle}
     >
       <View>
         <View

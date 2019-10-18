@@ -36,14 +36,12 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   };
 
   const handleDeletePress = (index: number) => {
-    const updated = [...store.user.addresses];
-    updated.splice(index, 1);
-
     if (store.user.addresses.length > 1) {
+      const updated = [...store.user.addresses];
+      updated.splice(index, 1);
 
+      dispatch(updateUser({ addresses: updated }));
     }
-
-    dispatch(updateUser({ addresses: updated }));
   };
 
   const handleAddressPress = (userAddress: Address, index: number) => {
@@ -75,80 +73,78 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   return (
     <View safeArea flex={1}>
-      <View scroll>
-        <View>
-          <FlatList
-            data={store.user.addresses}
-            keyExtractor={(item) => item.id.toString() || item.street}
-            renderItem={({ item, index }) => (
-              <SwipeRow
-                disabled={store.user.addresses.length === 1}
-                onPress={() => handleAddressPress(item, index)}
-              >
-                <BinRow onPress={() => handleDeletePress(index)} />
-                <View
-                  row
-                  width="100%"
-                  variant="borderBottom"
-                  bgColor="white"
-                >
-                  <View row flex={1} spacing={{ p: 3 }}>
-                    <View>
-                      <Text variant="titleSmall" typography={{ size: 2 }}>
-                        {index === 0 ? 'Home' : `Home ${index}`}
+      <FlatList
+        data={store.user.addresses}
+        keyExtractor={(item) => item.id.toString() || item.street}
+        renderItem={({ item, index }) => (
+          <SwipeRow
+            disabled={store.user.addresses.length === 1}
+            onPress={() => handleAddressPress(item, index)}
+          >
+            <BinRow onPress={() => handleDeletePress(index)} />
+            <View
+              row
+              width="100%"
+              variant="borderBottom"
+              bgColor="white"
+            >
+              <View row flex={1} spacing={{ p: 3 }}>
+                <View>
+                  <Text variant="titleSmall" typography={{ size: 2 }}>
+                    {index === 0 ? 'Home' : `Home ${index}`}
+                  </Text>
+                  <View row spacing={{ mt: 3 }} alignCenter>
+                    <View width={20}>
+                      <PinGreyIcon />
+                    </View>
+                    <View wrap spacing={{ pr: 2 }}>
+                      <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
+                        {item.street}
+                        {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
+                        {', '}
+                        {item.city}
+                        {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
+                        {', '}
+                        {item.state}
                       </Text>
-                      <View row spacing={{ mt: 3 }} alignCenter>
-                        <View width={20}>
-                          <PinGreyIcon />
-                        </View>
-                        <View wrap spacing={{ pr: 2 }}>
-                          <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                            {item.street}
-                            {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
-                            {', '}
-                            {item.city}
-                            {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
-                            {', '}
-                            {item.state}
-                          </Text>
-                        </View>
-                      </View>
-                      <View row spacing={{ mt: 2 }} wrap alignCenter>
-                        <View width={20}>
-                          <BuildingIcon />
-                        </View>
-                        <View wrap>
-                          <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                            {item.apartment}
-                          </Text>
-                        </View>
-                      </View>
+                    </View>
+                  </View>
+                  <View row spacing={{ mt: 2 }} wrap alignCenter>
+                    <View width={20}>
+                      <BuildingIcon />
+                    </View>
+                    <View wrap>
+                      <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
+                        {item.apartment}
+                      </Text>
                     </View>
                   </View>
                 </View>
-              </SwipeRow>
-            )}
-          />
-        </View>
-        <View
-          variant="borderBottom"
-          spacing={{ mt: 3, pb: 3 }}
-          row
-          alignCenter
-          justifyBetween
-          onPress={handleNewAddressPress}
-        >
-          <View spacing={{ ml: 3 }}>
-            <AddIcon />
+              </View>
+            </View>
+          </SwipeRow>
+        )}
+        ListFooterComponent={() => (
+          <View
+            variant="borderBottom"
+            spacing={{ mt: 3, pb: 3 }}
+            row
+            alignCenter
+            justifyBetween
+            onPress={handleNewAddressPress}
+          >
+            <View spacing={{ ml: 3 }}>
+              <AddIcon />
+            </View>
+            <Text variant="titleSmall" typography={{ size: 2 }}>
+              Add new Address
+            </Text>
+            <View spacing={{ mr: 3 }}>
+              <ArrowRightIcon />
+            </View>
           </View>
-          <Text variant="titleSmall" typography={{ size: 2 }}>
-            Add new Address
-          </Text>
-          <View spacing={{ mr: 3 }}>
-            <ArrowRightIcon />
-          </View>
-        </View>
-      </View>
+        )}
+      />
     </View>
   );
 };
