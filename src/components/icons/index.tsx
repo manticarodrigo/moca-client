@@ -83,6 +83,7 @@ export { default as LogoutIcon } from './LogoutIcon';
 export { default as BigEnvelopeIcon } from './BigEnvelopeIcon';
 export { default as BigEnvelopeRedIcon } from './BigEnvelopeRedIcon';
 export { default as AddLocationBigIcon } from './AddLocationBigIcon';
+export { default as NoteIcon } from './NoteIcon';
 export { default as BuildingIcon } from './BuildingIcon';
 export { default as PinGreyIcon } from './PinGreyIcon';
 export { default as AddIcon } from './AddIcon';
