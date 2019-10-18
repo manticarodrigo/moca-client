@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+import { Spacing, SpacingProp } from '@src/styles';
 
 import {
   StarOneIcon,
@@ -13,9 +15,10 @@ import Text from './Text';
 
 type RatingProps = {
   rate: string;
+  spacing?: SpacingProp;
 }
 
-const Rating = ({ rate }: RatingProps) => {
+const Rating = ({ rate, spacing }: RatingProps) => {
   const stars = {
     1: <StarOneIcon />,
     2: <StarTwoIcon />,
@@ -24,9 +27,15 @@ const Rating = ({ rate }: RatingProps) => {
     5: <StarFiveIcon />,
   };
 
+  const styles = useMemo(() => StyleSheet.create({
+    view: {
+      ...Spacing.getStyles(spacing),
+    },
+  }), [spacing]);
+
   return (
-    <View row alignCenter>
-      <Text variant="titleSmallSecondary" spacing={{ mr: 1 }}>{rate}</Text>
+    <View row alignCenter style={styles.view}>
+      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{rate}</Text>
       {stars[rate]}
     </View>
   );

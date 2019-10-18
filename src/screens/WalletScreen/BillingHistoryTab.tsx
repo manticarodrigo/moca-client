@@ -48,12 +48,12 @@ const BillingHistoryTab = () => {
   ];
 
   return (
-    <View height="100%" scroll spacing={{ pt: 5 }}>
+    <View width="100%" height="100%" scroll>
       {sessionHistory.map((session, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <View key={index} row variant="borderBottom" spacing={{ py: 3 }}>
-          <View column justifyCenter variant="borderRight" spacing={{ p: 2 }} width={90}>
-            <Text typography={{ size: 5, color: 'secondary', weight: '300' }} spacing={{ ml: 3, pb: 2 }}>{session.day}</Text>
+          <View column justifyCenter variant="borderRight" spacing={{ px: 3 }}>
+            <Text typography={{ size: 5, color: 'secondary', weight: '300', align: 'center' }}>{session.day}</Text>
             <Text typography={{ size: 2, color: 'secondary', weight: '500' }}>
               {session.month}
               {' '}
@@ -62,20 +62,20 @@ const BillingHistoryTab = () => {
               {session.year}
             </Text>
           </View>
-          <View column justifyEnd variant="borderRight" spacing={{ m: 2 }} width={250}>
+          <View flex={1} column justifyEnd variant="borderRight" spacing={{ px: 3 }}>
             <Text variant="titleSmall" spacing={{ ml: 2 }}>{session.therapist}</Text>
-            <View row spacing={{ my: 2 }}>
-              <View row spacing={{ mx: 1 }}>
+            <View flex={1} row wrap spacing={{ my: 2 }}>
+              <View row alignCenter spacing={{ m: 1 }}>
                 <ClockIcon />
                 <Text variant="regular" spacing={{ mx: 1 }}>{session.duration}</Text>
               </View>
-              <View row spacing={{ mx: 1 }}>
+              <View row alignCenter spacing={{ m: 1 }}>
                 <CreditCardIcon />
                 <Text variant="regular" spacing={{ mx: 1 }}>{session.paymentMethod}</Text>
               </View>
             </View>
           </View>
-          <View justifyCenter spacing={{ m: 2 }} width={80}>
+          <View justifyCenter spacing={{ px: 4 }}>
             <Text variant="titlePrimary">{session.payment}</Text>
           </View>
         </View>

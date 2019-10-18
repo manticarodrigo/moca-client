@@ -1,34 +1,20 @@
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
+import { AddAddressForm } from '@src/store/actions/UserAction';
 
+import { User } from '@src/services/openapi';
 
 export type RegistrationState = {
-  userInformation?: RegistrationInformation;
-};
+  type?: User['type'];
+  address?: Partial<AddAddressForm>;
+  licenseNumber?: string;
+}
 
-const reducer = (state: RegistrationState = {}, action: RegistrationAction) => {
+const reducer = (state: RegistrationState, action: RegistrationAction) => {
   switch (action.type) {
-    case 'UPDATE_USER':
-      return {
-        userInformation: {
-          ...state.userInformation,
-          ...action.payLoad,
-        },
-      };
-    case 'RESET_USER':
-      return {
-        userInformation: {
-          qualifications: [
-            { name: 'Neck', value: 0 },
-            { name: 'Shoulder', value: 0 },
-            { name: 'Elbow', value: 0 },
-            { name: 'Low Back', value: 0 },
-            { name: 'Knee', value: 0 },
-            { name: 'Ankle/Foot', value: 0 },
-            { name: 'Other', value: 0 },
-          ],
-          address: [],
-        },
-      };
+    case 'UPDATE_REGISTRATION_FIELDS':
+      return { ...state, ...action.payload };
+    case 'RESET_REGISTRATION_FIELDS':
+      return {};
     default:
       return state;
   }

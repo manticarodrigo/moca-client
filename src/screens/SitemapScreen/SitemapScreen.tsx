@@ -14,9 +14,9 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
         'OnboardingScreen',
         'SelectionScreen',
         'InvalidZipCodeScreen',
+        'RegistrationScreen',
         'InvalidMedicareScreen',
         'QualificationsScreen',
-        'RegistrationScreen',
         'AddressScreen',
       ],
     },
@@ -44,7 +44,7 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Profile',
       screens: [
         'ProfileScreen',
-        'HistoryScreen',
+        'WalletScreen',
       ],
     },
   ];

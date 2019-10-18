@@ -18,17 +18,17 @@ import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
-import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
-import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
-import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
-import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
-import AddressScreen from '@src/screens/SignUp/AddressScreen';
-import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
-import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
-import HistoryScreen from '@src/screens/History/HistoryScreen';
+import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
+import SelectionScreen from '@src/screens/SelectionScreen';
+import InvalidZipCodeScreen from '@src/screens/InvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/RegistrationScreen';
+import InvalidMedicareScreen from '@src/screens/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/AddressScreen';
+import QualificationsScreen from '@src/screens/QualificationsScreen';
+import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
+import WalletScreen from '@src/screens/WalletScreen';
 
 const defaultNavConfig = {
-  // headerLayoutPreset: 'center',
   cardShadowEnabled: false,
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
@@ -44,6 +44,7 @@ const defaultNavConfig = {
     headerTitleStyle: {
       ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
     },
+    headerRight: null,
   }),
 };
 
@@ -79,8 +80,10 @@ const AppStack = createSwitchNavigator(
 
       ProfileTab: createStackNavigator({
         ProfileScreen,
+        ProfileSettingsScreen,
+        AddressSettingsScreen,
+        AddressScreen,
         WalletScreen,
-        HistoryScreen,
       }, defaultNavConfig),
 
     }, {

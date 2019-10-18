@@ -61,7 +61,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const _createMessage = (attachmentURI?: string): Message => ({
     id: `${Math.floor(Math.random() * 1000000000)}`,
     text: state.text,
-    sender: store.user.id,
+    sender: store.user.id.toString(),
     attachmentURI,
     createdAt: new Date().toDateString(),
   });
@@ -97,7 +97,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           renderItem={({ item }) => (
             <ConversationMessage
               message={item}
-              alignRight={item.sender === store.user.id}
+              alignRight={item.sender === store.user.id.toString()}
               onPressImage={onPressImage}
             />
           )}

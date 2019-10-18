@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import RNModal, { ModalProps } from 'react-native-modal';
 
 import OpenIcon from '@src/components/icons/OpenIcon';
@@ -12,14 +12,14 @@ type Props = ModalProps & {
   children: JSX.Element | JSX.Element[];
   marginTop?: number;
   bgColor?: keyof typeof Colors;
-  onKnobPress: () => void;
+  onToggle: () => void;
 };
 
 const Modal = ({
   children,
   marginTop = 100,
-  onKnobPress,
   bgColor = 'white',
+  onToggle,
   ...modalProps
 }: Props) => {
   const styles = useMemo(() => StyleSheet.create({
@@ -28,7 +28,9 @@ const Modal = ({
 
   return (
     <RNModal
-      {...modalProps}
+      style={styles.modal}
+      onBackdropPress={onToggle}
+      onSwipeComplete={onToggle}
       swipeDirection="down"
       backdropOpacity={0.8}
       animationInTiming={500}
@@ -36,10 +38,10 @@ const Modal = ({
       hideModalContentWhileAnimating
       animationIn="slideInUp"
       animationOut="slideOutDown"
-      style={styles.modal}
+      {...modalProps}
     >
       <View variant="modal" alignCenter bgColor={bgColor}>
-        <View alignCenter spacing={{ my: 3 }} onPress={onKnobPress}>
+        <View alignCenter spacing={{ my: 3 }} onPress={onToggle}>
           <OpenIcon />
         </View>
         <>

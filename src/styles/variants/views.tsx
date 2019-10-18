@@ -50,6 +50,13 @@ const borderTop: ViewStyle = {
   borderTopColor: Colors.secondaryLightest,
 };
 
+const borderTopAndRight: ViewStyle = {
+  borderTopWidth: 1,
+  borderRightWidth: 1,
+  borderTopColor: Colors.secondaryLightest,
+  borderRightColor: Colors.secondaryLightest,
+};
+
 const borderBottom: ViewStyle = {
   borderBottomWidth: 1,
   borderBottomColor: Colors.secondaryLightest,
@@ -60,10 +67,42 @@ const borderRight: ViewStyle = {
   borderRightColor: Colors.secondaryLightest,
 };
 
+const star: ViewStyle = {
+  borderColor: Colors.secondaryLightest,
+  borderWidth: 1,
+  borderRightColor: Colors.lightGrey,
+  borderLeftColor: Colors.lightGrey,
+};
+
+const starFirst: ViewStyle = {
+  ...star,
+  borderRightWidth: 0,
+  borderTopLeftRadius: 8,
+  borderBottomLeftRadius: 8,
+  borderLeftColor: Colors.secondaryLightest,
+};
+
+const starLast: ViewStyle = {
+  ...star,
+  borderTopRightRadius: 8,
+  borderBottomRightRadius: 8,
+  borderLeftWidth: 0,
+  borderRightColor: Colors.secondaryLightest,
+
+};
+
+
 const roundedBorder: ViewStyle = {
-  borderRadius: 5,
+  borderRadius: 20,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderGrey: ViewStyle = {
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.semiGreyAlt,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
@@ -102,7 +141,7 @@ const therapistView: ViewStyle = {
   borderBottomRightRadius: 16,
 };
 
-const therapistViewtPressed: ViewStyle = {
+const therapistViewPressed: ViewStyle = {
   ...therapistView,
   borderColor: Colors.secondaryDarker,
 };
@@ -181,6 +220,11 @@ const profileCard: ViewStyle = {
   borderColor: Colors.secondary,
 };
 
+const profileCardLast: ViewStyle = {
+  ...profileCard,
+  borderColor: Colors.white,
+};
+
 const profileIconCard: ViewStyle = {
   ...profileCard,
   ...Spacing.getStyles({ px: 3 }),
@@ -193,6 +237,11 @@ const profileData: ViewStyle = {
   backgroundColor: Colors.white,
   borderBottomWidth: 1,
   borderColor: Colors.secondary,
+};
+
+const profileDataLast: ViewStyle = {
+  ...profileData,
+  borderBottomWidth: 0,
 };
 
 const iconButton: ViewStyle = {
@@ -260,12 +309,13 @@ export {
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
+  borderTopAndRight,
   borderBottom,
   borderRight,
   backdrop,
   modal,
   therapistView,
-  therapistViewtPressed,
+  therapistViewPressed,
   card,
   cardRight,
   cardLeft,
@@ -280,10 +330,16 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderGrey,
   roundedBorderLeft,
   roundedBorderRight,
   patientViewPressed,
   patientView,
   notificationBadge,
   notificationBadgeLarge,
+  profileDataLast,
+  profileCardLast,
+  star,
+  starFirst,
+  starLast,
 };
