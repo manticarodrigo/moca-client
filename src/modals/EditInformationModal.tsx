@@ -43,9 +43,9 @@ const EditInformationModal = ({
   const handleButtonPress = () => {
     if (validateEmailAddress(email)) {
       const userInput = {
-        email,
-        name,
-        lastName,
+        ...(email !== user.email ? { email } : null),
+        ...(name !== user.firstName ? { firstName: name } : null),
+        ...(lastName !== user.lastName ? { lastName } : null),
       };
       sumbitEditInformation(userInput);
     } else {

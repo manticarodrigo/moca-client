@@ -1,11 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
-import { format, differenceInYears } from 'date-fns';
+import { format, differenceInYears, parseISO } from 'date-fns';
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
-import { updateUser } from '@src/store/actions/UserAction';
+import { updateUser, addPrice } from '@src/store/actions/UserAction';
 
 import {
   RadiusLocationIcon,
@@ -42,6 +42,7 @@ import Button from '@src/components/Button';
 
 
 import useImageViewer from '@src/hooks/useImageViewer';
+import { UserGenderEnum, TherapistStatusEnum } from '@src/services/openapi';
 
 type TherapistProfileProps = {
   therapist?: User;
@@ -52,7 +53,6 @@ type TherapistProfileProps = {
 const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const { store: { user }, dispatch } = useStore();
   const userInfo = !modal ? user : therapist;
-
 
   // const { viewer, onPressImage } = useImageViewer(userInfo.certifications);
   const [isAvailable, setAvailable] = useState(userInfo.status
@@ -86,9 +86,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const closeInputModal = (value: string) => setModals({ ...modals, [value]: false });
   const handleMessageTherapist = () => {};
 
-  const pressGender = (type: 'M' | 'F' | 'O') => {
+  const pressGender = async (type: UserGenderEnum) => {
     try {
-      dispatch(updateUser({ gender: type }));
+      await dispatch(updateUser({ gender: type }));
       setGender(type);
     } catch (error) {
       console.log(error);
@@ -96,7 +96,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   };
 
   const submitPricePerThirtyMinutes = (value: string) => {
-    // dispatch(updateUser({ pricePerThirtyMinutes: value }));
+    dispatch(addPrice({ sessionType: 'thirty', price: Number(value) }));
     setModals({ ...modals, isPricePerThirtyModalVisible: false });
   };
   const submitPricePerSixtyMinutes = (value: string) => {
@@ -111,17 +111,17 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     // dispatch(updateUser({ evaluationPrice: value }));
     setModals({ ...modals, isEvaluationPriceModalVisible: false });
   };
-  const submitServiceArea = (value: string) => {
+  const submitServiceArea = async (value: string) => {
     try {
-      dispatch(updateUser({ operationRadius: Number(value) }));
+      await dispatch(updateUser({ operationRadius: Number(value) }));
       setModals({ ...modals, isServiceAreaModalVisible: false });
     } catch (error) {
       console.log(error);
     }
   };
-  const submitPersonalBio = (value: string) => {
+  const submitPersonalBio = async (value: string) => {
     try {
-      dispatch(updateUser({ bio: value }));
+      await dispatch(updateUser({ bio: value }));
       setModals({ ...modals, isPersonalBioModalVisible: false });
     } catch (error) {
       console.log(error);
@@ -130,18 +130,17 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
 
   // eslint-disable-next-line no-shadow
-  const pressStatus = (type: boolean) => {
-    setAvailable(type);
+  const pressStatus = async () => {
     if (isAvailable) {
       try {
-        dispatch(updateUser({ status: 'B' }));
+        await dispatch(updateUser({ status: 'B' }));
         setAvailable(false);
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
-        dispatch(updateUser({ status: 'A' }));
+        await dispatch(updateUser({ status: 'A' }));
         setAvailable(true);
       } catch (error) {
         console.log(error);
@@ -402,7 +401,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                           )}
                         </View>
                         <View
-                          onPress={() => pressStatus(!isAvailable)}
+                          onPress={() => pressStatus()}
                         >
                           <SwitchIcon isOn={isAvailable} />
                         </View>
@@ -533,8 +532,12 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         maxDate={new Date()}
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
-                        onDateChange={(date) => {
-                          // dispatch(updateUser({ certDate: new Date(date) }));
+                        onDateChange={async (date) => {
+                          try {
+                            await dispatch(updateUser({ certDate: (date) }));
+                          } catch (error) {
+                            console.log(error);
+                          }
                         }}
                         customStyles={{
                           dateIcon: {
@@ -548,7 +551,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     : (
                       <View spacing={{ mt: 2 }}>
                         <Text variant="regularSmallGrey">
-                          {format(userInfo.certDate, 'yyyy-MM-dd') }
+                          {format(new Date(parseISO(userInfo.certDate)), 'yyyy-MM-dd') }
                         </Text>
                       </View>
                     )}
@@ -567,7 +570,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   <View spacing={{ pt: 2 }} width={295}>
                     <Text variant="regularSmallGrey">
                       {userInfo.certDate
-                        ? differenceInYears(new Date(), userInfo.certDate).toString() : 'N/A'}
+                        ? differenceInYears(new Date(),
+                          new Date(parseISO(userInfo.certDate))).toString() : 'N/A'}
                     </Text>
                   </View>
                 </View>

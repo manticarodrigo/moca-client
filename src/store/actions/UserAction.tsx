@@ -13,6 +13,7 @@ import {
   Therapist,
   TherapistCreate,
   AddressCreate,
+  Price,
 } from '@src/services/openapi';
 
 export type UserAction =
@@ -21,6 +22,7 @@ export type UserAction =
   | { type: 'LOGIN_USER_SUCCESS'; payload: Patient | Therapist }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Patient | Therapist }
   | { type: 'ADD_USER_ADDRESS_SUCCESS'; payload: AddressCreate }
+  | {type: 'ADD_PRICE_SUCCESS'; payload: Price }
 
 
 const updateUserState = (state: Partial<UserState>) => (async (dispatch: Dispatch<UserAction>) => {
@@ -42,6 +44,15 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
   return data;
 };
 
+const addPrice = (price: Price) => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
+  const options = { headers: { Authorization: `Token ${store.user.token}` } };
+  const body = { ...price };
+
+  const { data } = await api.user
+    .userTherapistTariffsCreate(store.user.id.toString(), body, options);
+
+  dispatch({ type: 'ADD_PRICE_SUCCESS', payload: data });
+};
 
 const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
   const { data } = await api.auth.authenticateLoginCreate({ email, password });
@@ -69,20 +80,22 @@ const updateUser = (partialState: UserState) => async (
   dispatch: Dispatch<UserAction>,
   store: StoreState,
 ) => {
-  const { email, password, firstName, lastName, ...rest } = partialState;
+  const { email, password, firstName, lastName, gender, ...rest } = partialState;
   const user = {
     email: email || store.user.email,
     firstName: firstName || store.user.firstName,
     lastName: lastName || store.user.lastName,
     password: password || store.user.password,
+    gender: gender || store.user.gender,
   };
 
-  const hasUserUpdates = email || password || firstName || lastName;
-  const updateMethod = partialState.type === 'PA'
+  // const hasUserUpdates = email || password || firstName || lastName || gender;
+
+  const updateMethod = store.user.type === 'PA'
     ? api.user.userPatientPartialUpdate
     : api.user.userTherapistPartialUpdate;
 
-  const body = { user: hasUserUpdates ? user : undefined, ...rest };
+  const body = { user, ...rest };
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
   const { data } = await updateMethod(store.user.id.toString(), body, options);
@@ -119,5 +132,6 @@ export {
   registerUser,
   loginUser,
   updateUser,
+  addPrice,
   addUserAddress,
 };

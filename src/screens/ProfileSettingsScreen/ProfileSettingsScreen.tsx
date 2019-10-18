@@ -15,9 +15,10 @@ import { BackButtonIcon, LogoutIcon } from '@src/components/icons';
 import { Views, Colors } from '@src/styles';
 
 import useStore from '@src/hooks/useStore';
+import { updateUser } from '@src/store/actions/UserAction';
 
 const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
-  const { store } = useStore();
+  const { store, dispatch } = useStore();
 
   const [isEditInformationModal, setIsEditInformationModal] = useState(false);
   const [isChangePasswordModal, setIsChangePasswordModal] = useState(false);
@@ -28,9 +29,18 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
   const followUs = ['instagram', 'twitter', 'facebook'];
 
 
-  const sumbitEditInformation = (userInput) => {
+  const sumbitEditInformation = async (userInput) => {
     // api call
-    setIsEditInformationModal(false);
+    if (Object.entries(userInput).length === 0 && userInput.constructor === Object) {
+      setIsEditInformationModal(false);
+    } else {
+      try {
+        await dispatch(updateUser({ ...userInput }));
+        setIsEditInformationModal(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const sumbitEditPassword = (userInput) => {

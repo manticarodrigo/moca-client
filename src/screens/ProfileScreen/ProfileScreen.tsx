@@ -25,7 +25,6 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPressRight = () => navigation.navigate('ProfileSettingsScreen');
 
   const { store } = useStore();
-  console.log(store.user);
   const isTherapist = store.user.type === 'PT';
 
   let ratingTag = null;
