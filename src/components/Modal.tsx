@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView as RNKeyboardAvoidingView } from 'react-native';
 import RNModal, { ModalProps } from 'react-native-modal';
 
 import OpenIcon from '@src/components/icons/OpenIcon';
@@ -8,27 +8,48 @@ import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 
+const KeyboardAvoidingView = ({ children }) => (
+  <RNKeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior="padding"
+    keyboardVerticalOffset={90}
+  >
+    {children}
+  </RNKeyboardAvoidingView>
+);
+
 type Props = ModalProps & {
   children: JSX.Element | JSX.Element[];
   marginTop?: number;
+  avoidKeyboard?: boolean;
   bgColor?: keyof typeof Colors;
-  onKnobPress: () => void;
+  onToggle: () => void;
 };
 
 const Modal = ({
   children,
   marginTop = 100,
-  onKnobPress,
+  avoidKeyboard,
   bgColor = 'white',
+  onToggle,
   ...modalProps
 }: Props) => {
   const styles = useMemo(() => StyleSheet.create({
     modal: { margin: 0, marginTop },
   }), [marginTop]);
 
+  const ChildrenWrapper = useMemo(
+    () => avoidKeyboard
+      ? KeyboardAvoidingView
+      : React.Fragment,
+    [avoidKeyboard],
+  );
+
   return (
     <RNModal
-      {...modalProps}
+      style={styles.modal}
+      onBackdropPress={onToggle}
+      onSwipeComplete={onToggle}
       swipeDirection="down"
       backdropOpacity={0.8}
       animationInTiming={500}
@@ -36,15 +57,15 @@ const Modal = ({
       hideModalContentWhileAnimating
       animationIn="slideInUp"
       animationOut="slideOutDown"
-      style={styles.modal}
+      {...modalProps}
     >
       <View variant="modal" alignCenter bgColor={bgColor}>
-        <View alignCenter spacing={{ my: 3 }} onPress={onKnobPress}>
+        <View alignCenter spacing={{ my: 3 }} onPress={onToggle}>
           <OpenIcon />
         </View>
-        <>
+        <ChildrenWrapper>
           {children}
-        </>
+        </ChildrenWrapper>
       </View>
     </RNModal>
   );
