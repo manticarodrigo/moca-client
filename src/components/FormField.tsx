@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
 import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
-import { Spacing, SpacingProp, Colors } from '@src/styles';
+import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
 
 import Wrapper from '@src/components/View';
 
@@ -69,7 +69,8 @@ const FormField = ({
       backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
     },
     text: {
-      color: Colors.black,
+      ...Texts.regular,
+      color: Colors.semiGrey,
       paddingTop: heightPercentageToDP(3.0),
       fontSize: 16,
       width: widthPercentageToDP(70),
