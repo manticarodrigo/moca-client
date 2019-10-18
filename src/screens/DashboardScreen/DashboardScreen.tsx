@@ -9,8 +9,6 @@ import Image from '@src/components/Image';
 import Rating from '@src/components/Rating';
 import Button from '@src/components/Button';
 
-import ConsentModal from '@src/modals/ConsentModal';
-
 import {
   LowestPriceIcon,
   MorningIcon,
@@ -149,17 +147,19 @@ const DashboardScreen = () => {
       )}
       {isFiltering && (
         <View bgColor="lightGrey" flex={1}>
-          <View alignCenter>
-            <Text variant="light" spacing={{ p: 3 }}>
-              There are
-              {' '}
-              <Text variant="regular">23 Therapists</Text>
-              {' '}
-              in your area
-            </Text>
-          </View>
           <FlatList
             data={SearchResults}
+            ListHeaderComponent={
+              <View alignCenter>
+                <Text variant="light" spacing={{ p: 3 }}>
+                  There are
+                {' '}
+                  <Text variant="regular">23 Therapists</Text>
+                  {' '}
+                  in your area
+                </Text>
+              </View>
+            }
             renderItem={({ item }) => {
               const {
                 name,
@@ -225,7 +225,7 @@ const DashboardScreen = () => {
           </View>
         </View>
       </ModalView>
-      <ConsentModal visible />
+
     </View>
   );
 };
