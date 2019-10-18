@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import ModalView from '@src/components/ModalView';
-import Checkbox from '@src/components/Checkbox';
+import { Checkbox } from '@src/components/Checkbox';
 import { Dimensions } from 'react-native';
 
 import { ArrowDown, ArrowUp } from '@src/components/icons';
@@ -16,19 +16,19 @@ const CancellationModal = ({ visible, handleModalVisibility }) => {
   const cancellationReasons = [
     {
       title: 'Standard Cancellation Policy',
-      details: `For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.`,
+      details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
     },
     {
       title: 'Rescheduling',
-      details: `You can reschedule the date or time of your session up to 48 hours before the session is scheduled to start. If you reschedule the session, the cancellation policy is based on the original purchase time and original start date of the experience.`,
+      details: 'You can reschedule the date or time of your session up to 48 hours before the session is scheduled to start. If you reschedule the session, the cancellation policy is based on the original purchase time and original start date of the experience.',
     },
     {
       title: 'Cancellation Due to Weather',
-      details: `For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.`,
+      details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
     },
     {
       title: 'Cancellation Due to an Emergency',
-      details: `For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.`,
+      details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
     },
   ];
 
@@ -44,8 +44,8 @@ const CancellationModal = ({ visible, handleModalVisibility }) => {
   };
 
   const handleOptionPress = (key) => {
-    //setIsOpen(!isOpen);
-  }
+    // setIsOpen(!isOpen);
+  };
 
   const handleCheckBoxClick = (index) => {
     setChecked(index);
@@ -80,8 +80,9 @@ const CancellationModal = ({ visible, handleModalVisibility }) => {
                 <View row justifyBetween>
                   <View row>
                     <Checkbox
-                      isChecked={checked === (cancellationReasons.indexOf(reason) + 1)}
-                      handleCheckBoxClick={() => handleCheckBoxClick((cancellationReasons.indexOf(reason) + 1))} />
+                      checked={checked === (cancellationReasons.indexOf(reason) + 1)}
+                      onChange={() => handleCheckBoxClick((cancellationReasons.indexOf(reason) + 1))}
+                    />
                     <Text variant="titleSmallDark" spacing={{ p: 1, ml: 1 }}>{reason.title}</Text>
                   </View>
                   <View spacing={{ mt: 2 }}>
@@ -94,7 +95,7 @@ const CancellationModal = ({ visible, handleModalVisibility }) => {
             ))}
           </View>
           <Button
-            variant={checked ? "primary" : "primaryDisabled"}
+            variant={checked ? 'primary' : 'primaryDisabled'}
             disabled={!!checked}
             spacing={{ mt: 8 }}
           >

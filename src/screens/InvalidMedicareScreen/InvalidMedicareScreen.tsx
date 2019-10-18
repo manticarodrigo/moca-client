@@ -15,10 +15,7 @@ import FormField from '@src/components/FormField';
 import { validateEmailAddress } from '@src/utlities/validations';
 
 
-import EmailIcon from '@src/assets/Icons/email.png';
-import BigEnvelopeRedIcon from '@src/components/icons/BigEnvelopeRedIcon';
-
-// can't export actual image right now
+import { BigEnvelopeRedIcon } from '@src/components/icons';
 
 const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { dispatch } = useStore();
@@ -69,12 +66,12 @@ const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) =
           </View>
           <View alignCenter spacing={{ mt: 3 }}>
             <FormField
+              icon="email"
               placeholder="Email address"
               value={email}
               error={!isEmailValid}
               returnKeyType="done"
               keyboardType="email-address"
-              icon={EmailIcon}
               onChangeText={(text) => {
                 setEmail(text);
                 setIsEmailValid(true);
