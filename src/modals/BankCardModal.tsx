@@ -17,6 +17,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
+import { UserTypeEnum } from '@src/services/openapi';
 
 type CardFields = CardDetails['card']
 type BankFields = BankAccountDetails['bank_account']
@@ -89,7 +90,7 @@ const BankFields = ({ fields, onChangeField }: BankFieldProps) => (
 
 const BankCardModal = ({ isVisible, onToggle }) => {
   const { store } = useStore();
-  const isTherapist = true;
+  const isTherapist = store.user.type === UserTypeEnum.PT;
 
   const [error, setError] = useState();
 
