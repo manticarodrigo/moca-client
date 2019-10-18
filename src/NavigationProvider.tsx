@@ -13,6 +13,7 @@ import TabBarIcon from '@src/components/TabBarIcon';
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
+import SearchScreen from '@src/screens/SearchScreen';
 import FilterScreen from '@src/screens/FilterScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ScheduleDayScreen from '@src/screens/ScheduleDayScreen';
@@ -68,6 +69,7 @@ const AppStack = createSwitchNavigator(
 
       DashboardTab: createStackNavigator({
         DashboardScreen,
+        SearchScreen,
         FilterScreen,
       }, defaultNavConfig),
 

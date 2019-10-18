@@ -24,6 +24,7 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Dashboard',
       screens: [
         'DashboardScreen',
+        'SearchScreen',
         'FilterScreen',
       ],
     },
