@@ -1,8 +1,8 @@
 import React from 'react';
 import Svg, { G, Path, Rect } from 'react-native-svg';
 
-const CheckedIcon = () => (
-  <Svg width="24px" height="24px" viewBox="0 0 24 24">
+const CheckedIcon = ({ small = false }) => (
+  <Svg width={small ? '14px' : '24px'} height={small ? '14px' : '24px'} viewBox="0 0 24 24">
     <G id="Guide" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
       <G id="Assets" transform="translate(-998.000000, -701.000000)">
         <G

@@ -91,9 +91,23 @@ const starLast: ViewStyle = {
 
 };
 
+const curveBorder: ViewStyle = {
+  borderRadius: 20,
+  borderWidth: 0,
+  borderColor: Colors.white,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const curveBorderBottom: ViewStyle = {
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+  borderWidth: 0,
+  borderColor: Colors.white,
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
 
 const roundedBorder: ViewStyle = {
-  borderRadius: 20,
+  borderRadius: 5,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
@@ -319,6 +333,8 @@ export {
   card,
   cardRight,
   cardLeft,
+  curveBorder,
+  curveBorderBottom,
   borderCard,
   shadowCard,
   borderShadowCard,

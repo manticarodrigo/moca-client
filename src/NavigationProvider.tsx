@@ -28,6 +28,7 @@ import AddressScreen from '@src/screens/AddressScreen';
 import QualificationsScreen from '@src/screens/QualificationsScreen';
 import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
 import WalletScreen from '@src/screens/WalletScreen';
+import HistoryScreen from '@src/screens/History';
 
 const defaultNavConfig = {
   cardShadowEnabled: false,
@@ -86,6 +87,7 @@ const AppStack = createSwitchNavigator(
         AddressSettingsScreen,
         AddressScreen,
         WalletScreen,
+        HistoryScreen,
       }, defaultNavConfig),
 
     }, {

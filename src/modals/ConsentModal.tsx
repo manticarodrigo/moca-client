@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import { LogoIcon } from '@src/components/icons';
+import { ConsentIcon, CloseIcon } from '@src/components/icons';
 import Button from '@src/components/Button';
 
 type ConsentModalProps = {
@@ -28,15 +28,22 @@ const ConsentModal = ({ visible, onPressButton }: ConsentModalProps) => {
     >
       <View
         flex={1}
-        variant="roundedBorder"
+        variant="curveBorder"
         bgColor="white"
         spacing={{ my: 8, p: 3 }}
       >
-        <View alignCenter>
-          <LogoIcon />
+        <View alignEnd spacing={{ m: 1 }} onPress={() => setVisibility(!visibility)}>
+          <CloseIcon />
         </View>
-        <Text variant="regularDark" spacing={{ my: 4, mx: 4 }}>By scheduling this appointment, you consent to treatment for all scheduled sessions with therapist for this injury.</Text>
-        <Button variant="primary" onPress={onPressButton}>Give Consent</Button>
+        <View alignCenter>
+          <ConsentIcon />
+        </View>
+        <View alignCenter spacing={{ my: 5, mx: 4 }}>
+          <Text variant="regularDark" spacing={{ m: 1 }}>By scheduling this appointment, you</Text>
+          <Text variant="regularDark" spacing={{ m: 1 }}>consent to treatment for all scheduled</Text>
+          <Text variant="regularDark" spacing={{ m: 1 }}>sessions with therapist for this injury.</Text>
+        </View>
+        <Button variant="primary" spacing={{ m: 2 }} onPress={onPressButton}>Give Consent</Button>
       </View>
     </Modal>
   );
