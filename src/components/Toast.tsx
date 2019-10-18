@@ -1,5 +1,4 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
 
 import { CheckIcon } from '@src/components/icons';
 
@@ -7,23 +6,25 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type ToastProps = {
-  children: string,
+  centered?: boolean;
+  children: string;
 }
 
-const Toast = ({ children }: ToastProps) => (
+const Toast = ({ centered, children }: ToastProps) => (
   <View
     row
     alignCenter
-    spacing={{ px: 4 }}
     bgColor="successLight"
-    width={Dimensions.get('window').width}
-    height="10%"
+    width="100%"
   >
-    <CheckIcon />
-    <View>
-      <Text variant="boldWhite" spacing={{ ml: 3, px: 6 }}>{children}</Text>
+    <View spacing={{ p: 4 }}>
+      <CheckIcon />
     </View>
-  </View >
+    <View flex={1} alignCenter={centered} width="100%" spacing={{ py: 4 }}>
+      <Text numberOfLines={3} variant="boldWhite" spacing={{ px: 2 }}>{children}</Text>
+    </View>
+    <View spacing={{ p: 4 }} />
+  </View>
 );
 
 export default Toast;
