@@ -46,7 +46,7 @@ const AppointmentsTab = () => {
     },
   ];
 
-  const [modalVisibility, setModalVisibility] = useState(true);
+  const [modalVisibility, setModalVisibility] = useState(false);
 
   const handleModalVisibility = () => {
     setModalVisibility(!modalVisibility);

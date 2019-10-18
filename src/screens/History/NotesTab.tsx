@@ -8,40 +8,45 @@ import { ClockIcon, CreditCardIcon, NoteIcon } from '@src/components/icons';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AddNoteModal from './AddNoteModal';
+import { FlatList } from 'react-native';
 
 const NotesTab = () => {
   const sessionHistory = [
     {
-      day: format(new Date(2019, 9, 9), 'DD'),
-      month: format(new Date(2019, 9, 9), 'MM'),
-      year: format(new Date(2019, 9, 9), 'YYYY'),
+      id: '1',
+      day: format(new Date(2019, 9, 9), 'dd'),
+      month: format(new Date(2019, 9, 9), 'mm'),
+      year: format(new Date(2019, 9, 9), 'yyyy'),
       therapist: 'Adele Dust',
       duration: '30 mins',
       paymentMethod: 'Master Card',
       payment: '$60',
     },
     {
-      day: format(new Date(2019, 9, 9), 'DD'),
-      month: format(new Date(2019, 9, 9), 'MM'),
-      year: format(new Date(2019, 9, 9), 'YYYY'),
+      id: '2',
+      day: format(new Date(2019, 9, 9), 'dd'),
+      month: format(new Date(2019, 9, 9), 'mm'),
+      year: format(new Date(2019, 9, 9), 'yyyy'),
       therapist: 'Adele Dust',
       duration: '30 mins',
       paymentMethod: 'Master Card',
       payment: '$60',
     },
     {
-      day: format(new Date(2019, 9, 9), 'DD'),
-      month: format(new Date(2019, 9, 9), 'MM'),
-      year: format(new Date(2019, 9, 9), 'YYYY'),
+      id: '3',
+      day: format(new Date(2019, 9, 9), 'dd'),
+      month: format(new Date(2019, 9, 9), 'mm'),
+      year: format(new Date(2019, 9, 9), 'yyyy'),
       therapist: 'Adele Dust',
       duration: '30 mins',
       paymentMethod: 'Master Card',
       payment: '$60',
     },
     {
-      day: format(new Date(2019, 9, 9), 'DD'),
-      month: format(new Date(2019, 9, 9), 'MM'),
-      year: format(new Date(2019, 9, 9), 'YYYY'),
+      id: '4',
+      day: format(new Date(2019, 9, 9), 'dd'),
+      month: format(new Date(2019, 9, 9), 'mm'),
+      year: format(new Date(2019, 9, 9), 'yyyy'),
       therapist: 'Adele Dust',
       duration: '30 mins',
       paymentMethod: 'Master Card',
@@ -55,38 +60,41 @@ const NotesTab = () => {
 
   return (
     <View height="100%" scroll spacing={{ pt: 5 }}>
-      {sessionHistory.map((session, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <View key={index} row variant="borderBottom" spacing={{ py: 3 }}>
-          <View column justifyCenter variant="borderRight" spacing={{ p: 2 }} width={90}>
-            <Text typography={{ size: 5, color: 'secondary', weight: '300' }} spacing={{ ml: 3, pb: 2 }}>{session.day}</Text>
-            <Text typography={{ size: 2, color: 'secondary', weight: '500' }}>
-              {session.month}
+      <FlatList
+        data={sessionHistory}
+        renderItem={({ item }) => (
+          <View row variant="borderBottom" spacing={{ py: 3 }}>
+            <View flex={1} column justifyCenter variant="borderRight" spacing={{ p: 2 }} width={90}>
+              <Text typography={{ size: 5, color: 'secondary', weight: '300' }} spacing={{ ml: 3, pb: 2 }}>{item.day}</Text>
+              <Text typography={{ size: 2, color: 'secondary', weight: '500' }}>
+                {item.month}
+                {' '}
+                /
               {' '}
-              /
-              {' '}
-              {session.year}
-            </Text>
-          </View>
-          <View column justifyEnd variant="borderRight" spacing={{ m: 2 }} width={250}>
-            <Text variant="titleSmall" spacing={{ ml: 2 }}>{session.therapist}</Text>
-            <View row spacing={{ my: 2 }}>
-              <View row spacing={{ mx: 1 }}>
-                <ClockIcon />
-                <Text variant="regular" spacing={{ mx: 1 }}>{session.duration}</Text>
-              </View>
-              <View row spacing={{ mx: 1 }}>
-                <CreditCardIcon />
-                <Text variant="regular" spacing={{ mx: 1 }}>{session.paymentMethod}</Text>
+                {item.year}
+              </Text>
+            </View>
+            <View flex={3} column justifyEnd variant="borderRight" spacing={{ m: 2 }} width={250}>
+              <Text variant="titleSmall" spacing={{ ml: 2 }}>{item.therapist}</Text>
+              <View row spacing={{ my: 2 }}>
+                <View row spacing={{ mx: 1 }}>
+                  <ClockIcon />
+                  <Text variant="regular" spacing={{ mx: 1 }}>{item.duration}</Text>
+                </View>
+                <View row spacing={{ mx: 1 }}>
+                  <CreditCardIcon />
+                  <Text variant="regular" spacing={{ mx: 1 }}>{item.paymentMethod}</Text>
+                </View>
               </View>
             </View>
+            <View flex={1} alignCenter justifyCenter spacing={{ m: 2 }} width={80} onPress={handleModalVisibility}>
+              <NoteIcon />
+            </View>
           </View>
-          <View justifyCenter spacing={{ m: 2 }} width={80} onPress={handleModalVisibility}>
-            <NoteIcon />
-          </View>
-        </View>
-      ))}
-      <AddNoteModal modalVisibility={modalVisibility} handleArrowClick={handleModalVisibility} />
+        )}
+        keyExtractor={({ id }) => id}
+      />
+      {/* <AddNoteModal modalVisibility={modalVisibility} handleArrowClick={handleModalVisibility} /> */}
     </View>
   );
 };
