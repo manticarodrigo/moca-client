@@ -10,12 +10,12 @@ import { updateUser, addPrice } from '@src/store/actions/UserAction';
 import {
   RadiusLocationIcon,
   ArrowRightIcon,
+  QualificationIcon,
   Badge2Icon,
   BioIcon,
   GenderIcon,
   InterestIcon,
   PriceRateIcon,
-  QualificationIcon,
   RateIcon,
   StatusIcon,
   SwitchIcon,
@@ -61,7 +61,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
   const [modals, setModals] = useState({
     isPricePerThirtyModalVisible: false,
-    isPricePerNintyModalVisible: false,
+    isPricePerFortyFiveModalVisible: false,
     isPricePerSixtyModalVisible: false,
     isEvaluationPriceModalVisible: false,
     isServiceAreaModalVisible: false,
@@ -95,20 +95,20 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     }
   };
 
-  const submitPricePerThirtyMinutes = (value: string) => {
-    dispatch(addPrice({ sessionType: 'thirty', price: Number(value) }));
+  const submitPricePerThirtyMinutes = async (value: string) => {
+    await dispatch(addPrice({ sessionType: 'thirty', price: Number(value) }));
     setModals({ ...modals, isPricePerThirtyModalVisible: false });
   };
-  const submitPricePerSixtyMinutes = (value: string) => {
-    // dispatch(updateUser({ pricePerSixtyMinutes: value }));
+  const submitPricePerSixtyMinutes = async (value: string) => {
+    await dispatch(addPrice({ sessionType: 'sixty', price: Number(value) }));
     setModals({ ...modals, isPricePerSixtyModalVisible: false });
   };
-  const submitPricePerNintyMinutes = (value: string) => {
-    // dispatch(updateUser({ pricePerNintyMinutes: value }));
-    setModals({ ...modals, isPricePerNintyModalVisible: false });
+  const submitPricePerFortyFiveMinutes = async (value: string) => {
+    // await dispatch(addPrice({ sessionType: 'FortyFive', price: Number(value) }));
+    setModals({ ...modals, isPricePerFortyFiveModalVisible: false });
   };
-  const submitEvaluationPrice = (value: string) => {
-    // dispatch(updateUser({ evaluationPrice: value }));
+  const submitEvaluationPrice = async (value: string) => {
+    await dispatch(addPrice({ sessionType: 'evaluation', price: Number(value) }));
     setModals({ ...modals, isEvaluationPriceModalVisible: false });
   };
   const submitServiceArea = async (value: string) => {
@@ -151,7 +151,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const pricePerThirtyModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerThirtyModalVisible')}
-      title="Thirty Minutes Price"
+      title="30 Minutes Price"
       formFieldValue={userInfo.pricePerThirtyMinutes ? userInfo.pricePerThirtyMinutes : ''}
       keyboardTypeNumber
       placeHolder="price"
@@ -166,8 +166,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const pricePerSixtyModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerSixtyModalVisible')}
-      title="Sixty Minutes Price"
-      // formFieldValue={userInfo.pricePerSixtyMinutes ? userInfo.pricePerSixtyMinutes : ''}
+      title="60 Minutes Price"
+      formFieldValue={userInfo.pricePerSixtyMinutes ? userInfo.pricePerSixtyMinutes : ''}
       keyboardTypeNumber
       placeHolder="price"
       validate={validatePrice}
@@ -180,18 +180,18 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   );
 
 
-  const pricePerNintyModal = (
+  const pricePerFortyFiveModal = (
     <InputModal
       closeInputModal={() => closeInputModal('isPricePerNintyModalVisible')}
-      title="Ninty Minutes Price"
-      formFieldValue={userInfo.pricePerNintyMinutes ? userInfo.pricePerNintyMinutes : ''}
+      title="45 Minutes Price"
+      formFieldValue={userInfo.pricePerFortyFiveMinutes ? userInfo.pricePerFortyFiveMinutes : ''}
       keyboardTypeNumber
       placeHolder="price"
       validate={validatePrice}
       maxLength={3}
       errorText="Please enter a valid price"
-      isModalVisible={modals.isPricePerNintyModalVisible}
-      onSubmit={(value) => submitPricePerNintyMinutes(value)}
+      isModalVisible={modals.isPricePerFortyFiveModalVisible}
+      onSubmit={(value) => submitPricePerFortyFiveMinutes(value)}
 
     />
   );
@@ -297,6 +297,20 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       alignCenter
                       style={{ borderRightWidth: 1, borderColor: Colors.secondaryLightest }}
                     >
+                      <View><Text variant="regularSmallGrey">45min</Text></View>
+                      <View
+                        spacing={{ pt: 2 }}
+                        {...(!modal ? { onPress: () => {
+                          setModals({ ...modals, isPricePerFortyFiveModalVisible: true });
+                        } } : '')}
+                      >
+                        <Text variant="titleSecondaryLarge">
+                          {userInfo.pricePerFortyFiveMinutes
+                            ? `$${userInfo.pricePerFortyFiveMinutes}` : modal ? 'N/A' : 'Set'}
+                        </Text>
+                      </View>
+                    </View>
+                    <View column alignCenter flex={1}>
                       <View><Text variant="regularSmallGrey">60min</Text></View>
                       <View
                         spacing={{ pt: 2 }}
@@ -307,20 +321,6 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         <Text variant="titleSecondaryLarge">
                           {userInfo.pricePerSixtyMinutes
                             ? `$${userInfo.pricePerSixtyMinutes}` : modal ? 'N/A' : 'Set'}
-                        </Text>
-                      </View>
-                    </View>
-                    <View column alignCenter flex={1}>
-                      <View><Text variant="regularSmallGrey">90min</Text></View>
-                      <View
-                        spacing={{ pt: 2 }}
-                        {...(!modal ? { onPress: () => {
-                          setModals({ ...modals, isPricePerNintyModalVisible: true });
-                        } } : '')}
-                      >
-                        <Text variant="titleSecondaryLarge">
-                          {userInfo.pricePerNintyMinutes
-                            ? `$${userInfo.pricePerNintyMinutes}` : modal ? 'N/A' : 'Set'}
                         </Text>
                       </View>
                     </View>
@@ -641,8 +641,8 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 </View> */}
               {/* </View> */}
             </View>
-            {pricePerNintyModal}
             {pricePerSixtyModal}
+            {pricePerFortyFiveModal}
             {pricePerThirtyModal}
             {evaluationPriceModal}
             {serviceAreaModal}

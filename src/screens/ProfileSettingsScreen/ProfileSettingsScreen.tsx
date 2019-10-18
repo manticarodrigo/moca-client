@@ -43,9 +43,14 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
     }
   };
 
-  const sumbitEditPassword = (userInput) => {
+  const sumbitEditPassword = async (password: string) => {
     // api call
-    setIsChangePasswordModal(false);
+    try {
+      await dispatch(updateUser({ password }));
+      setIsChangePasswordModal(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangePassword = () => {
@@ -80,7 +85,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
       closeInputModal={() => setIsChangePasswordModal(false)}
       isModalVisible={isChangePasswordModal}
       // eslint-disable-next-line no-shadow
-      sumbitEditPassword={(userInput) => sumbitEditPassword(userInput)}
+      sumbitEditPassword={(password) => sumbitEditPassword(password)}
     />
   );
 

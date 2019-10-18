@@ -15,7 +15,7 @@ import { EmailIcon } from '@src/components/icons';
 type ChangePasswordProps = {
   closeInputModal: () => void;
   isModalVisible: boolean;
-  sumbitEditPassword: (userInput: {}) => void;
+  sumbitEditPassword: (password: string) => void;
 };
 
 const ChangePasswordModal = ({
@@ -24,20 +24,16 @@ const ChangePasswordModal = ({
   sumbitEditPassword,
 }: ChangePasswordProps) => {
   const [password, setPassword] = useState('');
-  const [newPassowrd, setNewPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const passwordField = useRef(null);
   const newPasswordField = useRef(null);
 
-  const isButtonDisabled = !((password && newPassowrd) !== '');
+  const isButtonDisabled = !((password && newPassword) !== '');
 
 
   const handleButtonPress = () => {
-    const userInput = {
-      password,
-      newPassowrd,
-    };
-    sumbitEditPassword(userInput);
+    sumbitEditPassword(newPassword);
   };
 
   return (
@@ -70,7 +66,7 @@ const ChangePasswordModal = ({
           />
           <FormField
             placeholder="new password"
-            value={newPassowrd}
+            value={newPassword}
             secureTextEntry
             returnKeyType="done"
             ref={newPasswordField}
