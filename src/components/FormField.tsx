@@ -1,7 +1,15 @@
 import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
-import { StyleSheet, View, Image, Animated, TextInputProps } from 'react-native';
-import { Spacing, SpacingProp, Colors } from '@src/styles';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Animated,
+  TextInputProps,
+  TextInput as RNInput,
+} from 'react-native';
+
+import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
 
 import Wrapper from '@src/components/View';
 
@@ -31,7 +39,7 @@ const FormField = ({
   spacing,
   error,
   ...textInputProps
-}: FormFieldProps, ref: React.Ref<any>) => {
+}: FormFieldProps, ref: React.Ref<RNInput>) => {
   const [isFocused, setIsFocused] = useState(false);
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
 
@@ -69,7 +77,8 @@ const FormField = ({
       backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
     },
     text: {
-      color: Colors.black,
+      ...Texts.regular,
+      color: Colors.semiGrey,
       paddingTop: heightPercentageToDP(3.0),
       fontSize: 16,
       width: widthPercentageToDP(70),
@@ -104,12 +113,12 @@ const FormField = ({
               {placeholder}
             </Animated.Text>
             <TextInput
+              ref={ref}
               style={styles.text}
+              value={value}
               onFocus={handleFocus}
               onBlur={handleBlur}
               {...textInputProps}
-              value={value}
-              ref={ref}
             />
             <Image source={error ? ErrorIcon : icon} />
           </View>
