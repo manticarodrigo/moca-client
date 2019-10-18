@@ -29,6 +29,8 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       return flattenUserPayload(state, action.payload);
     case 'ADD_USER_ADDRESS_SUCCESS':
       return appendAddress(state, action.payload);
+    // case 'ADD_PRICE_SUCCESS':
+      // return flattenUserPayload(state, action.payload);
     default:
       return state;
   }

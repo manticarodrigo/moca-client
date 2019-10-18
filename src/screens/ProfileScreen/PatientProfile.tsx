@@ -24,7 +24,9 @@ type PatientProfileProps = {
 const PatientProfile = ({ patient, modal }: PatientProfileProps) => {
   const navigation = useNavigation();
 
-  const onPressAdress = () => navigation.navigate('AddressSettingScreen');
+  const onPressAdress = () => {
+    navigation.navigate('AddressSettingsScreen');
+  };
   const onPressDiagnosis = () => navigation.navigate('DiagnosisScreen');
   const onPressPayment = () => navigation.navigate('PaymentScreen');
 
@@ -70,7 +72,7 @@ const PatientProfile = ({ patient, modal }: PatientProfileProps) => {
                   <RadiusLocationIcon />
                 </View>
                 <View
-                  {...(modal ? ' ' : { onPress: () => onPressAdress })}
+                  {...(modal ? ' ' : { onPress: () => onPressAdress() })}
                   row
                   flex={1}
                   justifyBetween
