@@ -1,49 +1,48 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+import useStore from '@src/hooks/useStore';
 import { AddAddressForm } from '@src/store/actions/UserAction';
 
 import { Colors, Spacing, Texts } from '@src/styles';
 
 const styles = {
-  container: {
-    flex: 1,
-    width: '100%',
-  },
   textInputContainer: {
+    ...Spacing.getStyles({ p: 0, m: 0 }),
     flexDirection: 'row',
     borderRadius: Spacing.spaceSize[2],
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
     width: '100%',
+    height: 60,
+    backgroundColor: 'transparent',
   },
   textInput: {
     ...Texts.regular,
-    ...Spacing.getStyles({ p: 3 }),
+    marginTop: 0,
+    marginLeft: 0,
+    marginRight: 0,
     borderRadius: Spacing.spaceSize[2],
     borderWidth: 2,
     borderColor: Colors.secondaryLight,
     backgroundColor: Colors.lightGrey,
     width: '100%',
+    height: 60,
   },
   description: {
-    ...Texts.lightGreySmallest,
-  },
-  row: {
-    ...Spacing.getStyles({ py: 3 }),
-  },
-  specialItemRow: {
-    ...Texts.errorSmall,
+    ...Texts.regular,
   },
   separator: {
     height: 1,
     backgroundColor: Colors.secondaryLighter,
   },
-  predefinedPlacesDescription: {
-    ...Texts.lightGreySmallest,
-    ...Spacing.getStyles({ pl: 2 }),
-  },
 };
 
 const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>) => void }) => {
+  const { store } = useStore();
+
   const onPressPlace = (_, details = null) => { // 'details' is provided when fetchDetails = true
     const components = details.address_components;
     const { lat, lng } = details.geometry.location;
@@ -80,12 +79,15 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
     onSelect({ ...formObject, coordinates: [lat, lng] });
   };
 
+  const { street, city, state, zipCode } = store.registration.address;
+
   return (
     <GooglePlacesAutocomplete
       fetchDetails
-      autoFocus
-      suppressDefaultStyles
+      currentLocation
       styles={styles}
+      predefinedPlacesAlwaysVisible
+      getDefaultValue={() => `${street}, ${city}, ${state}, ${zipCode}`}
       placeholderTextColor={Colors.semiGrey}
       placeholder="Search"
       minLength={2} // minimum length of text to search
@@ -97,7 +99,6 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
         types: 'address', // default: 'geocode'
       }}
       nearbyPlacesAPI="GooglePlacesSearch"
-      currentLocation
       currentLocationLabel="Current location"
       debounce={200}
       onPress={onPressPlace}

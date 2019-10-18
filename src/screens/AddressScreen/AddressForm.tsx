@@ -63,6 +63,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
       return;
     }
 
+    // TODO: validate reverse geocode
     if (validateForm()) {
       onSubmit(formFields);
     } else {
@@ -78,21 +79,23 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     <View scroll flex={1}>
       <View safeArea spacing={{ pt: 3 }} alignCenter>
         <View spacing={{ mx: 3 }} alignCenter>
-          {isRegistering && (
-            <View alignCenter>
-              <View row>
-                <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up, </Text>
-                <Text variant="title" spacing={{ mt: 3 }}>
-                  {store.user.firstName}
-                </Text>
-              </View>
-              <Text variant="regular" spacing={{ mt: 1 }}>
-                What is your preferred address for treatment?
+          <View spacing={{ py: 4 }} alignCenter>
+            <View row>
+              <Text variant="title" spacing={{ mt: 3 }}>
+                {isRegistering ? 'Thanks for signing up, ' : 'Hello, '}
+              </Text>
+              <Text variant="title" spacing={{ mt: 3 }}>
+                {store.user.firstName}
               </Text>
             </View>
-          )}
+            <Text variant="regular" spacing={{ mt: 1 }}>
+              {isRegistering
+                ? 'What is your preferred address for treatment?'
+                : 'You can edit and add additional addresses for treatment.'}
+            </Text>
+          </View>
+          <PlacesSearch onSelect={handleSelectPlace} />
           <View spacing={{ mb: 3, mt: 4 }} alignCenter>
-            <PlacesSearch onSelect={handleSelectPlace} />
             <FormField
               placeholder="Name"
               value={formFields.name}

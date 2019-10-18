@@ -85,7 +85,7 @@ AddressScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   const { params = {} } = navigation.state;
 
   return {
-    headerTitle: <HeaderTitle title={params.title} />,
+    headerTitle: <HeaderTitle title={params.title || 'Address'} />,
     headerBackImage: BackButton,
     headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
     headerStyle: {
