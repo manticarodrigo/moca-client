@@ -80,7 +80,7 @@ const BookmarkedModal = (
                         spacing={{ mr: 2 }}
                         variant="regularGrey"
                       >
-                        {therapist.rating.toString()}
+                        {therapist.rating}
                       </Text>
                       <StarsIcon number={therapist.rating} />
                     </View>

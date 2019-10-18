@@ -8,7 +8,7 @@ type TextProps = RNTextProps & {
   style?: TextStyle;
   spacing?: SpacingProp;
   typography?: TypographyProp;
-  children: (string | JSX.Element) | (string | JSX.Element)[];
+  children: (string|number|JSX.Element) | (string|number|JSX.Element)[];
 };
 
 const Text = ({ variant, style, spacing, typography, children, ...textProps }: TextProps) => {

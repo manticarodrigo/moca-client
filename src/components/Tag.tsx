@@ -79,7 +79,7 @@ const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) 
       style={styles.view}
     >
       {iconType}
-      <Text style={styles.text}>{placeholder.toString()}</Text>
+      <Text style={styles.text}>{placeholder}</Text>
     </View>
   );
 };
