@@ -12,11 +12,8 @@ import {
   Therapist,
   TherapistCreate,
   AddressCreate,
-<<<<<<< HEAD
   Price,
-=======
   Address,
->>>>>>> 8ab86ea29bbe208ba43b507a5b5f41d57c9a07a8
 } from '@src/services/openapi';
 
 export type UserAction =

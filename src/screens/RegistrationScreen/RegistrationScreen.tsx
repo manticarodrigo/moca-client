@@ -49,30 +49,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     ? (isAnyFieldEmpty || !isMediCarePressed || !isEmailValid)
     : isAnyFieldEmpty || !isEmailValid;
 
-<<<<<<< HEAD
-  useEffect(() => {
-    if (store.registration && store.registration.email) {
-      const { email, firstName, lastName, password } = store.registration;
-
-      setFormFields({
-        ...formFields,
-        ...(!isPatient && { medicalId: store.registration.licenseNumber }),
-        email,
-        password,
-        firstName,
-        lastName,
-      });
-
-      setIsMediCarePressed(true);
-
-      if (!validateEmailAddress(email)) {
-        setIsEmailValid(false);
-      }
-    }
-  }, [formFields, isPatient, store.registration]);
-
-=======
->>>>>>> 8ab86ea29bbe208ba43b507a5b5f41d57c9a07a8
 
   const TermsOfServiceModalView = (
     <ModalView
