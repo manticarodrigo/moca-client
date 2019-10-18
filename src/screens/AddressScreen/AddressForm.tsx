@@ -1,28 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import useStore from '@src/hooks/useStore';
-import { AddressCreate } from '@src/services/openapi';
+import { AddAddressForm } from '@src/store/actions/UserAction';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
+import PlacesSearch from '@src/components/PlacesSearch';
 import FormField from '@src/components/FormField';
 
 import { validateZipCode } from '@src/utlities/validations';
 
-export type AddressForm = Omit<AddressCreate, 'location'>;
-
 type Props = {
-  existingFields?: Partial<AddressForm>;
+  existingFields?: Partial<AddAddressForm>;
   isRegistering?: boolean;
   submitText: string;
-  onSubmit: (address: AddressForm) => void;
+  onSubmit: (address: AddAddressForm) => void;
 }
 
 const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Props) => {
   const { store } = useStore();
 
-  const [formFields, setFormFields] = useState<AddressForm>({
+  const [formFields, setFormFields] = useState<AddAddressForm>({
     name: '',
     street: '',
     apartment: '',
@@ -30,6 +29,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     state: '',
     zipCode: '',
     primary: true,
+    coordinates: [0, 0],
   });
 
   useEffect(() => {
@@ -70,6 +70,10 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     }
   };
 
+  const handleSelectPlace = (values: AddAddressForm) => setFormFields(
+    (prevState) => ({ ...prevState, ...values }),
+  );
+
   return (
     <View scroll flex={1}>
       <View safeArea spacing={{ pt: 3 }} alignCenter>
@@ -88,6 +92,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
             </View>
           )}
           <View spacing={{ mb: 3, mt: 4 }} alignCenter>
+            <PlacesSearch onSelect={handleSelectPlace} />
             <FormField
               placeholder="Name"
               value={formFields.name}

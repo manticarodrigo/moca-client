@@ -1,6 +1,8 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+import { AddAddressForm } from '@src/store/actions/UserAction';
+
 import { Colors, Spacing, Texts } from '@src/styles';
 
 const styles = {
@@ -41,7 +43,7 @@ const styles = {
   },
 };
 
-const PlacesSearch = ({ onSelect }) => {
+const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>) => void }) => {
   const onPressPlace = (_, details = null) => { // 'details' is provided when fetchDetails = true
     const components = details.address_components;
     const { lat, lng } = details.geometry.location;
@@ -75,13 +77,7 @@ const PlacesSearch = ({ onSelect }) => {
       zipCode: '',
     });
 
-    const location = {
-      ...formObject,
-      lat,
-      lng,
-    };
-
-    onSelect(location);
+    onSelect({ ...formObject, coordinates: [lat, lng] });
   };
 
   return (

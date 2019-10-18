@@ -3,7 +3,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
-import { addUserAddress } from '@src/store/actions/UserAction';
+import { addUserAddress, AddAddressForm } from '@src/store/actions/UserAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -13,12 +13,11 @@ import View from '@src/components/View';
 import BackButton from '@src/components/BackButton';
 import HeaderTitle from '@src/components/HeaderTitle';
 
-import AddressForm, { AddressForm as AddressSubmitForm } from './AddressForm';
-
+import AddressForm from './AddressForm';
 
 const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
-  const [existingFields, setExistingFields] = useState<AddressSubmitForm>();
+  const [existingFields, setExistingFields] = useState<AddAddressForm>();
 
   const isAdditionalAddress = navigation.getParam('isAdditionalAddress', false);
   const isExistingAddress = navigation.getParam('isExistingAddress', false);
@@ -48,7 +47,7 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
   }, []);
 
-  const onSubmit = (formFields: AddressSubmitForm) => {
+  const onSubmit = (formFields: AddAddressForm) => {
     if (isRegistering) {
       dispatch(addUserAddress(formFields));
       navigation.navigate('DashboardScreen');

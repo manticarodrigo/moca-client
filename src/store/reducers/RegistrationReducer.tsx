@@ -1,14 +1,11 @@
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
+import { AddAddressForm } from '@src/store/actions/UserAction';
 
-import { User, Address } from '@src/services/openapi';
-
-type RegisterAddress = Omit<Partial<Address>, 'location'> & {
-  location?: { type: string; coordinates: [number, number] };
-}
+import { User } from '@src/services/openapi';
 
 export type RegistrationState = {
   type?: User['type'];
-  address?: RegisterAddress;
+  address?: Partial<AddAddressForm>;
   licenseNumber?: string;
 }
 
