@@ -75,7 +75,7 @@ const FormField = ({
     },
     text: {
       ...Texts.regular,
-      color: Colors.semiGrey,
+      color: Colors.dark,
       paddingTop: 10,
       fontSize: 16,
       width: '100%',

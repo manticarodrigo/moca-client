@@ -9,6 +9,10 @@ const rounded: ViewStyle = {
   ...Borders.primary,
 };
 
+const shadow: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
 const progressBar: ViewStyle = {
   ...rounded,
   ...Spacing.getStyles({ p: 1 }),
@@ -95,7 +99,7 @@ const curveBorder: ViewStyle = {
   borderRadius: 20,
   borderWidth: 0,
   borderColor: Colors.white,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...shadow,
 };
 
 const curveBorderBottom: ViewStyle = {
@@ -103,21 +107,21 @@ const curveBorderBottom: ViewStyle = {
   borderBottomRightRadius: 20,
   borderWidth: 0,
   borderColor: Colors.white,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...shadow,
 };
 
 const roundedBorder: ViewStyle = {
-  borderRadius: 5,
+  overflow: 'hidden',
+  borderRadius: 10,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
 const roundedBorderGrey: ViewStyle = {
   borderRadius: 5,
   borderWidth: 1,
   borderColor: Colors.semiGreyAlt,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...shadow,
 };
 
 const roundedBorderLeft: ViewStyle = {
@@ -125,7 +129,7 @@ const roundedBorderLeft: ViewStyle = {
   borderBottomLeftRadius: 5,
   borderWidth: 1,
   borderColor: Colors.secondary,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...shadow,
 };
 
 const roundedBorderRight: ViewStyle = {
@@ -318,6 +322,7 @@ const notificationBadgeLarge: ViewStyle = {
 
 export {
   rounded,
+  shadow,
   progressBar,
   progressBarIndicator,
   msgBubbleRight,

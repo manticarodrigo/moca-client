@@ -14,7 +14,6 @@ import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
 import SearchScreen from '@src/screens/SearchScreen';
-import FilterScreen from '@src/screens/FilterScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ScheduleDayScreen from '@src/screens/ScheduleDayScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
@@ -29,7 +28,7 @@ import AddressScreen from '@src/screens/AddressScreen';
 import QualificationsScreen from '@src/screens/QualificationsScreen';
 import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
 import WalletScreen from '@src/screens/WalletScreen';
-import HistoryScreen from '@src/screens/History';
+import HistoryScreen from '@src/screens/HistoryScreen';
 
 const defaultNavConfig = {
   cardShadowEnabled: false,
@@ -70,7 +69,6 @@ const AppStack = createSwitchNavigator(
       DashboardTab: createStackNavigator({
         DashboardScreen,
         SearchScreen,
-        FilterScreen,
       }, defaultNavConfig),
 
       ScheduleTab: createStackNavigator({

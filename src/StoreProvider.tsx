@@ -2,19 +2,22 @@ import React, { useReducer, createContext, Reducer, Dispatch } from 'react';
 
 import { UserAction } from '@src/store/actions/UserAction';
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
+import { SearchAction } from '@src/store/actions/SearchAction';
 import { ConversationAction } from '@src/store/actions/ConversationAction';
 
 import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
+import searchReducer, { SearchState } from '@src/store/reducers/SearchReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
 
 export type StoreState = {
   user: UserState;
-  conversations: ConversationState;
   registration: RegistrationState;
+  search: SearchState;
+  conversations: ConversationState;
 };
 
-type StoreAction = UserAction | ConversationAction| RegistrationAction;
+type StoreAction = UserAction | RegistrationAction | SearchAction | ConversationAction;
 type StoreReducer = Reducer<StoreState, StoreAction>;
 
 type ProviderAsyncAction = (
@@ -31,7 +34,7 @@ type ProviderValue = [StoreState, ProviderDispatch];
 type AsyncReducer = (
   reducer: StoreReducer,
   initialState: StoreState,
-) => [StoreState, (action: StoreAction) => void];
+) => [StoreState, (action: StoreAction) => void | Promise<object | void>];
 
 const useAsyncReducer: AsyncReducer = (reducer, initialState) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -43,21 +46,27 @@ const useAsyncReducer: AsyncReducer = (reducer, initialState) => {
   return [state, asyncDispatch];
 };
 
-const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => ({
-  user: userReducer(store.user, action as UserAction),
-  registration: registrationReducer(store.registration, action as RegistrationAction),
-  conversations: conversationReducer(store.conversations, action as ConversationAction),
-});
+const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
+  const newState = {
+    user: userReducer(store.user, action as UserAction),
+    registration: registrationReducer(store.registration, action as RegistrationAction),
+    search: searchReducer(store.search, action as SearchAction),
+    conversations: conversationReducer(store.conversations, action as ConversationAction),
+  };
+
+  return newState;
+};
 
 const initialState: StoreState = {
   user: {
     addresses: [],
     preferredAilments: [],
   },
-  conversations: [],
   registration: {
     address: {},
   },
+  search: [],
+  conversations: [],
 };
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);
