@@ -8,34 +8,10 @@ import { getSearchResults } from '@src/store/actions/SearchAction';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import {
-  LowestPriceIcon,
-  MorningIcon,
-  AfternoonIcon,
-  EveningIcon,
-  MostReviewedIcon,
-  HighestRatedIcon,
-  MaleIcon,
-  FemaleIcon,
-  BothGendersIcon,
-} from '@src/components/icons';
-
-
 import SearchField from './SearchField';
+import SearchActiveFilters from './SearchActiveFilters';
 import SearchCard from './SearchCard';
 import SearchFilterModal, { FilterState } from './SearchFilterModal';
-
-const filtersConfig = {
-  Lowest: <LowestPriceIcon focused={false} />,
-  Most: <MostReviewedIcon focused={false} />,
-  Highest: <HighestRatedIcon focused={false} />,
-  Morning: <MorningIcon focused={false} />,
-  Afternoon: <AfternoonIcon focused={false} />,
-  Evening: <EveningIcon focused={false} />,
-  Female: <FemaleIcon focused={false} />,
-  Male: <MaleIcon focused={false} />,
-  Either: <BothGendersIcon focused={false} />,
-};
 
 const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
@@ -44,9 +20,7 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
     sortBy: {},
     sessionLength: {},
     gender: {},
-    desiredCost: {
-      maxPrice: '',
-    },
+    maxPrice: '',
     ailments: [],
   });
 
@@ -86,23 +60,21 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
         onToggleFilters={onToggleFilters}
       />
       <View safeArea flex={1}>
-        {!!filters && (
-          <View row wrap bgColor="white" spacing={{ p: 4 }}>
-            {/* {selectedFiltersIcons} */}
-          </View>
-        )}
         <View bgColor="lightGrey" flex={1}>
           <FlatList
             data={filteredResults}
             ListHeaderComponent={(
-              <View alignCenter>
-                <Text variant="light" spacing={{ pt: 4, p: 3 }}>
-                  There are
-                  {' '}
-                  <Text variant="regular">23 Therapists</Text>
-                  {' '}
-                  in your area
-                </Text>
+              <View>
+                <SearchActiveFilters filters={filters} />
+                <View alignCenter>
+                  <Text variant="light" spacing={{ pt: 4, p: 3 }}>
+                    There are
+                    {' '}
+                    <Text variant="regular">23 Therapists</Text>
+                    {' '}
+                    in your area
+                  </Text>
+                </View>
               </View>
             )}
             renderItem={({ item }) => (

@@ -21,7 +21,7 @@ import Modal from '@src/components/Modal';
 import FormField from '@src/components/FormField';
 import { Checkbox } from '@src/components/Checkbox';
 
-const checkboxConfig = {
+export const checkboxConfig = {
   sortBy: {
     title: 'Sort By',
     items: {
@@ -51,7 +51,7 @@ const checkboxConfig = {
 type CheckboxConfig = Readonly<typeof checkboxConfig>;
 
 type SortByItems = keyof CheckboxConfig['sortBy']['items']
-type SessionLengthItems = keyof CheckboxConfig['sortBy']['items']
+type SessionLengthItems = keyof CheckboxConfig['sessionLength']['items']
 type GenderItems = keyof CheckboxConfig['gender']['items']
 
 
@@ -59,7 +59,7 @@ export type FilterState = {
   sortBy: { [key in SortByItems]?: boolean };
   sessionLength: { [key in SessionLengthItems]?: boolean };
   gender: { [key in GenderItems]?: boolean };
-  desiredCost: { maxPrice: string };
+  maxPrice: string;
   ailments: string[];
 }
 
@@ -68,9 +68,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
     sortBy: {},
     sessionLength: {},
     gender: {},
-    desiredCost: {
-      maxPrice: '',
-    },
+    maxPrice: '',
     ailments: [],
   });
 
@@ -81,7 +79,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
   };
 
   const onChangeMaxPrice = (maxPrice: string) => {
-    setFilters((prevState) => ({ ...prevState, desiredCost: { maxPrice } }));
+    setFilters((prevState) => ({ ...prevState, maxPrice }));
   };
 
   const onChangeAilment = (ailment: string, checked: boolean) => {
@@ -167,7 +165,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
             <FormField
               icon="dollar"
               placeholder="Max Price"
-              value={filters.desiredCost.maxPrice}
+              value={filters.maxPrice}
               onChangeText={onChangeMaxPrice}
             />
           </View>

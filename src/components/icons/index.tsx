@@ -97,3 +97,7 @@ export { default as ArrowUp } from './ArrowUp';
 export { default as ConsentIcon } from './ConsentIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as CheckIcon } from './CheckIcon';
+
+export { default as SmallCheckIcon } from './SmallCheckIcon';
+export { default as BigClockIcon } from './BigClockIcon';
+export { default as MaxPriceIcon } from './MaxPriceIcon';
