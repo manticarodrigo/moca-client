@@ -11,7 +11,7 @@ import Modal from '@src/components/Modal';
 const cancellationReasons = {
   standard: {
     title: 'Standard Cancellation Policy',
-    details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
+    details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin. If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
   },
   rescheduling: {
     title: 'Rescheduling',
@@ -19,11 +19,11 @@ const cancellationReasons = {
   },
   weather: {
     title: 'Cancellation Due to Weather',
-    details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
+    details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin. If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
   },
   emergency: {
     title: 'Cancellation Due to an Emergency',
-    details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin.If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
+    details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin. If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
   },
 };
 
