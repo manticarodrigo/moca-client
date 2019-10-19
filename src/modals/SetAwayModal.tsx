@@ -32,7 +32,6 @@ const SetAwayPModal = (
   const [startDayPressed, setStartDayPressed] = useState(true);
   const [endDayPressed, setEndDayPressed] = useState(false);
 
-
   const changeToDate = (date: string) => new Date(parseISO(date));
 
 
