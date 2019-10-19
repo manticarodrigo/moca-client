@@ -6,12 +6,13 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import ModalView from '@src/components/ModalView';
 
-import { format, addDays, differenceInDays, parseISO, compareAsc } from 'date-fns';
+import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import { Colors } from '@src/styles';
 import Button from '@src/components/Button';
+import { secondaryLightest } from '@src/styles/global/colors';
 
 
 type SetAwayProps = {
@@ -32,7 +33,7 @@ const SetAwayPModal = (
   const [endDayPressed, setEndDayPressed] = useState(false);
 
 
-  const changeToDate = (date) => new Date(parseISO(date));
+  const changeToDate = (date: string) => new Date(parseISO(date));
 
 
   let rangeInDays = 0;
@@ -48,8 +49,9 @@ const SetAwayPModal = (
         const date = format(addDays(changeToDate(startDay), i), 'yyyy-MM-dd');
         markedDates[date] = {
           startingDay: i === 0,
-          color: Colors.secondaryLight,
-          textColor: 'white',
+          color: (i === rangeInDays - 1 || i === 0)
+            ? Colors.secondaryLight : Colors.secondaryLightest,
+          textColor: (i === rangeInDays - 1 || i === 0) ? Colors.white : Colors.grey,
           endingDay: i === rangeInDays - 1 };
       },
     );
@@ -176,7 +178,6 @@ const SetAwayPModal = (
                   markingType="period"
                   markedDates={markedDates}
                   theme={{
-                    calendarBackground: Colors.lightGrey,
                     arrowColor: 'white',
                     'stylesheet.calendar.header': {
                       week: {
