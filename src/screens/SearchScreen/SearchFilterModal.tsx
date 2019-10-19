@@ -52,23 +52,21 @@ const filtersConfig = {
 };
 
 type FilterConfig = Readonly<typeof filtersConfig>;
-type FilterSection = keyof FilterConfig;
 
 type SortByItems = keyof FilterConfig['sortBy']['items']
 type SessionLengthItems = keyof FilterConfig['sortBy']['items']
 type DesiredCostItems = keyof FilterConfig['desiredCost']['items']
 type GenderItems = keyof FilterConfig['gender']['items']
 
-type FilterItems = SortByItems | SessionLengthItems | DesiredCostItems | GenderItems;
 
-type FilterState = {
+export type FilterState = {
   sortBy: { [key in SortByItems]?: boolean };
-  sessionLength: { [key in SortByItems]?: boolean };
-  desiredCost: { [key in SortByItems]?: boolean };
+  sessionLength: { [key in SessionLengthItems]?: boolean };
+  desiredCost: { [key in DesiredCostItems]?: boolean };
   gender: { [key in GenderItems]?: boolean };
 }
 
-const SearchFilterModal = ({ isVisible, onToggle, onFilter }) => {
+const SearchFilterModal = ({ isVisible, onClose }) => {
   const [filters, setFilters] = useState<FilterState>({
     sortBy: {},
     sessionLength: {},
@@ -80,8 +78,9 @@ const SearchFilterModal = ({ isVisible, onToggle, onFilter }) => {
     setFilters((prevState) => ({
       ...prevState, [section]: { ...prevState[section], [item]: value },
     }));
-    // onFilter(newFocus);
   };
+
+  const onToggle = () => onClose(filters);
 
   return (
     <Modal propagateSwipe isVisible={isVisible} onToggle={onToggle}>
@@ -120,6 +119,7 @@ const SearchFilterModal = ({ isVisible, onToggle, onFilter }) => {
                           flex={1}
                           alignCenter
                           justifyCenter
+                          spacing={{ p: 3 }}
                           variant={index < sectionItems.length - 1 ? 'borderRight' : null}
                           bgColor={focused ? 'secondary' : 'white'}
                         >
@@ -127,6 +127,7 @@ const SearchFilterModal = ({ isVisible, onToggle, onFilter }) => {
                           <Text
                             spacing={icon ? { mt: 2 } : null}
                             variant={focused ? 'boldWhite' : 'boldSecondary'}
+                            typography={{ align: 'center' }}
                             numberOfLines={2}
                           >
                             {title}

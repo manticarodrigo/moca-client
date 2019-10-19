@@ -4,7 +4,6 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { getSearchResults } from '@src/store/actions/SearchAction';
-import { FilterParams } from '@src/store/reducers/SearchReducer';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -24,7 +23,7 @@ import {
 
 import SearchField from './SearchField';
 import SearchCard from './SearchCard';
-import SearchFilterModal from './SearchFilterModal';
+import SearchFilterModal, { FilterState } from './SearchFilterModal';
 
 const filtersConfig = {
   Lowest: <LowestPriceIcon focused={false} />,
@@ -41,8 +40,14 @@ const filtersConfig = {
 const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
   const [searchText, setSearchText] = useState('');
-  const [filters, setFilters] = useState<FilterParams>();
-  const [isVisible, setIsVisible] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({
+    sortBy: {},
+    sessionLength: {},
+    desiredCost: {},
+    gender: {},
+  });
+
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
 
   useEffect(() => {
@@ -54,12 +59,11 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
   };
 
 
-  const onToggleFilters = () => setIsVisible(!isVisible);
+  const onToggleFilters = () => setFiltersVisible(!filtersVisible);
 
-  const onChangeFilter = (filterParams: FilterParams) => {
-    console.log(filterParams);
-
-    setFilters(filterParams);
+  const onSubmitFilters = (state: FilterState) => {
+    setFilters(state);
+    setFiltersVisible(false);
   };
 
   const onSearchChange = (value: string) => setSearchText(value);
@@ -105,9 +109,8 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
           />
         </View>
         <SearchFilterModal
-          isVisible={isVisible}
-          onToggle={onToggleFilters}
-          onFilter={onChangeFilter}
+          isVisible={filtersVisible}
+          onClose={onSubmitFilters}
         />
       </View>
     </>
