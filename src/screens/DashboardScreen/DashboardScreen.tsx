@@ -37,7 +37,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation }) => {
       {!isTherapist
         && (
           <View row justifyBetween alignCenter spacing={{ p: 4, pt: 5 }}>
-            <Text variant="titleSmallWhite">{`Hi, ${store.user.firstName}`}</Text>
+            <Text variant="titleWhite">{`Hi, ${store.user.firstName}`}</Text>
             <View variant="rounded" spacing={{ p: 2 }} bgColor="secondary" onPress={onPressSearch}>
               <View spacing={{ p: 1 }}>
                 <SearchIcon tint="#fff" />
