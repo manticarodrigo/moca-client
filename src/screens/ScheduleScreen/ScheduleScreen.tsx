@@ -1,15 +1,22 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import { Agenda, DateObject } from 'react-native-calendars';
 import { format, addDays, isToday } from 'date-fns';
 
-import { Colors } from '@src/styles';
+import { Colors, Spacing } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
 import ScheduleDateModal from '@src/modals/ScheduleDateModal';
+import SetAwayModal from '@src/modals/SetAwayModal';
+
+import { ScheduleTabIcon } from '@src/components/icons';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
+
+import { setAwayDates } from '@src/store/actions/UserAction';
+import useStore from '@src/hooks/useStore';
 
 type ScheduleItem = {
   dateString: string;
@@ -25,13 +32,44 @@ type ScheduleItemMap = {
   [key: string]: ScheduleItem[];
 }
 
-const ScheduleScreen = () => {
+const ScheduleScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { dispatch } = useStore();
+
   const [items, setItems] = useState<ScheduleItemMap>({});
   const [selectedDate, setSelectedDate] = useState<DateObject>(null);
+  const [isAwayModal, setIsAwayModal] = useState(false);
 
   const renderNull = useCallback(() => null, []);
 
+  const handleSetAwayDates = () => {
+    setIsAwayModal(true);
+  };
+
+  useEffect(() => {
+    navigation.setParams({ handleSetAwayDates });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const submitAwayDates = async (startDate: string, endDate: string) => {
+    try {
+      await dispatch(setAwayDates(startDate, endDate));
+      setIsAwayModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setAwayModal = (
+    <SetAwayModal
+      isModalVisible={isAwayModal}
+      closeInputModal={() => setIsAwayModal(false)}
+      onSubmit={submitAwayDates}
+
+    />
+  );
+
   const onCloseModal = () => setSelectedDate(null);
+
 
   return (
     <>
@@ -164,13 +202,26 @@ const ScheduleScreen = () => {
           },
         }}
       />
+      {setAwayModal}
       <ScheduleDateModal selectedDate={selectedDate} onClose={onCloseModal} />
     </>
   );
 };
 
-ScheduleScreen.navigationOptions = {
-  title: 'Calendar',
+ScheduleScreen.navigationOptions = ({ navigation }) => {
+  const { params = {} } = navigation.state;
+
+  return {
+    title: 'Calendar',
+    headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
+    headerRight:
+  <View
+    alignCenter
+    onPress={() => params.handleSetAwayDates()}
+  >
+    <ScheduleTabIcon focused={false} />
+  </View>,
+  };
 };
 
 export default ScheduleScreen;

@@ -88,7 +88,6 @@ const updateUser = (partialState: UserState) => async (
     password: password || store.user.password,
     gender: gender || store.user.gender,
   };
-
   // const hasUserUpdates = email || password || firstName || lastName || gender;
 
   const updateMethod = store.user.type === 'PA'
@@ -103,6 +102,16 @@ const updateUser = (partialState: UserState) => async (
 
   return data;
 };
+
+const setAwayDates = (startDate: string, endDate: string) => async (
+  dispatch: Dispatch<UserAction>,
+  store: StoreState,
+) => {
+  // const body = { data: { startDate, endDate } };
+  // const options = { headers: { Authorization: `Token ${store.user.token}` } };
+  // to be added
+};
+
 
 export type AddAddressForm = Omit<Address, 'location'> & {
   coordinates?: [number, number];
@@ -131,4 +140,5 @@ export {
   updateUser,
   addPrice,
   addUserAddress,
+  setAwayDates,
 };

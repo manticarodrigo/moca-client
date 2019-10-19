@@ -6,25 +6,25 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import ModalView from '@src/components/ModalView';
 
-import { format, addDays, differenceInDays, parseISO } from 'date-fns';
+import { format, addDays, differenceInDays, parseISO, endOfDay } from 'date-fns';
 
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import { Colors } from '@src/styles';
 import Button from '@src/components/Button';
-import { secondaryLightest } from '@src/styles/global/colors';
 
 
 type SetAwayProps = {
   closeInputModal: () => void;
   isModalVisible: boolean;
-  onSubmit?: (value: string) => void;
+  onSubmit?: (startDay: string, endDay: string) => void;
 };
 
 const SetAwayPModal = (
   {
     closeInputModal,
     isModalVisible = false,
+    onSubmit,
   }: SetAwayProps,
 ) => {
   const [startDay, setStartDay] = useState('');
@@ -102,7 +102,7 @@ const SetAwayPModal = (
   };
 
   const handleButtonPress = () => {
-
+    onSubmit(startDay, endDay);
   };
 
   return (
