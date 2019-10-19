@@ -13,11 +13,13 @@ import { updateUser } from '@src/store/actions/UserAction';
 import useStore from '@src/hooks/useStore';
 
 
-const qualificationOptions = [
+export const qualificationOptions = [
   'Neck',
   'Shoulder',
   'Elbow',
+  'Wrist/Hand',
   'Low Back',
+  'Hip/Pelvis',
   'Knee',
   'Ankle/Foot',
   'Other',

@@ -8,7 +8,7 @@ import {
   TextInput as RNInput,
 } from 'react-native';
 
-import { ErrorIcon, EmailIcon, EyeIcon } from '@src/components/icons';
+import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
 import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
 
@@ -19,7 +19,7 @@ import Text from './Text';
 
 export type FormFieldProps = TextInputProps & {
   placeholder: string;
-  icon?: 'email' | 'password';
+  icon?: 'email' | 'password' | 'dollar';
   value: string;
   spacing?: SpacingProp;
   error?: boolean | string;
@@ -115,6 +115,8 @@ const FormField = ({
         return <EmailIcon />;
       case 'password':
         return <EyeIcon />;
+      case 'dollar':
+        return <DollarIcon />;
       default:
         return null;
     }

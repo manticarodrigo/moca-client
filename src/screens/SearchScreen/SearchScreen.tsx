@@ -43,8 +43,11 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [filters, setFilters] = useState<FilterState>({
     sortBy: {},
     sessionLength: {},
-    desiredCost: {},
     gender: {},
+    desiredCost: {
+      maxPrice: '',
+    },
+    ailments: [],
   });
 
   const [filtersVisible, setFiltersVisible] = useState(false);

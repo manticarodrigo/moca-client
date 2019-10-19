@@ -32,6 +32,7 @@ export const boldSecondary = { ...Typography.getStyles({ size: 2, weight: '700',
 export const boldWhite = { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) };
 export const boldDark = { ...Typography.getStyles({ size: 2, weight: '700', color: 'dark' }) };
 export const boldGrey = { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) };
+export const boldSmallSecondary = { ...Typography.getStyles({ size: 1, weight: '700', color: 'secondary' }) };
 export const boldSmallGrey = { ...Typography.getStyles({ size: 1, weight: '700', color: 'grey' }) };
 export const boldWhiteSmallest = { ...Typography.getStyles({ size: 0, weight: '700', color: 'white' }) };
 export const regularSmall = { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) };
