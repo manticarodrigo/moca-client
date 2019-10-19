@@ -11,7 +11,7 @@ const NotificationBadge = ({ large = false }) => {
   return store.conversations.length > 0 ? (
     <View variant={large ? 'notificationBadgeLarge' : 'notificationBadge'}>
       <Text variant="boldWhiteSmallest">
-        {store.conversations.length.toString()}
+        {store.conversations.length}
       </Text>
     </View>
   ) : null;

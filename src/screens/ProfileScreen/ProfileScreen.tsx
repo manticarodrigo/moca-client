@@ -11,6 +11,8 @@ import { certificate1 } from '@src/utlities/images';
 import { mockImg } from '@src/services/mock';
 
 
+import { Colors } from '@src/styles';
+
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
@@ -32,7 +34,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   if (isTherapist) {
     ratingTag = (
       <View row alignCenter>
-        <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating.toString()}</Text>
+        <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating}</Text>
         <StarsIcon number={store.user.rating} />
       </View>
     );
@@ -102,8 +104,13 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-ProfileScreen.navigationOptions = {
+ProfileScreen.navigationOptions = ({ navigationOptions }) => ({
   header: null,
-};
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    // for back transition from settings
+    backgroundColor: Colors.white,
+  },
+});
 
 export default ProfileScreen;

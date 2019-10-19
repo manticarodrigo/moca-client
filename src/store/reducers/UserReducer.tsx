@@ -8,7 +8,7 @@ export type UserState = &
   Omit<Therapist, 'user'> & {
   email?: string;
   token?: string;
-  addresses?: Partial<Address>[];
+  addresses?: Address[];
 }
 
 function flattenUserPayload(state, { user, ...rest }) {

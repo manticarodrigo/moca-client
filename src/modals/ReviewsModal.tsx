@@ -83,7 +83,7 @@ const ReviewsModal = (
                         spacing={{ mr: 2 }}
                         variant="regularGrey"
                       >
-                        {review.rating.toString()}
+                        {review.rating}
                       </Text>
                       <StarsIcon number={review.rating} />
                     </View>

@@ -24,13 +24,14 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Dashboard',
       screens: [
         'DashboardScreen',
-        'FilterScreen',
+        'SearchScreen',
       ],
     },
     {
       title: 'Schedule',
       screens: [
         'ScheduleScreen',
+        'ScheduleDayScreen',
       ],
     },
     {
@@ -45,6 +46,7 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       screens: [
         'ProfileScreen',
         'WalletScreen',
+        'HistoryScreen',
       ],
     },
   ];

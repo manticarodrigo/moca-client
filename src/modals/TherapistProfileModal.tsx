@@ -43,7 +43,7 @@ const TherapistProfileModal = ({ therapist, isModalVisible, closeInputModal }) =
                 spacing={{ mr: 2 }}
                 variant="lightTextCenter"
               >
-                {therapist.rating.toString()}
+                {therapist.rating}
               </Text>
               <StarsIcon number={therapist.rating} />
             </View>

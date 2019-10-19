@@ -1,7 +1,11 @@
 import React from 'react';
 import Svg, { G, Rect, Path, Circle, Polyline } from 'react-native-svg';
 
-const ClockIcon = () => (
+type ClockIconProps = {
+  white?: boolean;
+}
+
+const ClockIcon = ({ white }: ClockIconProps) => (
   <Svg width="18px" height="18px" viewBox="0 0 18 18">
     <G stroke="none" strokeWidth={2} fill="none" fillRule="evenodd">
       <G transform="translate(-1115.000000, -656.000000)">
@@ -9,7 +13,7 @@ const ClockIcon = () => (
           <Rect x={0} y={0} width={24} height={24} rx={2} />
           <G
             transform="translate(4.000000, 4.000000)"
-            stroke="#C5D2DC"
+            stroke={white ? "#fff" : "#C5D2DC"}
             strokeLinecap="round"
             strokeLinejoin="round"
           >
