@@ -20,61 +20,6 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store } = useStore();
   const [isTherapist] = useState(store.user.type === 'PT');
   const [isActivated] = useState(true);
-  const [isFiltering, setFiltering] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
-  const [selectedFiltersIcons, setSelectedFiltersIcons] = useState([]);
-  const [isVisible, setIsVisible] = useState(false);
-
-  const filters = {
-    Lowest: <LowestPriceIcon focused={false} />,
-    Most: <MostReviewedIcon focused={false} />,
-    Highest: <HighestRatedIcon focused={false} />,
-    Morning: <MorningIcon focused={false} />,
-    Afternoon: <AfternoonIcon focused={false} />,
-    Evening: <EveningIcon focused={false} />,
-    Female: <FemaleIcon focused={false} />,
-    Male: <MaleIcon focused={false} />,
-    Either: <BothGendersIcon focused={false} />,
-  };
-
-  const SearchResults = [
-    {
-      id: '1',
-      name: 'John Denver',
-      rating: '4',
-      sessionDuration: '60',
-      sessionPrice: '40',
-      experience: '8',
-      licenseNumber: '4675934',
-    },
-    {
-      id: '2',
-      name: 'John Doe',
-      rating: '2',
-      sessionDuration: '30',
-      sessionPrice: '60',
-      experience: '2',
-      licenseNumber: '4675934',
-    },
-    {
-      id: '3',
-      name: 'John Doe',
-      rating: '5',
-      sessionDuration: '45',
-      sessionPrice: '100',
-      experience: '5',
-      licenseNumber: '4675934',
-    },
-  ];
-
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setFiltering(true));
-    Keyboard.addListener('keyboardDidHide', () => setFiltering(false));
-
-    return Keyboard.removeAllListeners;
-  }, []);
-
-  const handleFiltering = (value: boolean) => setFiltering(value);
 
   const onPressSearch = () => navigation.push('SearchScreen');
 
