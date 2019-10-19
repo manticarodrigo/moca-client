@@ -4,9 +4,15 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import useStore from '@src/hooks/useStore';
 import { AddAddressForm } from '@src/store/actions/UserAction';
 
-import { Colors, Spacing, Texts } from '@src/styles';
+import { Colors, Spacing, Texts, Views } from '@src/styles';
+import { SearchIcon } from './icons';
+import View from './View';
 
 const styles = {
+  container: {
+    ...Views.rounded,
+    backgroundColor: Colors.lightGrey,
+  },
   textInputContainer: {
     ...Spacing.getStyles({ p: 0, m: 0 }),
     flexDirection: 'row',
@@ -24,10 +30,10 @@ const styles = {
     marginTop: 0,
     marginLeft: 0,
     marginRight: 0,
-    borderRadius: Spacing.spaceSize[2],
-    borderWidth: 2,
-    borderColor: Colors.secondaryLight,
-    backgroundColor: Colors.lightGrey,
+    // borderRadius: Spacing.spaceSize[2],
+    // borderWidth: 2,
+    // borderColor: Colors.secondaryLight,
+    backgroundColor: 'transparent',
     width: '100%',
     height: 60,
   },
@@ -91,16 +97,18 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
 
   return (
     <GooglePlacesAutocomplete
+      autoFocus
       fetchDetails
       currentLocation
       styles={styles}
+      enablePoweredByContainer={false}
+      listViewDisplayed={false} // hide list on select place
+      minLength={2} // minimum length of text to search
       predefinedPlacesAlwaysVisible
       getDefaultValue={getDefaultValue}
       placeholderTextColor={Colors.semiGrey}
       placeholder="Search"
-      minLength={2} // minimum length of text to search
       returnKeyType="search"
-      listViewDisplayed={false} // true/false/undefined
       query={{
         key: 'AIzaSyDqB3-LiPTYFBFGXj0VIwvJhGMAwqlPxp4',
         language: 'en', // language of the results
@@ -109,6 +117,7 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
       nearbyPlacesAPI="GooglePlacesSearch"
       currentLocationLabel="Current location"
       debounce={200}
+      renderLeftButton={() => <View justifyCenter spacing={{ px: 3 }}><SearchIcon /></View>}
       onPress={onPressPlace}
     />
   );
