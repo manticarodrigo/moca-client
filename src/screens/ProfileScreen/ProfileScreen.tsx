@@ -17,7 +17,6 @@ import View from '@src/components/View';
 
 import TherapistProfileModal from '@src/modals/TherapistProfileModal';
 import PatientProfileModal from '@src/modals/PatientProfileModal';
-import SetAwayModal from '@src/modals/SetAwayModal';
 
 
 import PatientProfile from './PatientProfile';
@@ -99,8 +98,6 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
         isModalVisible
         closeInputModal=""
       />} */}
-      <SetAwayModal isModalVisible closeInputModal={() => {}} />
-
     </View>
   );
 };
