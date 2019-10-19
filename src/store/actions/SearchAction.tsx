@@ -8,7 +8,6 @@ export type SearchAction =
   | { type: 'GET_SEARCH_SUCCESSFUL'; payload: SearchState }
 
 
-
 const getSearchResults = (params?: FilterParams) => async (dispatch: Dispatch<SearchAction>) => {
   // const { data } = await api.user.userTherapistRead('');
 
@@ -24,9 +23,8 @@ const getSearchResults = (params?: FilterParams) => async (dispatch: Dispatch<Se
       id: i.toString(),
       name: `${names[index]} Doe`,
       rating: '5',
-      sessionDuration: '45',
-      sessionPrice: '100',
-      experience: '5',
+      sessionDuration: '30/45/60',
+      sessionPrice: '$$',
       licenseNumber: '4675934',
     };
   });

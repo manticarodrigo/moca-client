@@ -6,7 +6,6 @@ type Result = {
   rating: string;
   sessionDuration: string;
   sessionPrice: string;
-  experience: string;
   licenseNumber: string;
 }
 

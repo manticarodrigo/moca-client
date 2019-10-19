@@ -23,11 +23,11 @@ const Button = ({
 }: ButtonProps) => {
   const styles = useMemo(() => StyleSheet.create({
     view: {
-      width,
       ...Buttons[variant].view,
       ...Spacing.getStyles(spacing),
       ...(icon && { flexDirection: 'row', alignItems: 'center' }),
       ...(bgColor && { backgroundColor: Colors[bgColor] }),
+      width,
     },
     text: {
       ...Buttons[variant].text,
