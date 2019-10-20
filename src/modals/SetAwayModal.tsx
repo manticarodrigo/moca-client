@@ -1,36 +1,27 @@
 import React, { useState } from 'react';
+import { Dimensions } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
+import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 
+import { Colors, Texts, Spacing } from '@src/styles';
 
+import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
-import ModalView from '@src/components/ModalView';
-
-import { format, addDays, differenceInDays, parseISO, endOfDay } from 'date-fns';
-
-
-import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
-import { Colors } from '@src/styles';
 import Button from '@src/components/Button';
 
 
-type SetAwayProps = {
-  closeInputModal: () => void;
-  isModalVisible: boolean;
+type Props = {
+  isVisible: boolean;
+  onToggle: () => void;
   onSubmit?: (startDay: string, endDay: string) => void;
 };
 
-const SetAwayPModal = (
-  {
-    closeInputModal,
-    isModalVisible = false,
-    onSubmit,
-  }: SetAwayProps,
-) => {
+const windoWidth = Dimensions.get('window').width;
+
+const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
   const [startDay, setStartDay] = useState('');
   const [endDay, setEndDay] = useState('');
-  const [startDayPressed, setStartDayPressed] = useState(true);
-  const [endDayPressed, setEndDayPressed] = useState(false);
 
   const changeToDate = (date: string) => new Date(parseISO(date));
 
@@ -71,9 +62,6 @@ const SetAwayPModal = (
 
 
   const handleDayPress = (day) => {
-    setStartDayPressed(false);
-    setEndDayPressed(false);
-
     if (!startDay) {
       setStartDay(day);
     }
@@ -84,19 +72,8 @@ const SetAwayPModal = (
     }
 
     if (startDay && endDay) {
-      if (startDayPressed) {
-        if (differenceInDays(changeToDate(day), changeToDate(endDay)) >= 0) {
-          setEndDay('');
-        }
-        setStartDay(day);
-        return;
-      }
-
-      if (differenceInDays(changeToDate(day), changeToDate(startDay)) > 0) {
-        setEndDay(day);
-      } else {
-        setStartDay(day);
-      }
+      setStartDay(day);
+      setEndDay('');
     }
   };
 
@@ -105,111 +82,97 @@ const SetAwayPModal = (
   };
 
   return (
-    <ModalView
-      height={100}
-      isVisible={isModalVisible}
+    <Modal
       propagateSwipe
-      onBackdropPress={() => {
-        closeInputModal();
-      }}
-      onSwipeComplete={() => {
-        closeInputModal();
-      }}
-      handleArrowClick={() => {
-        closeInputModal();
-      }}
+      isVisible={isVisible}
+      onToggle={onToggle}
     >
-      <View alignCenter>
+      <View alignCenter spacing={{ pb: 6 }}>
         <View row>
-          <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
+          <View variant="borderBottom" flex={1} spacing={{ pb: 3 }} alignCenter justifyCenter>
             <Text variant="titleSmall">
-              {'Set Away Days'}
+              Set Away Days
             </Text>
           </View>
         </View>
-        <View alignCenter row spacing={{ pb: 4 }}>
+        <View alignCenter row variant="borderBottom">
           <View
             flex={1}
             variant="borderRight"
-            onPress={() => {
-              setStartDayPressed(true);
-              setEndDayPressed(false);
-            }}
+            spacing={{ p: 3 }}
           >
-            <View bgColor={startDayPressed ? 'lightGrey' : 'white'}>
-              <Text variant="regularGrey" spacing={{ mt: 2, ml: 2 }}>start</Text>
-              <Text
-                variant={startDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
-                typography={startDay ? null : { weight: '300' }}
-                spacing={{ mt: 2, ml: 2, mb: 3 }}
-              >
-                {startDay || 'Select Date'}
-              </Text>
-            </View>
+            <Text variant="regularGrey">Start</Text>
+            <Text
+              variant={startDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
+              spacing={{ pt: 1 }}
+            >
+              {startDay || 'Select Date'}
+            </Text>
           </View>
           <View
             flex={1}
-            spacing={{ pl: 2 }}
-            bgColor={endDayPressed ? 'lightGrey' : 'white'}
-            onPress={() => {
-              setEndDayPressed(true);
-              setStartDayPressed(false);
-            }}
+            spacing={{ py: 2, px: 3 }}
+            bgColor="white"
           >
-            <Text variant="regularGrey" spacing={{ mt: 2 }}>end</Text>
+            <Text variant="regularGrey">End</Text>
             <Text
-              typography={startDay ? null : { weight: '300' }}
               variant={endDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
-              spacing={{ mt: 2, mb: 3 }}
+              spacing={{ pt: 1 }}
             >
               {endDay || 'Select Date'}
             </Text>
           </View>
         </View>
         <View flex={1}>
-          <View flex={4}>
-            <TouchableWithoutFeedback>
-              <TouchableHighlight>
-                <CalendarList
-                  current={new Date()}
-                  minDate={new Date()}
-                  onDayPress={(day) => handleDayPress(day.dateString)}
-                  markingType="period"
-                  markedDates={markedDates}
-                  theme={{
-                    arrowColor: 'white',
-                    'stylesheet.calendar.header': {
-                      week: {
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      },
-                    },
-                  }}
+          <CalendarList
+            current={new Date()}
+            minDate={new Date()}
+            onDayPress={(day) => handleDayPress(day.dateString)}
+            markingType="period"
+            markedDates={markedDates}
+            calendarHeight={340}
+            theme={{
+              arrowColor: 'white',
+              'stylesheet.calendar.main': {
+                container: {},
+              },
+              'stylesheet.calendar-list.main': {
+                calendar: { backgroundColor: Colors.lightGrey },
+              },
+              'stylesheet.calendar.header': {
+                header: { ...Spacing.getStyles({ pt: 4, px: 2 }), alignItems: 'center' },
+                monthText: { ...Texts.boldPrimary },
+                week: {
+                  ...Spacing.getStyles({ py: 3, px: 4 }),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                },
+                dayHeader: { ...Texts.regularSmallGreyishBrown, textTransform: 'uppercase' },
+              },
+              'stylesheet.day.period': {
+                text: { ...Texts.regularGrey, marginTop: 7 },
+              },
+            }}
 
-                  pastScrollRange={50}
-                  futureScrollRange={50}
-                  scrollEnabled
-                  showScrollIndicator
-                />
-              </TouchableHighlight>
-            </TouchableWithoutFeedback>
-          </View>
-          <View flex={1} spacing={{ mb: 4, mx: 3 }}>
-            <View flex={1} />
-            <Button
-              disabled={isButtonDisabled}
-              variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-              onPress={handleButtonPress}
-            >
-                Set Dates
-            </Button>
-          </View>
+            pastScrollRange={0}
+            futureScrollRange={12}
+            scrollEnabled
+            showScrollIndicator
+          />
+        </View>
+        <View width={windoWidth} spacing={{ p: 4 }} variant="borderTop">
+          <Button
+            disabled={isButtonDisabled}
+            variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+            onPress={handleButtonPress}
+          >
+            Submit Days
+          </Button>
         </View>
       </View>
-    </ModalView>
+    </Modal>
 
   );
 };
 
-export default SetAwayPModal;
+export default SetAwayModal;

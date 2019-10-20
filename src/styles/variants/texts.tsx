@@ -42,6 +42,7 @@ export const regularSmallGrey = { ...Typography.getStyles({ size: 1, weight: '50
 export const regularSmallSuccess = { ...Typography.getStyles({ size: 1, weight: '500', color: 'success' }) };
 export const regularSmallError = { ...Typography.getStyles({ size: 1, weight: '500', color: 'error' }) };
 export const regularSmallDark = { ...Typography.getStyles({ size: 1, weight: '500', color: 'dark' }) };
+export const regularSmallGreyishBrown = { ...Typography.getStyles({ size: 1, weight: '500', color: 'greyishBrown' }) };
 export const regularSmallestPrimary = { ...Typography.getStyles({ size: 0, weight: '500', color: 'primary' }) };
 export const regularPrimary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) };
 export const regularSecondary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) };

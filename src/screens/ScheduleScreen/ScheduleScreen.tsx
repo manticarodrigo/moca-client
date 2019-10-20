@@ -34,40 +34,34 @@ type ScheduleItemMap = {
 const ScheduleScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { dispatch } = useStore();
   const [items, setItems] = useState<ScheduleItemMap>({});
-  const [isAwayModal, setIsAwayModal] = useState(false);
+  const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
   const renderNull = useCallback(() => null, []);
 
-  const handleSetAwayDates = () => {
-    setIsAwayModal(true);
-  };
+  const onToggleAwayModal = () => setIsAwayModalVisible(!isAwayModalVisible);
 
   useEffect(() => {
-    navigation.setParams({ handleSetAwayDates });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    navigation.setParams({ onToggleAwayModal });
   }, []);
 
-  const submitAwayDates = async (startDate: string, endDate: string) => {
+  const onSubmitAwayDays = async (startDate: string, endDate: string) => {
     try {
       await dispatch(setAwayDates(startDate, endDate));
-      setIsAwayModal(false);
+      setIsAwayModalVisible(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const setAwayModal = (
-    <SetAwayModal
-      isModalVisible={isAwayModal}
-      closeInputModal={() => setIsAwayModal(false)}
-      onSubmit={submitAwayDates}
-
-    />
-  );
 
   return (
     <>
-      {setAwayModal}
+      <SetAwayModal
+        isVisible={isAwayModalVisible}
+        onToggle={onToggleAwayModal}
+        onSubmit={onSubmitAwayDays}
+
+      />
       <Agenda
         items={items}
         loadItemsForMonth={(date) => {
@@ -211,7 +205,7 @@ ScheduleScreen.navigationOptions = ({ navigation }) => {
     headerRight:
   <View
     alignCenter
-    onPress={() => params.handleSetAwayDates()}
+    onPress={params.onToggleAwayModal}
   >
     <ScheduleTabIcon focused={false} />
   </View>,
