@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+
+import { UserGenderEnum, User } from '@src/services/openapi';
+import { updateUser } from '@src/store/actions/UserAction';
+
+import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 
 import {
@@ -9,146 +15,87 @@ import {
   GenderIcon,
 } from '@src/components/icons';
 
-import { mockImg } from '@src/services/mock';
-
-import Image from '@src/components/Image';
-import Text from '@src/components/Text';
 import View from '@src/components/View';
-import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import GenderToggle from '@src/components/GenderToggle';
+import ImagesPreview from '@src/components/ImagesPreview';
 
-type PatientProfileProps = {
+import ProfileListCard from './ProfileListCard';
+
+type Props = {
   patient?: User;
   modal?: boolean;
 }
 
-const PatientProfile = ({ patient, modal }: PatientProfileProps) => {
+const PatientProfile = ({ patient, modal }: Props) => {
+  const { store, dispatch } = useStore();
   const navigation = useNavigation();
+
+  const userInfo = !modal ? store.user : patient;
+
 
   const onPressAdress = () => {
     navigation.navigate('AddressSettingsScreen');
   };
+
   const onPressDiagnosis = () => navigation.navigate('DiagnosisScreen');
-  const onPressPayment = () => navigation.navigate('PaymentScreen');
+  const onPressPayment = () => navigation.navigate('WalletScreen');
 
-  // Gender form
-  // TODO: get real initial value
-  const [gender, setGender] = useState('');
-  const isMale = gender === 'Male';
-  const isFemale = gender === 'Female';
-  const isOther = gender === 'Other';
-
-  const maleBgColor = isMale ? 'secondaryLight' : 'white';
-  const maleTextColor = isMale ? 'white' : 'secondaryLighter';
-  const femaleBgColor = isFemale ? 'secondaryLight' : 'white';
-  const femaleTextColor = isFemale ? 'white' : 'secondaryLighter';
-  const otherBgColor = isOther ? 'secondaryLight' : 'white';
-  const otherTextColor = isOther ? 'white' : 'secondaryLighter';
-
-  const pressGender = (type: 'Male' | 'Female' | 'Other') => {
-    setGender(type);
-    // TODO save into DB
+  const onPressGender = async (type: UserGenderEnum) => {
+    try {
+      await dispatch(updateUser({ gender: type }));
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  // Diagnosis Image
-  // TODO: get real data and loop to create up to 3 images
-  const diagnosis = 'Neck Hernia';
-  const diagnosisImage = (
-    <View flex={1}>
-      <Image rounded size={48} uri={mockImg} />
-    </View>
-  );
-
-  // Payment method
-  const card = 'Add payment method';
 
   return (
     <View scroll bgColor="lightGrey">
       <TouchableWithoutFeedback>
         <TouchableHighlight>
           <View flex={1}>
-            <View variant="profileSection">
-              <View row alignCenter>
-                <View spacing={{ p: 3 }}>
-                  <RadiusLocationIcon />
-                </View>
-                <View
-                  {...(modal ? ' ' : { onPress: () => onPressAdress() })}
-                  row
-                  flex={1}
-                  justifyBetween
-                  variant="profileCard"
-                >
-                  <View><Text variant="boldDark">Address</Text></View>
-                  <View><ArrowRightIcon /></View>
-                </View>
-              </View>
-
-              <View row alignCenter>
-                <View spacing={{ p: 3 }}>
-                  <GenderIcon />
-                </View>
-                <View row flex={1} justifyBetween={modal} variant="profileCard">
-                  <View flex={1}><Text variant="boldDark">Gender</Text></View>
-                  {!modal ? (
-                    <View row flex={3}>
-                      <View
-                        variant="genderButton"
-                        {...(!isMale ? { onPress: () => pressGender('Male') } : '')}
-                        bgColor={maleBgColor}
-                      >
-                        <Text typography={{ color: maleTextColor }}>Male</Text>
-                      </View>
-                      <View
-                        variant="genderButton"
-                        {...(!isFemale ? { onPress: () => pressGender('Female') } : '')}
-                        bgColor={femaleBgColor}
-                      >
-                        <Text typography={{ color: femaleTextColor }}>Female</Text>
-                      </View>
-                      <View
-                        variant="genderButton"
-                        {...(!isOther ? { onPress: () => pressGender('Other') } : '')}
-                        bgColor={otherBgColor}
-                      >
-                        <Text typography={{ color: otherTextColor }}>Other</Text>
+            <ProfileListCard
+              readonly={!!modal}
+              rows={[
+                {
+                  title: 'Address',
+                  icon: RadiusLocationIcon,
+                  content: <ArrowRightIcon />,
+                  onPress: onPressAdress,
+                },
+                {
+                  title: 'Gender',
+                  icon: GenderIcon,
+                  content: (
+                    <GenderToggle
+                      readonly={!!modal}
+                      existingValue={userInfo.gender}
+                      onToggle={onPressGender}
+                    />
+                  ),
+                },
+                {
+                  title: 'Diagnosis',
+                  subtitle: 'Neck Hernia',
+                  icon: <DiagnosisIcon size={0.5} />,
+                  content: (
+                    <View row alignCenter>
+                      <ImagesPreview />
+                      <View spacing={{ pl: 3 }}>
+                        <ArrowRightIcon />
                       </View>
                     </View>
-                  ) : <View alignCenter><Text>{patient.gender}</Text></View>}
-                </View>
-              </View>
-
-              <View row alignCenter>
-                <View spacing={{ p: 3 }}>
-                  <DiagnosisIcon size={0.5} />
-                </View>
-                <View row variant="profileCard">
-                  <View column flex={1}>
-                    <View><Text variant="boldDark">Diagnosis</Text></View>
-                    <View
-                      spacing={{ pt: 2 }}
-                    >
-                      <Text variant="regularSmallGrey">{diagnosis}</Text>
-                    </View>
-                  </View>
-                  {diagnosisImage}
-                  <View row flex={1} onPress={onPressDiagnosis}><ArrowRightIcon /></View>
-                </View>
-              </View>
-
-              <View row alignCenter>
-                <View spacing={{ p: 3 }}>
-                  <CreditCardIcon />
-                </View>
-                <View row variant="profileCard" justifyBetween>
-                  <View column>
-                    <View><Text variant="boldDark">Payment Method</Text></View>
-                    <View spacing={{ pt: 2 }}><Text variant="regularSmallGrey">{card}</Text></View>
-                  </View>
-                  <View column onPress={onPressPayment}><ArrowRightIcon /></View>
-                </View>
-              </View>
-
-            </View>
+                  ),
+                  onPress: onPressDiagnosis,
+                },
+                {
+                  title: 'Payment Method',
+                  subtitle: 'Add Payment Method',
+                  icon: CreditCardIcon,
+                  content: <ArrowRightIcon />,
+                  onPress: onPressPayment,
+                },
+              ]}
+            />
           </View>
         </TouchableHighlight>
       </TouchableWithoutFeedback>

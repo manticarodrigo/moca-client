@@ -9,6 +9,7 @@ export type UserState = &
   email?: string;
   token?: string;
   prices?: Price[];
+  payments?: object[];
 }
 
 function flattenUserPayload(state, { user, ...rest }) {

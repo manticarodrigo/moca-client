@@ -31,6 +31,7 @@ import ReviewsModal from '@src/modals/ReviewsModal';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
+import GenderToggle from '@src/components/GenderToggle';
 import DatePicker from '@src/components/DatePicker';
 
 import ProfilePriceTableCard, { PriceModal } from './ProfilePriceTableCard';
@@ -47,8 +48,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const userInfo = !modal ? user : therapist;
 
   // const { viewer, onPressImage } = useImageViewer(userInfo.certifications);
-  const [isAvailable, setAvailable] = useState(userInfo.status
-    ? userInfo.status === 'A' : false);
+  const [isAvailable, setAvailable] = useState(userInfo.status ? userInfo.status === 'A' : false);
 
 
   const [priceModalProps, setPriceModalProps] = useState(null);
@@ -59,15 +59,6 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     isReviewsModalVisible: false,
   });
 
-  const [gender, setGender] = useState(userInfo.gender ? userInfo.gender : '');
-  const isMale = gender === 'M';
-  const isFemale = gender === 'F';
-
-  const maleBgColor = isMale ? 'secondaryLight' : 'white';
-  const maleTextColor = isMale ? 'white' : 'secondaryLighter';
-  const femaleBgColor = isFemale ? 'secondaryLight' : 'white';
-  const femaleTextColor = isFemale ? 'white' : 'secondaryLighter';
-
   const onCloseModal = (key: string) => () => setModals({ ...modals, [key]: false });
 
   const handleMessageTherapist = () => {};
@@ -75,7 +66,6 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const onPressGender = (type: UserGenderEnum) => async () => {
     try {
       await dispatch(updateUser({ gender: type }));
-      setGender(type);
     } catch (error) {
       console.log(error);
     }
@@ -214,26 +204,11 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'Gender',
                     icon: GenderIcon,
                     content: (
-                      <>
-                        {!modal ? (
-                          <View row flex={3} justifyEnd>
-                            <View
-                              variant="genderButton"
-                              bgColor={maleBgColor}
-                              onPress={onPressGender(UserGenderEnum.M)}
-                            >
-                              <Text typography={{ color: maleTextColor }}>Male</Text>
-                            </View>
-                            <View
-                              variant="genderButton"
-                              bgColor={femaleBgColor}
-                              onPress={onPressGender(UserGenderEnum.F)}
-                            >
-                              <Text typography={{ color: femaleTextColor }}>Female</Text>
-                            </View>
-                          </View>
-                        ) : <View alignCenter><Text>{userInfo.gender}</Text></View>}
-                      </>
+                      <GenderToggle
+                        readonly={!!modal}
+                        existingValue={userInfo.gender}
+                        onToggle={onPressGender}
+                      />
                     ),
                     onPress: () => null,
                   },

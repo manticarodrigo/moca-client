@@ -9,6 +9,7 @@ import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import searchReducer, { SearchState } from '@src/store/reducers/SearchReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
+import { UserTypeEnum, UserGenderEnum } from './services/openapi';
 
 export type StoreState = {
   user: UserState;
@@ -53,6 +54,8 @@ export const initialState: StoreState = {
     addresses: [],
     preferredAilments: [],
     prices: [],
+    gender: UserGenderEnum.M,
+    type: UserTypeEnum.PA,
   },
   registration: {
     address: {},

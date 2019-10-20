@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-const Row = ({ last, title, content, onPress }) => (
+const Row = ({ last, title, subtitle, content, onPress }) => (
   <View
     row
     flex={1}
@@ -11,9 +11,18 @@ const Row = ({ last, title, content, onPress }) => (
     justifyBetween
     onPress={onPress}
   >
-    <View justifyCenter>
-      <Text variant="boldDark">{title}</Text>
-    </View>
+    {subtitle ? (
+      <View>
+        <Text variant="boldDark">{title}</Text>
+        <View spacing={{ pt: 2 }}>
+          <Text variant="regularSmallGrey">{subtitle}</Text>
+        </View>
+      </View>
+    ) : (
+      <View justifyCenter>
+        <Text variant="boldDark">{title}</Text>
+      </View>
+    )}
     {content}
   </View>
 );
@@ -42,17 +51,25 @@ const ProfileListCard = ({ column = false, readonly, rows = [], bottomChildren =
 
   return (
     <View variant="profileSection">
-      {readableRows.map(({ title, icon = () => null, content, onPress = () => null }, index) => {
+      {readableRows.map(({
+        title,
+        subtitle,
+        icon,
+        content,
+        onPress = () => null,
+      }, index) => {
         const Icon = icon;
 
         const last = index === rows.length - 1;
-        const rowProps = { last, title, onPress, content };
+        const rowProps = { last, title, subtitle, onPress, content };
 
 
         return (
           <View key={title} row alignCenter>
             <View spacing={{ p: 3 }}>
-              <Icon />
+              {typeof icon === 'function' ? (
+                <Icon />
+              ) : icon}
             </View>
             {column ? <Column {...rowProps} /> : <Row {...rowProps} />}
           </View>
