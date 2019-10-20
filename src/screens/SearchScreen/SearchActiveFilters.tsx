@@ -40,7 +40,7 @@ const SearchActiveFilters = ({ filters }) => {
       <View scroll horizontal spacing={{ px: 4 }}>
         <View row alignCenter>
           {active.map(({ Icon, title }) => (
-            <View alignCenter key={title} spacing={{ p: 3, pb: 2 }} width={90}>
+            <View alignCenter key={title} spacing={{ p: 3 }} width={90}>
               <Icon />
               <Text
                 variant="boldSmallestPrimary"
