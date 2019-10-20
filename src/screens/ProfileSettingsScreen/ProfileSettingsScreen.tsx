@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavigationActions } from 'react-navigation';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import EditInformationModal from '@src/modals/EditInformationModal';
@@ -17,7 +18,7 @@ import { Views, Colors } from '@src/styles';
 
 import useStore from '@src/hooks/useStore';
 
-const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
+const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
   const [isEditInformationModal, setIsEditInformationModal] = useState(false);
@@ -70,8 +71,13 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
     }
   };
 
-  const onPressLogout = () => {
-    dispatch(logoutUser());
+  const onPressLogout = async () => {
+    await dispatch(logoutUser());
+
+    navigation.dangerouslyGetParent().dangerouslyGetParent().dispatch({
+      type: NavigationActions.NAVIGATE,
+      routeName: 'OnboardingScreen',
+    });
   };
 
   const editInformationModal = (
