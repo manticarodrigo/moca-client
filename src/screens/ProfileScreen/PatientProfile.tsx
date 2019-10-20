@@ -74,7 +74,7 @@ const PatientProfile = ({ patient, modal }: Props) => {
                   ),
                 },
                 {
-                  title: 'Diagnosis',
+                  title: 'My Injury',
                   subtitle: 'Neck Hernia',
                   icon: <DiagnosisIcon size={0.5} />,
                   content: (

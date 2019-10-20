@@ -5,14 +5,9 @@ import FormField from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import ModalView from '@src/components/ModalView';
+import Modal from '@src/components/Modal';
 
-import { validateEmailAddress } from '@src/utlities/validations';
-
-import { EmailIcon } from '@src/components/icons';
-
-
-type ChangePasswordProps = {
+type Props = {
   closeInputModal: () => void;
   isModalVisible: boolean;
   sumbitEditPassword: (password: string) => void;
@@ -22,7 +17,7 @@ const ChangePasswordModal = ({
   closeInputModal,
   isModalVisible,
   sumbitEditPassword,
-}: ChangePasswordProps) => {
+}: Props) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -37,18 +32,15 @@ const ChangePasswordModal = ({
   };
 
   return (
-    <ModalView
+    <Modal
       propagateSwipe
-      height={100}
       isVisible={isModalVisible}
-      onBackdropPress={() => closeInputModal()}
-      onSwipeComplete={() => closeInputModal()}
-      handleArrowClick={() => closeInputModal()}
+      onToggle={closeInputModal}
     >
 
       <View alignCenter>
         <View row>
-          <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
+          <View variant="borderBottom" flex={1} spacing={{ py: 4 }} alignCenter justifyCenter>
             <Text variant="titleSmall">
               Edit Password
             </Text>
@@ -56,21 +48,23 @@ const ChangePasswordModal = ({
         </View>
         <View alignCenter spacing={{ mt: 4, mx: 5 }}>
           <FormField
-            placeholder="password"
+            icon="password"
+            placeholder="Current password"
             value={password}
             secureTextEntry
             returnKeyType="next"
             ref={passwordField}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={setPassword}
             onSubmitEditing={() => newPasswordField.current.focus()}
           />
           <FormField
-            placeholder="new password"
+            icon="password"
+            placeholder="New password"
             value={newPassword}
             secureTextEntry
             returnKeyType="done"
             ref={newPasswordField}
-            onChangeText={(text) => setNewPassword(text)}
+            onChangeText={setNewPassword}
           />
           <View row spacing={{ mt: 5 }}>
             <View flex={1}>
@@ -85,7 +79,7 @@ const ChangePasswordModal = ({
           </View>
         </View>
       </View>
-    </ModalView>
+    </Modal>
 
   );
 };
