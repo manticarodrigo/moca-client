@@ -5,7 +5,7 @@ import useStore from '@src/hooks/useStore';
 
 import { LogoIcon, StarsIcon, RightIcon } from '@src/components/icons';
 
-import ReviewModal from '@src/modals/ReviewModal';
+import ReviewModal from '@src/modals/AppointmentModal';
 
 import { certificate1 } from '@src/utlities/images';
 import { mockImg } from '@src/services/mock';
