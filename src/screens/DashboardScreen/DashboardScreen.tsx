@@ -6,6 +6,8 @@ import useStore from '@src/hooks/useStore';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
+import AppointmentModal from '@src/modals/AppointmentModal';
+
 import {
   LogoIcon,
   SearchIcon,
@@ -20,14 +22,45 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store } = useStore();
   const [isTherapist] = useState(store.user.type === 'PT');
   const [isActivated] = useState(true);
+  const [sessionEnded, setSessionEnded] = useState(false);
+  const [isAppointmentModal, setIsAppointmentModal] = useState(false);
 
   const onPressSearch = () => navigation.push('SearchScreen');
+  const submitSessionEnded = () => {
+    if (isTherapist) {
+      setIsAppointmentModal(false);
+      // api calls
+    }
+    setSessionEnded(true);
+  };
+  const submitReview = () => {
+    // api patient submit review
+    setIsAppointmentModal(false);
+  };
+
+  const appointmentModal = (
+    <AppointmentModal
+      appointment={{
+        appointmentDuration: '30',
+        appointmentPrice: 40,
+        name: 'Ahmed',
+      }}
+      isVisible={isAppointmentModal}
+      isTherapist={isTherapist}
+      submitSessionEnded={() => submitSessionEnded()}
+      sessionEnded={sessionEnded}
+      closeInputModal={() => setIsAppointmentModal(false)}
+      submitReview={() => submitReview()}
+    />
+  );
+
 
   return (
     <View safeArea flex={1} bgColor="primary">
       <View row justifyEnd absoluteFill spacing={{ mt: -6, mr: -5 }}>
         <LogoIcon size={2} />
       </View>
+      {appointmentModal}
 
       {isActivated && isTherapist && (
         <View row justifyCenter alignCenter spacing={{ p: 4, pt: 3 }}>
@@ -48,7 +81,13 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
       <View scroll flex={1}>
         {!isActivated && isTherapist && <DashboardAlert />}
-        {(!isTherapist || isActivated) && <DashboardAppointments isTherapist={isTherapist} />}
+        {(!isTherapist || isActivated)
+           && (
+           <DashboardAppointments
+             isTherapist={isTherapist}
+             handleCurrentAppointment={() => setIsAppointmentModal(true)}
+           />
+           )}
         <DashboardLinks isActivated={isActivated} isTherapist={isTherapist} />
       </View>
     </View>

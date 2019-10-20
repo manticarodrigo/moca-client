@@ -64,9 +64,10 @@ const AppointmentCardInfo = ({ current = false }) => (
 type AppointmentCardProps = {
   current?: boolean;
   isTherapist: boolean;
+  onPress?: () => void;
 };
 
-const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
+const AppointmentCard = ({ current, isTherapist, onPress }: AppointmentCardProps) => {
   const canStart = current && isTherapist;
   const canCancel = !current && !isTherapist;
   const hasButton = canStart || canCancel;
@@ -77,6 +78,7 @@ const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
       variant={current ? 'borderCard' : 'card'}
       spacing={{ pb: (!current && isTherapist) && 0 }}
       bgColor={!current ? 'whiteTranslucent' : null}
+      onPress={onPress}
     >
       <AppointmentCardHeader />
 

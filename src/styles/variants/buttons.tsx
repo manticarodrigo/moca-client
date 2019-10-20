@@ -72,7 +72,8 @@ const secondary: ButtonVariant = {
     backgroundColor: 'transparent',
     width: '80%',
   },
-  text: { ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }) },
+  text: { ...Typography.getStyles({
+    color: 'secondary', size: 3, weight: '700', align: 'center' }) },
   underlayColor: null,
 };
 
@@ -157,6 +158,20 @@ const logout: ButtonVariant = {
   underlayColor: null,
 };
 
+const secondaryBig: ButtonVariant = {
+  view: {
+    ...Spacing.getStyles({ p: 3 }),
+    ...Borders.primary,
+    borderWidth: 2,
+    borderColor: Colors.secondaryLightest,
+    backgroundColor: 'transparent',
+    width: '80%',
+  },
+  text: { ...Typography.getStyles({
+    color: 'secondary', size: 3, weight: '700', align: 'center' }) },
+  underlayColor: null,
+};
+
 export {
   primary,
   tertiary,
@@ -168,5 +183,6 @@ export {
   primaryDisabled,
   secondaryShadow,
   logout,
+  secondaryBig,
   primaryBorder,
 };
