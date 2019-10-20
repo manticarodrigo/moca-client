@@ -47,7 +47,6 @@ const SearchCard = ({
       <Button
         variant="secondary"
         spacing={{ mt: 2 }}
-        width="100%"
         onPress={onMessageTherapist}
       >
         Message / Schedule
