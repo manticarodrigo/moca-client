@@ -59,8 +59,11 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
 
 const initialState: StoreState = {
   user: {
+    firstName: '',
+    lastName: '',
     addresses: [],
     preferredAilments: [],
+    tariffs: [],
   },
   registration: {
     address: {},

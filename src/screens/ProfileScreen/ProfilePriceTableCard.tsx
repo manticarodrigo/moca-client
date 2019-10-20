@@ -2,8 +2,6 @@ import React from 'react';
 
 import useStore from '@src/hooks/useStore';
 
-import { Colors } from '@src/styles';
-
 import { PriceRateIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
@@ -14,12 +12,19 @@ import { validatePrice } from '@src/utlities/validations';
 
 const sessions = { thirty: '30', fortyfive: '45', sixty: '60' };
 
+const sessionLabels = {
+  thirty: '30min',
+  fortyfive: '45min',
+  sixty: '60min',
+  evaluation: 'Evaluation',
+};
+
 export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmit }) => (
   <InputModal
     visible={visible}
-    title={`${sessions[type]} Minute Session Price`}
+    title={`${sessionLabels[type]} Session Price`}
     placeholder="Price"
-    existingValue={existingValue.toString()}
+    existingValue={existingValue ? existingValue.toString() : ''}
     maxLength={3}
     keyboardType="number-pad"
     validate={validatePrice}

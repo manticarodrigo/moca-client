@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { format, differenceInYears, parseISO } from 'date-fns';
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
@@ -15,7 +14,6 @@ import {
   BioIcon,
   GenderIcon,
   InterestIcon,
-  PriceRateIcon,
   RateIcon,
   StatusIcon,
   SwitchIcon,
@@ -283,7 +281,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   {
                     title: 'Qualifications',
                     icon: QualificationIcon,
-                    content: userInfo.preferredAilments.join(', '),
+                    content: userInfo.preferredAilments.join(', ') || 'Set Qualifications',
                     onPress: () => setModals({ ...modals, isQualificationModalVisible: true }),
                   },
                 ]}
