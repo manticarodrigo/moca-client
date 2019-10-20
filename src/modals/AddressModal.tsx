@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
@@ -24,7 +26,7 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => (
           availability in your area.
         </Text>
       </View>
-      <View alignCenter spacing={{ py: 4, px: 3 }}>
+      <View width={WINDOW_WIDTH} alignCenter spacing={{ py: 4, px: 3 }}>
         <PlacesSearch onSelect={onSubmit} />
       </View>
     </View>

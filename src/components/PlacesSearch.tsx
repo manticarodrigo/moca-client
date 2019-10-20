@@ -99,12 +99,12 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
     <GooglePlacesAutocomplete
       autoFocus
       fetchDetails
-      currentLocation
+      // currentLocation
+      // predefinedPlacesAlwaysVisible
       styles={styles}
       enablePoweredByContainer={false}
       listViewDisplayed={false} // hide list on select place
       minLength={2} // minimum length of text to search
-      predefinedPlacesAlwaysVisible
       getDefaultValue={getDefaultValue}
       placeholderTextColor={Colors.semiGrey}
       placeholder="Search"

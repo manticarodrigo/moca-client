@@ -105,7 +105,6 @@ const AppStack = createSwitchNavigator(
     }),
 
   },
-  // { initialRouteName: 'SitemapScreen' },
 );
 
 export default createAppContainer(AppStack);

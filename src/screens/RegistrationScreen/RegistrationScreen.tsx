@@ -44,6 +44,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
 
   const isAnyFieldEmpty = Object.values(formFields).includes('');
+
   const isButtonDisabled = isPatient
     ? (isAnyFieldEmpty || !isMediCarePressed || !isEmailValid)
     : isAnyFieldEmpty || !isEmailValid;

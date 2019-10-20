@@ -5,7 +5,7 @@ import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 import { SearchAction } from '@src/store/actions/SearchAction';
 import { ConversationAction } from '@src/store/actions/ConversationAction';
 
-import userReducer, { UserState, initialState as user } from '@src/store/reducers/UserReducer';
+import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import searchReducer, { SearchState } from '@src/store/reducers/SearchReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
@@ -26,7 +26,7 @@ type ProviderAsyncAction = (
 ) => Promise<object | void>;
 
 export type ProviderDispatch = (
-  action: StoreAction | ProviderAsyncAction,
+action: StoreAction | ProviderAsyncAction,
 ) => void | Promise<object | void>;
 
 type ProviderValue = [StoreState, ProviderDispatch];
@@ -52,7 +52,7 @@ export const initialState: StoreState = {
     lastName: '',
     addresses: [],
     preferredAilments: [],
-    tariffs: [],
+    prices: [],
   },
   registration: {
     address: {},
