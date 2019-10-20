@@ -7,6 +7,8 @@ import { getConversations } from '@src/store/actions/ConversationAction';
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
 
+import { NoConversationsIcon } from '@src/components/icons';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
@@ -34,7 +36,8 @@ const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) 
     <View column flex={1} bgColor="lightGrey">
       {!sections.length ? (
         <View flex={1} justifyCenter alignCenter>
-          <Text variant="titleSecondary" typography={{ align: 'center' }}>
+          <NoConversationsIcon />
+          <Text variant="titleSemiGrey" typography={{ align: 'center' }} spacing={{ pt: 4 }}>
             You have not started any conversations.
           </Text>
         </View>

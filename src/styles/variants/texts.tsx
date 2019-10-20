@@ -15,6 +15,7 @@ export const titleWhite = { ...Typography.getStyles({ size: 4, weight: '700', co
 export const titleWhiteBold = { ...Typography.getStyles({ size: 5, weight: '900', color: 'white' }) };
 export const titlePrimary = { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) };
 export const titleSecondary = { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondary' }) };
+export const titleSemiGrey = { ...Typography.getStyles({ size: 4, weight: '700', color: 'semiGrey' }) };
 export const titleSecondaryLight = { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondaryLight' }) };
 export const titlePrimaryLarge = { ...Typography.getStyles({ size: 5, weight: '700', color: 'primary' }) };
 export const titleSecondaryLarge = { ...Typography.getStyles({ size: 5, weight: '700', color: 'secondary' }) };

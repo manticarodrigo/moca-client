@@ -101,3 +101,5 @@ export { default as CheckIcon } from './CheckIcon';
 export { default as SmallCheckIcon } from './SmallCheckIcon';
 export { default as BigClockIcon } from './BigClockIcon';
 export { default as MaxPriceIcon } from './MaxPriceIcon';
+
+export { default as NoConversationsIcon } from './NoConversationsIcon';
