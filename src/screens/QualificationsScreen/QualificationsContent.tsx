@@ -120,7 +120,7 @@ const QualificationsContent = (
                       onPress={handleButtonPress}
                       disabled={isButtonDisabled}
                     >
-                      {!modal ? 'Continue' : 'update' }
+                      {!modal ? 'Continue' : 'Update' }
                     </Button>
                   </View>
                 </View>

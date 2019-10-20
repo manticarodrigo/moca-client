@@ -19,7 +19,7 @@ export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmi
     visible={visible}
     title={`${sessions[type]} Minute Session Price`}
     placeholder="Price"
-    existingValue={existingValue}
+    existingValue={existingValue.toString()}
     maxLength={3}
     keyboardType="number-pad"
     validate={validatePrice}
@@ -46,43 +46,35 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
   });
 
   return (
-    <View spacing={{ my: 3 }} bgColor="white">
-      <View row>
-        <View spacing={{ p: 3 }}>
-          <PriceRateIcon />
+    <View row spacing={{ my: 3 }} bgColor="white">
+      <View spacing={{ p: 3 }}>
+        <PriceRateIcon />
+      </View>
+      <View flex={1}>
+        <View row alignCenter spacing={{ py: 3 }}>
+          <Text variant="boldDark">Price Rate</Text>
         </View>
-        <View column flex={1}>
-          <View row alignCenter spacing={{ py: 3 }}>
-            <Text variant="boldDark">Price Rate</Text>
-          </View>
-          <View
-            row
-            width="100%"
-            spacing={{ pr: 3, pb: 3 }}
-            style={{ borderBottomWidth: 1, borderColor: Colors.secondaryLightest }}
-          >
-            <>
-              {Object.entries(sessions).map(([key, duration]) => {
-                const { price = 0 } = store.user.tariffs.find(
-                  ({ sessionType }) => sessionType === key,
-                ) || {};
+        <View row width="100%" justifyBetween variant="borderBottom">
+          <>
+            {Object.entries(sessions).map(([key, duration]) => {
+              const { price = 0 } = store.user.tariffs.find(
+                ({ sessionType }) => sessionType === key,
+              ) || {};
 
-                return (
-                  <View
-                    key={key}
-                    flex={1}
-                    column
-                    alignCenter
-                    style={{ borderRightWidth: 1, borderColor: Colors.secondaryLightest }}
-                  >
-                    <View>
-                      <Text variant="regularSmallGrey">
-                        {duration}
-                        min
-                      </Text>
-                    </View>
+              return (
+                <View
+                  key={key}
+                  flex={1}
+                  spacing={{ mb: 3 }}
+                  variant="borderRight"
+                >
+                  <View alignCenter>
+                    <Text variant="regularSmallGrey">
+                      {duration}
+                      min
+                    </Text>
                     <View
-                      spacing={{ pt: 2 }}
+                      spacing={{ pt: 1 }}
                       onPress={!readonly && onPressPrice(key, price)}
                     >
                       <Text variant="titleSecondaryLarge">
@@ -90,22 +82,20 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
                       </Text>
                     </View>
                   </View>
-                );
-              })}
-            </>
-          </View>
-          <View row alignCenter height={65}>
-            <View flex={2}>
-              <Text variant="regularSmallGrey">First time evaluation price</Text>
-            </View>
-            <View
-              flex={1}
-              onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}
-            >
-              <Text variant="titleSecondaryLarge">
-                {evaluationTariff.price || status}
-              </Text>
-            </View>
+                </View>
+              );
+            })}
+          </>
+        </View>
+        <View row justifyBetween alignCenter spacing={{ py: 3, pr: 5 }}>
+          <Text variant="regularSmallGrey">First time evaluation price</Text>
+          <View
+            alignEnd
+            onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}
+          >
+            <Text variant="titleSecondaryLarge">
+              {evaluationTariff.price || status}
+            </Text>
           </View>
         </View>
       </View>

@@ -45,7 +45,7 @@ const InputModal = (
   const isButtonDisabled = formField === '' || !isValid;
 
   const buttonTextValue = useMemo(() => {
-    if (buttonActionText) {
+    if (buttonText && buttonActionText) {
       return `${(existingValue && 'Update ') || 'Add '}${buttonText}`;
     }
 
