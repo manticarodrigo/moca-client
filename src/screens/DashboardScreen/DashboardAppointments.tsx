@@ -5,7 +5,7 @@ import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
 import AwayCard from '@src/components/AwayCard';
 
-const DashboardAppointments = ({ isTherapist, isAway = false }) => (
+const DashboardAppointments = ({ isTherapist, isAway = false, handleCurrentAppointment }) => (
   <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
 
     {!isTherapist && (
@@ -18,7 +18,7 @@ const DashboardAppointments = ({ isTherapist, isAway = false }) => (
       ) : (
         <>
           <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
-          <AppointmentCard current isTherapist={isTherapist} />
+          <AppointmentCard onPress={handleCurrentAppointment} current isTherapist={isTherapist} />
         </>
       )}
     </View>
