@@ -89,9 +89,11 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   return (
     <>
-      <View safeArea column flex={1} bgColor="lightGrey">
+      {viewer}
+      <View safeArea column flex={1} bgColor="white">
         <StatusBar barStyle="dark-content" />
         <ConversationSectionList
+          style={{ backgroundColor: Colors.lightGrey }}
           inverted
           ref={setRef}
           renderItem={({ item }) => (
@@ -121,7 +123,6 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           onPressSend={onPressSend}
         />
       </View>
-      {viewer}
     </>
   );
 };
