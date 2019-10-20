@@ -2,17 +2,18 @@ import React from 'react';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
-import Modal, { ModalScrollView } from '@src/components/Modal';
+import Modal from '@src/components/Modal';
 import PlacesSearch from '@src/components/PlacesSearch';
 
 import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 
 const AddressModal = ({ isVisible, onClose, onSubmit }) => (
   <Modal
+    propagateSwipe
     isVisible={isVisible}
     onToggle={onClose}
   >
-    <ModalScrollView>
+    <View scroll>
       <View alignCenter spacing={{ py: 5 }}>
         <AddLocationBigIcon />
         <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
@@ -26,7 +27,7 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => (
       <View alignCenter spacing={{ py: 4, px: 3 }}>
         <PlacesSearch onSelect={onSubmit} />
       </View>
-    </ModalScrollView>
+    </View>
   </Modal>
 );
 

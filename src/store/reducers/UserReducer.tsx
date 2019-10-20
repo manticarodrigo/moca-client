@@ -2,6 +2,11 @@ import { UserAction } from '@src/store/actions/UserAction';
 
 import { User, Patient, Therapist, Address } from '@src/services/openapi';
 
+type Tariff = {
+  sessionType: 'evaluation' | 'thirty' | 'fortyfive' | 'sixty';
+  price: number;
+}
+
 export type UserState = &
   Omit<User, 'email' | 'addresses'> &
   Omit<Patient, 'user'> &
@@ -9,6 +14,7 @@ export type UserState = &
   email?: string;
   token?: string;
   addresses?: Address[];
+  tariffs?: Tariff[];
 }
 
 function flattenUserPayload(state, { user, ...rest }) {

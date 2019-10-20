@@ -44,9 +44,11 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
   return data;
 };
 
-const addPrice = (price: Price) => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
+const addPrice = (sessionType: string, price: string) => async (
+  dispatch: Dispatch<UserAction>, store: StoreState,
+) => {
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
-  const body = { ...price };
+  const body = { sessionType, price: Number(price) };
 
   const { data } = await api.user
     .userTherapistTariffsCreate(store.user.id.toString(), body, options);

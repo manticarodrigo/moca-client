@@ -90,9 +90,9 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
   );
 
   return (
-    <View safeArea flex={1}>
+    <View safeArea flex={1} bgColor="lightGrey">
 
-      <View scroll bgColor="lightGrey">
+      <View scroll>
         <View alignCenter bgColor="white" spacing={{ py: 4 }}>
           <View alignCenter justifyCenter spacing={{ p: 4 }}>
             <Image rounded size={120} />
@@ -141,7 +141,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
           ))}
         </View>
         <View alignCenter spacing={{ p: 3 }}>
-          <Button icon={<LogoutIcon />} variant="logout">Logout</Button>
+          <Button width="100%" icon={<LogoutIcon />} variant="logout">Logout</Button>
         </View>
       </View>
       {editInformationModal}

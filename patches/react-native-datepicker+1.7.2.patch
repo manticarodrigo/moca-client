@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-datepicker/style.js b/node_modules/react-native-datepicker/style.js
+index 30d2cc6..1f4b81a 100644
+--- a/node_modules/react-native-datepicker/style.js
++++ b/node_modules/react-native-datepicker/style.js
+@@ -52,7 +52,7 @@ let style = StyleSheet.create({
+   },
+   btnTextText: {
+     fontSize: 16,
+-    color: '#46cf98'
++    color: '#57b0cc'
+   },
+   btnTextCancel: {
+     color: '#666'

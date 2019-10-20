@@ -1,131 +1,119 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect, useMemo } from 'react';
+import { TextInputProps, Dimensions } from 'react-native';
 
 import FormField from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import ModalView from '@src/components/ModalView';
+import Modal from '@src/components/Modal';
 
 
-type InputModalProps = {
-  closeInputModal: () => void;
-  isModalVisible: boolean;
-  title: string;
-  placeHolder: string;
-  formFieldValue: string;
-  validate?: (value: string) => boolean;
-  onSubmit?: (value: string) => void;
-  errorText?: string;
-  maxLength?: number;
-  keyboardTypeNumber?: boolean;
-  buttonTextValue?: string;
+export type Props = TextInputProps & {
+  visible: boolean;
   password?: boolean;
+  title: string;
+  placeholder: string;
+  existingValue: string;
+  buttonText?: string;
+  buttonActionText?: boolean;
+  error?: string;
+  validate?: (value: string) => boolean;
+  onSubmit?: (value: string, key?: string) => void;
+  onClose: () => void;
 };
+
+const windowWidth = Dimensions.get('window').width;
 
 const InputModal = (
   {
+    visible = false,
     title,
-    closeInputModal,
-    onSubmit,
-    isModalVisible = false,
     validate,
-    placeHolder,
-    formFieldValue,
-    errorText,
-    maxLength,
-    keyboardTypeNumber,
-    buttonTextValue,
+    existingValue,
+    buttonText,
+    buttonActionText,
     password,
-  }: InputModalProps,
+    error,
+    onSubmit,
+    onClose,
+    ...inputProps
+  }: Props,
 ) => {
-  const [formField, setFormField] = useState(formFieldValue);
+  const [formField, setFormField] = useState('');
   const [isValid, setIsValid] = useState(true);
 
   const isButtonDisabled = formField === '' || !isValid;
-  const buttonText = formFieldValue !== '' ? 'Update' : 'Add';
 
-
-  const handleButtonPress = () => {
-    if (validate) {
-      if (validate(formField)) {
-        onSubmit(formField);
-      } else { setIsValid(false); }
-    } else {
-      onSubmit(formField);
-      closeInputModal();
+  const buttonTextValue = useMemo(() => {
+    if (buttonActionText) {
+      return `${(existingValue && 'Update ') || 'Add '}${buttonText}`;
     }
+
+    return buttonText;
+  }, [existingValue, buttonText, buttonActionText]);
+
+  useEffect(() => {
+    setFormField(existingValue);
+  }, [existingValue]);
+
+
+  const handleSubmit = () => {
+    if (validate && !validate(formField)) {
+      return setIsValid(false);
+    }
+
+    return onSubmit(formField);
+  };
+
+  const onChangeText = (value: string) => {
+    setFormField(value);
+    setIsValid(true);
   };
 
   return (
-    <ModalView
-      height={100}
-      isVisible={isModalVisible}
-      onBackdropPress={() => {
-        closeInputModal();
-        setIsValid(true);
-        setFormField(formFieldValue);
-      }}
-      onSwipeComplete={() => {
-        closeInputModal();
-        setIsValid(true);
-        setFormField(formFieldValue);
-      }}
-      handleArrowClick={() => {
-        closeInputModal();
-        setIsValid(true);
-        setFormField(formFieldValue);
-      }}
+    <Modal
+      avoidKeyboard
+      isVisible={visible}
+      onToggle={onClose}
     >
       <View alignCenter>
-        <View row>
-          <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
-            <Text variant="titleSmall">
-              {title}
-            </Text>
-          </View>
+        <View
+          variant="borderBottom"
+          width={windowWidth}
+          alignCenter
+          justifyCenter
+          spacing={{ py: 4 }}
+        >
+          <Text variant="titleSmall">
+            {title}
+          </Text>
         </View>
-        <View alignCenter spacing={{ mx: 3 }}>
+        <View alignCenter spacing={{ p: 4 }}>
           <FormField
-            spacing={{ mt: 6 }}
             error={!isValid}
-            placeholder={placeHolder}
             value={formField}
-            keyboardType={keyboardTypeNumber ? 'number-pad' : 'default'}
-            maxLength={maxLength || 200}
             returnKeyType="done"
             secureTextEntry={password}
-            onChangeText={(text) => {
-              setFormField(text);
-              setIsValid(true);
-            }}
+            onChangeText={onChangeText}
+            {...inputProps}
           />
-          {!isValid
-        && (
-        <Text spacing={{ mt: 1 }} variant="errorSmall">
-          {errorText}
-        </Text>
-        )}
+          {!isValid && <Text spacing={{ mt: 1 }} variant="errorSmall">{error}</Text>}
           <View row>
             <View flex={1}>
               <Button
                 spacing={{ mt: 3 }}
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
+                onPress={handleSubmit}
                 disabled={isButtonDisabled}
               >
-                {buttonTextValue || buttonText}
+                {buttonTextValue}
               </Button>
             </View>
           </View>
         </View>
       </View>
-    </ModalView>
+    </Modal>
   );
-};
-
-InputModal.navigationOptions = {
-  header: null,
 };
 
 export default InputModal;

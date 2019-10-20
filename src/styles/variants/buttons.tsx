@@ -150,7 +150,6 @@ const logout: ButtonVariant = {
     borderWidth: 1,
     borderColor: Colors.error,
     backgroundColor: 'transparent',
-    width: '90%',
   },
   text: { ...Typography.getStyles({ color: 'error', size: 3, weight: '700', align: 'center' }) },
   underlayColor: null,

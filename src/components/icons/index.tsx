@@ -40,7 +40,7 @@ export { default as QualificationIcon } from './QualificationIcon';
 export { default as RadiusLocationIcon } from './RadiusLocationIcon';
 export { default as RateIcon } from './RateIcon';
 export { default as ReportIcon } from './ReportIcon';
-export { default as RightIcon } from './RightIcon';
+export { default as CogIcon } from './CogIcon';
 export { default as SearchIcon } from './SearchIcon';
 export { default as SecondaryLogo } from './SecondaryLogo';
 export { default as SendIcon } from './SendIcon';

@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { G, Circle, Path } from 'react-native-svg';
 
-const RightIcon = () => (
+const CogIcon = () => (
   <Svg width="32px" height="32px" viewBox="0 0 32 32">
     <G
       id="Guide"
@@ -35,4 +35,4 @@ const RightIcon = () => (
   </Svg>
 );
 
-export default RightIcon;
+export default CogIcon;

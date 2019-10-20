@@ -2,37 +2,27 @@ import React from 'react';
 
 import QualificationsContent from '@src/screens/QualificationsScreen/QualificationsContent';
 
-import ModalView from '@src/components/ModalView';
+import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 
-const QualificationsModal = ({ isModalVisible, closeInputModal }) => (
-  <ModalView
+const QualificationsModal = ({ visible, onToggle }) => (
+  <Modal
     propagateSwipe
-    height={100}
-    isVisible={isModalVisible}
-    onBackdropPress={() => {
-      closeInputModal();
-    }}
-    onSwipeComplete={() => {
-      closeInputModal();
-    }}
-    handleArrowClick={() => {
-      closeInputModal();
-    }}
+    isVisible={visible}
+    onToggle={onToggle}
   >
     <View>
-      <View flex={1}>
-        <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
-          <Text variant="titleSmall">
-            Qualifications
-          </Text>
-        </View>
-        <QualificationsContent modal closeInputModal={closeInputModal} />
+      <View variant="borderBottom" alignCenter justifyCenter spacing={{ py: 4 }}>
+        <Text variant="titleSmall">
+          Qualifications
+        </Text>
       </View>
+      <QualificationsContent modal closeInputModal={onToggle} />
+      <View spacing={{ pt: 6 }} />
     </View>
-  </ModalView>
+  </Modal>
 );
 
 export default QualificationsModal;

@@ -47,7 +47,7 @@ const QualificationsContent = (
     if (checked) {
       updated.push(value);
     } else {
-      updated = updated.filter((v) => v === value);
+      updated = updated.filter((v) => v !== value);
     }
 
     setPreferredAilments(updated);

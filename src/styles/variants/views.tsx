@@ -235,7 +235,7 @@ const profileCard: ViewStyle = {
   backgroundColor: Colors.white,
   alignItems: 'center',
   borderBottomWidth: 1,
-  borderColor: Colors.secondary,
+  borderColor: Colors.secondaryLighter,
 };
 
 const profileCardLast: ViewStyle = {
@@ -254,7 +254,7 @@ const profileData: ViewStyle = {
   width: '100%',
   backgroundColor: Colors.white,
   borderBottomWidth: 1,
-  borderColor: Colors.secondary,
+  borderColor: Colors.secondaryLighter,
 };
 
 const profileDataLast: ViewStyle = {

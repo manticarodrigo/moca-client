@@ -49,15 +49,15 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps)
 
   const passwordModal = (
     <InputModal
-      closeInputModal={() => setIsPasswordModal(false)}
+      visible={isPasswordModal}
       title="Recover Password"
-      formFieldValue=""
-      placeHolder="Email"
+      placeholder="Email"
+      existingValue=""
       validate={validateEmailAddress}
-      isModalVisible={isPasswordModal}
-      errorText="Please enter a valid Email"
-      onSubmit={(value) => sumbitForgotPassword(value)}
-      buttonTextValue="Continue"
+      error="Please enter a valid Email"
+      buttonText="Continue"
+      onSubmit={sumbitForgotPassword}
+      onClose={() => setIsPasswordModal(false)}
     />
   );
 
