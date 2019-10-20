@@ -52,7 +52,7 @@ const defaultNavConfig = {
 
 const AppStack = createSwitchNavigator(
   {
-    SitemapScreen,
+    // SitemapScreen,
 
     AuthStack: createStackNavigator({
       OnboardingScreen,
@@ -105,7 +105,7 @@ const AppStack = createSwitchNavigator(
     }),
 
   },
-  { initialRouteName: 'SitemapScreen' },
+  // { initialRouteName: 'SitemapScreen' },
 );
 
 export default createAppContainer(AppStack);

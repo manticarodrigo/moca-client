@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TextInputProps, Dimensions } from 'react-native';
+import { TextInputProps } from 'react-native';
+
+import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 import FormField from '@src/components/FormField';
 import View from '@src/components/View';
@@ -21,8 +23,6 @@ export type Props = TextInputProps & {
   onSubmit?: (value: string, key?: string) => void;
   onClose: () => void;
 };
-
-const windowWidth = Dimensions.get('window').width;
 
 const InputModal = (
   {
@@ -79,13 +79,13 @@ const InputModal = (
       <View alignCenter>
         <View
           variant="borderBottom"
-          width={windowWidth}
+          width={WINDOW_WIDTH}
           alignCenter
           justifyCenter
           spacing={{ py: 4 }}
         >
           <Text variant="titleSmall">
-            {title}
+            {title || ''}
           </Text>
         </View>
         <View alignCenter spacing={{ p: 4 }}>

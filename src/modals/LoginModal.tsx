@@ -11,17 +11,15 @@ import { validateEmailAddress } from '@src/utlities/validations';
 
 import InputModal from '@src/modals/InputModal';
 
-import { EmailIcon, ChangePasswordIcon } from '@src/components/icons';
 
-
-type LoginModalProps = {
+type Props = {
   visible: boolean;
   onLogin: (email: string, password: string) => void;
   onClose: () => void;
   onModalHide: () => void;
 };
 
-const LoginModal = ({ visible, onLogin, onClose, onModalHide }: LoginModalProps) => {
+const LoginModal = ({ visible, onLogin, onClose, onModalHide }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);

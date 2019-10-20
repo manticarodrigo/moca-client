@@ -6,7 +6,7 @@ import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import CheckBox from '@src/components/Checkbox';
+import { Checkbox } from '@src/components/Checkbox';
 
 import { updateUser } from '@src/store/actions/UserAction';
 
@@ -41,7 +41,7 @@ const QualificationsContent = (
 
   const isButtonDisabled = !preferredAilments.length;
 
-  const handleCheckBoxClick = (index: number, value: string, checked: boolean) => {
+  const onCheckboxChange = (value: string) => (checked: boolean) => {
     let updated = [...preferredAilments];
 
     if (checked) {
@@ -53,7 +53,7 @@ const QualificationsContent = (
     setPreferredAilments(updated);
   };
 
-  const handleButtonPress = async () => {
+  const onPressSubmit = async () => {
     try {
       dispatch(updateUser({ preferredAilments }));
 
@@ -104,11 +104,9 @@ const QualificationsContent = (
                       width="100%"
                     >
                       <Text variant="titleSmall">{item}</Text>
-                      <CheckBox
-                        index={index}
-                        value={item}
+                      <Checkbox
                         checked={preferredAilments.includes(item)}
-                        onClick={handleCheckBoxClick}
+                        onChange={onCheckboxChange(item)}
                       />
                     </View>
                   ))}
@@ -117,7 +115,7 @@ const QualificationsContent = (
                   <View flex={1} spacing={{ py: 3 }}>
                     <Button
                       variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                      onPress={handleButtonPress}
+                      onPress={onPressSubmit}
                       disabled={isButtonDisabled}
                     >
                       {!modal ? 'Continue' : 'Update' }

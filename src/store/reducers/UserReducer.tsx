@@ -42,4 +42,8 @@ const reducer = (state: UserState, action: UserAction): UserState => {
   }
 };
 
+export {
+  flattenUserPayload,
+};
+
 export default reducer;

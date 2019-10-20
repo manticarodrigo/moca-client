@@ -73,7 +73,7 @@ const EditInformationModal = ({
         </View>
         <View alignCenter spacing={{ mt: 4, mx: 5 }}>
           <FormField
-            placeholder="first name"
+            placeholder="First name"
             value={name}
             returnKeyType="next"
             ref={nameField}
@@ -81,7 +81,7 @@ const EditInformationModal = ({
             onSubmitEditing={() => lastNameField.current.focus()}
           />
           <FormField
-            placeholder="last name"
+            placeholder="Last name"
             value={lastName}
             returnKeyType="next"
             ref={lastNameField}
@@ -90,7 +90,8 @@ const EditInformationModal = ({
 
           />
           <FormField
-            placeholder="email address"
+            icon="email"
+            placeholder="Email address"
             value={email}
             ref={emailField}
             returnKeyType="done"
@@ -100,7 +101,6 @@ const EditInformationModal = ({
               setIsEmailValid(true);
             }}
             error={!isEmailValid}
-            icon={EmailIcon}
           />
           {!isEmailValid
             && (

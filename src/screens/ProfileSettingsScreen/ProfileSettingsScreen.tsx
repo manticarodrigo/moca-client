@@ -3,6 +3,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import EditInformationModal from '@src/modals/EditInformationModal';
 import ChangePasswordModal from '@src/modals/ChangePasswordModal';
+import { updateUser, logoutUser } from '@src/store/actions/UserAction';
 
 
 import View from '@src/components/View';
@@ -15,7 +16,6 @@ import { BackButtonIcon, LogoutIcon } from '@src/components/icons';
 import { Views, Colors } from '@src/styles';
 
 import useStore from '@src/hooks/useStore';
-import { updateUser } from '@src/store/actions/UserAction';
 
 const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
   const { store, dispatch } = useStore();
@@ -70,6 +70,10 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
       default:
         return null;
     }
+  };
+
+  const onPressLogout = () => {
+    dispatch(logoutUser());
   };
 
   const editInformationModal = (
@@ -141,7 +145,14 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = () => {
           ))}
         </View>
         <View alignCenter spacing={{ p: 3 }}>
-          <Button width="100%" icon={<LogoutIcon />} variant="logout">Logout</Button>
+          <Button
+            width="100%"
+            icon={<LogoutIcon />}
+            variant="logout"
+            onPress={onPressLogout}
+          >
+            Logout
+          </Button>
         </View>
       </View>
       {editInformationModal}

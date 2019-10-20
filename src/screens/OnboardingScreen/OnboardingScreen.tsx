@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 
@@ -41,81 +41,85 @@ const slides = [
 const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
   const { store, dispatch } = useStore();
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
+  const onPressSignup = () => navigation.push('SelectionScreen');
 
-  const handleSignUpPress = () => navigation.push('SelectionScreen');
-  const toggleLoginModal = () => setIsLoginModalVisible(!isLoginModalVisible);
+  const onToggleLoginModal = () => setIsLoginModalVisible(!isLoginModalVisible);
 
-
-  const sumbitLogin = async (email: string, password: string) => {
+  const onSumbitLogin = async (email: string, password: string) => {
     try {
       await dispatch(loginUser(email, password));
 
-      setIsLoginSuccess(true);
       setIsLoginModalVisible(false);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const onAuthenticate = async () => {
+    // for navigation transitions
+    await setTimeout(() => null);
 
-  const loginModal = (
-    <LoginModal
-      visible={isLoginModalVisible}
-      onClose={toggleLoginModal}
-      onLogin={sumbitLogin}
-      onModalHide={() => {
-        if (isLoginSuccess) {
-          if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
-            navigation.navigate('QualificationsScreen');
-          } else if (store.user.addresses.length === 0) {
-            navigation.push('AddressScreen', { title: 'Address' });
-          } else {
-            navigation.navigate('DashboardScreen');
-          }
-          setIsLoginSuccess(false);
-        }
-      }}
-    />
-  );
+    if (!store.user.id || !store.user.token) {
+      return;
+    }
+
+    if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
+      navigation.navigate('QualificationsScreen');
+    } else if (store.user.addresses.length === 0) {
+      navigation.navigate('AddressScreen', { title: 'Address' });
+    } else {
+      navigation.navigate('DashboardScreen');
+    }
+  };
+
+  useEffect(() => {
+    onAuthenticate();
+  }, [store.user]);
 
 
   return (
-    <View safeArea flex={1} alignCenter bgColor="white">
-      <StatusBar barStyle="dark-content" />
-      <ContainedView>
-        <View flex={1} row justifyCenter width="100%" spacing={{ p: 4 }}>
-          <Image width={175} height={110} file={Logo} />
-        </View>
-        <View flex={3} spacing={{ p: 4 }}>
-          <Slider slides={slides.map(({ icon, title, text }) => (
-            <View key={title} style={{ marginTop: -50 }} column flex={1} justifyCenter alignCenter spacing={{ p: 5 }}>
-              <View>
-                {icon}
-              </View>
-              <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
-                {title}
-              </Text>
-              <Text variant="regular" typography={{ align: 'center' }}>
-                {text}
-              </Text>
-            </View>
-          ))}
-          />
-        </View>
-        <View flex={1} spacing={{ p: 4 }}>
-          <Button onPress={handleSignUpPress}>
-            Signup
-          </Button>
-          <View row justifyCenter spacing={{ mt: 4 }}>
-            <Text variant="regular">Already have an account?</Text>
-            <Text variant="link" spacing={{ ml: 1 }} onPress={toggleLoginModal}>Login</Text>
+    <>
+      <LoginModal
+        visible={isLoginModalVisible}
+        onClose={onToggleLoginModal}
+        onLogin={onSumbitLogin}
+        onModalHide={onAuthenticate}
+      />
+      <View safeArea flex={1} alignCenter bgColor="white">
+        <StatusBar barStyle="dark-content" />
+        <ContainedView>
+          <View flex={1} row justifyCenter width="100%" spacing={{ p: 4 }}>
+            <Image width={175} height={110} file={Logo} />
           </View>
-        </View>
-      </ContainedView>
-      {loginModal}
-    </View>
+          <View flex={3} spacing={{ p: 4 }}>
+            <Slider slides={slides.map(({ icon, title, text }) => (
+              <View key={title} style={{ marginTop: -50 }} column flex={1} justifyCenter alignCenter spacing={{ p: 5 }}>
+                <View>
+                  {icon}
+                </View>
+                <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
+                  {title}
+                </Text>
+                <Text variant="regular" typography={{ align: 'center' }}>
+                  {text}
+                </Text>
+              </View>
+            ))}
+            />
+          </View>
+          <View flex={1} spacing={{ p: 4 }}>
+            <Button onPress={onPressSignup}>
+              Signup
+            </Button>
+            <View row justifyCenter spacing={{ mt: 4 }}>
+              <Text variant="regular">Already have an account?</Text>
+              <Text variant="link" spacing={{ ml: 1 }} onPress={onToggleLoginModal}>Login</Text>
+            </View>
+          </View>
+        </ContainedView>
+      </View>
+    </>
   );
 };
 

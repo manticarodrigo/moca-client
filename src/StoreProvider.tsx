@@ -5,7 +5,7 @@ import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 import { SearchAction } from '@src/store/actions/SearchAction';
 import { ConversationAction } from '@src/store/actions/ConversationAction';
 
-import userReducer, { UserState } from '@src/store/reducers/UserReducer';
+import userReducer, { UserState, initialState as user } from '@src/store/reducers/UserReducer';
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import searchReducer, { SearchState } from '@src/store/reducers/SearchReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
@@ -46,18 +46,7 @@ const useAsyncReducer: AsyncReducer = (reducer, initialState) => {
   return [state, asyncDispatch];
 };
 
-const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
-  const newState = {
-    user: userReducer(store.user, action as UserAction),
-    registration: registrationReducer(store.registration, action as RegistrationAction),
-    search: searchReducer(store.search, action as SearchAction),
-    conversations: conversationReducer(store.conversations, action as ConversationAction),
-  };
-
-  return newState;
-};
-
-const initialState: StoreState = {
+export const initialState: StoreState = {
   user: {
     firstName: '',
     lastName: '',
@@ -70,6 +59,23 @@ const initialState: StoreState = {
   },
   search: [],
   conversations: [],
+};
+
+const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
+  if (action.type === 'LOGOUT_USER_SUCCESS') {
+    return initialState;
+  }
+
+  const newState = {
+    user: userReducer(store.user, action as UserAction),
+    registration: registrationReducer(store.registration, action as RegistrationAction),
+    search: searchReducer(store.search, action as SearchAction),
+    conversations: conversationReducer(store.conversations, action as ConversationAction),
+  };
+
+  console.log(action.type, newState);
+
+  return newState;
 };
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);

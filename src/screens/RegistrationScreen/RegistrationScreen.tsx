@@ -36,7 +36,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     password: '',
     firstName: '',
     lastName: '',
-    ...(!isPatient && { licenseNumber: '' }),
   });
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -165,17 +164,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 }
               }}
             />
-            {/* {!isPatient && (
-              <FormField
-                placeholder="Medical ID"
-                value={formFields.licenseNumber}
-                returnKeyType="done"
-                keyboardType="numeric"
-                ref={medicalIdField}
-                onSubmitEditing={() => emailField.current.focus()}
-                onChangeText={updateFormField('licenseNumber')}
-              />
-            )} */}
             <FormField
               icon="email"
               placeholder="Email address"

@@ -5,10 +5,37 @@ import { registerRootComponent } from 'expo';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { activateKeepAwake } from 'expo-keep-awake';
 
+import storage from '@src/services/storage';
+
+import useStore from '@src/hooks/useStore';
+import { updateUserState } from '@src/store/actions/UserAction';
+
 import StoreProvider from '@src/StoreProvider';
 import NavigationProvider from '@src/NavigationProvider';
 
 import { Typography } from '@src/styles';
+
+const AppStateHandler = ({ children }) => {
+  const { store, dispatch } = useStore();
+
+  useEffect(() => {
+    const onMount = async () => {
+      // storage.storeUser('');
+
+      if (!store.user.token) {
+        const local = await storage.retrieveUser();
+
+        if (local) {
+          dispatch(updateUserState(local));
+        }
+      }
+    };
+
+    onMount();
+  }, [store.user.token]);
+
+  return children;
+};
 
 const App = () => {
   const [appLoaded, setAppLoaded] = useState(false);
@@ -26,7 +53,9 @@ const App = () => {
   return appLoaded ? (
     <StoreProvider>
       <StatusBar barStyle="light-content" />
-      <NavigationProvider />
+      <AppStateHandler>
+        <NavigationProvider />
+      </AppStateHandler>
     </StoreProvider>
   ) : null;
 };
