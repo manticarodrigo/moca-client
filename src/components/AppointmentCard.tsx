@@ -41,7 +41,7 @@ const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
       </View>
       <View flex={1} spacing={{ pl: 3 }}>
         <View row justifyBetween>
-          <Text variant="titleSmall">
+          <Text variant={current ? 'title' : 'titleSmall'} numberOfLines={2}>
             Elvis Presley
           </Text>
           <View row>
@@ -53,9 +53,9 @@ const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
         </View>
         <View row justifyEnd={isTherapist} justifyBetween={!isTherapist} spacing={{ py: 1 }}>
           {!isTherapist && <Rating rate="2" />}
-          <Text variant="title">$60</Text>
+          <Text variant="titlePrimaryLarge">$60</Text>
         </View>
-        <View row justifyBetween>
+        <View row justifyBetween spacing={{ py: isTherapist && current && 2 }}>
           <View row flex={1}>
             <View column flex={1} spacing={{ mt: (isTherapist && !current) && -5 }}>
               <Text variant={current && isTherapist ? 'boldSecondary' : 'boldGrey'}>
@@ -79,7 +79,12 @@ const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
         </View>
 
         {hasButton && (
-          <Button variant="secondary" spacing={{ mt: 3 }} bgColor={canCancel ? 'white' : null} onPress={() => null}>
+          <Button
+            variant="secondary"
+            spacing={{ mt: 3 }}
+            bgColor={canCancel ? 'white' : null}
+            onPress={() => null}
+          >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
           </Button>
