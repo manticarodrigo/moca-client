@@ -4,7 +4,7 @@ import { Dispatch } from 'react';
 import api from '@src/services/api';
 import storage from '@src/services/storage';
 import { StoreState } from '@src/StoreProvider';
-import { UserState, flattenUserPayload } from '@src/store/reducers/UserReducer';
+import { UserState } from '@src/store/reducers/UserReducer';
 
 import {
   User,
@@ -39,12 +39,7 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
     ? api.user.userPatientCreate
     : api.user.userTherapistCreate;
 
-  let { data } = await registerMethod({ user: { email, password, firstName, lastName } });
-
-  if (user.type === 'PA') {
-    // NOTE: temporary API fix
-    data = flattenUserPayload({}, data);
-  }
+  const { data } = await registerMethod({ user: { email, password, firstName, lastName } });
 
   dispatch({ type: 'REGISTER_USER_SUCCESS', payload: data });
 
@@ -53,7 +48,7 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
   return data;
 };
 
-const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>, store) => {
+const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
   const { data } = await api.auth.authenticateLoginCreate({ email, password });
 
   // @ts-ignore
@@ -108,7 +103,7 @@ const updateUser = (partialState: UserState) => async (
 
   dispatch({ type: 'UPDATE_USER_SUCCESS', payload: data as UserState });
 
-  await storage.storeUser(data);
+  await storage.storeUser({ ...data, token: store.user.token });
 
   return data;
 };
