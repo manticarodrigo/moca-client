@@ -56,11 +56,8 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
     }
   };
 
-  const onAuthenticate = async () => {
-    // for navigation transitions
-    await setTimeout(() => null);
-
-    if (!store.user.id || !store.user.token) {
+  useEffect(() => {
+    if (isLoginModalVisible || !store.user.id || !store.user.token) {
       return;
     }
 
@@ -71,12 +68,7 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
     } else {
       navigation.navigate('DashboardScreen');
     }
-  };
-
-  useEffect(() => {
-    onAuthenticate();
-  }, [store.user]);
-
+  }, [store.user, isLoginModalVisible]);
 
   return (
     <>
@@ -84,7 +76,6 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
         visible={isLoginModalVisible}
         onClose={onToggleLoginModal}
         onLogin={onSumbitLogin}
-        onModalHide={onAuthenticate}
       />
       <View safeArea flex={1} alignCenter bgColor="white">
         <StatusBar barStyle="dark-content" />

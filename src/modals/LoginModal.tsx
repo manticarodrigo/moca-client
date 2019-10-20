@@ -5,7 +5,7 @@ import FormField from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import ModalView from '@src/components/ModalView';
+import Modal from '@src/components/Modal';
 
 import { validateEmailAddress } from '@src/utlities/validations';
 
@@ -16,20 +16,17 @@ type Props = {
   visible: boolean;
   onLogin: (email: string, password: string) => void;
   onClose: () => void;
-  onModalHide: () => void;
 };
 
-const LoginModal = ({ visible, onLogin, onClose, onModalHide }: Props) => {
+const LoginModal = ({ visible, onLogin, onClose }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordModal, setIsPasswordModal] = useState(false);
 
-
   const emailField = useRef(null);
   const passwordField = useRef(null);
   const isButtonDisabled = !((email && password) !== '') || !isEmailValid;
-
 
   const handleButtonPress = () => {
     if (validateEmailAddress(email)) {
@@ -38,7 +35,6 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: Props) => {
       setIsEmailValid(false);
     }
   };
-
 
   const sumbitForgotPassword = (value: string) => {
     // api
@@ -60,16 +56,11 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: Props) => {
   );
 
   return (
-    <ModalView
+    <Modal
       propagateSwipe
-      height={100}
       isVisible={visible}
-      onBackdropPress={onClose}
-      onSwipeComplete={onClose}
-      handleArrowClick={onClose}
-      onModalHide={onModalHide}
+      onToggle={onClose}
     >
-
       <View alignCenter>
         <View row>
           <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
@@ -133,7 +124,7 @@ const LoginModal = ({ visible, onLogin, onClose, onModalHide }: Props) => {
           {passwordModal}
         </View>
       </View>
-    </ModalView>
+    </Modal>
   );
 };
 
