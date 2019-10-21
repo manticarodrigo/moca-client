@@ -5,6 +5,7 @@ import {
   AppointmentApiFactory,
   DeviceApiFactory,
   PaymentApiFactory,
+  ChatApiFactory,
 } from '@src/services/openapi';
 
 const basePath = 'http://18.188.88.172:8000/api';
@@ -16,4 +17,5 @@ export default {
   appointment: AppointmentApiFactory({}, basePath),
   device: DeviceApiFactory({}, basePath),
   payment: PaymentApiFactory({}, basePath),
+  chat: ChatApiFactory({}, basePath),
 };
