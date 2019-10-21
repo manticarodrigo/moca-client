@@ -21,7 +21,7 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
     return {
       image: user.image || undefined,
       name: `${user.firstName} ${user.lastName}`,
-      time: format(new Date(lastMessage.createdAt), 'h:mm a / dd.MM.yyyy'),
+      time: format(new Date(lastMessage.createdAt), 'MM/dd/yyyy - h:mm a'),
       text: lastMessage.text.content,
     };
   }, [conversation]);
