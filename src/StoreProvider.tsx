@@ -4,11 +4,13 @@ import { UserAction } from '@src/store/actions/UserAction';
 import { RegistrationAction } from '@src/store/actions/RegistrationAction';
 import { SearchAction } from '@src/store/actions/SearchAction';
 import { ConversationAction } from '@src/store/actions/ConversationAction';
+import { AppointmentAction } from '@src/store/actions/AppointmentAction';
 
 import userReducer, { UserState } from '@src/store/reducers/UserReducer';
 import registrationReducer, { RegistrationState } from '@src/store/reducers/RegistrationReducer';
 import searchReducer, { SearchState } from '@src/store/reducers/SearchReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
+import appointmentReducer, { AppointmentState } from '@src/store/reducers/AppointmentReducer';
 import { UserTypeEnum, UserGenderEnum } from './services/openapi';
 
 export type StoreState = {
@@ -16,21 +18,28 @@ export type StoreState = {
   registration: RegistrationState;
   search: SearchState;
   conversations: ConversationState;
+  appointments: AppointmentState;
 };
 
-type StoreAction = UserAction | RegistrationAction | SearchAction | ConversationAction;
-type StoreReducer = Reducer<StoreState, StoreAction>;
+type StoreAction =
+  | UserAction
+  | RegistrationAction
+  | SearchAction
+  | ConversationAction
+  | AppointmentAction
+
+type StoreReducer = Reducer<StoreState, StoreAction>
 
 type ProviderAsyncAction = (
   dispatch: Dispatch<StoreAction>,
   store: StoreState,
-) => Promise<object | void>;
+) => Promise<object | void>
 
 export type ProviderDispatch = (
 action: StoreAction | ProviderAsyncAction,
-) => void | Promise<object | void>;
+) => void | Promise<object | void>
 
-type ProviderValue = [StoreState, ProviderDispatch];
+type ProviderValue = [StoreState, ProviderDispatch]
 
 type AsyncReducer = (
   reducer: StoreReducer,
@@ -65,6 +74,7 @@ export const initialState: StoreState = {
     list: [],
     map: {},
   },
+  appointments: [],
 };
 
 const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
@@ -77,9 +87,8 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
     registration: registrationReducer(store.registration, action as RegistrationAction),
     search: searchReducer(store.search, action as SearchAction),
     conversations: conversationReducer(store.conversations, action as ConversationAction),
+    appointments: appointmentReducer(store.appointments, action as AppointmentAction),
   };
-
-  console.log(action.type, newState);
 
   return newState;
 };

@@ -163,6 +163,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
           <Text variant="boldGrey" spacing={{ m: 3 }}>Desired Cost</Text>
           <View spacing={{ px: 3 }}>
             <FormField
+              keyboardType="number-pad"
               icon="dollar"
               placeholder="Max Price"
               value={filters.maxPrice}

@@ -3,7 +3,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 
-import { LogoIcon, StarsIcon, CogIcon } from '@src/components/icons';
+import { StarsIcon, CogIcon } from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
 
@@ -12,6 +12,7 @@ import { Colors } from '@src/styles';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
+import LogoBackground from '@src/components/LogoBackground';
 
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
@@ -27,9 +28,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <View safeArea flex={1} bgColor="primary">
 
-      <View row justifyEnd absoluteFill spacing={{ mt: -6, mr: -5 }}>
-        <LogoIcon size={2} />
-      </View>
+      <LogoBackground />
 
       <View row justifyBetween alignCenter width="100%" spacing={{ p: 4, pt: 3 }}>
         <View width={32} height={32} />

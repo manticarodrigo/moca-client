@@ -1,47 +1,42 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
 
-import ModalView from '@src/components/ModalView';
+import { differenceInMinutes } from 'date-fns';
+
+import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import AppointmentHeader from '@src/components/AppointmentHeader';
 
 import ReviewScreen from '@src/screens/ReviewScreen/ReviewScreen';
 import TimerScreen from '@src/screens/TimerScreen/TimerScreen';
 
-
 const AppointmentModal = ({
-  closeInputModal,
+  visible,
+  isTherapist,
   appointment,
   sessionEnded,
-  isTherapist,
-  isVisible,
-  submitSessionEnded,
-  submitReview,
+  onSubmitEndSession,
+  onSubmitReview,
+  onClose,
 }) => (
-  <ModalView
-    isVisible={isVisible}
-    height={100}
-    onBackdropPress={() => {
-      closeInputModal();
-    }}
-    onSwipeComplete={() => {
-      closeInputModal();
-    }}
-    handleArrowClick={() => {
-      closeInputModal();
-    }}
-  >
-    <View>
-      <AppointmentHeader
-        appointmentPrice={appointment.appointmentPrice}
-        name={appointment.name}
-        appointmentDuration={appointment.appointmentDuration}
-      />
-      {(!isTherapist && sessionEnded)
-        ? <ReviewScreen submitReview={submitReview} />
-        : <TimerScreen isTherapist={isTherapist} submitSessionEnded={submitSessionEnded} /> }
-    </View>
-  </ModalView>
+  <Modal isVisible={visible} onToggle={onClose}>
+    {appointment && (
+      <View>
+        <AppointmentHeader
+          appointmentPrice={appointment.price}
+          name={`${appointment.otherParty.firstName} ${appointment.otherParty.lastName}`}
+          appointmentDuration={
+            differenceInMinutes(
+              new Date(appointment.startTime),
+              new Date(appointment.endTime),
+            ).toString()
+          }
+        />
+        {(!isTherapist && sessionEnded)
+          ? <ReviewScreen submitReview={onSubmitReview} />
+          : <TimerScreen isTherapist={isTherapist} submitSessionEnded={onSubmitEndSession} />}
+      </View>
+    )}
+  </Modal>
 );
 
 export default AppointmentModal;

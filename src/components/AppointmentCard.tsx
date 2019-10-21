@@ -54,7 +54,7 @@ const AppointmentCard = ({ current, isTherapist, onPress }: AppointmentCardProps
           </View>
         </View>
         <View row justifyEnd={isTherapist} justifyBetween={!isTherapist} spacing={{ py: 1 }}>
-          {!isTherapist && <Rating rate="2" />}
+          {!isTherapist && <Rating rating={2} />}
           <Text variant="titlePrimaryLarge">$60</Text>
         </View>
         <View row justifyBetween spacing={{ py: isTherapist && current && 2 }}>
