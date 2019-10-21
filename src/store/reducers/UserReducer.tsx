@@ -10,6 +10,7 @@ export type UserState = &
   token?: string;
   prices?: Price[];
   payments?: object[];
+  storageReady?: boolean;
 }
 
 function flattenUserPayload(state, { user, ...rest }) {

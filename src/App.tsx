@@ -23,11 +23,9 @@ const AppStateHandler = ({ children }) => {
       // storage.storeUser('');
 
       if (!store.user.token) {
-        const local = await storage.retrieveUser();
+        const local = await storage.retrieveUser() || {};
 
-        if (local) {
-          dispatch(updateUserState(local));
-        }
+        dispatch(updateUserState({ ...local, storageReady: true }));
       }
     };
 
