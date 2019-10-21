@@ -59,8 +59,12 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const onPressTherapist = (id: number) => setSelectedId(id);
 
-  const onMessageTherapist = (id: number) => {
-    // navigate to therapist chat screen.
+  const onMessageTherapist = (user: object) => {
+    if (selectedId) {
+      setSelectedId(undefined);
+    }
+
+    navigation.navigate('ConversationScreen', { user });
   };
 
   const onToggleFilters = () => setFiltersVisible(!filtersVisible);
@@ -84,12 +88,17 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <TherapistProfileModal
         visible={!!selectedId}
         therapistId={selectedId}
+        onPressMessage={onMessageTherapist}
         onClose={() => setSelectedId(undefined)}
       />
       <SearchField
         value={searchText}
         onChangeText={onSearchChange}
         onToggleFilters={onToggleFilters}
+      />
+      <SearchFilterModal
+        isVisible={filtersVisible}
+        onClose={onSubmitFilters}
       />
       <View safeArea flex={1} bgColor="lightGrey">
         <View flex={1}>
@@ -123,10 +132,6 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
             keyExtractor={({ id }) => id.toString()}
           />
         </View>
-        <SearchFilterModal
-          isVisible={filtersVisible}
-          onClose={onSubmitFilters}
-        />
       </View>
     </>
   );

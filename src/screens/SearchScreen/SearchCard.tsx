@@ -14,7 +14,7 @@ const sessions = { thirty: '30', fortyfive: '45', sixty: '60' };
 
 type Props = TherapistSearch & {
   onPressTherapist: (userId: number) => void;
-  onMessageTherapist: (userId: number) => void;
+  onMessageTherapist: (user: object) => void;
 }
 
 const SearchCard = ({
@@ -28,7 +28,7 @@ const SearchCard = ({
   onMessageTherapist,
 }: Props) => {
   const handlePressCard = () => onPressTherapist(id);
-  const handlePressMessage = () => onMessageTherapist(id);
+  const handlePressMessage = () => onMessageTherapist({ id, firstName, lastName });
 
   const sessionTypes = prices.map(({ sessionType }) => sessions[sessionType]).join('/');
   const avgPrice = prices.reduce((total, { price }) => total + price, 0) / prices.length;

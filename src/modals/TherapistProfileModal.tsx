@@ -17,7 +17,7 @@ import { mockImg } from '@src/services/mock';
 import TherapistProfile from '@src/screens/ProfileScreen/TherapistProfile';
 
 
-const TherapistProfileModal = ({ therapistId, visible, onClose }) => {
+const TherapistProfileModal = ({ therapistId, visible, onPressMessage, onClose }) => {
   const { store } = useStore();
   const [therapist, setTherapist] = useState();
 
@@ -34,13 +34,14 @@ const TherapistProfileModal = ({ therapistId, visible, onClose }) => {
     fetchTherapist();
   }, [therapistId]);
 
+  const handlePressMessage = () => onPressMessage(therapist);
+
   return (
     <Modal
       propagateSwipe
       isVisible={visible}
       onToggle={onClose}
     >
-
       <View bgColor="lightGrey">
         <View bgColor="white">
           <View alignEnd spacing={{ mr: 3 }}>
@@ -71,7 +72,7 @@ const TherapistProfileModal = ({ therapistId, visible, onClose }) => {
                 <TherapistProfile therapist={therapist} modal />
               </View>
               <View flex={1} variant="borderTop" spacing={{ p: 4 }}>
-                <Button onPress={() => null}>
+                <Button onPress={handlePressMessage}>
                     Message / Schedule
                 </Button>
               </View>
