@@ -11,7 +11,6 @@ import registrationReducer, { RegistrationState } from '@src/store/reducers/Regi
 import searchReducer, { SearchState } from '@src/store/reducers/SearchReducer';
 import conversationReducer, { ConversationState } from '@src/store/reducers/ConversationReducer';
 import appointmentReducer, { AppointmentState } from '@src/store/reducers/AppointmentReducer';
-import { UserTypeEnum, UserGenderEnum } from './services/openapi';
 
 export type StoreState = {
   user: UserState;
@@ -60,11 +59,12 @@ export const initialState: StoreState = {
   user: {
     firstName: '',
     lastName: '',
+    gender: 'M',
+    type: 'PA',
     addresses: [],
-    preferredAilments: [],
     prices: [],
-    gender: UserGenderEnum.M,
-    type: UserTypeEnum.PA,
+    payments: [],
+    preferredAilments: [],
   },
   registration: {
     address: {},
@@ -78,10 +78,6 @@ export const initialState: StoreState = {
 };
 
 const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
-  if (action.type === 'LOGOUT_USER_SUCCESS') {
-    return initialState;
-  }
-
   const newState = {
     user: userReducer(store.user, action as UserAction),
     registration: registrationReducer(store.registration, action as RegistrationAction),
@@ -89,6 +85,10 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
     conversations: conversationReducer(store.conversations, action as ConversationAction),
     appointments: appointmentReducer(store.appointments, action as AppointmentAction),
   };
+
+  if (action.type === 'LOGOUT_USER') {
+    return initialState;
+  }
 
   return newState;
 };

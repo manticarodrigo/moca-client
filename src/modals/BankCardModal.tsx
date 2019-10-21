@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import stripe, { CardDetails, BankAccountDetails } from '@src/services/stripe';
 
 import useStore from '@src/hooks/useStore';
+import { addPayment } from '@src/store/actions/UserAction';
 
 import {
   AmexIcon,
@@ -17,7 +18,6 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
-import { UserTypeEnum } from '@src/services/openapi';
 
 type CardFields = CardDetails['card']
 type BankFields = BankAccountDetails['bank_account']
@@ -81,7 +81,7 @@ const BankFields = ({ fields, onChangeField }: BankFieldProps) => (
     />
     <FormField
       placeholder="Account Number"
-      maxLength={10}
+      maxLength={12}
       value={fields.account_number}
       onChangeText={onChangeField('account_number')}
     />
@@ -89,10 +89,11 @@ const BankFields = ({ fields, onChangeField }: BankFieldProps) => (
 );
 
 const BankCardModal = ({ isVisible, onToggle }) => {
-  const { store } = useStore();
-  const isTherapist = store.user.type === UserTypeEnum.PT;
+  const { store, dispatch } = useStore();
 
-  const [error, setError] = useState();
+  const isTherapist = store.user.type === 'PT';
+
+  const [errorString, setErrorString] = useState();
 
   const [cardFields, setCardFields] = useState<CardFields>({
     number: '',
@@ -129,10 +130,14 @@ const BankCardModal = ({ isVisible, onToggle }) => {
     const response = await stripe.createToken(tokenInfo);
 
     if (response.error) {
-      return setError(response.error.message);
+      return setErrorString(response.error.message);
     }
 
-    // TODO: send details to server
+    try {
+      await dispatch(addPayment(response));
+    } catch (e) {
+      // console.log(e);
+    }
 
     return onToggle();
   };
@@ -140,6 +145,8 @@ const BankCardModal = ({ isVisible, onToggle }) => {
   return (
     <Modal
       avoidKeyboard
+      propagateSwipe
+      marginTop={50}
       bgColor="white"
       isVisible={isVisible}
       onToggle={onToggle}
@@ -161,34 +168,30 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           height={60}
           width="100%"
         >
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <MasterCardIcon />
-          </View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <VisaIcon />
-          </View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <AmexIcon />
-          </View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}>
-            <MaestroIcon />
-          </View>
+          <View alignCenter justifyCenter spacing={{ mx: 4 }}><MasterCardIcon /></View>
+          <View alignCenter justifyCenter spacing={{ mx: 4 }}><VisaIcon /></View>
+          <View alignCenter justifyCenter spacing={{ mx: 4 }}><AmexIcon /></View>
+          <View alignCenter justifyCenter spacing={{ mx: 4 }}><MaestroIcon /></View>
         </View>
 
-        <View spacing={{ p: 3 }}>
-          {isTherapist ? (
-            <BankFields fields={bankFields} onChangeField={onChangeBankField} />
-          ) : (
-            <CardFields fields={cardFields} onChangeField={onChangeCardField} />
-          )}
-          {error && (
-            <Text spacing={{ mt: 3 }} variant="errorSmall" typography={{ align: 'center' }}>
-              {error}
-            </Text>
-          )}
-          <Button spacing={{ mt: 3 }} onPress={onFormSubmit}>
-            Add Account
-          </Button>
+        <View scroll>
+          <View flex={2} spacing={{ p: 3 }}>
+            {isTherapist ? (
+              <BankFields fields={bankFields} onChangeField={onChangeBankField} />
+            ) : (
+              <CardFields fields={cardFields} onChangeField={onChangeCardField} />
+            )}
+            {errorString && (
+              <Text spacing={{ mt: 3 }} variant="errorSmall" typography={{ align: 'center' }}>
+                {errorString}
+              </Text>
+            )}
+          </View>
+          <View flex={1} spacing={{ p: 3, pb: 6 }}>
+            <Button onPress={onFormSubmit}>
+              Add Account
+            </Button>
+          </View>
         </View>
       </View>
 

@@ -69,6 +69,7 @@ const AppStack = createSwitchNavigator(
       DashboardTab: createStackNavigator({
         DashboardScreen,
         SearchScreen,
+        HistoryScreen,
       }, defaultNavConfig),
 
       ScheduleTab: createStackNavigator({
@@ -87,7 +88,6 @@ const AppStack = createSwitchNavigator(
         AddressSettingsScreen,
         AddressScreen,
         WalletScreen,
-        HistoryScreen,
       }, defaultNavConfig),
 
     }, {

@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
+import useStore from '@src/hooks/useStore';
+import useProfileStatus from '@src/hooks/useProfileStatus';
 import useNavigation from '@src/hooks/useNavigation';
 
 import View from '@src/components/View';
@@ -13,25 +15,49 @@ import * as Colors from '@src/styles/global/colors';
 type Props = { isActivated: boolean; isTherapist: boolean }
 
 const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
+  const { store } = useStore();
   const navigation = useNavigation();
+  const profilePercent = useProfileStatus(store.user);
 
   const handlePress = (screen: string) => () => navigation.navigate(screen);
 
-  const profilePercent = 50;
-  const profilePercentString = `${100 - profilePercent}% of your profile information is missing`;
-  const profileReady = profilePercent >= 50;
-
   const bgColor = (isTherapist && !isActivated) ? 'transparent' : 'lightGrey';
 
-  const styles = useMemo(() => StyleSheet.create({
-    progressBarIndicator: {
-      width: `${profilePercent}%`,
-      backgroundColor: profileReady ? Colors.success : Colors.error,
-    },
-  }), [profilePercent, profileReady]);
+  const { profileReady, profilePercentString, styles } = useMemo(() => {
+    const isReady = profilePercent >= 50;
+
+    return {
+      profileReady: isReady,
+      profilePercentString: `${100 - profilePercent}% of your profile information is missing`,
+      styles: StyleSheet.create({
+        progressBarIndicator: {
+          width: `${profilePercent}%`,
+          backgroundColor: isReady ? Colors.success : Colors.error,
+        },
+      }),
+    };
+  }, [profilePercent]);
 
   return (
     <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor={bgColor}>
+
+      {profilePercent !== 100 && ( // add a better check
+        <LinkCard
+          type="contact"
+          status={profileReady ? 'success' : 'error'}
+          spacing={{ mb: 2 }}
+          onPress={handlePress('ProfileScreen')}
+        >
+          <View>
+            <Text variant={profileReady ? 'regularSmallSuccess' : 'regularSmallError'}>
+              {profilePercentString}
+            </Text>
+            <View variant="progressBar" spacing={{ mt: 2 }}>
+              <View variant="progressBarIndicator" style={styles.progressBarIndicator} />
+            </View>
+          </View>
+        </LinkCard>
+      )}
 
       {!isTherapist && (
         <LinkCard type="diagnosis" spacing={{ mb: 2 }} onPress={handlePress('ProfileScreen')}>
@@ -66,29 +92,11 @@ const DashboardLinks = ({ isActivated, isTherapist }: Props) => {
       )}
 
       {isActivated && (
-        <LinkCard type="history" spacing={{ mb: 2 }} onPress={handlePress('ProfileScreen')}>
+        <LinkCard type="history" spacing={{ mb: 2 }} onPress={handlePress('HistoryScreen')}>
           <Text>
             <Text variant="regularSmallGrey">Last: </Text>
             <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
           </Text>
-        </LinkCard>
-      )}
-
-      {!isActivated && ( // add a better check
-        <LinkCard
-          type="contact"
-          status={profileReady ? 'success' : 'error'}
-          spacing={{ mb: 2 }}
-          onPress={handlePress('ProfileScreen')}
-        >
-          <View>
-            <Text variant={profileReady ? 'regularSmallSuccess' : 'regularSmallError'}>
-              {profilePercentString}
-            </Text>
-            <View variant="progressBar" spacing={{ mt: 2 }}>
-              <View variant="progressBarIndicator" style={styles.progressBarIndicator} />
-            </View>
-          </View>
         </LinkCard>
       )}
 

@@ -2,31 +2,28 @@
 import { Dispatch } from 'react';
 
 import api from '@src/services/api';
-import storage from '@src/services/storage';
 import { StoreState } from '@src/StoreProvider';
 import { UserState } from '@src/store/reducers/UserReducer';
 
-import { User, Address, Price } from '@src/services/openapi';
+import { User, Address, Price, Payment } from '@src/services/openapi';
 
 export type UserAction =
-  | { type: 'LOGOUT_USER_SUCCESS' }
+  | { type: 'LOGOUT_USER' }
   | { type: 'UPDATE_LOCAL_USER_STATE'; payload: Partial<UserState> }
   | { type: 'REGISTER_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'LOGIN_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'ADD_USER_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'ADD_PRICE_SUCCESS'; payload: Price }
+  | { type: 'ADD_PAYMENT_SUCCESS'; payload: Payment }
 
 const logoutUser = () => async (dispatch: Dispatch<UserAction>) => {
-  await storage.storeUser('');
-
-  dispatch({ type: 'LOGOUT_USER_SUCCESS' });
+  dispatch({ type: 'LOGOUT_USER' });
 };
 
 const updateUserState = (state: Partial<UserState>) => async (dispatch: Dispatch<UserAction>) => {
   dispatch({ type: 'UPDATE_LOCAL_USER_STATE', payload: state });
 };
-
 
 const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
   const { email, password, firstName, lastName } = user;
@@ -38,8 +35,6 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
   const { data } = await registerMethod({ user: { email, password, firstName, lastName } });
 
   dispatch({ type: 'REGISTER_USER_SUCCESS', payload: data });
-
-  await storage.storeUser(data);
 
   return data;
 };
@@ -61,8 +56,6 @@ const loginUser = (email: string, password: string) => async (dispatch: Dispatch
   const user = { ...profileResponse.data, token: data.token };
 
   dispatch({ type: 'LOGIN_USER_SUCCESS', payload: user });
-
-  await storage.storeUser(user);
 
   return user;
 };
@@ -99,8 +92,6 @@ const updateUser = (partialState: UserState) => async (
 
   dispatch({ type: 'UPDATE_USER_SUCCESS', payload: data as UserState });
 
-  await storage.storeUser({ ...data, token: store.user.token });
-
   return data;
 };
 
@@ -119,8 +110,6 @@ const addUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
   const { data } = await api.address.addressCreate(body, options);
 
   dispatch({ type: 'ADD_USER_ADDRESS_SUCCESS', payload: data });
-
-  await storage.storeUser({ ...store.user, addresses: [...store.user.addresses, data] });
 
   return data;
 };
@@ -141,6 +130,16 @@ const addPrice = (sessionType: string, price: string) => async (
   dispatch({ type: 'ADD_PRICE_SUCCESS', payload: data });
 };
 
+const addPayment = (info: Payment) => async (
+  dispatch: Dispatch<UserAction>, store: StoreState,
+) => {
+  const options = { headers: { Authorization: `Token ${store.user.token}` } };
+
+  const { data } = await api.payment.paymentCreate(info, options);
+
+  dispatch({ type: 'ADD_PAYMENT_SUCCESS', payload: data });
+};
+
 const setAwayDates = (startDate: string, endDate: string) => async (
   dispatch: Dispatch<UserAction>,
   store: StoreState,
@@ -159,5 +158,6 @@ export {
   updateUser,
   addUserAddress,
   addPrice,
+  addPayment,
   setAwayDates,
 };

@@ -2,7 +2,7 @@
 
 import StripeClient from 'stripe-client';
 
-type BrandType = 'Visa' | 'American Express' | 'MasterCard' | 'Discover' | 'JCB' | 'Diners Club' | 'Unknown'
+export type BrandType = 'Visa' | 'American Express' | 'MasterCard' | 'Discover' | 'JCB' | 'Diners Club' | 'Unknown'
 type CheckType = 'pass' | 'fail' | 'unavailable' | 'unchecked'
 type FundingType = 'credit' | 'debit' | 'prepaid' | 'unknown'
 type TokenizationType = 'apple_pay' | 'android_pay'

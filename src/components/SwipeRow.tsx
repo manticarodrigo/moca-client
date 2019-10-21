@@ -27,7 +27,6 @@ type Props = {
 
 const SwipeRow = ({ children, disabled, onPress }: Props) => (
   <RNSwipeRow
-    preview
     disableLeftSwipe
     disableRightSwipe={disabled}
     previewOpenValue={80}

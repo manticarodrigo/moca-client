@@ -17,6 +17,7 @@ import {
   InstagramIcon,
   FacebookIcon,
   TwitterIcon,
+  BuildingIcon,
 } from '@src/components/icons';
 
 import Text from './Text';
@@ -33,18 +34,19 @@ type CardProps = {
   selected?: boolean;
 }
 
-
 const Card = ({ type, title, arrow, details, large, onPress, selected }: CardProps) => {
   const { icon, text } = useMemo(() => {
     switch (type) {
-      case 'amex':
-        return { icon: <AmexIcon />, text: title || null };
-      case 'maestro':
+      case 'Unknown':
         return { icon: <MaestroIcon />, text: title || null };
-      case 'masterCard':
+      case 'American Express':
+        return { icon: <AmexIcon />, text: title || null };
+      case 'MasterCard':
         return { icon: <MasterCardIcon />, text: title || null };
-      case 'visa':
+      case 'Visa':
         return { icon: <VisaIcon />, text: title || null };
+      case 'bankAccount':
+        return { icon: <BuildingIcon />, text: title || null };
       case 'addCard':
         return { icon: <AddCardIcon />, text: 'Add New Stripe Account' };
       case 'changePassword':
@@ -93,10 +95,13 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
           <Text variant={large ? 'titleSmall' : 'regularDark'}>
             {text}
           </Text>
-          {details && <Text typography={{ size: 2, weight: '300', color: 'grey' }} spacing={{ mt: 1 }}>{details}</Text>}
+          {details && (
+            <Text typography={{ size: 2, weight: '300', color: 'grey' }} spacing={{ mt: 1 }}>
+              {details}
+            </Text>
+          )}
         </View>
       </View>
-      {/* {children} I don't understand why eslint is giving me a type error */}
       {arrow
         && (
           <View spacing={{ m: 3, pb: large ? null : 3 }}>

@@ -1,44 +1,74 @@
+import storage from '@src/services/storage';
+
 import { UserAction } from '@src/store/actions/UserAction';
 
-import { User, Patient, Therapist, Price } from '@src/services/openapi';
+import { User, Patient, Therapist, Price, Payment as BadPayment } from '@src/services/openapi';
+import { BrandType } from '@src/services/stripe';
+
+export type Card = {
+  brand: BrandType;
+  expMonth: string;
+  expYear: string;
+  last4: string;
+}
+
+export type BankAccount = {
+  accountHolderName: string;
+  bankName: string;
+  last4: string;
+  routingNumber: string;
+}
+
+export type Payment = Omit<BadPayment, 'type' | 'paymentInfo'> & {
+  type: 'card' | 'bank_account';
+  paymentInfo: Card & BankAccount;
+}
 
 export type UserState = &
-  Omit<User, 'email'> &
+  Omit<User, 'type' | 'email' | 'gender' | 'payments'> &
   Omit<Patient, 'user'> &
   Omit<Therapist, 'user'> & {
-  email?: string;
   token?: string;
+  email?: string;
+  type?: 'PT' | 'PA';
+  gender?: 'M' | 'F';
   prices?: Price[];
-  payments?: object[];
+  payments?: Payment[];
   storageReady?: boolean;
 }
 
-function flattenUserPayload(state, { user, ...rest }) {
-  return { ...state, ...user, ...rest };
-}
-
-function appendAddress(state, payload) {
-  return { ...state, addresses: [...state.addresses, payload] };
+function appendItem(key: keyof UserState, state, payload) {
+  return { ...state, [key]: [...state[key], payload] };
 }
 
 const reducer = (state: UserState, action: UserAction): UserState => {
+  let newState = state;
+
   switch (action.type) {
+    // case 'ADD_PRICE_SUCCESS':
     case 'UPDATE_LOCAL_USER_STATE':
     case 'LOGIN_USER_SUCCESS':
     case 'UPDATE_USER_SUCCESS':
     case 'REGISTER_USER_SUCCESS':
-      return { ...state, ...action.payload };
+      newState = { ...state, ...action.payload };
+      break;
     case 'ADD_USER_ADDRESS_SUCCESS':
-      return appendAddress(state, action.payload);
-    // case 'ADD_PRICE_SUCCESS':
-      // return flattenUserPayload(state, action.payload);
+      newState = appendItem('addresses', state, action.payload);
+      break;
+    case 'ADD_PAYMENT_SUCCESS':
+      newState = appendItem('payments', state, action.payload);
+      break;
     default:
-      return state;
+      break;
   }
-};
 
-export {
-  flattenUserPayload,
+  if (action.type === 'LOGOUT_USER') {
+    storage.storeUser('');
+  } else {
+    storage.storeUser(newState);
+  }
+
+  return newState;
 };
 
 export default reducer;

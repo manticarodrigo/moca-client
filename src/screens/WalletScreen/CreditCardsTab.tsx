@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 
+import useStore from '@src/hooks/useStore';
+
 import View from '@src/components/View';
 import Card from '@src/components/Card';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
@@ -8,68 +10,48 @@ import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 import BankCardModal from '@src/modals/BankCardModal';
 
 const CreditCardsTab = () => {
-  const previewList = [
-    {
-      type: 'amex',
-      bankName: 'Bank of America',
-      cardNumber: '512***************80',
-    },
-    {
-      type: 'maestro',
-      bankName: 'ING',
-      cardNumber: '**** **** **** **** **54',
-
-    },
-    {
-      type: 'masterCard',
-      bankName: 'BBVA',
-      cardNumber: '**** **** **** **** *324',
-
-    },
-    {
-      type: 'visa',
-      bankName: 'Wells Fargo',
-      cardNumber: '439***************23',
-    },
-  ];
-
-  const [accountsList, setAccountsList] = useState(previewList);
-  const [selectedId, setSelectedId] = useState('****************4580');
+  const { store } = useStore();
   const [modalVisibility, setModalVisiblilty] = useState(false);
 
   const handleCardPress = (key) => {
-    setSelectedId(key);
+    // TODO: Edit card primary
   };
 
   const handleModalVisibility = () => setModalVisiblilty(!modalVisibility);
 
-  const onDelete = (index: number) => {
-    const newAccountsList = [...accountsList];
-    newAccountsList.splice(index, 1);
-
-    setAccountsList(newAccountsList);
-  };
+  // const onDelete = (index: number) =>
 
   return (
     <View width="100%" height="100%" scroll>
       <FlatList
-        data={accountsList}
-        keyExtractor={(item) => item.cardNumber}
-        renderItem={({ item, index }) => (
-          <SwipeRow
-            disabled={accountsList.length === 1}
-            onPress={() => handleCardPress(item.cardNumber)}
-          >
-            <BinRow onPress={() => onDelete(index)} />
-            <Card
-              large
-              type={item.type}
-              title={item.bankName}
-              details={item.cardNumber}
-              selected={selectedId === item.cardNumber}
-            />
-          </SwipeRow>
-        )}
+        data={store.user.payments}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          const { type, paymentInfo } = item;
+
+          return (
+            <View>
+              {type === 'card' && (
+                <Card
+                  large
+                  type={paymentInfo.brand}
+                  title={`My ${paymentInfo.brand} Card`}
+                  details={`**** **** **** **** ${paymentInfo.last4}`}
+                  selected // paymentInfo.primary
+                />
+              )}
+              {type === 'bank_account' && (
+                <Card
+                  large
+                  type="bankAccount"
+                  title={paymentInfo.bankName}
+                  details={paymentInfo.routingNumber}
+                  selected // paymentInfo.primary
+                />
+              )}
+            </View>
+          );
+        }}
       />
       <Card type="addCard" arrow large onPress={handleModalVisibility} />
       <BankCardModal isVisible={modalVisibility} onToggle={handleModalVisibility} />
