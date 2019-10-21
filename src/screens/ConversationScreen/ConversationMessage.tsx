@@ -2,6 +2,8 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 
+import { Message } from '@src/store/reducers/ConversationReducer';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
@@ -13,16 +15,19 @@ type ConversationMessageProps = {
 };
 
 const ConversationMessage = ({ message, alignRight, onPressImage }: ConversationMessageProps) => {
-  const { text, attachmentURI, createdAt } = message;
-  const time = useMemo(() => format(new Date(createdAt), 'hh:mm'), [createdAt]);
+  const { text, image, time } = useMemo(() => ({
+    text: (message.text || {}).content || '',
+    image: message.image,
+    time: format(new Date(message.createdAt), 'hh:mm'),
+  }), [message]);
 
-  const handlePressImage = () => onPressImage(attachmentURI);
+  const handlePressImage = () => onPressImage(image);
 
   return (
     <View column variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
-      {attachmentURI && (
+      {image && (
         <View column spacing={{ mb: 2 }} onPress={handlePressImage}>
-          <Image width={200} height={200} uri={attachmentURI} />
+          <Image width={200} height={200} uri={image} />
         </View>
       )}
       <Text

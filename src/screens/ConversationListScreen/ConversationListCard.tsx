@@ -1,38 +1,38 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 
+import { Conversation } from '@src/store/reducers/ConversationReducer';
+
 import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 
 type Props = {
-  user: User;
   conversation: Conversation;
-  onPress: (conversation: Conversation) => void;
+  onPress: (user: object) => void;
 };
 
-const ConversationListCard = ({ user, conversation, onPress }: Props) => {
-  const handleCardPress = () => onPress(conversation);
+const ConversationListCard = ({ conversation, onPress }: Props) => {
+  const handleCardPress = () => onPress(conversation.user);
 
-  const { imageUrl, username, time, text } = useMemo(() => {
-    const otherParticipant = conversation.participants.find(({ id }) => id !== user.id);
-    const latestMessage = conversation.messages[conversation.messages.length - 1];
+  const { image, name, time, text } = useMemo(() => {
+    const { lastMessage, user } = conversation;
 
     return {
-      imageUrl: otherParticipant.imageUrl,
-      username: otherParticipant.username,
-      time: format(new Date(latestMessage.createdAt), 'h:mm a / dd.MM.yyyy'),
-      text: latestMessage.text,
+      image: user.image || undefined,
+      name: `${user.firstName} ${user.lastName}`,
+      time: format(new Date(lastMessage.createdAt), 'h:mm a / dd.MM.yyyy'),
+      text: lastMessage.text.content,
     };
-  }, [conversation, user.id]);
+  }, [conversation]);
 
   return (
     <View variant="borderBottom" spacing={{ p: 3 }} onPress={handleCardPress} bgColor="white">
       <View row spacing={{ p: 1 }}>
-        <Image rounded size={60} uri={imageUrl} />
+        <Image rounded size={60} uri={image} />
         <View column spacing={{ pl: 3 }}>
           <Text spacing={{ mb: 2 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
-            {username}
+            {name}
           </Text>
           <Text typography={{ size: 1, weight: '500', color: 'grey' }}>{time}</Text>
         </View>

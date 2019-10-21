@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
+import { ConversationState } from '@src/store/reducers/ConversationReducer';
 import { getConversations } from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
@@ -14,22 +16,24 @@ import Text from '@src/components/Text';
 
 import ConversationListCard from './ConversationListCard';
 
-const ConversationSectionList: SectionList<Conversation> = SectionList;
+const ConversationSectionList: SectionList<ConversationState> = SectionList;
 
 const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
+
   const sections = useDateSections(
-    store.conversations,
-    ({ messages }) => messages[messages.length - 1].createdAt,
+    store.conversations.list,
+    ({ lastMessage }) => lastMessage.createdAt as unknown as string,
   );
+
   useEffect(() => {
     if (store.user.id) {
-      dispatch(getConversations(store.user));
+      dispatch(getConversations());
     }
   }, [store.user, dispatch]);
 
-  const handleCardPress = (conversation: Conversation) => {
-    navigation.push('ConversationScreen', { conversation });
+  const handleCardPress = (user: object) => {
+    navigation.push('ConversationScreen', { user });
   };
 
   return (
@@ -43,9 +47,11 @@ const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) 
         </View>
       ) : (
         <ConversationSectionList
+          // @ts-ignore
+          sections={sections}
           renderItem={({ item }) => (
             <ConversationListCard
-              user={store.user}
+              // @ts-ignore
               conversation={item}
               onPress={handleCardPress}
             />
@@ -58,8 +64,7 @@ const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) 
             </View>
           )}
           stickySectionHeadersEnabled={false}
-          keyExtractor={(item) => item.id}
-          sections={sections}
+          keyExtractor={(_, index) => index.toString()}
         />
       )}
     </View>

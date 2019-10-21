@@ -61,7 +61,10 @@ export const initialState: StoreState = {
     address: {},
   },
   search: [],
-  conversations: [],
+  conversations: {
+    list: [],
+    map: {},
+  },
 };
 
 const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
