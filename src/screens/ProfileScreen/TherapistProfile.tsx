@@ -61,31 +61,28 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
   const onCloseModal = (key: string) => () => setModals({ ...modals, [key]: false });
 
-  const handleMessageTherapist = () => {};
-
   const onPressGender = (type: UserGenderEnum) => async () => {
     try {
       await dispatch(updateUser({ gender: type }));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
-  // eslint-disable-next-line no-shadow
   const pressStatus = async () => {
     if (isAvailable) {
       try {
         await dispatch(updateUser({ status: TherapistStatusEnum.B }));
         setAvailable(false);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     } else {
       try {
         await dispatch(updateUser({ status: TherapistStatusEnum.A }));
         setAvailable(true);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
   };
@@ -100,7 +97,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
       await dispatch(updateUser({ [key]: value }));
       setInputModalProps(null);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -151,10 +148,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                             {userInfo.operationRadius ? `${userInfo.operationRadius} miles` : 'Set'}
                           </Text>
                         </View>
-                        <View><ArrowRightIcon /></View>
+                        <ArrowRightIcon />
                       </View>
                     ),
-                    onPress: () => setInputModalProps({
+                    onPress: () => !modal && setInputModalProps({
                       title: 'Service Area',
                       existingValue: userInfo.bio || '',
                       placeholder: 'Radius (mi)',
@@ -181,7 +178,6 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         <View onPress={pressStatus}><SwitchIcon isOn={isAvailable} /></View>
                       </View>
                     ),
-                    onPress: () => null,
                   },
                   {
                     title: 'Reviews',
@@ -193,7 +189,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         </Text>
                       </View>
                     ),
-                    onPress: () => setModals({ ...modals, isReviewsModalVisible: true }),
+                    onPress: () => !modal && setModals({ ...modals, isReviewsModalVisible: true }),
                   },
                 ]}
               />
@@ -203,14 +199,19 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   {
                     title: 'Gender',
                     icon: GenderIcon,
-                    content: (
+                    content: modal ? (
+                      <View alignCenter>
+                        <Text variant="boldPrimary" spacing={{ mr: 2 }}>
+                          {userInfo.gender || 'N/A'}
+                        </Text>
+                      </View>
+                    ) : (
                       <GenderToggle
                         readonly={!!modal}
                         existingValue={userInfo.gender}
                         onToggle={onPressGender}
                       />
                     ),
-                    onPress: () => null,
                   },
                 ]}
               />
@@ -222,7 +223,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'Personal Bio',
                     icon: BioIcon,
                     content: userInfo.bio || (modal ? 'N/A' : 'Set Personal Bio'),
-                    onPress: () => setInputModalProps({
+                    onPress: () => !modal && setInputModalProps({
                       title: 'Personal Bio',
                       existingValue: userInfo.bio || '',
                       placeholder: 'Personal bio',
@@ -234,7 +235,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'License Number',
                     icon: Badge2Icon,
                     content: userInfo.licenseNumber || (modal ? 'N/A' : 'Set License Number'),
-                    onPress: () => setInputModalProps({
+                    onPress: () => !modal && setInputModalProps({
                       title: 'License Number',
                       existingValue: userInfo.licenseNumber || '',
                       placeholder: 'License number',
@@ -257,19 +258,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'Qualifications',
                     icon: QualificationIcon,
                     content: userInfo.preferredAilments.join(', ') || 'Set Qualifications',
-                    onPress: () => setModals({ ...modals, isQualificationModalVisible: true }),
+                    onPress: () => !modal && setModals({ ...modals, isQualificationModalVisible: true }),
                   },
                 ]}
               />
-              {modal && (
-                <View row spacing={{ mt: 3, mb: 3, mx: 3 }}>
-                  <View flex={1}>
-                    <Button onPress={handleMessageTherapist}>
-                        Message / Schedule
-                    </Button>
-                  </View>
-                </View>
-              )}
             </View>
           </TouchableHighlight>
         </TouchableWithoutFeedback>

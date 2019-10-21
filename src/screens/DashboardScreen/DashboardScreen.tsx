@@ -85,7 +85,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation }) => {
            && (
            <DashboardAppointments
              isTherapist={isTherapist}
-             handleCurrentAppointment={() => setIsAppointmentModal(true)}
+             onPressCurrentAppointment={() => setIsAppointmentModal(true)}
            />
            )}
         <DashboardLinks isActivated={isActivated} isTherapist={isTherapist} />

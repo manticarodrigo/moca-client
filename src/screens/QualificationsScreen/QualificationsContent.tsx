@@ -64,7 +64,7 @@ const QualificationsContent = (
         navigation.navigate('AddressScreen', { title: 'Address' });
       }
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 

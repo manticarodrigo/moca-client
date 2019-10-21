@@ -41,8 +41,8 @@ export const checkboxConfig = {
   gender: {
     title: 'Gender',
     items: {
-      male: { icon: MaleIcon, title: 'Female' },
-      female: { icon: FemaleIcon, title: 'Male' },
+      male: { icon: MaleIcon, title: 'Male' },
+      female: { icon: FemaleIcon, title: 'Female' },
       either: { icon: BothGendersIcon, title: 'Either' },
     },
   },

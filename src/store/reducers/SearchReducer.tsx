@@ -1,21 +1,16 @@
 import { SearchAction } from '@src/store/actions/SearchAction';
 
-type Result = {
-  id: string;
-  name: string;
-  rating: string;
-  sessionDuration: string;
-  sessionPrice: string;
-  licenseNumber: string;
-}
+import { TherapistSearch as BadTherapistSearch } from '@src/services/openapi';
+
+export type TherapistSearch = Omit<BadTherapistSearch, 'user'> & BadTherapistSearch['user'];
 
 export type FilterParams = {
   gender?: 'M' | 'F';
   ailments?: string[];
-  maxPrice?: number;
+  maxPrice?: string;
 }
 
-export type SearchState = Result[]
+export type SearchState = TherapistSearch[]
 
 const reducer = (state: SearchState, action: SearchAction): SearchState => {
   switch (action.type) {

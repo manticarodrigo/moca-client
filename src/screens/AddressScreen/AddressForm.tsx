@@ -68,7 +68,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     if (validateForm()) {
       onSubmit(formFields);
     } else {
-      console.log('Invalid form');
+      // alert invalid
     }
   };
 

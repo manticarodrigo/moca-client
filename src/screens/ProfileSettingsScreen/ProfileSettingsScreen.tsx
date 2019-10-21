@@ -38,7 +38,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
         await dispatch(updateUser({ ...userInput }));
         setIsEditInformationModal(false);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
   };
@@ -48,7 +48,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
       await dispatch(updateUser({ password }));
       setIsChangePasswordModal(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

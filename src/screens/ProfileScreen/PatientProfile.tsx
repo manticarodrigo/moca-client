@@ -44,7 +44,7 @@ const PatientProfile = ({ patient, modal }: Props) => {
     try {
       await dispatch(updateUser({ gender: type }));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

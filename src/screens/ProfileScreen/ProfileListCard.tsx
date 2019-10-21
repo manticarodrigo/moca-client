@@ -63,7 +63,6 @@ const ProfileListCard = ({ column = false, readonly, rows = [], bottomChildren =
         const last = index === rows.length - 1;
         const rowProps = { last, title, subtitle, onPress, content };
 
-
         return (
           <View key={title} row alignCenter>
             <View spacing={{ p: 3 }}>

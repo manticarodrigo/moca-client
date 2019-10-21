@@ -69,7 +69,7 @@ const AppointmentsTab = () => {
             </View>
             <View spacing={{ px: 3 }} flex={2}>
               <Text variant="titleSmall" spacing={{ mb: 1 }}>{appointment.patientName}</Text>
-              <Rating rate={appointment.patientRating} />
+              <Rating rating={parseInt(appointment.patientRating, 10)} />
               <Text variant="boldGrey" spacing={{ my: 1 }}>1:00 - 1:30 pm</Text>
               <Text variant="regular">Wed, August 19</Text>
             </View>

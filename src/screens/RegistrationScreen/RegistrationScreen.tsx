@@ -80,7 +80,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           navigation.push('QualificationsScreen');
         }
       } catch (error) {
-        console.log('ERROR', JSON.stringify(error));
+        // console.log(error);
       }
     } else {
       setIsEmailValid(false);

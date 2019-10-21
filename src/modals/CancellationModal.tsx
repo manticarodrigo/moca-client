@@ -45,7 +45,7 @@ const CancellationModal = ({ visible, onToggle }) => {
   const onClickCheckbox = (key) => setChecked(key !== checked ? key : undefined);
 
   const onSubmit = () => {
-    console.log('SUBMIT CANCELLATION');
+    // cancel api
   };
 
   return (

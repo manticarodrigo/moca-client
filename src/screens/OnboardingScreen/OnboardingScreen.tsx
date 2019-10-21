@@ -81,9 +81,13 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
 
   const onSumbitLogin = async (email: string, password: string) => {
     try {
+      setIsLoginModalVisible(false);
+
       await dispatch(loginUser(email, password));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+
+      setIsLoginModalVisible(true);
     }
   };
 

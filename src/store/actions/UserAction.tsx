@@ -6,11 +6,7 @@ import storage from '@src/services/storage';
 import { StoreState } from '@src/StoreProvider';
 import { UserState } from '@src/store/reducers/UserReducer';
 
-import {
-  User,
-  Address,
-  Price,
-} from '@src/services/openapi';
+import { User, Address, Price } from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'LOGOUT_USER_SUCCESS' }
@@ -123,6 +119,8 @@ const addUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
   const { data } = await api.address.addressCreate(body, options);
 
   dispatch({ type: 'ADD_USER_ADDRESS_SUCCESS', payload: data });
+
+  await storage.storeUser({ ...store.user, addresses: [...store.user.addresses, data] });
 
   return data;
 };
