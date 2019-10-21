@@ -67,7 +67,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     setMessages(updated);
-  }, [otherUser, store.conversations.map]);
+  }, [otherUser, store.conversations.map, dispatch]);
 
 
   const onChangeText = (text: string) => setInputText(text);

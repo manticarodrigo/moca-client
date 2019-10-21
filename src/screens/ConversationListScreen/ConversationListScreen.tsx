@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
-import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import { withNavigationFocus } from 'react-navigation';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
 import { ConversationState } from '@src/store/reducers/ConversationReducer';
 import { getConversations } from '@src/store/actions/ConversationAction';
@@ -18,7 +19,12 @@ import ConversationListCard from './ConversationListCard';
 
 const ConversationSectionList: SectionList<ConversationState> = SectionList;
 
-const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) => {
+type Props = NavigationStackScreenProps & { isFocused: boolean }
+
+const ConversationListScreen: NavigationStackScreenComponent = ({
+  navigation,
+  isFocused,
+}: Props) => {
   const { store, dispatch } = useStore();
 
   const sections = useDateSections(
@@ -30,7 +36,7 @@ const ConversationListScreen: NavigationStackScreenComponent = ({ navigation }) 
     if (store.user.id) {
       dispatch(getConversations());
     }
-  }, [store.user, dispatch]);
+  }, [store.user, isFocused, dispatch]);
 
   const handleCardPress = (user: object) => {
     navigation.push('ConversationScreen', { user });
@@ -75,4 +81,4 @@ ConversationListScreen.navigationOptions = {
   title: 'Messages',
 };
 
-export default ConversationListScreen;
+export default withNavigationFocus(ConversationListScreen);
