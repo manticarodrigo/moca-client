@@ -1,71 +1,66 @@
 import React from 'react';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 
-import { LogoIcon, StarsIcon, RightIcon } from '@src/components/icons';
+import { StarsIcon, CogIcon } from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
+
+import { Colors } from '@src/styles';
 
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import View from '@src/components/View';
+import LogoBackground from '@src/components/LogoBackground';
 
 import PatientProfile from './PatientProfile';
 import TherapistProfile from './TherapistProfile';
 
-const ProfileScreen = ({ navigation }: NavigationStackScreenProps) => {
-  const onPressRight = () => navigation.navigate('ConversationScreen');
+const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { store } = useStore();
 
-  const { store: { registrationState: { type } } } = useStore();
-  const isTherapist = type === 'Therapist'; // to change to user store later
+  const isTherapist = store.user.type === 'PT';
 
-  const name = 'John Connor Jacob'; // TODO: get the real value
+  const onPressSettings = () => navigation.navigate('ProfileSettingsScreen');
 
-  const rating = 1; // TODO: get the real value
-  let ratingTag = null;
-  if (isTherapist) {
-    ratingTag = (
-      <View row alignCenter>
-        <Text variant="lightTextCenter">{rating.toString()}</Text>
-        <StarsIcon number={rating} />
-      </View>
-    );
-  }
 
   return (
-    <View flex={1} bgColor="primary">
+    <View safeArea flex={1} bgColor="primary">
 
-      <View row justifyEnd absoluteFill spacing={{ mt: -6, mr: -5 }}>
-        <LogoIcon size={2} />
+      <LogoBackground />
+
+      <View row justifyBetween alignCenter width="100%" spacing={{ p: 4, pt: 3 }}>
+        <View width={32} height={32} />
+        <Text variant="titleSmallWhite">Profile</Text>
+        <View onPress={onPressSettings}><CogIcon /></View>
       </View>
 
-      <View row alignCenter justifyCenter height={56} spacing={{ py: 2, mt: 5 }}>
-        <View column alignCenter width={271}>
-          <Text variant="titleSmallWhite">Profile</Text>
-        </View>
-        <View column alignEnd onPress={onPressRight}>
-          <RightIcon />
+      <View row spacing={{ p: 4 }}>
+        <Image rounded size={80} uri={mockImg} />
+        <View column justifyCenter spacing={{ px: 3 }}>
+          <Text variant="titleWhite">{store.user.firstName}</Text>
+          {isTherapist && (
+            <View row alignCenter>
+              <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating}</Text>
+              <StarsIcon number={store.user.rating} />
+            </View>
+          )}
         </View>
       </View>
 
-      <View alignCenter justifyCenter spacing={{ pt: 2, pb: 4 }}>
-        <View row justifyCenter spacing={{ pt: 4 }}>
-          <Image rounded size={80} uri={mockImg} />
-          <View column justifyCenter spacing={{ px: 2 }}>
-            <Text variant="titleWhite">{name}</Text>
-            {ratingTag}
-          </View>
-        </View>
-      </View>
       { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
-
     </View>
   );
 };
 
-ProfileScreen.navigationOptions = {
+ProfileScreen.navigationOptions = ({ navigationOptions }) => ({
   header: null,
-};
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    // for back transition from settings
+    backgroundColor: Colors.white,
+  },
+});
 
 export default ProfileScreen;

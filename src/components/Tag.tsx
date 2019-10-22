@@ -16,7 +16,7 @@ type TagProps = {
   spacing?: SpacingProp;
 }
 
-const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) => {
+const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagProps) => {
   const borderColor = useMemo(() => {
     switch (type) {
       case 'fill':
@@ -79,7 +79,7 @@ const Tag = ({ placeholder, icon, type = 'border', center, spacing }: TagProps) 
       style={styles.view}
     >
       {iconType}
-      <Text style={styles.text}>{placeholder.toString()}</Text>
+      <Text style={styles.text}>{placeholder}</Text>
     </View>
   );
 };

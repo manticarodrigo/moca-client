@@ -14,9 +14,9 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
         'OnboardingScreen',
         'SelectionScreen',
         'InvalidZipCodeScreen',
+        'RegistrationScreen',
         'InvalidMedicareScreen',
         'QualificationsScreen',
-        'RegistrationScreen',
         'AddressScreen',
       ],
     },
@@ -24,13 +24,14 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Dashboard',
       screens: [
         'DashboardScreen',
-        'FilterScreen',
+        'SearchScreen',
       ],
     },
     {
       title: 'Schedule',
       screens: [
         'ScheduleScreen',
+        'ScheduleDayScreen',
       ],
     },
     {
@@ -44,6 +45,8 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       title: 'Profile',
       screens: [
         'ProfileScreen',
+        'WalletScreen',
+        'HistoryScreen',
       ],
     },
   ];

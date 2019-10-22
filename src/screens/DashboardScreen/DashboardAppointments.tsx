@@ -1,33 +1,56 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+
+import { isToday } from 'date-fns';
+
+import useStore from '@src/hooks/useStore';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
-import AwayCard from '@src/components/AwayCard';
 
-const DashboardAppointments = ({ isTherapist, isAway = true }) => (
-  <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
+const DashboardAppointments = ({ isTherapist, onPressAppointment }) => {
+  const { store } = useStore();
 
-    {!isTherapist && (
-      <Text variant="titleSmallSecondaryLight" spacing={{ mb: 3 }}>Appointments</Text>
-    )}
+  const { current, next } = useMemo(() => {
+    if (!store.appointments.length) {
+      return { current: undefined, next: undefined };
+    }
 
-    <View column justifyCenter spacing={{ mb: 3 }}>
-      {isAway ? (
-        <AwayCard dateStart={new Date()} dateEnd={new Date()} />
-      ) : (
-        <>
-          <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
-          <AppointmentCard current isTherapist={isTherapist} />
-        </>
+    return {
+      current: store.appointments.find(({ startTime }) => isToday(new Date(startTime))),
+      next: (store.appointments.length > 1 && store.appointments[1]) || (!current && store.appointments[0]),
+    };
+  }, [store.appointments]);
+
+  return (
+    <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
+
+      {!isTherapist && (
+        <Text variant="titleSmallSecondaryLight" spacing={{ mb: 3 }}>Appointments</Text>
       )}
-    </View>
 
-    <View column justifyCenter>
-      <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
-      <AppointmentCard isTherapist={isTherapist} />
+      {current && (
+        <View column justifyCenter spacing={{ mb: 3 }}>
+          <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
+          <AppointmentCard
+            current
+            appointment={current}
+            isTherapist={isTherapist}
+            onPress={onPressAppointment}
+          />
+        </View>
+      )}
+
+      {next && (
+        <View column justifyCenter>
+          <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
+          <AppointmentCard appointment={next} isTherapist={isTherapist} />
+        </View>
+      )}
+
+      {(!current && !next) && <Text variant="boldWhite">No appointments found.</Text>}
     </View>
-  </View>
-);
+  );
+};
 
 export default DashboardAppointments;

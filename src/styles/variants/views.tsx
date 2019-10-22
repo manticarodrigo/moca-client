@@ -9,6 +9,10 @@ const rounded: ViewStyle = {
   ...Borders.primary,
 };
 
+const shadow: ViewStyle = {
+  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
 const progressBar: ViewStyle = {
   ...rounded,
   ...Spacing.getStyles({ p: 1 }),
@@ -50,6 +54,13 @@ const borderTop: ViewStyle = {
   borderTopColor: Colors.secondaryLightest,
 };
 
+const borderTopAndRight: ViewStyle = {
+  borderTopWidth: 1,
+  borderRightWidth: 1,
+  borderTopColor: Colors.secondaryLightest,
+  borderRightColor: Colors.secondaryLightest,
+};
+
 const borderBottom: ViewStyle = {
   borderBottomWidth: 1,
   borderBottomColor: Colors.secondaryLightest,
@@ -60,11 +71,57 @@ const borderRight: ViewStyle = {
   borderRightColor: Colors.secondaryLightest,
 };
 
+const star: ViewStyle = {
+  borderColor: Colors.secondaryLightest,
+  borderWidth: 1,
+  borderRightColor: Colors.lightGrey,
+  borderLeftColor: Colors.lightGrey,
+};
+
+const starFirst: ViewStyle = {
+  ...star,
+  borderRightWidth: 0,
+  borderTopLeftRadius: 8,
+  borderBottomLeftRadius: 8,
+  borderLeftColor: Colors.secondaryLightest,
+};
+
+const starLast: ViewStyle = {
+  ...star,
+  borderTopRightRadius: 8,
+  borderBottomRightRadius: 8,
+  borderLeftWidth: 0,
+  borderRightColor: Colors.secondaryLightest,
+
+};
+
+const curveBorder: ViewStyle = {
+  borderRadius: 20,
+  borderWidth: 0,
+  borderColor: Colors.white,
+  ...shadow,
+};
+
+const curveBorderBottom: ViewStyle = {
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+  borderWidth: 0,
+  borderColor: Colors.white,
+  ...shadow,
+};
+
 const roundedBorder: ViewStyle = {
-  borderRadius: 5,
+  overflow: 'hidden',
+  borderRadius: 10,
   borderWidth: 1,
   borderColor: Colors.secondaryLightest,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+};
+
+const roundedBorderGrey: ViewStyle = {
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: Colors.semiGreyAlt,
+  ...shadow,
 };
 
 const roundedBorderLeft: ViewStyle = {
@@ -72,7 +129,7 @@ const roundedBorderLeft: ViewStyle = {
   borderBottomLeftRadius: 5,
   borderWidth: 1,
   borderColor: Colors.secondary,
-  ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
+  ...shadow,
 };
 
 const roundedBorderRight: ViewStyle = {
@@ -102,7 +159,7 @@ const therapistView: ViewStyle = {
   borderBottomRightRadius: 16,
 };
 
-const therapistViewtPressed: ViewStyle = {
+const therapistViewPressed: ViewStyle = {
   ...therapistView,
   borderColor: Colors.secondaryDarker,
 };
@@ -178,7 +235,7 @@ const profileCard: ViewStyle = {
   backgroundColor: Colors.white,
   alignItems: 'center',
   borderBottomWidth: 1,
-  borderColor: Colors.secondary,
+  borderColor: Colors.secondaryLighter,
 };
 
 const profileCardLast: ViewStyle = {
@@ -197,7 +254,7 @@ const profileData: ViewStyle = {
   width: '100%',
   backgroundColor: Colors.white,
   borderBottomWidth: 1,
-  borderColor: Colors.secondary,
+  borderColor: Colors.secondaryLighter,
 };
 
 const profileDataLast: ViewStyle = {
@@ -265,20 +322,24 @@ const notificationBadgeLarge: ViewStyle = {
 
 export {
   rounded,
+  shadow,
   progressBar,
   progressBarIndicator,
   msgBubbleRight,
   msgBubbleLeft,
   borderTop,
+  borderTopAndRight,
   borderBottom,
   borderRight,
   backdrop,
   modal,
   therapistView,
-  therapistViewtPressed,
+  therapistViewPressed,
   card,
   cardRight,
   cardLeft,
+  curveBorder,
+  curveBorderBottom,
   borderCard,
   shadowCard,
   borderShadowCard,
@@ -290,6 +351,7 @@ export {
   genderButton,
   bottomBounceFill,
   roundedBorder,
+  roundedBorderGrey,
   roundedBorderLeft,
   roundedBorderRight,
   patientViewPressed,
@@ -298,4 +360,7 @@ export {
   notificationBadgeLarge,
   profileDataLast,
   profileCardLast,
+  star,
+  starFirst,
+  starLast,
 };

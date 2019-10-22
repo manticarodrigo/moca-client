@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
+
 import RNModal, { ModalProps } from 'react-native-modal';
 
 import OpenIcon from '@src/components/icons/OpenIcon';
@@ -8,18 +9,36 @@ import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 
+const ModalScrollViewWrapper = ({ children }) => (
+  <View flex={1} width="100%">
+    <TouchableWithoutFeedback>
+      <TouchableHighlight>
+        {children}
+      </TouchableHighlight>
+    </TouchableWithoutFeedback>
+  </View>
+);
+
+const ModalScrollView = ({ children }) => (
+  <ModalScrollViewWrapper>
+    <View scroll>
+      {children}
+    </View>
+  </ModalScrollViewWrapper>
+);
+
 type Props = ModalProps & {
   children: JSX.Element | JSX.Element[];
   marginTop?: number;
   bgColor?: keyof typeof Colors;
-  onKnobPress: () => void;
+  onToggle: () => void;
 };
 
 const Modal = ({
   children,
   marginTop = 100,
-  onKnobPress,
   bgColor = 'white',
+  onToggle,
   ...modalProps
 }: Props) => {
   const styles = useMemo(() => StyleSheet.create({
@@ -28,7 +47,9 @@ const Modal = ({
 
   return (
     <RNModal
-      {...modalProps}
+      style={styles.modal}
+      onBackdropPress={onToggle}
+      onSwipeComplete={onToggle}
       swipeDirection="down"
       backdropOpacity={0.8}
       animationInTiming={500}
@@ -36,10 +57,10 @@ const Modal = ({
       hideModalContentWhileAnimating
       animationIn="slideInUp"
       animationOut="slideOutDown"
-      style={styles.modal}
+      {...modalProps}
     >
       <View variant="modal" alignCenter bgColor={bgColor}>
-        <View alignCenter spacing={{ my: 3 }} onPress={onKnobPress}>
+        <View alignCenter spacing={{ py: 3 }} onPress={onToggle}>
           <OpenIcon />
         </View>
         <>
@@ -48,6 +69,11 @@ const Modal = ({
       </View>
     </RNModal>
   );
+};
+
+export {
+  ModalScrollViewWrapper,
+  ModalScrollView,
 };
 
 export default Modal;

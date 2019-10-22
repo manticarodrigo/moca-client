@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+import { Spacing, SpacingProp } from '@src/styles';
 
 import {
+  StarZeroIcon,
   StarOneIcon,
   StarTwoIcon,
   StarThreeIcon,
@@ -12,11 +15,13 @@ import View from './View';
 import Text from './Text';
 
 type RatingProps = {
-  rate: string;
+  rating: number;
+  spacing?: SpacingProp;
 }
 
-const Rating = ({ rate }: RatingProps) => {
+const Rating = ({ rating, spacing }: RatingProps) => {
   const stars = {
+    0: <StarZeroIcon />,
     1: <StarOneIcon />,
     2: <StarTwoIcon />,
     3: <StarThreeIcon />,
@@ -24,10 +29,14 @@ const Rating = ({ rate }: RatingProps) => {
     5: <StarFiveIcon />,
   };
 
+  const styles = useMemo(() => StyleSheet.create({
+    view: { ...Spacing.getStyles(spacing) },
+  }), [spacing]);
+
   return (
-    <View row alignCenter spacing={{ m: 1, p: 2 }}>
-      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{rate}</Text>
-      {stars[rate]}
+    <View row alignCenter style={styles.view}>
+      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{rating}</Text>
+      {stars[Math.floor(rating)]}
     </View>
   );
 };

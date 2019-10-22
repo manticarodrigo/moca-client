@@ -13,22 +13,24 @@ import TabBarIcon from '@src/components/TabBarIcon';
 import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
-import FilterScreen from '@src/screens/FilterScreen';
+import SearchScreen from '@src/screens/SearchScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
+import ScheduleDayScreen from '@src/screens/ScheduleDayScreen';
 import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
-import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
-import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
-import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
-import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
-import AddressScreen from '@src/screens/SignUp/AddressScreen';
-import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
-import AddressSettingScreen from '@src/screens/ProfileScreen/AddressSettingScreen';
-import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
+import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
+import SelectionScreen from '@src/screens/SelectionScreen';
+import InvalidZipCodeScreen from '@src/screens/InvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/RegistrationScreen';
+import InvalidMedicareScreen from '@src/screens/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/AddressScreen';
+import QualificationsScreen from '@src/screens/QualificationsScreen';
+import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
+import WalletScreen from '@src/screens/WalletScreen';
+import HistoryScreen from '@src/screens/HistoryScreen';
 
 const defaultNavConfig = {
-  // headerLayoutPreset: 'center',
   cardShadowEnabled: false,
   defaultNavigationOptions: ({ navigation }) => ({
     title: navigation.state.routeName,
@@ -50,7 +52,7 @@ const defaultNavConfig = {
 
 const AppStack = createSwitchNavigator(
   {
-    SitemapScreen,
+    // SitemapScreen,
 
     AuthStack: createStackNavigator({
       OnboardingScreen,
@@ -66,11 +68,13 @@ const AppStack = createSwitchNavigator(
 
       DashboardTab: createStackNavigator({
         DashboardScreen,
-        FilterScreen,
+        SearchScreen,
+        HistoryScreen,
       }, defaultNavConfig),
 
       ScheduleTab: createStackNavigator({
         ScheduleScreen,
+        ScheduleDayScreen,
       }, defaultNavConfig),
 
       ConversationTab: createStackNavigator({
@@ -80,7 +84,8 @@ const AppStack = createSwitchNavigator(
 
       ProfileTab: createStackNavigator({
         ProfileScreen,
-        AddressSettingScreen,
+        ProfileSettingsScreen,
+        AddressSettingsScreen,
         AddressScreen,
         WalletScreen,
       }, defaultNavConfig),
@@ -100,7 +105,6 @@ const AppStack = createSwitchNavigator(
     }),
 
   },
-  { initialRouteName: 'SitemapScreen' },
 );
 
 export default createAppContainer(AppStack);

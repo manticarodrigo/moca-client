@@ -1,15 +1,21 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
-import { Agenda, DateObject } from 'react-native-calendars';
+import { Agenda } from 'react-native-calendars';
 import { format, addDays, isToday } from 'date-fns';
 
-import { Colors } from '@src/styles';
+import { Colors, Spacing } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import ScheduleDateModal from '@src/modals/ScheduleDateModal';
+import SetAwayModal from '@src/modals/SetAwayModal';
+
+import { ScheduleTabIcon } from '@src/components/icons';
+
+import { setAwayDates } from '@src/store/actions/UserAction';
+import useStore from '@src/hooks/useStore';
 
 type ScheduleItem = {
   dateString: string;
@@ -25,16 +31,37 @@ type ScheduleItemMap = {
   [key: string]: ScheduleItem[];
 }
 
-const ScheduleScreen = () => {
+const ScheduleScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { dispatch } = useStore();
   const [items, setItems] = useState<ScheduleItemMap>({});
-  const [selectedDate, setSelectedDate] = useState<DateObject>(null);
+  const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
   const renderNull = useCallback(() => null, []);
 
-  const onCloseModal = () => setSelectedDate(null);
+  const onToggleAwayModal = () => setIsAwayModalVisible(!isAwayModalVisible);
+
+  useEffect(() => {
+    navigation.setParams({ onToggleAwayModal });
+  }, []);
+
+  const onSubmitAwayDays = async (startDate: string, endDate: string) => {
+    try {
+      await dispatch(setAwayDates(startDate, endDate));
+      setIsAwayModalVisible(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <>
+      <SetAwayModal
+        isVisible={isAwayModalVisible}
+        onToggle={onToggleAwayModal}
+        onSubmit={onSubmitAwayDays}
+
+      />
       <Agenda
         items={items}
         loadItemsForMonth={(date) => {
@@ -82,7 +109,10 @@ const ScheduleScreen = () => {
               earnings = '0',
             } = item || {};
 
-            const onPressDate = () => setSelectedDate(date);
+            const onPressDate = () => navigation.push(
+              'ScheduleDayScreen',
+              { selectedDate: date },
+            );
 
             return (
               <View
@@ -95,7 +125,7 @@ const ScheduleScreen = () => {
                 <View column>
                   <View row>
                     <Text variant={isDateToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>
-                      {date.day.toString()}
+                      {date.day}
                     </Text>
                     <View column spacing={{ ml: 2 }}>
                       <Text
@@ -106,7 +136,7 @@ const ScheduleScreen = () => {
                       <Text
                         variant={isDateToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}
                       >
-                        {date.year.toString()}
+                        {date.year}
                       </Text>
                     </View>
                   </View>
@@ -137,9 +167,7 @@ const ScheduleScreen = () => {
                     <Tag icon="clock" type="border" placeholder={timeSpent} spacing={{ ml: 2 }} />
                     <Tag icon="dollar" type="fill" placeholder={earnings} spacing={{ ml: 2 }} />
                   </View>
-
                 </View>
-
               </View>
             );
           }
@@ -164,13 +192,24 @@ const ScheduleScreen = () => {
           },
         }}
       />
-      <ScheduleDateModal selectedDate={selectedDate} onClose={onCloseModal} />
     </>
   );
 };
 
-ScheduleScreen.navigationOptions = {
-  title: 'Calendar',
+ScheduleScreen.navigationOptions = ({ navigation }) => {
+  const { params = {} } = navigation.state;
+
+  return {
+    title: 'Calendar',
+    headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
+    headerRight:
+  <View
+    alignCenter
+    onPress={params.onToggleAwayModal}
+  >
+    <ScheduleTabIcon focused={false} />
+  </View>,
+  };
 };
 
 export default ScheduleScreen;

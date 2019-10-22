@@ -1,7 +1,7 @@
 import React from 'react';
-import Svg, { Defs, Path, G, Mask, Use } from 'react-native-svg';
+import Svg, { Defs, Path, G, Mask, Use, Rect } from 'react-native-svg';
 
-const SvgComponent = () => (
+const SvgComponent = ({ focused }) => (
   <Svg width="48px" height="93px" viewBox="0 0 48 93">
     <Defs>
       <Path
@@ -15,7 +15,19 @@ const SvgComponent = () => (
           <Mask id="mask-2" fill="white">
             <Use xlinkHref="#path-1" />
           </Mask>
-          <Use id="Mask" fill="#FFFFFF" xlinkHref="#path-1" />
+          <Use id="Mask" fill={focused ? '#71CFEB' : '#FFFFFF'} xlinkHref="#path-1" />
+          {focused && (
+            <Rect
+              id="Rectangle"
+              fill="#57B0CC"
+              mask="url(#mask-2)"
+              x={23}
+              y={-6}
+              width={31}
+              height={105}
+              rx={2}
+            />
+          )}
         </G>
       </G>
     </G>

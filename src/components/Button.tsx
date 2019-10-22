@@ -7,6 +7,7 @@ type ButtonProps = TouchableHighlightProps & {
   variant?: keyof typeof Buttons;
   spacing?: SpacingProp;
   icon?: JSX.Element;
+  width?: number | string;
   bgColor?: keyof typeof Colors;
   children?: (string | JSX.Element) | (string | JSX.Element)[];
 };
@@ -15,12 +16,14 @@ const Button = ({
   variant = 'primary',
   spacing,
   icon,
+  width,
   bgColor,
   children,
   ...buttonProps
 }: ButtonProps) => {
   const styles = useMemo(() => StyleSheet.create({
     view: {
+      width,
       ...Buttons[variant].view,
       ...Spacing.getStyles(spacing),
       ...(icon && { flexDirection: 'row', alignItems: 'center' }),
@@ -30,7 +33,7 @@ const Button = ({
       ...Buttons[variant].text,
       ...(icon && { ...Spacing.getStyles({ ml: 2 }) }),
     },
-  }), [variant, spacing, icon, bgColor]);
+  }), [variant, spacing, icon, width, bgColor]);
 
   return (
     <TouchableHighlight

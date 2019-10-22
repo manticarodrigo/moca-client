@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { StatusBar, SectionList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
+import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
+import { Message } from '@src/store/reducers/ConversationReducer';
+import { getConversation, sendMessage } from '@src/store/actions/ConversationAction';
+
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
 import useScrollToStart from '@src/hooks/useScrollToStart';
 import useImageViewer from '@src/hooks/useImageViewer';
 
-import { mockImg } from '@src/services/mock';
 import { getImage } from '@src/utlities/imagePicker';
 
 import { Views, Colors } from '@src/styles';
@@ -20,84 +23,97 @@ import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
 
-type State = Conversation & { text: string }
+type State = Message[]
 
 const ConversationSectionList: SectionList<Message> = SectionList;
 
 const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { store } = useStore();
-  const [state, setState] = useState<State>({
-    id: null,
-    messages: [],
-    participants: [],
-    text: '',
-  });
+  const { store, dispatch } = useStore();
+  const [otherUser, setOtherUser] = useState<UserSnippet>();
+  const [messages, setMessages] = useState<State>([]);
+  const [inputText, setInputText] = useState('');
 
-  const sections = useDateSections<Message>(state.messages, (message) => message.createdAt);
+  const sections = useDateSections<Message>(
+    messages,
+    (message) => message.createdAt as unknown as string,
+  );
+
   const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
-  const { viewer, onPressImage } = useImageViewer(state.messages);
+  const { viewer, onPressImage } = useImageViewer(messages);
 
   useEffect(() => {
-    const onMount = async () => {
-      const { params = {} } = navigation.state;
+    const { params = {} } = navigation.state;
 
-      if (params.conversation && !state.id) {
-        setState((prev) => ({ ...prev, ...params.conversation }));
-      }
-    };
-
-    onMount();
-  }, [navigation.state, state]);
-
-  useEffect(() => {
-    if (state.participants.length) {
-      const otherParticipant = state.participants.find(({ id }) => id !== store.user.id);
-      const { username = '', imageUrl = mockImg } = otherParticipant;
-
-      navigation.setParams({ title: username, img: imageUrl });
+    if (!params.user) {
+      return;
     }
-  }, [state, store.user.id]);
 
-  const _createMessage = (attachmentURI?: string): Message => ({
-    id: `${Math.floor(Math.random() * 1000000000)}`,
-    text: state.text,
-    sender: store.user.id,
-    attachmentURI,
-    createdAt: new Date().toDateString(),
-  });
+    setOtherUser(params.user);
+    navigation.setParams({ user: params.user });
+  }, []);
 
-  const onChangeText = (val: string) => setState((prev) => ({ ...prev, text: val }));
+  useEffect(() => {
+    if (!otherUser) {
+      return;
+    }
+
+    const updated = store.conversations.map[otherUser.id];
+
+
+    if (!updated) {
+      dispatch(getConversation(otherUser.id.toString()));
+
+      return;
+    }
+
+    setMessages(updated);
+  }, [otherUser, store.conversations.map, dispatch]);
+
+
+  const onChangeText = (text: string) => setInputText(text);
 
   const onPressCamera = async () => {
     getImage((response) => {
       if (response.cancelled === false) {
-        const message = _createMessage(response.uri);
+        const message = { content: {}, image: response.uri, type: MessageTypeEnum.Image, createdAt: new Date() };
 
-        setState((prev) => ({ ...prev, messages: [message, ...prev.messages], text: '' }));
+        setMessages((prev) => ([message, ...prev]));
       }
     });
   };
 
-  const onPressSend = () => {
-    if (state.text) {
-      const message = _createMessage();
+  const onPressSend = async () => {
+    const { params = {} } = navigation.state;
 
-      setState((prev) => ({ ...prev, messages: [message, ...prev.messages], text: '' }));
-      scrollToStart();
+    if (inputText) {
+      try {
+        await dispatch(sendMessage(
+          params.user.id.toString(),
+          inputText,
+        ));
+
+        setInputText('');
+        scrollToStart();
+      } catch (error) {
+        // console.log(error);
+      }
     }
   };
 
   return (
     <>
-      <View safeArea column flex={1} bgColor="lightGrey">
+      {viewer}
+      <View safeArea column flex={1} bgColor="white">
         <StatusBar barStyle="dark-content" />
         <ConversationSectionList
           inverted
           ref={setRef}
+          style={{ backgroundColor: Colors.lightGrey }}
+          sections={sections}
           renderItem={({ item }) => (
             <ConversationMessage
               message={item}
-              alignRight={item.sender === store.user.id}
+              alignRight={item.user === store.user.id}
               onPressImage={onPressImage}
             />
           )}
@@ -108,31 +124,31 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </Text>
             </View>
           )}
-          keyExtractor={(item) => item.id}
-          sections={sections}
+          keyExtractor={(item) => item.createdAt.toString()}
           ListHeaderComponent={(
             <ConversationActions onPressInjury={scrollToStart} onPressLocation={scrollToStart} />
           )}
         />
         <ConversationInputs
-          text={state.text}
+          text={inputText}
           onChangeText={onChangeText}
           onPressCamera={onPressCamera}
           onPressSend={onPressSend}
         />
       </View>
-      {viewer}
     </>
   );
 };
 
-type TitleParams = { img?: string; title?: string }
+type TitleProp = { user?: UserSnippet }
 
-const Title = ({ img = mockImg, title = '' }: TitleParams) => (
+const Title = ({ user }: TitleProp) => (
   <View row flex={1} alignCenter>
-    <Image rounded size={48} uri={img} />
+    <Image rounded size={48} uri={user.image || undefined} />
     <Text variant="titleSmall" spacing={{ ml: 3 }}>
-      {title}
+      {user.firstName}
+      {' '}
+      {user.lastName}
     </Text>
   </View>
 );

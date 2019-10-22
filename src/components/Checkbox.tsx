@@ -7,37 +7,53 @@ import TickFilledIcon from '@src/components/icons/TickFilledIcon';
 
 import View from './View';
 
-type CheckBoxProps = {
-  handleCheckBoxClick: (checked: boolean, index: number) => void;
-  isChecked?: boolean;
-  index?: number;
+type Props = {
+  index: number;
+  value: string;
+  checked: boolean;
+  onClick: (index: number, value: string, checked: boolean) => void;
 };
 
-const CheckBox = ({
-  handleCheckBoxClick,
-  isChecked,
-  index,
-}: CheckBoxProps) => {
-  const handleClick = () => {
-    handleCheckBoxClick(!isChecked, index);
-  };
+const CheckBox = ({ index, value, checked, onClick }: Props) => {
+  const handleClick = () => onClick(index, value, !checked);
 
   return (
     <View>
       <TouchableHighlight
-        onPress={() => handleClick()}
+        onPress={handleClick}
         underlayColor="transparent"
       >
-        {isChecked
-          ? (
-            <TickFilledIcon />
-          )
-          : (
-            <TickEmptyIcon />
-          )}
+        {checked ? <TickFilledIcon /> : <TickEmptyIcon />}
       </TouchableHighlight>
     </View>
   );
 };
 
+type NewProps = {
+  checked: boolean;
+  onChange: (checked?: boolean) => void;
+}
+
+const CheckboxNoRef = ({ checked, onChange }: NewProps, ref) => {
+  const handleClick = () => onChange(!checked);
+
+  return (
+    <View>
+      <TouchableHighlight
+        ref={ref}
+        onPress={handleClick}
+        underlayColor="transparent"
+      >
+        {checked ? <TickFilledIcon /> : <TickEmptyIcon />}
+      </TouchableHighlight>
+    </View>
+  );
+};
+
+const Checkbox = React.forwardRef(CheckboxNoRef);
+
 export default CheckBox;
+
+export {
+  Checkbox,
+};

@@ -1,6 +1,10 @@
 import React from 'react';
 
+import { format, differenceInMinutes } from 'date-fns';
+
 import { mockImg } from '@src/services/mock';
+
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import {
   ClockIcon,
@@ -13,83 +17,90 @@ import View from './View';
 import Image from './Image';
 import Text from './Text';
 import Button from './Button';
+import Rating from './Rating';
 import NotificationBadge from './NotificationBadge';
 
-const AppointmentCardHeader = () => (
-  <View row justifyBetween>
-    <View row>
-      <Image rounded size={48} uri={mockImg} />
-      <Text variant="titleSmall" spacing={{ ml: 3 }}>
-        Elvis Presley
-      </Text>
-    </View>
-    <View column alignEnd>
-      <View row spacing={{ mb: 1 }}>
-        <ClockIcon />
-        <Text variant="regularSmall" spacing={{ ml: 1 }}>
-          30 min
-        </Text>
-      </View>
-      <Text variant="title">$60</Text>
-    </View>
-  </View>
-);
-
-const AppointmentCardInfo = ({ current = false }) => (
-  <View row justifyBetween spacing={{ mt: current ? 2 : -2 }}>
-    <View row flex={1}>
-      <View width={48} height={48} justifyCenter alignCenter>
-        <InfoIcon />
-      </View>
-      <View column flex={1} spacing={{ mt: !current && -3, ml: 3 }}>
-        <Text variant={current ? 'boldSecondary' : 'boldGrey'}>12:00pm / Today</Text>
-        <Text variant="regular">Chestnut St.</Text>
-      </View>
-    </View>
-
-    {current && (
-      <View row>
-        <View variant="iconButton" onPress={() => null}>
-          <MessagesIcon size={0.5} />
-          <NotificationBadge />
-        </View>
-        <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
-          <PinIcon size={0.8} />
-        </View>
-      </View>
-    )}
-  </View>
-);
-
 type AppointmentCardProps = {
+  appointment?: Appointment;
   current?: boolean;
   isTherapist: boolean;
+  onPress?: () => void;
 };
 
-const AppointmentCard = ({ current, isTherapist }: AppointmentCardProps) => {
+const AppointmentCard = ({ appointment, current, isTherapist, onPress }: AppointmentCardProps) => {
   const canStart = current && isTherapist;
   const canCancel = !current && !isTherapist;
   const hasButton = canStart || canCancel;
 
   return (
     <View
-      column
+      row
       variant={current ? 'borderCard' : 'card'}
       spacing={{ pb: (!current && isTherapist) && 0 }}
       bgColor={!current ? 'whiteTranslucent' : null}
+      onPress={onPress}
     >
-      <AppointmentCardHeader />
+      <View>
+        <Image rounded size={48} uri={mockImg} />
+        <View width={48} height={48} justifyCenter alignCenter>
+          <InfoIcon />
+        </View>
+      </View>
+      <View flex={1} spacing={{ pl: 3 }}>
+        <View row justifyBetween>
+          <Text variant={current ? 'title' : 'titleSmall'} numberOfLines={2}>
+            {`${appointment.otherParty.firstName} ${appointment.otherParty.lastName}`}
+          </Text>
+          <View row>
+            <ClockIcon />
+            <Text variant="regularSmall" spacing={{ ml: 1 }}>
+              {differenceInMinutes(new Date(appointment.endTime), new Date(appointment.startTime))}
+              min
+            </Text>
+          </View>
+        </View>
+        <View row justifyEnd={isTherapist} justifyBetween={!isTherapist} spacing={{ py: 1 }}>
+          {!isTherapist && <Rating rating={2} />}
+          <Text variant="titlePrimaryLarge">
+            $
+            {appointment.price}
+          </Text>
+        </View>
+        <View row justifyBetween spacing={{ py: isTherapist && current && 2 }}>
+          <View row flex={1}>
+            <View column flex={1} spacing={{ mt: (isTherapist && !current) && -5 }}>
+              <Text variant={current && isTherapist ? 'boldSecondary' : 'boldGrey'}>
+                {format(new Date(appointment.startTime), 'hh:mm aaaa')}
+              </Text>
+              <Text variant="regular">{appointment.address.street}</Text>
+            </View>
+          </View>
 
-      <AppointmentCardInfo current={current} />
+          {current && isTherapist && (
+            <View row>
+              <View variant="iconButton" onPress={() => null}>
+                <MessagesIcon size={0.5} />
+                <NotificationBadge />
+              </View>
+              <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
+                <PinIcon size={0.8} />
+              </View>
+            </View>
+          )}
+        </View>
 
-      {hasButton && (
-        <View row justifyCenter spacing={{ mt: 2, ml: 5 }}>
-          <Button variant="secondary" bgColor={canCancel ? 'white' : null} onPress={() => null}>
+        {hasButton && (
+          <Button
+            variant="secondary"
+            spacing={{ mt: 3 }}
+            bgColor={canCancel ? 'white' : null}
+            onPress={() => null}
+          >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
           </Button>
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 };

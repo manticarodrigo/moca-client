@@ -37,5 +37,9 @@ const WalletScreen = () => {
   );
 };
 
+WalletScreen.navigationOptions = () => ({
+  headerTitle: 'Wallet',
+});
+
 
 export default WalletScreen;
