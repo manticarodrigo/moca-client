@@ -30,9 +30,6 @@ const styles = {
     marginTop: 0,
     marginLeft: 0,
     marginRight: 0,
-    // borderRadius: Spacing.spaceSize[2],
-    // borderWidth: 2,
-    // borderColor: Colors.secondaryLight,
     backgroundColor: 'transparent',
     width: '100%',
     height: 60,
@@ -46,7 +43,12 @@ const styles = {
   },
 };
 
-const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>) => void }) => {
+type Props = {
+  onChangeText?: (text: string) => void;
+  onSelect: (values: Partial<AddAddressForm>) => void;
+}
+
+const PlacesSearch = ({ onChangeText, onSelect }: Props) => {
   const { store } = useStore();
 
   const onPressPlace = (_, details = null) => { // 'details' is provided when fetchDetails = true
@@ -118,6 +120,7 @@ const PlacesSearch = ({ onSelect }: { onSelect: (values: Partial<AddAddressForm>
       currentLocationLabel="Current location"
       debounce={200}
       renderLeftButton={() => <View justifyCenter spacing={{ px: 3 }}><SearchIcon /></View>}
+      textInputProps={{ onChangeText }}
       onPress={onPressPlace}
     />
   );
