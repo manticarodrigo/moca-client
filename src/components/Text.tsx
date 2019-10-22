@@ -1,24 +1,27 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
+import { StyleSheet, Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
 
-import { Typography, Spacing, SpacingProp } from '@src/styles';
+import { Spacing, SpacingProp, Typography, TypographyProp, Texts } from '@src/styles';
 
 type TextProps = RNTextProps & {
-  variant?: keyof typeof Typography.text;
+  variant?: keyof typeof Texts;
+  style?: TextStyle;
   spacing?: SpacingProp;
-  children: string;
+  typography?: TypographyProp;
+  children: (string | JSX.Element) | (string | JSX.Element)[];
 };
 
-const Text = ({ variant, spacing, children, ...textProps }: TextProps) => {
+const Text = ({ variant, style, spacing, typography, children, ...textProps }: TextProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
-      ...Typography.text[variant],
-      ...Spacing.get(spacing),
+      ...Texts[variant],
+      ...Spacing.getStyles(spacing),
+      ...Typography.getStyles(typography),
     },
-  }), [variant, spacing]);
+  }), [variant, spacing, typography]);
 
   return (
-    <RNText style={styles.text} {...textProps}>
+    <RNText style={[styles.text, style]} {...textProps}>
       {children}
     </RNText>
   );

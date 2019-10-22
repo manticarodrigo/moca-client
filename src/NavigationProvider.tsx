@@ -1,125 +1,106 @@
 import React from 'react';
 
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-  createSwitchNavigator,
-  createAppContainer,
-} from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import { Header } from '@src/styles';
+import { Views, Typography, Colors, Spacing } from '@src/styles';
 
-import ChatListScreen from '@src/screens/ChatListScreen/ChatListScreen';
-import ChatScreen from '@src/screens/ChatScreen/ChatScreen';
-import DashboardScreen from '@src/screens/DashboardScreen/DashboardScreen';
-import OnboardingScreen from '@src/screens/OnboardingScreen/OnboardingScreen';
+import BackButton from '@src/components/BackButton';
+import TabBar from '@src/components/TabBar';
+import TabBarIcon from '@src/components/TabBarIcon';
 
-import useNavigation from '@src/hooks/useNavigation';
+import SitemapScreen from '@src/screens/SitemapScreen';
+import OnboardingScreen from '@src/screens/OnboardingScreen';
+import DashboardScreen from '@src/screens/DashboardScreen';
+import FilterScreen from '@src/screens/FilterScreen';
+import ScheduleScreen from '@src/screens/ScheduleScreen';
+import ConversationListScreen from '@src/screens/ConversationListScreen';
+import ConversationScreen from '@src/screens/ConversationScreen';
+import ProfileScreen from '@src/screens/ProfileScreen';
+import SelectionScreen from '@src/screens/SignUp/SelectionScreen';
+import InvalidZipCodeScreen from '@src/screens/SignUp/InvalidZipCodeScreen';
+import RegistrationScreen from '@src/screens/SignUp/RegistrationScreen';
+import InvalidMedicareScreen from '@src/screens/SignUp/InvalidMedicareScreen';
+import AddressScreen from '@src/screens/SignUp/AddressScreen';
+import QualificationsScreen from '@src/screens/SignUp/QualificationsScreen';
+import AddressSettingScreen from '@src/screens/ProfileScreen/AddressSettingScreen';
+import WalletScreen from '@src/screens/WalletScreen/WalletScreen';
 
-import Flex from '@src/components/Flex';
-import Card from '@src/components/Card';
-import Text from '@src/components/Text';
-
-export const tabConfig = {
-  Chat: {
-    initialRouteName: 'ChatListScreen',
-    screens: {
-      ChatListScreen,
-      ChatScreen,
+const defaultNavConfig = {
+  // headerLayoutPreset: 'center',
+  cardShadowEnabled: false,
+  defaultNavigationOptions: ({ navigation }) => ({
+    title: navigation.state.routeName,
+    headerStyle: {
+      borderBottomWidth: 0,
+      height: 60,
+      backgroundColor: Colors.primary,
     },
-  },
-  Dashboard: {
-    initialRouteName: 'DashboardScreen',
-    screens: {
-      DashboardScreen,
+    headerTintColor: Colors.primary,
+    headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
+    headerBackImage: BackButton,
+    headerBackTitle: null,
+    headerTitleStyle: {
+      ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }),
     },
-  },
+    headerRight: null,
+  }),
 };
-
-export const authConfig = {
-  OnboardingScreen,
-};
-
-const SitemapScreen = () => {
-  const navigation = useNavigation();
-  const handleNavigate = (screenName) => navigation.navigate(screenName);
-
-  const screens = Object.keys(authConfig).concat(
-    Object.values(tabConfig).flatMap((tab) => Object.keys(tab.screens)),
-  );
-
-  return screens.map((name: string) => (
-    <SitemapCard
-      key={name}
-      name={name}
-      onPress={handleNavigate}
-    />
-  ));
-};
-
-const SitemapCard = ({ name, onPress }) => {
-  const handleCardPress = () => onPress(name);
-
-  return (
-    <Flex direction="column" spacing={['p', 3]}>
-      <Card key={name} onPress={handleCardPress}>
-        <Text>{name}</Text>
-      </Card>
-    </Flex>
-  );
-};
-
-const _createStack = (tabName, initialRouteName, screens) => createStackNavigator(
-  Object.entries(screens).reduce(
-    (screenMap, [name, component]) => {
-      screenMap[name] = component;
-
-      return screenMap;
-    }, {},
-  ),
-  {
-    initialRouteName,
-    ...Header.getBase(tabName),
-  },
-);
-
-const TabStack = createBottomTabNavigator(
-  Object.entries(tabConfig).reduce(
-    (tabsMap, [tabName, { initialRouteName, screens }]) => {
-      const stack = _createStack(tabName, initialRouteName, screens);
-
-      // remove tab bar in nested screens
-      stack.navigationOptions = ({ navigation }) => ({
-        tabBarVisible: !(navigation.state.index > 0),
-      });
-
-      tabsMap[tabName] = stack;
-
-      return tabsMap;
-    }, {},
-  ),
-);
-
-
-const AuthStack = createStackNavigator(
-  {
-    SitemapScreen,
-    ...authConfig,
-  },
-  {
-    initialRouteName: 'SitemapScreen',
-    ...Header.getBase('Sitemap'),
-  },
-);
 
 const AppStack = createSwitchNavigator(
   {
-    Auth: AuthStack,
-    Tab: TabStack,
+    SitemapScreen,
+
+    AuthStack: createStackNavigator({
+      OnboardingScreen,
+      SelectionScreen,
+      InvalidZipCodeScreen,
+      RegistrationScreen,
+      InvalidMedicareScreen,
+      AddressScreen,
+      QualificationsScreen,
+    }, defaultNavConfig),
+
+    TabStack: createBottomTabNavigator({
+
+      DashboardTab: createStackNavigator({
+        DashboardScreen,
+        FilterScreen,
+      }, defaultNavConfig),
+
+      ScheduleTab: createStackNavigator({
+        ScheduleScreen,
+      }, defaultNavConfig),
+
+      ConversationTab: createStackNavigator({
+        ConversationListScreen,
+        ConversationScreen,
+      }, defaultNavConfig),
+
+      ProfileTab: createStackNavigator({
+        ProfileScreen,
+        AddressSettingScreen,
+        AddressScreen,
+        WalletScreen,
+      }, defaultNavConfig),
+
+    }, {
+      defaultNavigationOptions: ({ navigation }) => ({
+        tabBarIcon: function Icon(props) {
+          return <TabBarIcon {...props} navigation={navigation} />;
+        },
+        tabBarVisible: navigation.state.index < 1,
+      }),
+      tabBarComponent: TabBar,
+      tabBarOptions: {
+        showLabel: false,
+        style: { ...Views.borderTop, height: 72 },
+      },
+    }),
+
   },
-  {
-    initialRouteName: 'Auth',
-  },
+  { initialRouteName: 'SitemapScreen' },
 );
 
 export default createAppContainer(AppStack);

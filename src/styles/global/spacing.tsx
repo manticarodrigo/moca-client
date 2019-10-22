@@ -1,7 +1,5 @@
 import { ViewStyle } from 'react-native';
 
-export const space = [0, 4, 8, 16, 32, 64, 128, 256, 512];
-
 const aliases = {
   m: 'margin',
   mt: 'marginTop',
@@ -22,43 +20,39 @@ const compositions = {
   py: [aliases.pt, aliases.pb],
 };
 
-type SpacingKey = keyof typeof aliases | keyof typeof compositions;
-type SpacingTuple = [SpacingKey, number];
+export const spaceSize = [0, 4, 8, 16, 24, 32, 64, 128, 256, 512];
 
-const _space = (key: SpacingKey, multiplier: number): ViewStyle => {
-  const size = space[multiplier];
+
+type SpacingKey = keyof typeof aliases | keyof typeof compositions;
+
+const _getKeyStyles = (key: string, multiplier: number): ViewStyle => {
+  const isNegative = Math.sign(multiplier) === -1;
+  const absoluteSize = isNegative ? spaceSize[Math.abs(multiplier)] : spaceSize[multiplier];
+  const size = isNegative ? -absoluteSize : absoluteSize;
 
   if (!aliases[key]) {
-    return compositions[key].reduce((acc, style) => {
-      acc[style] = size;
+    const styles = {};
 
-      return acc;
-    }, {});
+    compositions[key].forEach((style) => {
+      styles[style] = size;
+    });
+
+    return styles;
   }
 
   return { [aliases[key]]: size };
 };
 
-const _spaces = (arr: SpacingTuple[]): ViewStyle => arr
-  .reduce((styles, [key, size]) => ({
-    ...styles,
-    ..._space(key, size),
+export type SpacingProp = { [key in SpacingKey]?: number };
+
+export const getStyles = (prop?: SpacingProp): ViewStyle => {
+  if (!prop) { return null; }
+
+  const propList = Object.entries(prop);
+  const viewStyle = propList.reduce((prev, [key, size]) => ({
+    ...prev,
+    ..._getKeyStyles(key, size),
   }), {});
 
-
-export type SpacingProp = SpacingTuple | SpacingTuple[];
-
-export const get = (prop?: SpacingProp) => {
-  const isMultiDimArr = (arr: SpacingProp): arr is SpacingTuple[] => arr[0] instanceof Array;
-
-  if (!prop) {
-    return null;
-  }
-
-  if (isMultiDimArr(prop)) {
-    return _spaces(prop);
-  }
-
-  const [key, size] = prop;
-  return _space(key, size);
+  return viewStyle;
 };

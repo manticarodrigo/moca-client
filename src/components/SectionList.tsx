@@ -1,25 +1,27 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, SectionList as RNSectionList, SectionListProps as RNSectionListProps } from 'react-native';
+import React, { forwardRef, useMemo } from 'react';
+import {
+  StyleSheet,
+  SectionList as RNSectionList,
+  SectionListProps as RNSectionListProps,
+} from 'react-native';
 
-import { Lists } from '@src/styles';
+import { Colors, Spacing, SpacingProp } from '@src/styles';
 
-type SectionListProps = RNSectionListProps<any> & {
-  variant?: keyof typeof Lists;
+type SectionListProps<Item> = RNSectionListProps<Item> & {
+  spacing?: SpacingProp;
+  bgColor?: keyof typeof Colors;
 };
 
-const SectionList = ({ variant = 'primary', ...nativeProps }: SectionListProps) => {
+function SectionList<Item>({ spacing, bgColor, ...props }: SectionListProps<Item>, ref) {
   const styles = useMemo(() => StyleSheet.create({
     list: {
-      ...Lists[variant],
+      flex: 1,
+      ...Spacing.getStyles(spacing),
+      ...(bgColor && { backgroundColor: Colors[bgColor] }),
     },
-  }), [variant]);
+  }), [spacing, bgColor]);
 
-  return (
-    <RNSectionList
-      style={styles.list}
-      {...nativeProps}
-    />
-  );
-};
+  return <RNSectionList ref={ref} style={styles.list} {...props} />;
+}
 
-export default SectionList;
+export default forwardRef(SectionList);

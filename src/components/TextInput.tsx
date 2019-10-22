@@ -1,30 +1,44 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProps } from 'react-native';
+import React, { useMemo, forwardRef } from 'react';
+import {
+  StyleSheet,
+  TextInput as RNTextInput,
+  TextInputProps as RNTextInputProps,
+} from 'react-native';
 
-import { Alignment, AlignmentProp, Spacing, SpacingProp, Typography } from '@src/styles';
+import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/styles';
 
 const variants = {
-  primary: {},
+  conversation: {
+    height: '100%',
+    borderRadius: 24,
+    backgroundColor: Colors.lightGrey,
+  },
+  search: {
+    backgroundColor: Colors.lightGrey,
+  },
 };
 
 type TextInputProps = RNTextInputProps & {
   variant?: keyof typeof variants;
-  text?: keyof typeof Typography.text;
-  alignment?: AlignmentProp;
+  typography?: TypographyProp;
   spacing?: SpacingProp;
 };
 
-const Text = ({ variant, text, spacing, alignment, ...textProps }: TextInputProps) => {
+const TextInput = ({
+  variant,
+  typography,
+  spacing,
+  ...textProps
+}: TextInputProps, ref: React.Ref<RNTextInput>) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
+      ...Spacing.getStyles(spacing),
+      ...Typography.getStyles(typography),
       ...variants[variant],
-      ...Typography.text[text],
-      ...Alignment.get(alignment),
-      ...Spacing.get(spacing),
     },
-  }), [variant, text, alignment, spacing]);
+  }), [variant, typography, spacing]);
 
-  return <RNTextInput style={styles.text} {...textProps} />;
+  return <RNTextInput ref={ref} style={styles.text} {...textProps} />;
 };
 
-export default Text;
+export default forwardRef(TextInput);

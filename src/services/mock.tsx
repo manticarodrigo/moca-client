@@ -1,9 +1,23 @@
 import { subDays } from 'date-fns';
 
-import { User, Chat, Message } from '@src/types';
+const mockUsernames = [
+  'Adam Smith',
+  'David Hume',
+  'Ayn Rand',
+  'Jeremy Bentham',
+  'Michel Foucault',
+  'Fredrich Hayek',
+  'Ludwig von Mises',
+];
+const mockMessages = [
+  'Hey buddy! Long time no see man. What are you up to?',
+  'Not much, how are you?',
+  'Doing well, and you?',
+  'Doing great!',
+  'Good to hear.',
+  'I was wondering if you we could book an appointment for this afternoon?',
+];
 
-const mockUsernames = ['Adam Smith', 'David Hume', 'Ayn Rand', 'Jeremy Bentham', 'Michel Foucault'];
-const mockMessages = ['Hey!', 'How are you?', 'Doing well, and you?', 'Doing great!', 'Good to hear.'];
 export const mockImg = 'https://www.chaarat.com/wp-content/uploads/2017/08/placeholder-user.png';
 
 
@@ -17,16 +31,17 @@ const _genParticipant = (username: string): User => ({
   username,
   id: _genId(),
   imageUrl: mockImg,
+  type: 'patient',
 });
 
-const _genMessage = (text: string, userId: string): Message => ({
+const _genMessage = (text: string, sender: string): Message => ({
   text,
-  userId,
+  sender,
   id: _genId(),
   createdAt: _genDaysBefore(_genRandomInt(16)),
 });
 
-const _genChat = (username: string, currentUser: User): Chat => {
+const _genConversation = (username: string, currentUser: User): Conversation => {
   const participants = [
     currentUser,
     _genParticipant(username),
@@ -44,6 +59,6 @@ const _genChat = (username: string, currentUser: User): Chat => {
   };
 };
 
-export const fetchChats = async (currentUser: User) => (
-  mockUsernames.map((username) => _genChat(username, currentUser))
+export const fetchConversations = async (currentUser: User) => (
+  mockUsernames.map((username) => _genConversation(username, currentUser))
 );
