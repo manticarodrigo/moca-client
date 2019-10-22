@@ -87,7 +87,10 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     if (inputText) {
       try {
-        await dispatch(sendMessage(params.user.id.toString(), inputText));
+        await dispatch(sendMessage(
+          params.user.id.toString(),
+          inputText,
+        ));
 
         setInputText('');
         scrollToStart();

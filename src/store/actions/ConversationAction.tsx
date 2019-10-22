@@ -32,12 +32,14 @@ const getConversation = (userId: string) => async (
   dispatch({ type: 'GET_CONVERSATION_SUCCESS', payload: { data, userId } });
 };
 
-const sendMessage = (userId: string, content: string) => async (
+const sendMessage = (userId: string, text: string) => async (
   dispatch: Dispatch<ConversationAction>,
   store,
 ) => {
-  const body = { type: MessageTypeEnum.Text, text: { content } };
+  const body = { type: MessageTypeEnum.Text, content: { text } };
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
+
+  // @ts-ignore
   const { data } = await api.chat.chatCreate(userId, body, options);
 
   // @ts-ignore

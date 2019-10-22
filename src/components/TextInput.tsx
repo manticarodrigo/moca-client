@@ -6,10 +6,11 @@ import {
   TextInputProps as RNTextInputProps,
 } from 'react-native';
 
-import { Spacing, SpacingProp, Typography, TypographyProp, Colors } from '@src/styles';
+import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from '@src/styles';
 
 const variants: { [key: string]: TextStyle } = {
   conversation: {
+    ...Texts.regularGrey,
     height: '100%',
     borderRadius: 24,
     backgroundColor: Colors.lightGrey,
