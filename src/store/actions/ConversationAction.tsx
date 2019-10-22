@@ -32,7 +32,7 @@ const getConversation = (userId: string) => async (
   dispatch({ type: 'GET_CONVERSATION_SUCCESS', payload: { data, userId } });
 };
 
-const sendMessage = (userId: string, text: string) => async (
+const sendMessage = (userId: number, text: string) => async (
   dispatch: Dispatch<ConversationAction>,
   store,
 ) => {
@@ -40,7 +40,7 @@ const sendMessage = (userId: string, text: string) => async (
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
   // @ts-ignore
-  const { data } = await api.chat.chatCreate(userId, body, options);
+  const { data } = await api.chat.chatCreate(userId.toString(), body, options);
 
   // @ts-ignore
   dispatch({ type: 'SEND_MESSAGE_SUCCESS', payload: { data, userId } });

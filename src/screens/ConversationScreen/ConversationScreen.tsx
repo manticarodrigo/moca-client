@@ -23,14 +23,12 @@ import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
 import ConversationInputs from './ConversationInputs';
 
-type State = Message[]
-
 const ConversationSectionList: SectionList<Message> = SectionList;
 
 const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
   const [otherUser, setOtherUser] = useState<UserSnippet>();
-  const [messages, setMessages] = useState<State>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
 
   const sections = useDateSections<Message>(
@@ -75,9 +73,14 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPressCamera = async () => {
     getImage((response) => {
       if (response.cancelled === false) {
-        const message = { content: {}, image: response.uri, type: MessageTypeEnum.Image, createdAt: new Date() };
+        const message = {
+          type: MessageTypeEnum.Image,
+          content: { image: response.uri },
+          user: store.user.id,
+          createdAt: new Date(),
+        };
 
-        setMessages((prev) => ([message, ...prev]));
+        setMessages((prev) => ([...prev, message]));
       }
     });
   };
@@ -87,10 +90,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     if (inputText) {
       try {
-        await dispatch(sendMessage(
-          params.user.id.toString(),
-          inputText,
-        ));
+        await dispatch(sendMessage(params.user.id, inputText));
 
         setInputText('');
         scrollToStart();
@@ -114,6 +114,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
             <ConversationMessage
               message={item}
               alignRight={item.user === store.user.id}
+              otherUser={otherUser}
               onPressImage={onPressImage}
             />
           )}

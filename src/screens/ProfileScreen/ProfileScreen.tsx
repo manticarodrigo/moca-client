@@ -39,7 +39,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <View row spacing={{ p: 4 }}>
         <Image rounded size={80} uri={mockImg} />
         <View column justifyCenter spacing={{ px: 3 }}>
-          <Text variant="titleWhite">{store.user.firstName}</Text>
+          <Text variant="titleWhite">{`${store.user.firstName} ${store.user.lastName}`}</Text>
           {isTherapist && (
             <View row alignCenter>
               <Text spacing={{ mr: 2 }} variant="lightTextCenter">{store.user.rating}</Text>

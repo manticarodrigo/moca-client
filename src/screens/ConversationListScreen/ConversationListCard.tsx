@@ -17,12 +17,16 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
 
   const { image, name, time, text } = useMemo(() => {
     const { lastMessage, user } = conversation;
+    const { content, createdAt } = lastMessage;
 
     return {
       image: user.image || undefined,
       name: `${user.firstName} ${user.lastName}`,
-      time: format(new Date(lastMessage.createdAt), 'MM/dd/yyyy - h:mm a'),
-      text: lastMessage.content.text || '**Appointment request',
+      time: format(new Date(createdAt), 'MM/dd/yyyy - h:mm a'),
+      text: (
+        content.text
+        || `Appointment request: ${format(new Date(content.startTime), 'MM/dd - hh:mm aaaa')}`
+      ),
     };
   }, [conversation]);
 

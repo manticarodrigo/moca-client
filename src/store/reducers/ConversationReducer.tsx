@@ -2,8 +2,15 @@ import { ConversationAction } from '@src/store/actions/ConversationAction';
 import { UserSnippet, Message as BadMessage } from '@src/services/openapi';
 
 export type Message = Omit<BadMessage, 'image' | 'content'> & {
-  image: string;
-  content: { text?: string };
+  content: {
+    id?: number;
+    text?: string;
+    startTime?: string;
+    endTime?: string;
+    price?: number;
+    status?: 'pending' | 'accepted' | 'rejected';
+    image?: string;
+  };
 }
 
 export type Conversation = {
