@@ -33,6 +33,7 @@ const ChangePasswordModal = ({
 
   return (
     <Modal
+      avoidKeyboard
       propagateSwipe
       isVisible={isModalVisible}
       onToggle={closeInputModal}

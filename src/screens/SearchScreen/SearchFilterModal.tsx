@@ -97,7 +97,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
   const onToggle = () => onClose(filters);
 
   return (
-    <Modal propagateSwipe isVisible={isVisible} onToggle={onToggle}>
+    <Modal avoidKeyboard propagateSwipe isVisible={isVisible} onToggle={onToggle}>
       <View scroll width="100%" bgColor="white" spacing={{ mb: 6 }}>
         <>
           {Object.keys(checkboxConfig).map((sectionKey) => {

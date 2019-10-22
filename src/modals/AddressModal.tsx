@@ -12,6 +12,7 @@ import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 const AddressModal = ({ isVisible, onClose, onSubmit }) => (
   <Modal
     propagateSwipe
+    avoidKeyboard
     isVisible={isVisible}
     onToggle={onClose}
   >
