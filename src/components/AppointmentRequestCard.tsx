@@ -37,16 +37,25 @@ const AppointmentRequestCard = ({ message, otherUser }: Props) => {
   };
 
   return (
-    <View variant="rounded" bgColor="white" spacing={{ m: 3, mt: 0 }}>
+    <View
+      style={{ overflow: 'hidden' }}
+      spacing={{ m: 3, mt: 0 }}
+      variant="rounded"
+      bgColor="white"
+    >
+
       <View alignCenter spacing={{ p: 3 }}>
         <Text variant="regularDark">
-          Appointment request for
+          Appointment request
+          {' '}
+          {isTherapist ? 'for' : 'from'}
           {' '}
           <Text variant="boldDark">{`${otherUser.firstName} ${otherUser.lastName}`}</Text>
         </Text>
       </View>
-      <View alignCenter bgColor="secondaryLight" spacing={{ p: 4 }}>
-        <View row alignCenter spacing={{ ml: -1 }}>
+
+      <View alignCenter spacing={{ p: 3 }} bgColor="secondaryLight">
+        <View row alignCenter spacing={{ ml: -3 }}>
           <ScheduleTabIcon white />
           <Text variant="regularPrimaryBold">
             {date}
@@ -70,11 +79,10 @@ const AppointmentRequestCard = ({ message, otherUser }: Props) => {
 
       </View>
       <View
-        variant="curveBorderBottom"
         alignCenter
         spacing={{ p: 4 }}
         bgColor={isRejected ? 'error' : null}
-        onPress={handlePress}
+        onPress={!isRejected && handlePress}
       >
         <Text variant={isRejected ? 'titleWhite' : 'titleSmallError'}>
           {((!isTherapist && !isRejected) && 'Reject') || (isRejected ? 'Rejected' : 'Cancel')}
