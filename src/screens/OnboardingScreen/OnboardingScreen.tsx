@@ -60,20 +60,18 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       if (!isAuthenticated) {
-        if (store.user.storageReady) {
-          return setIsReady(true);
-        }
+        if (store.user.storageReady) return setIsReady(true);
 
         return null;
       }
 
-      setTimeout(onAuthNavigate, 250);
+      onAuthNavigate();
 
       return null;
     };
 
     setTimeout(checkAuth);
-  }, [isAuthenticated, isLoginModalVisible, onAuthNavigate, store.user.storageReady]);
+  }, [isAuthenticated, onAuthNavigate, store.user.storageReady]);
 
   const onPressSignup = () => navigation.push('SelectionScreen');
 
@@ -81,13 +79,9 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
 
   const onSumbitLogin = async (email: string, password: string) => {
     try {
-      setIsLoginModalVisible(false);
-
       await dispatch(loginUser(email, password));
     } catch (error) {
       // console.log(error);
-
-      setIsLoginModalVisible(true);
     }
   };
 
