@@ -7,6 +7,7 @@ import { Message } from '@src/store/reducers/ConversationReducer';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
+import AppointmentRequestCard from '@src/components/MessagingCards/AppointmentRequestCard';
 
 type ConversationMessageProps = {
   alignRight: boolean;
@@ -16,14 +17,16 @@ type ConversationMessageProps = {
 
 const ConversationMessage = ({ message, alignRight, onPressImage }: ConversationMessageProps) => {
   const { text, image, time } = useMemo(() => ({
-    text: (message.text || {}).content || '',
+    text: (message.content.text) || '',
     image: message.image,
     time: format(new Date(message.createdAt), 'hh:mm'),
   }), [message]);
 
   const handlePressImage = () => onPressImage(image);
 
-  return (
+  return message.type === 'appointment-request' ? (
+    <AppointmentRequestCard content={message.content} />
+  ) : (
     <View column variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
       {image && (
         <View column spacing={{ mb: 2 }} onPress={handlePressImage}>

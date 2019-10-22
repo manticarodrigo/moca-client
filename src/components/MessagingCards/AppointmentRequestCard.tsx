@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { format, differenceInMinutes } from 'date-fns';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
@@ -7,54 +9,69 @@ import Button from '@src/components/Button';
 import { ScheduleTabIcon, ClockIcon } from '@src/components/icons';
 
 
-type AppointmentCardProps = {
-  isPatient?: boolean,
+type Content = {
+  id: number;
+  endTime: string;
+  price: number;
+  startTime: string;
+  status: 'accepted' | 'rejected';
+}
+
+type Props = {
+  content?: Content;
 };
 
-const AppointmentRequestCard = ({ isPatient }: AppointmentCardProps) => {
-
-  const appointmentExample = {
-    patientName: 'Adele Dust',
-    therapistName: 'John Denver',
-    date: '16 july 2019',
-    time: '1:00 pm',
-    price: '$120',
-    duration: '60 min',
-    rejected: false,
-  }
+const AppointmentRequestCard = ({ content }: Props) => {
+  const { id, endTime, price, startTime, status } = content;
 
   const handlePress = () => {
     // handle appointment acception.
   };
 
-  const { patientName, therapistName, date, time, price, duration, rejected } = appointmentExample;
   return (
     <View variant="curveBorder" bgColor="white" spacing={{ m: 4 }}>
       <View alignCenter spacing={{ p: 3 }}>
-        <Text variant="regularDark">Waiting {' '}
-          <Text variant="regularDarker">
-            {isPatient ? patientName : therapistName}{','}
-          </Text>
+        <Text variant="regularDark">
+         Appointment Created
         </Text>
-        <Text variant="regularDark" spacing={{ mt: 2 }}>Accept or Reject the appointment</Text>
       </View>
       <View alignCenter bgColor="secondaryLight" spacing={{ p: 4 }}>
         <View row alignCenter spacing={{ m: 1 }}>
           <ScheduleTabIcon white />
-          <Text variant="regularPrimaryBold">{date} (today)</Text>
+          <Text variant="regularPrimaryBold">
+            {format(new Date(startTime), 'MM dd yyyy')}
+          </Text>
         </View>
         <View row alignCenter spacing={{ m: 1 }}>
           <ClockIcon white />
-          <Text variant="regularPrimaryBold" spacing={{ ml: 2 }}>{time}</Text>
+          <Text variant="regularPrimaryBold" spacing={{ ml: 2 }}>
+            {format(new Date(startTime), 'hh:mm aaaa')}
+          </Text>
         </View>
-        <Text variant="titleWhiteBold" spacing={{ mt: 2 }}>{price} for {duration}</Text>
-        {(isPatient && rejected === false) ?
-          <Button variant="primary" spacing={{ mt: 3 }} onPress={handlePress}>Accept Appointment</Button> : null
-        }
+        <Text variant="titleWhiteBold" spacing={{ mt: 2 }}>
+          $
+          {price}
+          {' '}
+          for
+          {' '}
+          {differenceInMinutes(new Date(endTime), new Date(startTime))}
+          min
+        </Text>
+        {/* {(isPatient && rejected === false)
+          ? <Button variant="primary" spacing={{ mt: 3 }} onPress={handlePress}>Accept Appointment</Button> : null} */}
       </View>
-      <View variant="curveBorderBottom" alignCenter spacing={{ p: 4 }} bgColor={rejected ? "error" : null} onPress={handlePress}>
-        <Text variant={rejected ? "titleWhite" : "titleSmallError"}>
+      <View
+        variant="curveBorderBottom"
+        alignCenter
+        spacing={{ p: 4 }}
+        bgColor={status === 'rejected' ? 'error' : null}
+        onPress={handlePress}
+      >
+        {/* <Text variant={rejected ? 'titleWhite' : 'titleSmallError'}>
           {((isPatient && rejected === false) ? 'Reject' : (rejected ? 'Rejected' : 'Cancel'))}
+        </Text> */}
+        <Text variant="titlePrimary">
+          Accepted
         </Text>
       </View>
     </View>

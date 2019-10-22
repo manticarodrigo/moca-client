@@ -1,6 +1,10 @@
 import React from 'react';
 
+import { format, differenceInMinutes } from 'date-fns';
+
 import { mockImg } from '@src/services/mock';
+
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import {
   ClockIcon,
@@ -17,12 +21,13 @@ import Rating from './Rating';
 import NotificationBadge from './NotificationBadge';
 
 type AppointmentCardProps = {
+  appointment?: Appointment;
   current?: boolean;
   isTherapist: boolean;
   onPress?: () => void;
 };
 
-const AppointmentCard = ({ current, isTherapist, onPress }: AppointmentCardProps) => {
+const AppointmentCard = ({ appointment, current, isTherapist, onPress }: AppointmentCardProps) => {
   const canStart = current && isTherapist;
   const canCancel = !current && !isTherapist;
   const hasButton = canStart || canCancel;
@@ -44,26 +49,30 @@ const AppointmentCard = ({ current, isTherapist, onPress }: AppointmentCardProps
       <View flex={1} spacing={{ pl: 3 }}>
         <View row justifyBetween>
           <Text variant={current ? 'title' : 'titleSmall'} numberOfLines={2}>
-            Elvis Presley
+            {`${appointment.otherParty.firstName} ${appointment.otherParty.lastName}`}
           </Text>
           <View row>
             <ClockIcon />
             <Text variant="regularSmall" spacing={{ ml: 1 }}>
-              30 min
+              {differenceInMinutes(new Date(appointment.endTime), new Date(appointment.startTime))}
+              min
             </Text>
           </View>
         </View>
         <View row justifyEnd={isTherapist} justifyBetween={!isTherapist} spacing={{ py: 1 }}>
           {!isTherapist && <Rating rating={2} />}
-          <Text variant="titlePrimaryLarge">$60</Text>
+          <Text variant="titlePrimaryLarge">
+            $
+            {appointment.price}
+          </Text>
         </View>
         <View row justifyBetween spacing={{ py: isTherapist && current && 2 }}>
           <View row flex={1}>
             <View column flex={1} spacing={{ mt: (isTherapist && !current) && -5 }}>
               <Text variant={current && isTherapist ? 'boldSecondary' : 'boldGrey'}>
-                12:00pm / Today
+                {format(new Date(appointment.startTime), 'hh:mm aaaa')}
               </Text>
-              <Text variant="regular">Chestnut St.</Text>
+              <Text variant="regular">{appointment.address.street}</Text>
             </View>
           </View>
 

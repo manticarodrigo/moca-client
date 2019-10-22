@@ -153,7 +153,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     ),
                     onPress: () => !modal && setInputModalProps({
                       title: 'Service Area',
-                      existingValue: userInfo.bio || '',
+                      existingValue: userInfo.operationRadius.toString() || '',
                       placeholder: 'Radius (mi)',
                       keyboardType: 'number-pad',
                       validate: validateServiceArea,

@@ -22,7 +22,7 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
       image: user.image || undefined,
       name: `${user.firstName} ${user.lastName}`,
       time: format(new Date(lastMessage.createdAt), 'MM/dd/yyyy - h:mm a'),
-      text: lastMessage.text.content,
+      text: lastMessage.content.text || '**Appointment request',
     };
   }, [conversation]);
 

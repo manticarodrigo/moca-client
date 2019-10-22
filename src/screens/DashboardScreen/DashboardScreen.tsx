@@ -23,7 +23,7 @@ type Props = NavigationStackScreenProps & { isFocused: boolean }
 const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
   const [isActivated] = useState(true);
-  const [isAway] = useState(true);
+  const [isAway] = useState(false);
   const [sessionEnded, setSessionEnded] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState();
 
@@ -89,15 +89,18 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
         <View scroll flex={1}>
           {!isActivated && isTherapist && <DashboardAlert />}
-          {isTherapist && isAway && <AwayCard dateStart={new Date()} dateEnd={new Date()} />}
+          {isTherapist && isAway && (
+            <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
+              <AwayCard dateStart={new Date()} dateEnd={new Date()} />
+            </View>
+          )}
           {(!isTherapist || isActivated) && (
             <DashboardAppointments
-              appointments={store.appointments}
               isTherapist={isTherapist}
               onPressAppointment={onPressAppointment}
             />
           )}
-          <DashboardLinks isActivated={isActivated} isTherapist={isTherapist} />
+          <DashboardLinks isActivated={isActivated} />
         </View>
       </View>
     </>

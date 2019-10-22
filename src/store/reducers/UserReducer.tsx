@@ -45,7 +45,6 @@ const reducer = (state: UserState, action: UserAction): UserState => {
   let newState = state;
 
   switch (action.type) {
-    // case 'ADD_PRICE_SUCCESS':
     case 'UPDATE_LOCAL_USER_STATE':
     case 'LOGIN_USER_SUCCESS':
     case 'UPDATE_USER_SUCCESS':
@@ -57,6 +56,9 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       break;
     case 'ADD_PAYMENT_SUCCESS':
       newState = appendItem('payments', state, action.payload);
+      break;
+    case 'ADD_PRICE_SUCCESS':
+      newState = appendItem('prices', state, action.payload);
       break;
     default:
       break;

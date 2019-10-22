@@ -75,7 +75,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPressCamera = async () => {
     getImage((response) => {
       if (response.cancelled === false) {
-        const message = { image: response.uri, type: MessageTypeEnum.Image, createdAt: new Date() };
+        const message = { content: {}, image: response.uri, type: MessageTypeEnum.Image, createdAt: new Date() };
 
         setMessages((prev) => ([message, ...prev]));
       }
