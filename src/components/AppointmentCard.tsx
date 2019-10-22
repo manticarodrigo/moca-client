@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { format, differenceInMinutes } from 'date-fns';
 
@@ -28,9 +28,18 @@ type AppointmentCardProps = {
 };
 
 const AppointmentCard = ({ appointment, current, isTherapist, onPress }: AppointmentCardProps) => {
-  const canStart = current && isTherapist;
-  const canCancel = !current && !isTherapist;
+  const { otherParty, startTime, endTime, price, review, address } = appointment;
+
+  const { canStart, canCancel, duration, time, rating } = useMemo(() => ({
+    canStart: current && isTherapist,
+    canCancel: !current && !isTherapist,
+    duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
+    time: format(new Date(startTime), 'MM/dd - hh:mm aaaa'),
+    rating: (review || {}).rating || 0,
+  }), [current, isTherapist, startTime, endTime, review]);
+
   const hasButton = canStart || canCancel;
+
 
   return (
     <View
@@ -49,30 +58,28 @@ const AppointmentCard = ({ appointment, current, isTherapist, onPress }: Appoint
       <View flex={1} spacing={{ pl: 3 }}>
         <View row justifyBetween>
           <Text variant={current ? 'title' : 'titleSmall'} numberOfLines={2}>
-            {`${appointment.otherParty.firstName} ${appointment.otherParty.lastName}`}
+            {`${otherParty.firstName} ${otherParty.lastName}`}
           </Text>
           <View row>
             <ClockIcon />
             <Text variant="regularSmall" spacing={{ ml: 1 }}>
-              {differenceInMinutes(new Date(appointment.endTime), new Date(appointment.startTime))}
-              min
+              {`${duration}min`}
             </Text>
           </View>
         </View>
         <View row justifyEnd={isTherapist} justifyBetween={!isTherapist} spacing={{ py: 1 }}>
-          {!isTherapist && <Rating rating={2} />}
+          {!isTherapist && <Rating rating={rating} />}
           <Text variant="titlePrimaryLarge">
-            $
-            {appointment.price}
+            {`$${price}`}
           </Text>
         </View>
         <View row justifyBetween spacing={{ py: isTherapist && current && 2 }}>
           <View row flex={1}>
             <View column flex={1} spacing={{ mt: (isTherapist && !current) && -5 }}>
               <Text variant={current && isTherapist ? 'boldSecondary' : 'boldGrey'}>
-                {format(new Date(appointment.startTime), 'hh:mm aaaa')}
+                {time}
               </Text>
-              <Text variant="regular">{appointment.address.street}</Text>
+              <Text variant="regular">{address.street}</Text>
             </View>
           </View>
 

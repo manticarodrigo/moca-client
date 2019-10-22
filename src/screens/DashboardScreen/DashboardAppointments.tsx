@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { isToday } from 'date-fns';
+import { isBefore, isAfter } from 'date-fns';
 
 import useStore from '@src/hooks/useStore';
 
@@ -16,9 +16,21 @@ const DashboardAppointments = ({ isTherapist, onPressAppointment }) => {
       return { current: undefined, next: undefined };
     }
 
+    const sortedAppointments = store.appointments.sort(
+      (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+    );
+
+    const nowDate = new Date();
+
     return {
-      current: store.appointments.find(({ startTime }) => isToday(new Date(startTime))),
-      next: (store.appointments.length > 1 && store.appointments[1]) || (!current && store.appointments[0]),
+      current: sortedAppointments.find(
+        ({ startTime, endTime }) => (
+          isBefore(new Date(startTime), nowDate) && isAfter(new Date(endTime), nowDate)
+        ),
+      ),
+      next: sortedAppointments.find(
+        ({ startTime }) => isAfter(new Date(startTime), nowDate),
+      ),
     };
   }, [store.appointments]);
 
