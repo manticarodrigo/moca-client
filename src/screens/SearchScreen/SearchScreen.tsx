@@ -51,7 +51,7 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (filters.ailments.length) {
-      // params.ailments = filters.ailments;
+      params.ailments = filters.ailments;
     }
 
     dispatch(getSearchResults(params));

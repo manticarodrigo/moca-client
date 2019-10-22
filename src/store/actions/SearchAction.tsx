@@ -12,8 +12,13 @@ const getSearchResults = (params?: FilterParams) => async (
   dispatch: Dispatch<SearchAction>,
   store,
 ) => {
+  const { ailments = [], ...rest } = params;
+
+  // eslint-disable-next-line quotes
+  const query = { ...rest, ...(ailments.length && { ailments: `["${ailments.join(", ")}"]` }) };
+
   const headers = { Authorization: `Token ${store.user.token}` };
-  const options = { query: params, headers };
+  const options = { query, headers };
 
   const { data } = await api.user.userTherapistSearchList(options);
 

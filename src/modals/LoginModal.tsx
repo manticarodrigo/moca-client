@@ -58,6 +58,7 @@ const LoginModal = ({ visible, onLogin, onClose }: Props) => {
   return (
     <Modal
       avoidKeyboard
+      marginTop={50}
       propagateSwipe
       isVisible={visible}
       onToggle={onClose}

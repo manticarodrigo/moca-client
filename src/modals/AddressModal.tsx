@@ -13,6 +13,7 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => (
   <Modal
     propagateSwipe
     avoidKeyboard
+    marginTop={50}
     isVisible={isVisible}
     onToggle={onClose}
   >
