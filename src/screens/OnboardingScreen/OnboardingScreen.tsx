@@ -25,7 +25,7 @@ const slides = [
   {
     icon: <ShieldIcon />,
     title: 'Reliable',
-    text: 'Certified Physical Therapists.',
+    text: 'Physical Therapy Delivered to You.',
   },
   {
     icon: <DeviceMapIcon />,

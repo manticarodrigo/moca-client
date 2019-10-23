@@ -15,6 +15,7 @@ type SliderProps = {
 
 const Slider = ({ slides = [] }: SliderProps) => (
   <Swiper
+    index={0}
     dotStyle={dotStyle}
     activeDotStyle={activeDotStyle}
     loop={false}
