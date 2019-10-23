@@ -101,7 +101,6 @@ const LoginModal = ({ visible, onClose }: Props) => {
               secureTextEntry
               placeholder="Password"
               value={formFields.password}
-              // validation="password"
               returnKeyType="done"
               onChangeText={onChangeField('password')}
             />
@@ -112,7 +111,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
                   spacing={{ ml: 1 }}
                   onPress={toggleForgotPasswordModal}
                 >
-                  Forgot Password ?
+                  Forgot Password?
                 </Text>
               </View>
             </View>
