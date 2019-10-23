@@ -72,7 +72,7 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
     setTimeout(checkAuth);
   }, [isAuthenticated, onAuthNavigate, store.user.storageReady]);
 
-  const onPressSignup = () => navigation.push('RegistrationScreen');
+  const onPressSignup = () => navigation.push('SelectionScreen');
 
   const onToggleLoginModal = () => setIsLoginModalVisible(!isLoginModalVisible);
 
