@@ -152,13 +152,15 @@ const FormField = ({
     setDidBlur(true);
   };
 
-  const handleChangeText = (text: string) => {
-    if (validation) {
-      return onChangeText(text, validationError);
-    }
+  const handleChangeText = (text: string) => onChangeText(text, validationError);
 
-    return onChangeText(text);
-  };
+  useEffect(() => {
+    // need an effect to update useFormFields hook errors
+    // TODO: find a way to update hook only once
+    if (validation) {
+      onChangeText(value, validationError);
+    }
+  }, [validationError]);
 
   return (
     <>
