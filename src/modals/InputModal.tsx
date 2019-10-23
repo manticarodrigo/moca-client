@@ -66,6 +66,7 @@ const InputModal = (
   return (
     <Modal
       avoidKeyboard
+      marginTop={50}
       isVisible={visible}
       onToggle={onClose}
     >
