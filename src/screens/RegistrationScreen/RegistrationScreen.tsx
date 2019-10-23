@@ -201,7 +201,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 terms of service
                 </Text>
               </View>
-              <View alignCenter row spacing={{ mt: 1, mb: 2 }}>
+              <View alignCenter row spacing={{ mt: 1, mb: 5 }}>
                 <Text variant="regular" typography={{ size: 1 }}>
                 and have read the
                 </Text>
@@ -216,7 +216,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <View flex={1} />
         </View>
       </KeyboardAvoidingView>
     </>
