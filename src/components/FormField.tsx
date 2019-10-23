@@ -96,10 +96,6 @@ const FormField = ({
       inputRange: [0, 1],
       outputRange: [16, 14],
     }),
-    fontWeight: animatedIsFocused.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['500', '300'],
-    }),
     color: Colors.semiGrey,
   };
 
