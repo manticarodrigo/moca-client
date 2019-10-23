@@ -15,9 +15,10 @@ import { ScheduleTabIcon, ClockIcon } from '@src/components/icons';
 type Props = {
   message: Message;
   otherUser: UserSnippet;
+  onPressAnswer: (id: number, status: 'accept' | 'reject') => void;
 };
 
-const AppointmentRequestCard = ({ message, otherUser }: Props) => {
+const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) => {
   const { store } = useStore();
 
   const { id, endTime, price, startTime, status } = message.content;
@@ -32,9 +33,9 @@ const AppointmentRequestCard = ({ message, otherUser }: Props) => {
     duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
   }), [startTime, endTime]);
 
-  const handlePress = () => {
-    // handle appointment acception.
-  };
+  const onPressAccept = () => onPressAnswer(id, 'accept');
+
+  const onPressReject = () => onPressAnswer(id, 'reject');
 
   return (
     <View
@@ -72,7 +73,7 @@ const AppointmentRequestCard = ({ message, otherUser }: Props) => {
         </Text>
 
         {(!isTherapist && status === 'pending') && (
-          <Button variant="primary" spacing={{ mt: 3 }} onPress={handlePress}>
+          <Button variant="primary" spacing={{ mt: 3 }} onPress={onPressAccept}>
             Accept Appointment
           </Button>
         )}
@@ -82,7 +83,7 @@ const AppointmentRequestCard = ({ message, otherUser }: Props) => {
         alignCenter
         spacing={{ p: 4 }}
         bgColor={isRejected ? 'error' : null}
-        onPress={!isRejected && handlePress}
+        onPress={!isRejected && onPressReject}
       >
         <Text variant={isRejected ? 'titleWhite' : 'titleSmallError'}>
           {((!isTherapist && !isRejected) && 'Reject') || (isRejected ? 'Rejected' : 'Cancel')}

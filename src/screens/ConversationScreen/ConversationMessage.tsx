@@ -13,9 +13,16 @@ type Props = {
   otherUser: UserSnippet;
   alignRight: boolean;
   onPressImage: (uri: string) => void;
+  onPressAnswer: (id: number, status: 'accept' | 'reject') => void;
 };
 
-const ConversationMessage = ({ message, otherUser, alignRight, onPressImage }: Props) => {
+const ConversationMessage = ({
+  message,
+  otherUser,
+  alignRight,
+  onPressImage,
+  onPressAnswer,
+}: Props) => {
   const handlePressImage = () => onPressImage(message.content.image);
 
   if (message.type === 'appointment-request') {
@@ -23,7 +30,13 @@ const ConversationMessage = ({ message, otherUser, alignRight, onPressImage }: P
       return <AppointmentInfoCard message={message} otherUser={otherUser} />;
     }
 
-    return <AppointmentRequestCard message={message} otherUser={otherUser} />;
+    return (
+      <AppointmentRequestCard
+        message={message}
+        otherUser={otherUser}
+        onPressAnswer={onPressAnswer}
+      />
+    );
   }
 
   return (

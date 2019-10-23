@@ -4,11 +4,14 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
 import { Message } from '@src/store/reducers/ConversationReducer';
+
 import {
   getConversation,
   sendMessage,
   sendAppointmentRequest,
 } from '@src/store/actions/ConversationAction';
+
+import { answerAppointmentRequest } from '@src/store/actions/AppointmentAction';
 
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
@@ -54,6 +57,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     setOtherUser(params.user);
+
     navigation.setParams({ user: params.user });
   }, []);
 
@@ -66,7 +70,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
 
     if (!updated) {
-      dispatch(getConversation(otherUser.id.toString()));
+      dispatch(getConversation(otherUser.id));
 
       return;
     }
@@ -112,9 +116,17 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onSubmitAppointment = async (data) => {
     try {
       await dispatch(sendAppointmentRequest(otherUser.id, data));
-      await dispatch(getConversation(otherUser.id.toString()));
 
       setAppointmentModalVisible(false);
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const onAnswerAppointment = async (id, status) => {
+    try {
+      await dispatch(answerAppointmentRequest(id, status));
+      await dispatch(getConversation(otherUser.id));
     } catch (e) {
       // console.log(e);
     }
@@ -141,6 +153,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               alignRight={item.user === store.user.id}
               otherUser={otherUser}
               onPressImage={onPressImage}
+              onPressAnswer={onAnswerAppointment}
             />
           )}
           renderSectionFooter={({ section: { title } }) => (

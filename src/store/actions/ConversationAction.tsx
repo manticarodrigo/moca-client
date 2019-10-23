@@ -21,12 +21,12 @@ const getConversations = () => async (
   dispatch({ type: 'GET_CONVERSATIONS_SUCCESS', payload: data });
 };
 
-const getConversation = (userId: string) => async (
+const getConversation = (userId: number) => async (
   dispatch: Dispatch<ConversationAction>,
   store,
 ) => {
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
-  const { data } = await api.chat.chatRead(userId, options);
+  const { data } = await api.chat.chatRead(userId.toString(), options);
 
   // @ts-ignore
   dispatch({ type: 'GET_CONVERSATION_SUCCESS', payload: { data, userId } });
