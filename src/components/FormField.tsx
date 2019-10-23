@@ -8,7 +8,7 @@ import {
   TextInput as RNInput,
 } from 'react-native';
 
-import { getEmailError, getPasswordError } from '@src/utlities/validations';
+import { getEmailError, getPasswordError, getZipCodeError } from '@src/utlities/validations';
 
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
@@ -23,7 +23,7 @@ export type FormFieldProps = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
   value: string;
-  validation?: 'email' | 'password';
+  validation?: 'email' | 'password' | 'zip';
   spacing?: SpacingProp;
   error?: boolean | string;
   width?: number | string;
@@ -105,6 +105,8 @@ const FormField = ({
         return getEmailError(value);
       case 'password':
         return getPasswordError(value);
+      case 'zip':
+        return getZipCodeError(value);
       default:
         return undefined;
     }

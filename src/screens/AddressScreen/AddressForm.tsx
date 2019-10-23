@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 import useStore from '@src/hooks/useStore';
+import useFormFields from '@src/hooks/useFormFields';
+
 import { AddAddressForm } from '@src/store/actions/UserAction';
 
 import View from '@src/components/View';
@@ -9,7 +11,6 @@ import Text from '@src/components/Text';
 import PlacesSearch from '@src/components/PlacesSearch';
 import FormField from '@src/components/FormField';
 
-import { validateZipCode } from '@src/utlities/validations';
 import { Checkbox } from '@src/components/Checkbox';
 
 type Props = {
@@ -22,7 +23,15 @@ type Props = {
 const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Props) => {
   const { store } = useStore();
 
-  const [formFields, setFormFields] = useState<AddAddressForm>({
+  const {
+    formFields,
+    isAnyFieldEmpty,
+    isFormValid,
+    setFieldRef,
+    updateFormFields,
+    onChangeField,
+    onFocusNext,
+  } = useFormFields<AddAddressForm>(existingFields || {
     name: '',
     street: '',
     apartment: '',
@@ -33,31 +42,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     coordinates: [0, 0],
   });
 
-  useEffect(() => {
-    if (existingFields) setFormFields((prevState) => ({ ...prevState, ...existingFields }));
-  }, [existingFields]);
-
-  const [isZipCodeValid, setIsZipCodeValid] = useState(true);
-
-  const streetField = useRef(null);
-  const apartmentField = useRef(null);
-  const cityField = useRef(null);
-  const stateField = useRef(null);
-  const zipCodeField = useRef(null);
-
-
-  const isAnyFieldEmpty = Object.values(formFields).includes('');
-  const isButtonDisabled = isAnyFieldEmpty || !isZipCodeValid;
-
-  const updateFormField = (key: keyof typeof formFields) => (value: string | boolean) => {
-    setFormFields({ ...formFields, [key]: value });
-
-    if (key === 'zipCode') {
-      setIsZipCodeValid(true);
-    }
-  };
-
-  const validateForm = () => validateZipCode(formFields.zipCode);
+  const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
 
   const handleSubmit = () => {
     if (isAnyFieldEmpty) {
@@ -65,16 +50,12 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     }
 
     // TODO: validate reverse geocode
-    if (validateForm()) {
+    if (isFormValid) {
       onSubmit(formFields);
     } else {
       // alert invalid
     }
   };
-
-  const handleSelectPlace = (values: AddAddressForm) => setFormFields(
-    (prevState) => ({ ...prevState, ...values }),
-  );
 
   return (
     <View scroll flex={1}>
@@ -95,54 +76,54 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
                 : 'You can edit and add additional addresses for treatment.'}
             </Text>
           </View>
-          <PlacesSearch onSelect={handleSelectPlace} />
+          <PlacesSearch onSelect={updateFormFields} />
           <View spacing={{ mb: 3, mt: 4 }} alignCenter>
             <FormField
               placeholder="Name"
               value={formFields.name}
               returnKeyType="next"
-              onSubmitEditing={() => streetField.current.focus()}
-              onChangeText={updateFormField('name')}
+              onChangeText={onChangeField('name')}
+              onSubmitEditing={onFocusNext('street')}
             />
             <FormField
-              ref={streetField}
+              ref={setFieldRef('street')}
               placeholder="Street"
               value={formFields.street}
               returnKeyType="next"
-              onSubmitEditing={() => apartmentField.current.focus()}
-              onChangeText={updateFormField('street')}
+              onChangeText={onChangeField('street')}
+              onSubmitEditing={onFocusNext('apartment')}
             />
             <FormField
-              ref={apartmentField}
+              ref={setFieldRef('apartment')}
               placeholder="Apartment Number"
               value={formFields.apartment}
               returnKeyType="next"
-              onSubmitEditing={() => cityField.current.focus()}
-              onChangeText={updateFormField('apartment')}
+              onChangeText={onChangeField('apartment')}
+              onSubmitEditing={onFocusNext('city')}
             />
             <FormField
-              ref={cityField}
+              ref={setFieldRef('city')}
               placeholder="City"
               value={formFields.city}
               returnKeyType="done"
-              onSubmitEditing={() => stateField.current.focus()}
-              onChangeText={updateFormField('city')}
+              onChangeText={onChangeField('city')}
+              onSubmitEditing={onFocusNext('state')}
             />
             <FormField
-              ref={stateField}
+              ref={setFieldRef('state')}
               placeholder="State"
               value={formFields.state}
-              onSubmitEditing={() => zipCodeField.current.focus()}
-              onChangeText={updateFormField('state')}
+              onChangeText={onChangeField('state')}
+              onSubmitEditing={onFocusNext('zipCode')}
             />
             <FormField
-              ref={zipCodeField}
-              error={!isZipCodeValid && 'Please enter a valid Zip Code'}
+              ref={setFieldRef('zipCode')}
               placeholder="Zip Code"
               value={formFields.zipCode}
+              validation="zip"
               maxLength={5}
               selectTextOnFocus={false}
-              onChangeText={updateFormField('zipCode')}
+              onChangeText={onChangeField('zipCode')}
             />
           </View>
           {!isRegistering && (
@@ -151,7 +132,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
                 <Text variant="regularDark" spacing={{ pr: 2 }}>Set as primary?</Text>
                 <Checkbox
                   checked={formFields.primary}
-                  onChange={updateFormField('primary')}
+                  onChange={onChangeField('primary')}
                 />
               </View>
             </View>

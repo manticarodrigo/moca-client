@@ -20,6 +20,12 @@ export const getEmailError = (email: string) => {
   return undefined;
 };
 
+export const getZipCodeError = (zipCode: string) => {
+  if (!zipCode.match('^[+ 0-9]{5}$')) return 'Please enter a valid Zip Code.';
+
+  return undefined;
+};
+
 export const validateZipCode = (userInput: string) => {
   const regexpNumber = new RegExp('^[+ 0-9]{5}$');
   return regexpNumber.test(userInput);

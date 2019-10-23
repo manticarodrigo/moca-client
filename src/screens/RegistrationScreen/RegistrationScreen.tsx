@@ -28,7 +28,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const {
     formFields,
-    formErrors,
     setFieldRef,
     isAnyFieldEmpty,
     isFormValid,
@@ -55,7 +54,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     dispatch(updateRegistration({ ...formFields }));
 
-    if (!Object.keys(formErrors).length) {
+    if (isFormValid) {
       const { type } = store.registration;
 
       try {
