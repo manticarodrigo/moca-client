@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
+import useFormFields from '@src/hooks/useFormFields';
+
 import { resetRegistration } from '@src/store/actions/RegistrationAction';
-import { validateEmailAddress } from '@src/utlities/validations';
 
 import { Colors, Views } from '@src/styles';
 
@@ -17,23 +18,25 @@ import { BigEnvelopeRedIcon } from '@src/components/icons';
 
 const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { dispatch } = useStore();
-  const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const paddingOffset = 80;
-  const isButtonDisabled = email === '' || !isEmailValid;
+
+  const {
+    formFields,
+    isAnyFieldEmpty,
+    isFormValid,
+    onChangeField,
+  } = useFormFields<{ email: string }>({ email: '' });
+
+  const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
 
 
-  const submitEmail = () => false; // Api call
+  const submitEmail = () => false; // TODO: send to MailChimp list
 
   const handleButtonPress = () => {
-    if (validateEmailAddress(email)) {
-      setIsEmailValid(true);
+    if (isFormValid) {
       submitEmail();
       dispatch(resetRegistration());
 
       navigation.popToTop();
-    } else {
-      setIsEmailValid(false);
     }
   };
 
@@ -41,7 +44,7 @@ const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) =>
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={paddingOffset}
+      keyboardVerticalOffset={90}
     >
       <View safeArea alignCenter justifyEnd>
         <View spacing={{ mt: 4, mx: 3 }} alignCenter>
@@ -63,22 +66,13 @@ const InvalidZipCodeScreen: NavigationStackScreenComponent = ({ navigation }) =>
           <View alignCenter spacing={{ mt: 3 }}>
             <FormField
               icon="email"
-              error={!isEmailValid}
               placeholder="Email address"
-              value={email}
+              value={formFields.email}
+              validation="email"
               returnKeyType="done"
               keyboardType="email-address"
-              onChangeText={(text) => {
-                setEmail(text);
-                setIsEmailValid(true);
-              }}
+              onChangeText={onChangeField('email')}
             />
-            {!isEmailValid
-            && (
-              <Text variant="errorSmall" spacing={{ mt: 1 }}>
-                Please enter a valid Email address
-              </Text>
-            )}
           </View>
           <View row spacing={{ mt: 3 }}>
             <View flex={1}>

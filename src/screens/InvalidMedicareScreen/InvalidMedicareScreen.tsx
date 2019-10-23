@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
+import useFormFields from '@src/hooks/useFormFields';
+
 import { resetRegistration } from '@src/store/actions/RegistrationAction';
 
 import { Colors, Views } from '@src/styles';
@@ -12,30 +14,29 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 
-import { validateEmailAddress } from '@src/utlities/validations';
-
-
 import { BigEnvelopeRedIcon } from '@src/components/icons';
 
 const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { dispatch } = useStore();
-  const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
 
-  const paddingOffset = 80;
+  const {
+    formFields,
+    isAnyFieldEmpty,
+    isFormValid,
+    onChangeField,
+  } = useFormFields<{ email: string }>({ email: '' });
 
-  const isButtonDisabled = email === '' || !isEmailValid;
+  const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
 
-  const submitEmail = () => true; // Api call
+  const submitEmail = () => true; // TODO: send to MailChimp list
 
   const handleButtonPress = () => {
-    if (validateEmailAddress(email)) {
-      setIsEmailValid(true);
+    if (isFormValid) {
       submitEmail();
+
       dispatch(resetRegistration());
+
       navigation.popToTop();
-    } else {
-      setIsEmailValid(false);
     }
   };
 
@@ -44,7 +45,7 @@ const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) =
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={paddingOffset}
+      keyboardVerticalOffset={90}
     >
       <View safeArea alignCenter justifyEnd>
         <View spacing={{ mt: 4, mx: 3 }} alignCenter>
@@ -68,21 +69,12 @@ const InvalidMedicareScreen: NavigationStackScreenComponent = ({ navigation }) =
             <FormField
               icon="email"
               placeholder="Email address"
-              value={email}
-              error={!isEmailValid}
+              value={formFields.email}
+              validation="email"
               returnKeyType="done"
               keyboardType="email-address"
-              onChangeText={(text) => {
-                setEmail(text);
-                setIsEmailValid(true);
-              }}
+              onChangeText={onChangeField('email')}
             />
-            {!isEmailValid
-            && (
-              <Text variant="errorSmall" spacing={{ mt: 1 }}>
-                Please enter a valid Email address
-              </Text>
-            )}
           </View>
           <View row spacing={{ mt: 3 }}>
             <View flex={1}>
