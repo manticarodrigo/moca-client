@@ -6,7 +6,7 @@ import { UserTypeEnum } from '@src/services/openapi';
 import useStore from '@src/hooks/useStore';
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
-import { Colors } from '@src/styles/index';
+import { Colors } from '@src/styles';
 
 import AddressModal from '@src/modals/AddressModal';
 
@@ -136,8 +136,15 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-SelectionScreen.navigationOptions = {
-  header: null,
-};
+SelectionScreen.navigationOptions = ({ navigationOptions }) => ({
+  title: null,
+  headerTitleStyle: {
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    backgroundColor: Colors.white,
+  },
+});
 
 export default SelectionScreen;
