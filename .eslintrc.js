@@ -40,13 +40,13 @@ module.exports =  {
     },
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       },
       alias: {
         map: [
           ['@src', path.resolve(__dirname, 'src')],
         ],
-        extensions: ['.tsx', '.ts'],
+        extensions: ['.tsx', '.ts', '.json'],
       },
     },
   },

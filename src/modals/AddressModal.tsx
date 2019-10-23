@@ -13,11 +13,13 @@ import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 const AddressModal = ({ isVisible, onClose, onSubmit }) => {
   const scrollViewRef = useRef<ScrollView>();
 
-  const onChangeText = () => {
+  const scrollToEnd = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd();
+      setTimeout(() => scrollViewRef.current.scrollToEnd());
     }
   };
+
+  const onChangeText = () => scrollToEnd();
 
   return (
     <Modal

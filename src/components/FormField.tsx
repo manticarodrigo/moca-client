@@ -8,6 +8,8 @@ import {
   TextInput as RNInput,
 } from 'react-native';
 
+import { getEmailError, getPasswordError } from '@src/utlities/validations';
+
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
 import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
@@ -21,23 +23,28 @@ export type FormFieldProps = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
   value: string;
+  validation?: 'email' | 'password';
   spacing?: SpacingProp;
   error?: boolean | string;
   width?: number | string;
   height?: number | string;
+  onChangeText?: (text: string, error?: string) => void;
 }
 
 const FormField = ({
   placeholder,
   icon,
   value,
+  validation,
   width,
   height,
   spacing,
   error,
+  onChangeText,
   ...textInputProps
 }: FormFieldProps, ref: React.Ref<RNInput>) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState();
+  const [didBlur, setDidBlur] = useState();
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
 
   useEffect(() => {
@@ -46,14 +53,6 @@ const FormField = ({
       duration: 200,
     }).start();
   });
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -104,8 +103,22 @@ const FormField = ({
     color: Colors.semiGrey,
   };
 
+  const validationError = useMemo(() => {
+    switch (validation) {
+      case 'email':
+        return getEmailError(value);
+      case 'password':
+        return getPasswordError(value);
+      default:
+        return undefined;
+    }
+  }, [validation, value]);
 
   const renderIcon = useMemo(() => {
+    if (didBlur && validationError) {
+      return <ErrorIcon />;
+    }
+
     if (error) {
       return <ErrorIcon />;
     }
@@ -120,7 +133,24 @@ const FormField = ({
       default:
         return null;
     }
-  }, [error, icon]);
+  }, [validationError, didBlur, error, icon]);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setDidBlur(true);
+  };
+
+  const handleChangeText = (text: string) => {
+    if (validation) {
+      return onChangeText(text, validationError);
+    }
+
+    return onChangeText(text);
+  };
 
   return (
     <>
@@ -136,6 +166,7 @@ const FormField = ({
               value={value}
               onFocus={handleFocus}
               onBlur={handleBlur}
+              onChangeText={handleChangeText}
               {...textInputProps}
             />
             <View style={{ position: 'absolute', top: 20, right: 20 }}>
@@ -144,6 +175,11 @@ const FormField = ({
           </View>
         </Wrapper>
       </Wrapper>
+      {!!(didBlur && validationError) && (
+        <Text spacing={{ mt: 2 }} variant="errorSmall">
+          {validationError}
+        </Text>
+      )}
       {typeof error === 'string' && (
         <Text spacing={{ mt: 1 }} variant="errorSmall">
           Please enter a valid Zip code

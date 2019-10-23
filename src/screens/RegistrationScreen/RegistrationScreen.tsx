@@ -5,11 +5,13 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { User } from '@src/services/openapi/api';
 
 import useStore from '@src/hooks/useStore';
+
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
 import { registerUser } from '@src/store/actions/UserAction';
-import { validateEmailAddress } from '@src/utlities/validations';
 
-import TermsOfServiceModal from '@src/modals/TermsOfServiceModal';
+import InfoModal from '@src/modals/InfoModal';
+
+import { ToS } from '@src/content';
 
 import { Colors, Views } from '@src/styles';
 
@@ -17,7 +19,6 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
-import ModalView from '@src/components/ModalView';
 
 import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
 
@@ -29,7 +30,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const surnameField = useRef(null);
   const emailField = useRef(null);
   const passwordField = useRef(null);
-  const medicalIdField = useRef(null);
 
   const [formFields, setFormFields] = useState<User>({
     email: '',
@@ -38,37 +38,24 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     lastName: '',
   });
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isMediCarePressed, setIsMediCarePressed] = useState(false);
+  const [formErrors, setFormErrors] = useState<Partial<User>>({});
 
+  const [modalVisible, setModalVisible] = useState<'ToS' | 'Privacy'>();
+  const [isMedicarePressed, setIsMedicarePressed] = useState(false);
 
   const isAnyFieldEmpty = Object.values(formFields).includes('');
+  const isFormValid = !Object.keys(formErrors).length;
 
   const isButtonDisabled = isPatient
-    ? (isAnyFieldEmpty || !isMediCarePressed || !isEmailValid)
-    : isAnyFieldEmpty || !isEmailValid;
+    ? (isAnyFieldEmpty || !isMedicarePressed || !isFormValid)
+    : isAnyFieldEmpty || !isFormValid;
 
-
-  const TermsOfServiceModalView = (
-    <ModalView
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)}
-      onSwipeComplete={() => setIsModalVisible(false)}
-      handleArrowClick={() => setIsModalVisible(false)}
-    >
-      <TermsOfServiceModal />
-    </ModalView>
-  );
-
-  const handleButtonPress = async () => {
+  const onPressSubmit = async () => {
     const { email, password, firstName, lastName } = formFields;
 
     dispatch(updateRegistration({ ...formFields }));
 
-    if (email && validateEmailAddress(email)) {
-      setIsEmailValid(true);
-
+    if (!Object.keys(formErrors).length) {
       const { type } = store.registration;
 
       try {
@@ -82,165 +69,174 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
       } catch (error) {
         // console.log(error);
       }
-    } else {
-      setIsEmailValid(false);
     }
   };
 
-  const handleMedicareAgreement = () => navigation.push('InvalidMedicareScreen');
+  const onMedicareAgreement = () => navigation.push('InvalidMedicareScreen');
 
-  const handleMedicareDisagreement = () => setIsMediCarePressed(!isMediCarePressed);
+  const onMedicareDisagreement = () => setIsMedicarePressed(!isMedicarePressed);
 
-  const handlePrivacyPress = () => navigation.navigate('ProfileScreen');
+  const onPressTermsOfService = () => setModalVisible('ToS');
 
-  const handleTermsOfServicePress = () => setIsModalVisible(true);
+  const onPressPrivacy = () => setModalVisible('Privacy');
 
-  const updateFormField = (key: keyof User) => (text: string) => {
+  const onCloseModal = () => setModalVisible(undefined);
+
+  const onFieldChange = (key: keyof User) => (text: string, error?: string) => {
     setFormFields({ ...formFields, [key]: text });
+
+    if (error) {
+      setFormErrors({ ...formErrors, [key]: error });
+    } else {
+      delete formErrors[key];
+
+      setFormErrors(formErrors);
+    }
   };
 
   return (
+    <>
+      <InfoModal
+        visible={modalVisible === 'ToS'}
+        title="Terms of Service"
+        json={ToS}
+        onClose={onCloseModal}
+      />
+      <InfoModal
+        visible={modalVisible === 'Privacy'}
+        title="Privacy Policy"
+        json={ToS}
+        onClose={onCloseModal}
+      />
 
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={60}
-    >
-      <View scroll>
-        <View safeArea spacing={{ mt: 4 }} alignCenter>
-          <View alignCenter spacing={{ py: 4, px: 3 }}>
-            <SecondaryLogoIcon />
-            <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
-            <Text variant="regular" spacing={{ mt: 2 }}>
-              We need some information to
-            </Text>
-            <Text variant="regular" spacing={{ mt: 1, mb: 2 }}>
-              get you started.
-            </Text>
-          </View>
-          {isPatient && (
-            <View width="100%" variant="borderTop">
-              <View row spacing={{ mx: 3, py: 4 }}>
-                <View flex={1}>
-                  <Text variant="title" typography={{ size: 2 }}>
-                    {'Are you currently\n'}
-                    covered by Medicare?
-                  </Text>
-                </View>
-                <View row flex={1} justifyEnd>
-                  <Button variant="tertiary" onPress={handleMedicareAgreement}>
-                    Yes
-                  </Button>
-                  <View spacing={{ ml: 3 }}>
-                    <Button
-                      variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'}
-                      onPress={handleMedicareDisagreement}
-                    >
-                      No
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={90}
+      >
+        <View scroll>
+          <View safeArea spacing={{ mt: 4 }} alignCenter>
+            <View alignCenter spacing={{ py: 4, px: 3 }}>
+              <SecondaryLogoIcon />
+              <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
+              <Text variant="regular" spacing={{ mt: 2 }}>
+                We need some information to
+              </Text>
+              <Text variant="regular" spacing={{ mt: 1, mb: 2 }}>
+                get you started.
+              </Text>
+            </View>
+            {isPatient && (
+              <View width="100%" variant="borderTop">
+                <View row spacing={{ mx: 3, py: 4 }}>
+                  <View flex={1}>
+                    <Text variant="title" typography={{ size: 2 }}>
+                      {'Are you currently\n'}
+                      covered by Medicare?
+                    </Text>
+                  </View>
+                  <View row flex={1} justifyEnd>
+                    <Button variant="tertiary" onPress={onMedicareAgreement}>
+                      Yes
                     </Button>
+                    <View spacing={{ ml: 3 }}>
+                      <Button
+                        variant={isMedicarePressed ? 'buttonPressed' : 'tertiary'}
+                        onPress={onMedicareDisagreement}
+                      >
+                        No
+                      </Button>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          )}
-          <View spacing={{ mb: 3, mx: 3 }} alignCenter>
-            <FormField
-              placeholder="First Name"
-              value={formFields.firstName}
-              returnKeyType="next"
-              onChangeText={updateFormField('firstName')}
-              onSubmitEditing={() => surnameField.current.focus()}
-            />
-            <FormField
-              placeholder="Last Name"
-              value={formFields.lastName}
-              returnKeyType="next"
-              onChangeText={updateFormField('lastName')}
-              ref={surnameField}
-              onSubmitEditing={() => {
-                if (isPatient) {
-                  emailField.current.focus();
-                } else {
-                  medicalIdField.current.focus();
-                }
-              }}
-            />
-            <FormField
-              icon="email"
-              placeholder="Email address"
-              value={formFields.email}
-              returnKeyType="next"
-              keyboardType="email-address"
-              onChangeText={updateFormField('email')}
-              error={!isEmailValid}
-              ref={emailField}
-              onSubmitEditing={() => passwordField.current.focus()}
-            />
-            {!isEmailValid
-            && (
-              <Text variant="errorSmall" spacing={{ mt: 1, ml: 5 }}>
-                Please enter a valid Email address
-              </Text>
             )}
-            <FormField
-              icon="password"
-              placeholder="Password"
-              value={formFields.password}
-              secureTextEntry
-              returnKeyType="done"
-              ref={passwordField}
-              onChangeText={updateFormField('password')}
-            />
-          </View>
-          <View row spacing={{ mx: 3, pt: 3 }}>
-            <View flex={1}>
-              <Button
-                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
-                disabled={isButtonDisabled}
-              >
-              Continue
-              </Button>
+            <View spacing={{ mb: 3, mx: 3 }} alignCenter>
+              <FormField
+                placeholder="First Name"
+                value={formFields.firstName}
+                returnKeyType="next"
+                onChangeText={onFieldChange('firstName')}
+                onSubmitEditing={() => surnameField.current.focus()}
+              />
+              <FormField
+                ref={surnameField}
+                placeholder="Last Name"
+                value={formFields.lastName}
+                returnKeyType="next"
+                onChangeText={onFieldChange('lastName')}
+                onSubmitEditing={() => emailField.current.focus()}
+              />
+              <FormField
+                ref={emailField}
+                icon="email"
+                placeholder="Email address"
+                value={formFields.email}
+                validation="email"
+                returnKeyType="next"
+                keyboardType="email-address"
+                onChangeText={onFieldChange('email')}
+                onSubmitEditing={() => passwordField.current.focus()}
+              />
+              <FormField
+                ref={passwordField}
+                icon="password"
+                placeholder="Password"
+                value={formFields.password}
+                validation="password"
+                secureTextEntry
+                returnKeyType="done"
+                onChangeText={onFieldChange('password')}
+              />
+            </View>
+            <View row spacing={{ mx: 3, pt: 3 }}>
+              <View flex={1}>
+                <Button
+                  variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                  onPress={onPressSubmit}
+                  disabled={isButtonDisabled}
+                >
+                Continue
+                </Button>
+              </View>
+            </View>
+            <View spacing={{ mx: 3, pb: 3 }} alignCenter>
+              <View alignCenter row spacing={{ mt: 2 }}>
+                <Text
+                  variant="regular"
+                  spacing={{ mt: 1 }}
+                  typography={{ size: 1 }}
+                >
+                  By continuing, I accept the Moca
+                </Text>
+                <Text
+                  variant="link"
+                  onPress={onPressTermsOfService}
+                  typography={{ size: 1, color: 'secondary' }}
+                  spacing={{ ml: 1, mt: 1 }}
+                >
+                terms of service
+                </Text>
+              </View>
+              <View alignCenter row spacing={{ mt: 1, mb: 2 }}>
+                <Text variant="regular" typography={{ size: 1 }}>
+                and have read the
+                </Text>
+                <Text
+                  variant="link"
+                  onPress={onPressPrivacy}
+                  typography={{ size: 1, color: 'secondary' }}
+                  spacing={{ ml: 1 }}
+                >
+                privacy policy.
+                </Text>
+              </View>
             </View>
           </View>
-          <View spacing={{ mx: 3, pb: 3 }} alignCenter>
-            <View alignCenter row spacing={{ mt: 2 }}>
-              <Text
-                variant="regular"
-                spacing={{ mt: 1 }}
-                typography={{ size: 1 }}
-              >
-                By continuing, I accept the Moca
-              </Text>
-              <Text
-                variant="link"
-                onPress={handleTermsOfServicePress}
-                typography={{ size: 1, color: 'secondary' }}
-                spacing={{ ml: 1, mt: 1 }}
-              >
-              terms of service
-              </Text>
-            </View>
-            <View alignCenter row spacing={{ mt: 1, mb: 2 }}>
-              <Text variant="regular" typography={{ size: 1 }}>
-              and have read the
-              </Text>
-              <Text
-                variant="link"
-                onPress={handlePrivacyPress}
-                typography={{ size: 1, color: 'secondary' }}
-                spacing={{ ml: 1 }}
-              >
-              privacy policy
-              </Text>
-            </View>
-          </View>
+          <View flex={1} />
         </View>
-        {TermsOfServiceModalView}
-        <View flex={1} />
-      </View>
-    </KeyboardAvoidingView>
-
+      </KeyboardAvoidingView>
+    </>
   );
 };
 
