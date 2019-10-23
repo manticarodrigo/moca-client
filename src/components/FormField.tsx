@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
 import {
-  StyleSheet,
   View,
+  StyleSheet,
   Animated,
   TextInputProps,
   TextInput as RNInput,
@@ -40,14 +40,15 @@ const FormField = ({
   icon,
   value,
   validation,
+  spacing,
   width,
   height,
-  spacing,
   onChangeText,
   ...textInputProps
 }: Props, ref: React.Ref<RNInput>) => {
   const [isFocused, setIsFocused] = useState();
   const [didBlur, setDidBlur] = useState();
+
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const FormField = ({
       toValue: (isFocused || value !== '') ? 1 : 0,
       duration: 200,
     }).start();
-  });
+  }, [animatedIsFocused, isFocused, value]);
 
   const validationError = useMemo(() => {
     switch (validation) {
@@ -72,6 +73,14 @@ const FormField = ({
     }
   }, [validation, value]);
 
+  const shouldShowError = useMemo(() => {
+    if (validation === 'password') {
+      return (isFocused || didBlur) && validationError;
+    }
+
+    return didBlur && validationError;
+  }, [validation, didBlur, isFocused, validationError]);
+
   const styles = useMemo(() => StyleSheet.create({
     view: {
       width,
@@ -81,8 +90,8 @@ const FormField = ({
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      borderWidth: validationError ? 1 : null,
-      borderColor: validationError ? Colors.error : null,
+      borderWidth: shouldShowError ? 1 : null,
+      borderColor: shouldShowError ? Colors.error : null,
       margin: 0,
       marginTop: Spacing.spaceSize[2],
       paddingRight: Spacing.spaceSize[3],
@@ -98,7 +107,7 @@ const FormField = ({
       width: '100%',
       height: 60,
     },
-  }), [validationError, width, height, spacing, isFocused]);
+  }), [shouldShowError, width, height, spacing, isFocused]);
 
   const placeholderStyle = {
     position: 'absolute',
@@ -118,7 +127,7 @@ const FormField = ({
   };
 
   const renderIcon = useMemo(() => {
-    if (didBlur && validationError) {
+    if (shouldShowError) {
       return <ErrorIcon />;
     }
 
@@ -132,7 +141,7 @@ const FormField = ({
       default:
         return null;
     }
-  }, [validationError, didBlur, icon]);
+  }, [shouldShowError, icon]);
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -174,7 +183,7 @@ const FormField = ({
           </View>
         </Wrapper>
       </Wrapper>
-      {!!(didBlur && validationError) && (
+      {shouldShowError && (
         <Text spacing={{ mt: 2 }} variant="errorSmall">
           {validationError}
         </Text>
