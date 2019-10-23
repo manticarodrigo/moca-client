@@ -4,7 +4,11 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
 import { Message } from '@src/store/reducers/ConversationReducer';
-import { getConversation, sendMessage } from '@src/store/actions/ConversationAction';
+import {
+  getConversation,
+  sendMessage,
+  sendAppointmentRequest,
+} from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
@@ -14,6 +18,8 @@ import useImageViewer from '@src/hooks/useImageViewer';
 import { getImage } from '@src/utlities/imagePicker';
 
 import { Views, Colors } from '@src/styles';
+
+import AppointmentRequestModal from '@src/modals/AppointmentRequestModal';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -30,10 +36,11 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [otherUser, setOtherUser] = useState<UserSnippet>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const [appointmentModalVisible, setAppointmentModalVisible] = useState(false);
 
   const sections = useDateSections<Message>(
     messages,
-    (message) => message.createdAt as unknown as string,
+    (message) => message.createdAt.toString(),
   );
 
   const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
@@ -94,15 +101,33 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
         setInputText('');
         scrollToStart();
-      } catch (error) {
-        // console.log(error);
+      } catch (e) {
+        // console.log(e);
       }
+    }
+  };
+
+  const onToggleAppointmentModal = () => setAppointmentModalVisible(!appointmentModalVisible);
+
+  const onSubmitAppointment = async (data) => {
+    try {
+      await dispatch(sendAppointmentRequest(otherUser.id, data));
+      await dispatch(getConversation(otherUser.id.toString()));
+
+      setAppointmentModalVisible(false);
+    } catch (e) {
+      // console.log(e);
     }
   };
 
   return (
     <>
       {viewer}
+      <AppointmentRequestModal
+        visible={appointmentModalVisible}
+        onSubmit={onSubmitAppointment}
+        onClose={onToggleAppointmentModal}
+      />
       <View safeArea column flex={1} bgColor="white">
         <StatusBar barStyle="dark-content" />
         <ConversationSectionList
@@ -127,7 +152,10 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           )}
           keyExtractor={(item) => item.createdAt.toString()}
           ListHeaderComponent={(
-            <ConversationActions onPressInjury={scrollToStart} onPressLocation={scrollToStart} />
+            <ConversationActions
+              onPressInjury={scrollToStart}
+              onPressAppointment={onToggleAppointmentModal}
+            />
           )}
         />
         <ConversationInputs

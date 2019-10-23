@@ -21,9 +21,9 @@ const ScheduleTabIcon = ({ focused, white }: ScheduleTabIconProps) => (
         strokeLinejoin="round"
         strokeWidth={2}
       >
-        <Path stroke={(focused ? lightBlue : (white ? "#fff" : null))} d="M16 15v2h2" />
-        <Circle stroke={(focused ? lightBlue : (white ? "#fff" : null))} cx={16} cy={17} r={5} />
-        <Path stroke={(focused || white) ? "#fff" : null} d="M8 21H0V3h22v7M6 0v3M16 0v3M0 7h22" />
+        <Path stroke={(focused && lightBlue) || (white ? '#fff' : null)} d="M16 15v2h2" />
+        <Circle stroke={(focused && lightBlue) || (white ? '#fff' : null)} cx={16} cy={17} r={5} />
+        <Path stroke={(focused || white) ? '#fff' : null} d="M8 21H0V3h22v7M6 0v3M16 0v3M0 7h22" />
       </G>
     </G>
   </Svg>

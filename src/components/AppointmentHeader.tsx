@@ -7,16 +7,13 @@ import View from './View';
 import Text from './Text';
 
 
-type AppointmentHeaderProps = {
+type Props = {
   name: string;
   appointmentDuration: string;
   appointmentPrice: number;
 }
 
-const AppointmentHeader = ({
-  name, appointmentDuration, appointmentPrice,
-
-}: AppointmentHeaderProps) => (
+const AppointmentHeader = ({ name, appointmentDuration, appointmentPrice }: Props) => (
   <View row width="100%" variant="borderBottom">
     <View row spacing={{ m: 3 }} justifyBetween flex={1}>
       <View row justifyCenter>

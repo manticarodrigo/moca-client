@@ -106,5 +106,5 @@ export { default as BigClockIcon } from './BigClockIcon';
 export { default as MaxPriceIcon } from './MaxPriceIcon';
 
 export { default as NoConversationsIcon } from './NoConversationsIcon';
-
+export { default as ScheduleIcon } from './ScheduleIcon';
 export { default as BookmarkBadgeIcon } from './BookmarkBadgeIcon';

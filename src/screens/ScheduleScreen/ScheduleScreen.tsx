@@ -150,7 +150,7 @@ ScheduleScreen.navigationOptions = ({ navigation }) => {
     headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
     headerRight: (
       <View alignCenter onPress={params.onToggleAwayModal}>
-        <ScheduleTabIcon focused={false} />
+        <ScheduleTabIcon />
       </View>
     ),
   };

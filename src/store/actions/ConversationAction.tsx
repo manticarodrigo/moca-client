@@ -46,8 +46,39 @@ const sendMessage = (userId: number, text: string) => async (
   dispatch({ type: 'SEND_MESSAGE_SUCCESS', payload: { data, userId } });
 };
 
+const sendAppointmentRequest = (userId: number, dates) => async (
+  dispatch: Dispatch<ConversationAction>,
+  store,
+) => {
+  const options = { headers: { Authorization: `Token ${store.user.token}` } };
+  const response = await api.user.userPatientRead(userId.toString(), options);
+
+  // @ts-ignore
+  const { addresses } = response.data;
+
+  if (addresses && addresses.length) {
+    const body = {
+      type: MessageTypeEnum.AppointmentRequest,
+      content: {
+        ...dates,
+        patient: userId,
+        therapist: store.user.id,
+        address: addresses[0].id,
+        price: 60,
+      },
+    };
+
+    // @ts-ignore
+    const { data } = await api.chat.chatCreate(userId.toString(), body, options);
+
+    // @ts-ignore
+    dispatch({ type: 'SEND_MESSAGE_SUCCESS', payload: { data, userId } });
+  }
+};
+
 export {
   getConversations,
   getConversation,
   sendMessage,
+  sendAppointmentRequest,
 };

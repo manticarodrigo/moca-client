@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
-import { CalendarList } from 'react-native-calendars';
+import React, { useState, useMemo } from 'react';
 import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 
-import { Colors, Texts, Spacing } from '@src/styles';
+import { WINDOW_WIDTH } from '@src/utlities/constants';
 
+import { Colors } from '@src/styles';
+
+import CalendarList from '@src/components/CalendarList';
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -17,8 +18,6 @@ type Props = {
   onSubmit?: (startDay: string, endDay: string) => void;
 };
 
-const windoWidth = Dimensions.get('window').width;
-
 const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
   const [startDay, setStartDay] = useState('');
   const [endDay, setEndDay] = useState('');
@@ -26,60 +25,60 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
   const changeToDate = (date: string) => new Date(parseISO(date));
 
 
-  let rangeInDays = 0;
-  const markedDates = {};
+  const markedDates = useMemo(() => {
+    let daysInRange = 0;
+
+    const datesMap = {};
+
+    if (startDay && endDay) {
+      daysInRange = differenceInDays(changeToDate(endDay), changeToDate(startDay)) + 1;
+
+      [...Array(daysInRange)].forEach((el, i) => {
+        const date = format(addDays(changeToDate(startDay), i), 'yyyy-MM-dd');
+
+        const isFirst = i === 0;
+        const isLast = i === daysInRange - 1;
+
+        datesMap[date] = {
+          startingDay: i === 0,
+          color: (isFirst || isLast) ? Colors.secondaryLight : Colors.secondaryLightest,
+          textColor: (isFirst || isLast) ? Colors.white : Colors.grey,
+          endingDay: isLast,
+        };
+      });
+    } else if (startDay) {
+      const date = format(changeToDate(startDay), 'yyyy-MM-dd');
+
+      datesMap[date] = {
+        startingDay: true,
+        color: Colors.secondaryLight,
+        textColor: 'white',
+        endingDay: true,
+      };
+    }
+
+    return datesMap;
+  }, [startDay, endDay]);
 
   const isButtonDisabled = !(startDay && endDay);
 
-
-  if (startDay && endDay) {
-    rangeInDays = differenceInDays(changeToDate(endDay), changeToDate(startDay)) + 1;
-    [...Array(rangeInDays)].forEach(
-      (el, i) => {
-        const date = format(addDays(changeToDate(startDay), i), 'yyyy-MM-dd');
-        markedDates[date] = {
-          startingDay: i === 0,
-          color: (i === rangeInDays - 1 || i === 0)
-            ? Colors.secondaryLight : Colors.secondaryLightest,
-          textColor: (i === rangeInDays - 1 || i === 0) ? Colors.white : Colors.grey,
-          endingDay: i === rangeInDays - 1 };
-      },
-    );
-  } else if (startDay) {
-    const date = format(changeToDate(startDay), 'yyyy-MM-dd');
-    markedDates[date] = {
-      startingDay: true,
-      color: Colors.secondaryLight,
-      textColor: 'white',
-    };
-    markedDates[date] = {
-      startingDay: true,
-      color: Colors.secondaryLight,
-      textColor: 'white',
-      endingDay: true,
-    };
-  }
-
-
-  const handleDayPress = (day) => {
+  const onDayPress = ({ dateString }) => {
     if (!startDay) {
-      setStartDay(day);
+      setStartDay(dateString);
     }
     if (!endDay && startDay) {
-      if (differenceInDays(changeToDate(day), changeToDate(startDay)) <= 0) {
-        setStartDay(day);
-      } else setEndDay(day);
+      if (differenceInDays(changeToDate(dateString), changeToDate(startDay)) <= 0) {
+        setStartDay(dateString);
+      } else setEndDay(dateString);
     }
 
     if (startDay && endDay) {
-      setStartDay(day);
+      setStartDay(dateString);
       setEndDay('');
     }
   };
 
-  const handleButtonPress = () => {
-    onSubmit(startDay, endDay);
-  };
+  const onPressSubmit = () => onSubmit(startDay, endDay);
 
   return (
     <Modal
@@ -125,53 +124,21 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
         </View>
         <View flex={1}>
           <CalendarList
-            current={new Date()}
-            minDate={new Date()}
-            onDayPress={(day) => handleDayPress(day.dateString)}
-            markingType="period"
+            onDayPress={onDayPress}
             markedDates={markedDates}
-            calendarHeight={340}
-            theme={{
-              arrowColor: 'white',
-              'stylesheet.calendar.main': {
-                container: {},
-              },
-              'stylesheet.calendar-list.main': {
-                calendar: { backgroundColor: Colors.lightGrey },
-              },
-              'stylesheet.calendar.header': {
-                header: { ...Spacing.getStyles({ pt: 4, px: 2 }), alignItems: 'center' },
-                monthText: { ...Texts.boldPrimary },
-                week: {
-                  ...Spacing.getStyles({ py: 3, px: 4 }),
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                },
-                dayHeader: { ...Texts.regularSmallGreyishBrown, textTransform: 'uppercase' },
-              },
-              'stylesheet.day.period': {
-                text: { ...Texts.regularGrey, marginTop: 7 },
-              },
-            }}
-
-            pastScrollRange={0}
-            futureScrollRange={12}
-            scrollEnabled
-            showScrollIndicator
           />
         </View>
-        <View width={windoWidth} spacing={{ p: 4 }} variant="borderTop">
+        <View width={WINDOW_WIDTH} spacing={{ p: 4 }} variant="borderTop">
           <Button
             disabled={isButtonDisabled}
             variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-            onPress={handleButtonPress}
+            onPress={onPressSubmit}
           >
-            Submit Days
+            Submit Days Off
           </Button>
         </View>
       </View>
     </Modal>
-
   );
 };
 
