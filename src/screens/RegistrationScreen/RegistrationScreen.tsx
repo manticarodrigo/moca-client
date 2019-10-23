@@ -96,11 +96,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         onClose={onCloseModal}
       />
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior="padding"
-        keyboardVerticalOffset={90}
-      >
+      <KeyboardAvoidingView behavior="position">
         <View scroll>
           <View safeArea spacing={{ mt: 4 }} alignCenter>
             <View alignCenter spacing={{ py: 4, px: 3 }}>
