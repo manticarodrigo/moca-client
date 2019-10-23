@@ -120,7 +120,10 @@ const PlacesSearch = ({ onChangeText, onSelect }: Props) => {
       currentLocationLabel="Current location"
       debounce={200}
       renderLeftButton={() => <View justifyCenter spacing={{ px: 3 }}><SearchIcon /></View>}
-      textInputProps={{ onChangeText }}
+      textInputProps={{
+        onChangeText,
+        autoCorrect: false,
+      }}
       onPress={onPressPlace}
     />
   );
