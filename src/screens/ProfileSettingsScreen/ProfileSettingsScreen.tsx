@@ -21,27 +21,13 @@ import useStore from '@src/hooks/useStore';
 const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
-  const [isEditInformationModal, setIsEditInformationModal] = useState(false);
+  const [editInfoModalVisible, setEditInfoModalVisible] = useState(false);
   const [isChangePasswordModal, setIsChangePasswordModal] = useState(false);
 
 
   const accountSettings = ['changePassword', 'notifications', 'bookmark', 'inviteFriends'];
   const supportSettings = ['supportAndFeedback', 'frequentQuestions', 'TermsAndConditions', 'join'];
   const followUs = ['instagram', 'twitter', 'facebook'];
-
-
-  const sumbitEditInformation = async (userInput) => {
-    if (Object.entries(userInput).length === 0 && userInput.constructor === Object) {
-      setIsEditInformationModal(false);
-    } else {
-      try {
-        await dispatch(updateUser({ ...userInput }));
-        setIsEditInformationModal(false);
-      } catch (error) {
-        // console.log(error);
-      }
-    }
-  };
 
   const sumbitEditPassword = async (password: string) => {
     try {
@@ -80,13 +66,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
     });
   };
 
-  const editInformationModal = (
-    <EditInformationModal
-      closeInputModal={() => setIsEditInformationModal(false)}
-      isModalVisible={isEditInformationModal}
-      sumbitEditInformation={(userInput) => sumbitEditInformation(userInput)}
-    />
-  );
+  const toggleEditInfoModal = () => setEditInfoModalVisible(!editInfoModalVisible);
 
   const changePasswordModal = (
     <ChangePasswordModal
@@ -97,70 +77,75 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   );
 
   return (
-    <View safeArea flex={1} bgColor="lightGrey">
+    <>
+      <EditInformationModal
+        visible={editInfoModalVisible}
+        onClose={toggleEditInfoModal}
+      />
+      <View safeArea flex={1} bgColor="lightGrey">
 
-      <View scroll>
-        <View alignCenter bgColor="white" spacing={{ py: 4 }}>
-          <View alignCenter justifyCenter spacing={{ p: 4 }}>
-            <Image rounded size={120} />
+        <View scroll>
+          <View alignCenter bgColor="white" spacing={{ py: 4 }}>
+            <View alignCenter justifyCenter spacing={{ p: 4 }}>
+              <Image rounded size={120} />
+            </View>
+            <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
+              <Text variant="light">Name</Text>
+              <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.firstName}</Text>
+            </View>
+            <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
+              <Text variant="light">Last Name</Text>
+              <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.lastName}</Text>
+            </View>
+            <View width="90%" bgColor="white" spacing={{ my: 1 }}>
+              <Text variant="light">Email Address</Text>
+              <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.email}</Text>
+            </View>
+            <Button
+              variant="secondaryShadow"
+              onPress={toggleEditInfoModal}
+            >
+              Edit Information
+            </Button>
           </View>
-          <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
-            <Text variant="light">Name</Text>
-            <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.firstName}</Text>
+          <View justifyCenter spacing={{ p: 3, ml: 2 }}>
+            <Text variant="regularSemiGrey">Account</Text>
           </View>
-          <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
-            <Text variant="light">Last Name</Text>
-            <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.lastName}</Text>
+          <View>
+            {accountSettings.map((type) => (
+              <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
+            ))}
           </View>
-          <View width="90%" bgColor="white" spacing={{ my: 1 }}>
-            <Text variant="light">Email Address</Text>
-            <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.email}</Text>
+          <View justifyCenter spacing={{ p: 3, ml: 2 }}>
+            <Text variant="regularSemiGrey">Support</Text>
           </View>
-          <Button
-            variant="secondaryShadow"
-            onPress={() => setIsEditInformationModal(true)}
-          >
-            Edit Information
-          </Button>
+          <View>
+            {supportSettings.map((type) => (
+              <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
+            ))}
+          </View>
+          <View justifyCenter spacing={{ p: 3, ml: 2 }}>
+            <Text variant="regularSemiGrey">Follow Us</Text>
+          </View>
+          <View>
+            {followUs.map((type) => (
+              <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
+            ))}
+          </View>
+          <View alignCenter spacing={{ p: 3 }}>
+            <Button
+              width="100%"
+              icon={<LogoutIcon />}
+              variant="logout"
+              onPress={onPressLogout}
+            >
+              Logout
+            </Button>
+          </View>
         </View>
-        <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-          <Text variant="regularSemiGrey">Account</Text>
-        </View>
-        <View>
-          {accountSettings.map((type) => (
-            <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
-          ))}
-        </View>
-        <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-          <Text variant="regularSemiGrey">Support</Text>
-        </View>
-        <View>
-          {supportSettings.map((type) => (
-            <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
-          ))}
-        </View>
-        <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-          <Text variant="regularSemiGrey">Follow Us</Text>
-        </View>
-        <View>
-          {followUs.map((type) => (
-            <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
-          ))}
-        </View>
-        <View alignCenter spacing={{ p: 3 }}>
-          <Button
-            width="100%"
-            icon={<LogoutIcon />}
-            variant="logout"
-            onPress={onPressLogout}
-          >
-            Logout
-          </Button>
-        </View>
+        {changePasswordModal}
       </View>
-      {editInformationModal}
-      {changePasswordModal}
-    </View>
+    </>
   );
 };
 

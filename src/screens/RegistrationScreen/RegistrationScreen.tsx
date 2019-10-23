@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import { User } from '@src/services/openapi/api';
 
 import useStore from '@src/hooks/useStore';
+import useFormFields from '@src/hooks/useFormFields';
 
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
 import { registerUser } from '@src/store/actions/UserAction';
@@ -25,26 +26,25 @@ import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
-  const isPatient = store.registration.type === 'PA';
-
-  const surnameField = useRef(null);
-  const emailField = useRef(null);
-  const passwordField = useRef(null);
-
-  const [formFields, setFormFields] = useState<User>({
-    email: '',
-    password: '',
+  const {
+    formFields,
+    formErrors,
+    setFieldRef,
+    isAnyFieldEmpty,
+    isFormValid,
+    onChangeField,
+    onFocusNext,
+  } = useFormFields<User>({
     firstName: '',
     lastName: '',
+    email: '',
+    password: '',
   });
 
-  const [formErrors, setFormErrors] = useState<Partial<User>>({});
+  const isPatient = store.registration.type === 'PA';
 
   const [modalVisible, setModalVisible] = useState<'ToS' | 'Privacy'>();
   const [isMedicarePressed, setIsMedicarePressed] = useState(false);
-
-  const isAnyFieldEmpty = Object.values(formFields).includes('');
-  const isFormValid = !Object.keys(formErrors).length;
 
   const isButtonDisabled = isPatient
     ? (isAnyFieldEmpty || !isMedicarePressed || !isFormValid)
@@ -81,18 +81,6 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onPressPrivacy = () => setModalVisible('Privacy');
 
   const onCloseModal = () => setModalVisible(undefined);
-
-  const onFieldChange = (key: keyof User) => (text: string, error?: string) => {
-    setFormFields({ ...formFields, [key]: text });
-
-    if (error) {
-      setFormErrors({ ...formErrors, [key]: error });
-    } else {
-      delete formErrors[key];
-
-      setFormErrors(formErrors);
-    }
-  };
 
   return (
     <>
@@ -156,37 +144,37 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 placeholder="First Name"
                 value={formFields.firstName}
                 returnKeyType="next"
-                onChangeText={onFieldChange('firstName')}
-                onSubmitEditing={() => surnameField.current.focus()}
+                onChangeText={onChangeField('firstName')}
+                onSubmitEditing={onFocusNext('lastName')}
               />
               <FormField
-                ref={surnameField}
+                ref={setFieldRef('lastName')}
                 placeholder="Last Name"
                 value={formFields.lastName}
                 returnKeyType="next"
-                onChangeText={onFieldChange('lastName')}
-                onSubmitEditing={() => emailField.current.focus()}
+                onChangeText={onChangeField('lastName')}
+                onSubmitEditing={onFocusNext('email')}
               />
               <FormField
-                ref={emailField}
+                ref={setFieldRef('email')}
                 icon="email"
                 placeholder="Email address"
                 value={formFields.email}
                 validation="email"
                 returnKeyType="next"
                 keyboardType="email-address"
-                onChangeText={onFieldChange('email')}
-                onSubmitEditing={() => passwordField.current.focus()}
+                onChangeText={onChangeField('email')}
+                onSubmitEditing={onFocusNext('password')}
               />
               <FormField
-                ref={passwordField}
+                ref={setFieldRef('password')}
                 icon="password"
                 placeholder="Password"
                 value={formFields.password}
                 validation="password"
                 secureTextEntry
                 returnKeyType="done"
-                onChangeText={onFieldChange('password')}
+                onChangeText={onChangeField('password')}
               />
             </View>
             <View row spacing={{ mx: 3, pt: 3 }}>

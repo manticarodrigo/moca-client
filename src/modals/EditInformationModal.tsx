@@ -1,118 +1,106 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
+import { updateUser } from '@src/store/actions/UserAction';
+
+import { User } from '@src/services/openapi';
+
+import useStore from '@src/hooks/useStore';
+import useFormFields from '@src/hooks/useFormFields';
 
 import FormField from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
-import ModalView from '@src/components/ModalView';
-
-import { validateEmailAddress } from '@src/utlities/validations';
-
-import { EmailIcon } from '@src/components/icons';
-
-import useStore from '@src/hooks/useStore';
+import Modal from '@src/components/Modal';
 
 
-type EditInformationProps = {
-  closeInputModal: () => void;
-  isModalVisible: boolean;
-  sumbitEditInformation: (userInput: {}) => void;
+type Props = {
+  visible: boolean;
+  onClose: () => void;
 };
 
-const EditInformationModal = ({
-  closeInputModal,
-  isModalVisible,
-  sumbitEditInformation,
-}: EditInformationProps) => {
-  const { store: { user } } = useStore();
-  const [email, setEmail] = useState(user.email);
-  const [name, setName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
+const EditInformationModal = ({ visible, onClose }: Props) => {
+  const { store, dispatch } = useStore();
 
-  const [isEmailValid, setIsEmailValid] = useState(true);
+  const {
+    formFields,
+    setFieldRef,
+    isEveryFieldEmpty,
+    isFormValid,
+    onChangeField,
+    onFocusNext,
+  } = useFormFields<User>(store.user);
 
+  const isButtonDisabled = isEveryFieldEmpty || !isFormValid;
 
-  const nameField = useRef(null);
-  const lastNameField = useRef(null);
-  const emailField = useRef(null);
+  const onPressSubmit = async () => {
+    if (isFormValid) {
+      const { email, firstName, lastName } = formFields;
 
-  const isButtonDisabled = !((email && name && lastName) !== '') || !isEmailValid;
-
-
-  const handleButtonPress = () => {
-    if (validateEmailAddress(email)) {
-      const userInput = {
-        ...(email !== user.email ? { email } : null),
-        ...(name !== user.firstName ? { firstName: name } : null),
-        ...(lastName !== user.lastName ? { lastName } : null),
+      const updated = {
+        ...(firstName !== store.user.firstName ? { firstName } : null),
+        ...(lastName !== store.user.lastName ? { lastName } : null),
+        ...(email !== store.user.email ? { email } : null),
       };
-      sumbitEditInformation(userInput);
-    } else {
-      setIsEmailValid(false);
+
+      try {
+        await dispatch(updateUser(updated));
+
+        onClose();
+      } catch (error) {
+        // console.log(error);
+      }
     }
   };
 
   return (
-    <ModalView
+    <Modal
       propagateSwipe
-      height={100}
-      isVisible={isModalVisible}
-      onBackdropPress={() => closeInputModal()}
-      onSwipeComplete={() => closeInputModal()}
-      handleArrowClick={() => closeInputModal()}
+      avoidKeyboard
+      marginTop={50}
+      isVisible={visible}
+      onToggle={onClose}
     >
 
       <View alignCenter>
         <View row>
           <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
             <Text variant="titleSmall">
-              Edit Infromation
+              Edit Information
             </Text>
           </View>
         </View>
         <View alignCenter spacing={{ mt: 4, mx: 5 }}>
           <FormField
             placeholder="First name"
-            value={name}
+            value={formFields.firstName}
             returnKeyType="next"
-            ref={nameField}
-            onChangeText={(text) => setName(text)}
-            onSubmitEditing={() => lastNameField.current.focus()}
+            onChangeText={onChangeField('firstName')}
+            onSubmitEditing={onFocusNext('lastName')}
           />
           <FormField
+            ref={setFieldRef('lastName')}
             placeholder="Last name"
-            value={lastName}
+            value={formFields.lastName}
             returnKeyType="next"
-            ref={lastNameField}
-            onChangeText={(text) => setLastName(text)}
-            onSubmitEditing={() => emailField.current.focus()}
-
+            onChangeText={onChangeField('lastName')}
+            onSubmitEditing={onFocusNext('email')}
           />
           <FormField
+            ref={setFieldRef('email')}
             icon="email"
             placeholder="Email address"
-            value={email}
-            ref={emailField}
+            value={formFields.email}
+            validation="email"
             returnKeyType="done"
             keyboardType="email-address"
-            onChangeText={(text) => {
-              setEmail(text);
-              setIsEmailValid(true);
-            }}
-            error={!isEmailValid}
+            onChangeText={onChangeField('email')}
           />
-          {!isEmailValid
-            && (
-              <Text variant="errorSmall" spacing={{ mt: 1 }}>
-                Please enter a valid Email address
-              </Text>
-            )}
           <View row spacing={{ mt: 5 }}>
             <View flex={1}>
               <Button
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
+                onPress={onPressSubmit}
                 disabled={isButtonDisabled}
               >
                 Update
@@ -121,7 +109,7 @@ const EditInformationModal = ({
           </View>
         </View>
       </View>
-    </ModalView>
+    </Modal>
 
   );
 };
