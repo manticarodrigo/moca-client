@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { TextInputProps } from 'react-native';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
-import FormField from '@src/components/FormField';
+import useFormFields from '@src/hooks/useFormFields';
+
+import FormField, { Props as FormFieldProps } from '@src/components/FormField';
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
@@ -16,10 +18,9 @@ export type Props = TextInputProps & {
   title: string;
   placeholder: string;
   existingValue: string;
+  validation?: FormFieldProps['validation'];
   buttonText?: string;
   buttonActionText?: boolean;
-  error?: string;
-  validate?: (value: string) => boolean;
   onSubmit?: (value: string, key?: string) => void;
   onClose: () => void;
 };
@@ -28,21 +29,24 @@ const InputModal = (
   {
     visible = false,
     title,
-    validate,
+    validation,
     existingValue,
     buttonText,
     buttonActionText,
     password,
-    error,
     onSubmit,
     onClose,
     ...inputProps
   }: Props,
 ) => {
-  const [formField, setFormField] = useState('');
-  const [isValid, setIsValid] = useState(true);
+  const {
+    formFields,
+    isAnyFieldEmpty,
+    isFormValid,
+    onChangeField,
+  } = useFormFields<{ value: string }>({ value: existingValue || '' });
 
-  const isButtonDisabled = formField === '' || !isValid;
+  const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
 
   const buttonTextValue = useMemo(() => {
     if (buttonText && buttonActionText) {
@@ -52,22 +56,11 @@ const InputModal = (
     return buttonText;
   }, [existingValue, buttonText, buttonActionText]);
 
-  useEffect(() => {
-    setFormField(existingValue);
-  }, [existingValue]);
-
 
   const handleSubmit = () => {
-    if (validate && !validate(formField)) {
-      return setIsValid(false);
+    if (isFormValid) {
+      onSubmit(formFields.value);
     }
-
-    return onSubmit(formField);
-  };
-
-  const onChangeText = (value: string) => {
-    setFormField(value);
-    setIsValid(true);
   };
 
   return (
@@ -84,20 +77,17 @@ const InputModal = (
           justifyCenter
           spacing={{ py: 4 }}
         >
-          <Text variant="titleSmall">
-            {title || ''}
-          </Text>
+          <Text variant="titleSmall">{title || ''}</Text>
         </View>
         <View alignCenter spacing={{ p: 4 }}>
           <FormField
-            error={!isValid}
-            value={formField}
+            value={formFields.value}
+            validation={validation}
             returnKeyType="done"
             secureTextEntry={password}
-            onChangeText={onChangeText}
+            onChangeText={onChangeField('value')}
             {...inputProps}
           />
-          {!isValid && <Text spacing={{ mt: 1 }} variant="errorSmall">{error}</Text>}
           <View row>
             <View flex={1}>
               <Button

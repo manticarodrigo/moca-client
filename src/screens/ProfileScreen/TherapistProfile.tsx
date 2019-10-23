@@ -20,9 +20,6 @@ import {
 } from '@src/components/icons';
 
 import useStore from '@src/hooks/useStore';
-import useImageViewer from '@src/hooks/useImageViewer';
-
-import { validateServiceArea } from '@src/utlities/validations';
 
 import InputModal, { Props as InputModalProps } from '@src/modals/InputModal';
 import QualificationsModal from '@src/modals/QualificationsModal';
@@ -30,7 +27,6 @@ import ReviewsModal from '@src/modals/ReviewsModal';
 
 import Text from '@src/components/Text';
 import View from '@src/components/View';
-import Button from '@src/components/Button';
 import GenderToggle from '@src/components/GenderToggle';
 import DatePicker from '@src/components/DatePicker';
 
@@ -156,8 +152,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                       existingValue: userInfo.operationRadius.toString() || '',
                       placeholder: 'Radius (mi)',
                       keyboardType: 'number-pad',
-                      validate: validateServiceArea,
-                      error: 'Please enter a valid service area number',
+                      validation: 'number',
                       buttonText: 'Radius',
                       onSubmit: onSubmitInputModal('operationRadius'),
                     }),

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { User } from '@src/services/openapi';
 
@@ -12,8 +12,6 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import FormField from '@src/components/FormField';
 import Button from '@src/components/Button';
-
-import { validateEmailAddress } from '@src/utlities/validations';
 
 import InputModal from '@src/modals/InputModal';
 
@@ -66,8 +64,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
         title="Recover Password"
         placeholder="Email"
         existingValue=""
-        validate={validateEmailAddress}
-        error="Please enter a valid Email"
+        validation="email"
         buttonText="Continue"
         onSubmit={sumbitForgotPassword}
         onClose={toggleForgotPasswordModal}

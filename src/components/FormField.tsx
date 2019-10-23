@@ -8,7 +8,12 @@ import {
   TextInput as RNInput,
 } from 'react-native';
 
-import { getEmailError, getPasswordError, getZipCodeError } from '@src/utlities/validations';
+import {
+  getEmailError,
+  getPasswordError,
+  getZipCodeError,
+  getNumberError,
+} from '@src/utlities/validations';
 
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
@@ -19,13 +24,12 @@ import Wrapper from '@src/components/View';
 import TextInput from './TextInput';
 import Text from './Text';
 
-export type FormFieldProps = TextInputProps & {
+export type Props = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
   value: string;
-  validation?: 'email' | 'password' | 'zip';
+  validation?: 'email' | 'password' | 'zip' | 'number';
   spacing?: SpacingProp;
-  error?: boolean | string;
   width?: number | string;
   height?: number | string;
   onChangeText?: (text: string, error?: string) => void;
@@ -39,10 +43,9 @@ const FormField = ({
   width,
   height,
   spacing,
-  error,
   onChangeText,
   ...textInputProps
-}: FormFieldProps, ref: React.Ref<RNInput>) => {
+}: Props, ref: React.Ref<RNInput>) => {
   const [isFocused, setIsFocused] = useState();
   const [didBlur, setDidBlur] = useState();
   const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
@@ -54,6 +57,21 @@ const FormField = ({
     }).start();
   });
 
+  const validationError = useMemo(() => {
+    switch (validation) {
+      case 'email':
+        return getEmailError(value);
+      case 'password':
+        return getPasswordError(value);
+      case 'zip':
+        return getZipCodeError(value);
+      case 'number':
+        return getNumberError(value);
+      default:
+        return undefined;
+    }
+  }, [validation, value]);
+
   const styles = useMemo(() => StyleSheet.create({
     view: {
       width,
@@ -63,8 +81,8 @@ const FormField = ({
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      borderWidth: error ? 1 : null,
-      borderColor: error ? Colors.error : null,
+      borderWidth: validationError ? 1 : null,
+      borderColor: validationError ? Colors.error : null,
       margin: 0,
       marginTop: Spacing.spaceSize[2],
       paddingRight: Spacing.spaceSize[3],
@@ -80,7 +98,7 @@ const FormField = ({
       width: '100%',
       height: 60,
     },
-  }), [error, width, height, spacing, isFocused]);
+  }), [validationError, width, height, spacing, isFocused]);
 
   const placeholderStyle = {
     position: 'absolute',
@@ -99,25 +117,8 @@ const FormField = ({
     color: Colors.semiGrey,
   };
 
-  const validationError = useMemo(() => {
-    switch (validation) {
-      case 'email':
-        return getEmailError(value);
-      case 'password':
-        return getPasswordError(value);
-      case 'zip':
-        return getZipCodeError(value);
-      default:
-        return undefined;
-    }
-  }, [validation, value]);
-
   const renderIcon = useMemo(() => {
     if (didBlur && validationError) {
-      return <ErrorIcon />;
-    }
-
-    if (error) {
       return <ErrorIcon />;
     }
 
@@ -131,7 +132,7 @@ const FormField = ({
       default:
         return null;
     }
-  }, [validationError, didBlur, error, icon]);
+  }, [validationError, didBlur, icon]);
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -176,11 +177,6 @@ const FormField = ({
       {!!(didBlur && validationError) && (
         <Text spacing={{ mt: 2 }} variant="errorSmall">
           {validationError}
-        </Text>
-      )}
-      {typeof error === 'string' && (
-        <Text spacing={{ mt: 1 }} variant="errorSmall">
-          Please enter a valid Zip code
         </Text>
       )}
     </>

@@ -8,8 +8,6 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import InputModal from '@src/modals/InputModal';
 
-import { validatePrice } from '@src/utlities/validations';
-
 const sessions = { thirty: '30', fortyfive: '45', sixty: '60' };
 
 const sessionLabels = {
@@ -27,8 +25,7 @@ export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmi
     existingValue={existingValue ? existingValue.toString() : ''}
     maxLength={3}
     keyboardType="number-pad"
-    validate={validatePrice}
-    error="Please enter a valid price"
+    validation="number"
     buttonText="Price"
     buttonActionText
     onSubmit={(value) => onSubmit(type, value)}

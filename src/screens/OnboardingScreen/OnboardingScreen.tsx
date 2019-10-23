@@ -5,7 +5,6 @@ import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 import useStore from '@src/hooks/useStore';
-import { loginUser } from '@src/store/actions/UserAction';
 
 import View from '@src/components/View';
 import Image from '@src/components/Image';
@@ -41,7 +40,7 @@ const slides = [
 
 
 const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
-  const { store, dispatch } = useStore();
+  const { store } = useStore();
   const [isReady, setIsReady] = useState(false);
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
 
@@ -73,24 +72,15 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
     setTimeout(checkAuth);
   }, [isAuthenticated, onAuthNavigate, store.user.storageReady]);
 
-  const onPressSignup = () => navigation.push('SelectionScreen');
+  const onPressSignup = () => navigation.push('RegistrationScreen');
 
   const onToggleLoginModal = () => setIsLoginModalVisible(!isLoginModalVisible);
-
-  const onSumbitLogin = async (email: string, password: string) => {
-    try {
-      await dispatch(loginUser(email, password));
-    } catch (error) {
-      // console.log(error);
-    }
-  };
 
   return (
     <>
       <LoginModal
         visible={isLoginModalVisible}
         onClose={onToggleLoginModal}
-        onLogin={onSumbitLogin}
       />
       <View safeArea flex={1} alignCenter bgColor="white">
         <StatusBar barStyle="dark-content" />
