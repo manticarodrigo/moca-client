@@ -1,5 +1,12 @@
 import { ConversationAction } from '@src/store/actions/ConversationAction';
-import { UserSnippet, Message as BadMessage } from '@src/services/openapi';
+import { UserSnippet, Message as BadMessage, Address as BadAddress } from '@src/services/openapi';
+
+type Address = Omit<BadAddress, 'location'> & {
+  location: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
+}
 
 export type Message = Omit<BadMessage, 'image' | 'content'> & {
   content: {
@@ -10,6 +17,7 @@ export type Message = Omit<BadMessage, 'image' | 'content'> & {
     price?: number;
     status?: 'pending' | 'accepted' | 'rejected';
     image?: string;
+    address?: Address;
   };
 }
 

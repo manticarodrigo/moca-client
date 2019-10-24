@@ -3,6 +3,8 @@ import { format, differenceInMinutes } from 'date-fns';
 
 import { mockImg } from '@src/services/mock';
 
+import { openMapMarker } from '@src/utlities/maps';
+
 import useStore from '@src/hooks/useStore';
 
 import { Message } from '@src/store/reducers/ConversationReducer';
@@ -22,15 +24,18 @@ type Props = {
 const AppointmentRequestCard = ({ message, otherUser = {} }: Props) => {
   const { store } = useStore();
 
-  const { id, endTime, price, startTime, status } = message.content;
+  const { endTime, price, startTime, address } = message.content;
 
   const { duration, time } = useMemo(() => ({
     duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
     time: format(new Date(startTime), 'MM/dd - hh:mm aaaa'),
   }), [startTime, endTime]);
 
-  const handlePress = () => {
-    // handle appointment acception.
+  const onPressLocation = () => {
+    const label = `${otherUser.firstName}'s Location`;
+    const [lat, lng] = address.location.coordinates;
+
+    openMapMarker(label, lat, lng);
   };
 
   return (
@@ -64,17 +69,14 @@ const AppointmentRequestCard = ({ message, otherUser = {} }: Props) => {
       <View row justifyBetween variant="borderTop" spacing={{ p: 3 }}>
         <View row flex={1}>
           <View column flex={1}>
-            <Text variant="boldSecondary">
-              {time}
-            </Text>
-            {/* TODO: Add address from API  */}
-            <Text variant="regular">200 Chestnut Street</Text>
+            <Text variant="boldSecondary">{time}</Text>
+            <Text variant="regular">{address.street}</Text>
           </View>
         </View>
 
         {store.user.type === 'PT' && (
           <View row>
-            <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
+            <View variant="iconButton" spacing={{ ml: 2 }} onPress={onPressLocation}>
               <PinIcon size={0.8} />
             </View>
           </View>

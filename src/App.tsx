@@ -30,7 +30,7 @@ const AppStateHandler = ({ children }) => {
     };
 
     onMount();
-  }, [store.user.token]);
+  }, [dispatch, store.user.token]);
 
   return children;
 };
