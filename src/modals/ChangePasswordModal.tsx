@@ -62,6 +62,7 @@ const ChangePasswordModal = ({
             icon="password"
             placeholder="New password"
             value={newPassword}
+            validation="password"
             secureTextEntry
             returnKeyType="done"
             ref={newPasswordField}
