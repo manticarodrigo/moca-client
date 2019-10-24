@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
@@ -65,18 +64,12 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={60}
-    >
-      <AddressForm
-        existingFields={existingFields}
-        isRegistering={isRegistering}
-        submitText={buttonText}
-        onSubmit={onSubmit}
-      />
-    </KeyboardAvoidingView>
+    <AddressForm
+      existingFields={existingFields}
+      isRegistering={isRegistering}
+      submitText={buttonText}
+      onSubmit={onSubmit}
+    />
   );
 };
 

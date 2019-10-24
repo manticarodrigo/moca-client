@@ -1,4 +1,5 @@
 import React from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import useStore from '@src/hooks/useStore';
 import useFormFields from '@src/hooks/useFormFields';
@@ -58,8 +59,8 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
   };
 
   return (
-    <View scroll flex={1}>
-      <View safeArea spacing={{ pt: 3 }} alignCenter>
+    <View safeArea spacing={{ pt: 3 }} alignCenter>
+      <KeyboardAwareScrollView>
         <View spacing={{ mx: 3 }} alignCenter>
           <View spacing={{ py: 4 }} alignCenter>
             <View row>
@@ -150,7 +151,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           </View>
           <View flex={1} />
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

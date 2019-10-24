@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React, { useState } from 'react';
 import { TouchableHighlight } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { Colors } from '@src/styles';
 
@@ -98,106 +99,108 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
 
   return (
     <Modal
-      avoidKeyboard
+      // avoidKeyboard
       propagateSwipe
-      marginTop={50}
+      // marginTop={50}
       isVisible={isVisible}
       onToggle={onToggle}
     >
-      <View scroll width="100%" bgColor="white" spacing={{ mb: 6 }}>
-        <>
-          {Object.keys(checkboxConfig).map((sectionKey) => {
-            const section = checkboxConfig[sectionKey];
-            const sectionItems = Object.entries(section.items);
+      <KeyboardAwareScrollView>
+        <View safeArea width="100%" bgColor="white" spacing={{ mb: 6 }}>
+          <>
+            {Object.keys(checkboxConfig).map((sectionKey) => {
+              const section = checkboxConfig[sectionKey];
+              const sectionItems = Object.entries(section.items);
 
-            return (
-              <View key={sectionKey} variant="borderBottom" height={180}>
-                <Text variant="boldGrey" spacing={{ m: 3 }}>
-                  {checkboxConfig[sectionKey].title}
-                </Text>
-                <View
-                  spacing={{ px: 3 }}
-                  height={100}
-                  variant="shadow"
-                >
-                  <View row flex={1} variant="roundedBorder">
-                    {sectionItems.map(([itemKey, value], index) => {
-                      // @ts-ignore
-                      const { title = '', icon = () => null } = value;
+              return (
+                <View key={sectionKey} variant="borderBottom" height={180}>
+                  <Text variant="boldGrey" spacing={{ m: 3 }}>
+                    {checkboxConfig[sectionKey].title}
+                  </Text>
+                  <View
+                    spacing={{ px: 3 }}
+                    height={100}
+                    variant="shadow"
+                  >
+                    <View row flex={1} variant="roundedBorder">
+                      {sectionItems.map(([itemKey, value], index) => {
+                        // @ts-ignore
+                        const { title = '', icon = () => null } = value;
 
-                      const IconComponent = icon;
+                        const IconComponent = icon;
 
-                      const focused = !!filters[sectionKey][itemKey];
+                        const focused = !!filters[sectionKey][itemKey];
 
-                      const handlePress = () => onPressCheckbox(sectionKey, itemKey, !focused);
+                        const handlePress = () => onPressCheckbox(sectionKey, itemKey, !focused);
 
-                      return (
-                        <TouchableHighlight
-                          key={title}
-                          style={{ flex: 1 }}
-                          underlayColor={Colors.secondaryLight}
-                          onPress={handlePress}
-                        >
-                          <View
-                            flex={1}
-                            alignCenter
-                            justifyCenter
-                            spacing={{ p: 3 }}
-                            variant={index < sectionItems.length - 1 ? 'borderRight' : null}
-                            bgColor={focused ? 'secondary' : 'white'}
+                        return (
+                          <TouchableHighlight
+                            key={title}
+                            style={{ flex: 1 }}
+                            underlayColor={Colors.secondaryLight}
+                            onPress={handlePress}
                           >
-                            <IconComponent focused={focused} />
-                            <Text
-                              spacing={icon ? { mt: 2 } : null}
-                              variant={focused ? 'boldWhite' : 'boldSecondary'}
-                              typography={{ align: 'center' }}
-                              numberOfLines={2}
+                            <View
+                              flex={1}
+                              alignCenter
+                              justifyCenter
+                              spacing={{ p: 3 }}
+                              variant={index < sectionItems.length - 1 ? 'borderRight' : null}
+                              bgColor={focused ? 'secondary' : 'white'}
                             >
-                              {title}
-                            </Text>
-                          </View>
-                        </TouchableHighlight>
-                      );
-                    })}
+                              <IconComponent focused={focused} />
+                              <Text
+                                spacing={icon ? { mt: 2 } : null}
+                                variant={focused ? 'boldWhite' : 'boldSecondary'}
+                                typography={{ align: 'center' }}
+                                numberOfLines={2}
+                              >
+                                {title}
+                              </Text>
+                            </View>
+                          </TouchableHighlight>
+                        );
+                      })}
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
-        </>
-        <View variant="borderBottom" height={180}>
-          <Text variant="boldGrey" spacing={{ m: 3 }}>Desired Cost</Text>
-          <View spacing={{ px: 3 }}>
-            <FormField
-              keyboardType="number-pad"
-              icon="dollar"
-              placeholder="Max Price"
-              value={filters.maxPrice}
-              onChangeText={onChangeMaxPrice}
-            />
+              );
+            })}
+          </>
+          <View variant="borderBottom" height={180}>
+            <Text variant="boldGrey" spacing={{ m: 3 }}>Desired Cost</Text>
+            <View spacing={{ px: 3 }}>
+              <FormField
+                keyboardType="number-pad"
+                icon="dollar"
+                placeholder="Max Price"
+                value={filters.maxPrice}
+                onChangeText={onChangeMaxPrice}
+              />
+            </View>
+          </View>
+          <View variant="borderBottom">
+            <Text variant="boldGrey" spacing={{ m: 3 }}>Areas(s) of Pain</Text>
+            <View row wrap style={{ alignItems: 'flex-start' }} spacing={{ px: 4 }}>
+              {qualificationOptions.map((item) => (
+                <View
+                  key={item}
+                  row
+                  alignCenter
+                  spacing={{ py: 3 }}
+                  width="50%"
+                >
+                  <Checkbox
+                    checked={filters.ailments.includes(item)}
+                    onChange={(checked) => onChangeAilment(item, checked)}
+                  />
+                  <Text variant="boldSmallSecondary" spacing={{ ml: 2 }}>{item}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-        <View variant="borderBottom">
-          <Text variant="boldGrey" spacing={{ m: 3 }}>Areas(s) of Pain</Text>
-          <View row wrap style={{ alignItems: 'flex-start' }} spacing={{ px: 4 }}>
-            {qualificationOptions.map((item) => (
-              <View
-                key={item}
-                row
-                alignCenter
-                spacing={{ py: 3 }}
-                width="50%"
-              >
-                <Checkbox
-                  checked={filters.ailments.includes(item)}
-                  onChange={(checked) => onChangeAilment(item, checked)}
-                />
-                <Text variant="boldSmallSecondary" spacing={{ ml: 2 }}>{item}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
     </Modal>
   );
 };
