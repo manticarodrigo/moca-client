@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatDistanceStrict } from 'date-fns';
 
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
@@ -91,6 +92,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const onSubmitInputModal = (key: keyof UserState) => async (value: string) => {
     try {
       await dispatch(updateUser({ [key]: value }));
+
       setInputModalProps(null);
     } catch (error) {
       // console.log(error);
@@ -241,7 +243,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   {
                     title: 'Years of Experience',
                     icon: InterestIcon,
-                    content: userInfo.certDate || (modal ? 'N/A' : (
+                    content: (
+                      userInfo.certDate && formatDistanceStrict(new Date(userInfo.certDate), new Date())
+                    ) || (modal ? 'N/A' : (
                       <DatePicker
                         existingDate={userInfo.certDate ? userInfo.certDate : ''}
                         placeholder="Set License Date"
