@@ -28,6 +28,7 @@ export type Props = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
   value: string;
+  required?: boolean;
   validation?: 'email' | 'password' | 'zip' | 'number';
   spacing?: SpacingProp;
   width?: number | string;
@@ -39,6 +40,7 @@ const FormField = ({
   placeholder,
   icon,
   value,
+  required,
   validation,
   spacing,
   width,
@@ -69,9 +71,15 @@ const FormField = ({
       case 'number':
         return getNumberError(value);
       default:
-        return undefined;
+        break;
     }
-  }, [validation, value]);
+
+    if (required && !value) {
+      return 'This field is required.';
+    }
+
+    return undefined;
+  }, [required, validation, value]);
 
   const shouldShowError = useMemo(() => {
     if (validation === 'password') {
@@ -155,11 +163,9 @@ const FormField = ({
   const handleChangeText = (text: string) => onChangeText(text, validationError);
 
   useEffect(() => {
-    // need an effect to update useFormFields hook errors
+    // effect to update useFormFields hook errors when error changes
     // TODO: find a way to update hook only once
-    if (validation) {
-      onChangeText(value, validationError);
-    }
+    onChangeText(value, validationError);
   }, [validationError]);
 
   return (

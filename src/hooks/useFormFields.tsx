@@ -4,15 +4,15 @@ import { TextInput } from 'react-native';
 
 const useFormFields = <Fields extends object> (initialState) => {
   const [formFields, setFormFields] = useState<Fields>(initialState);
-  const [formErrors, setFormErrors] = useState<Partial<Fields>>({});
 
+  const fieldErrors = useRef<{ [key in keyof Fields]?: string }>({});
   const fieldRefs = useRef<{ [key in keyof Fields]?: TextInput }>({});
 
   const { isAnyFieldEmpty, isEveryFieldEmpty, isFormValid } = useMemo(() => ({
     isAnyFieldEmpty: Object.values(formFields).includes(''),
     isEveryFieldEmpty: Object.values(formFields).every((v) => !v),
-    isFormValid: !Object.keys(formErrors).length,
-  }), [formFields, formErrors]);
+    isFormValid: !Object.keys(fieldErrors.current).length,
+  }), [formFields, fieldErrors]);
 
   const setFieldRef = (key: keyof Fields) => (ref) => {
     fieldRefs.current[key] = ref;
@@ -24,11 +24,9 @@ const useFormFields = <Fields extends object> (initialState) => {
     setFormFields({ ...formFields, [key]: value });
 
     if (error) {
-      setFormErrors({ ...formErrors, [key]: error });
+      fieldErrors.current[key] = error;
     } else {
-      delete formErrors[key];
-
-      setFormErrors(formErrors);
+      delete fieldErrors.current[key];
     }
   };
 

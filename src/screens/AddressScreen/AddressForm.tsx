@@ -43,8 +43,6 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     coordinates: [0, 0],
   });
 
-  const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
-
   const handleSubmit = () => {
     if (isAnyFieldEmpty) {
       return;
@@ -80,6 +78,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           <PlacesSearch onSelect={updateFormFields} />
           <View spacing={{ mb: 3, mt: 4 }} alignCenter>
             <FormField
+              required
               placeholder="Name"
               value={formFields.name}
               returnKeyType="next"
@@ -87,6 +86,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               onSubmitEditing={onFocusNext('street')}
             />
             <FormField
+              required
               ref={setFieldRef('street')}
               placeholder="Street"
               value={formFields.street}
@@ -103,6 +103,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               onSubmitEditing={onFocusNext('city')}
             />
             <FormField
+              required
               ref={setFieldRef('city')}
               placeholder="City"
               value={formFields.city}
@@ -111,13 +112,16 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               onSubmitEditing={onFocusNext('state')}
             />
             <FormField
+              required
               ref={setFieldRef('state')}
               placeholder="State"
               value={formFields.state}
+              maxLength={2}
               onChangeText={onChangeField('state')}
               onSubmitEditing={onFocusNext('zipCode')}
             />
             <FormField
+              required
               ref={setFieldRef('zipCode')}
               placeholder="Zip Code"
               value={formFields.zipCode}
@@ -141,8 +145,8 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           <View row spacing={{ py: 4 }}>
             <View flex={1}>
               <Button
-                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                disabled={isButtonDisabled}
+                variant={!isFormValid ? 'primaryDisabled' : 'primary'}
+                disabled={!isFormValid}
                 onPress={handleSubmit}
               >
                 {submitText}
