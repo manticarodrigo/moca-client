@@ -8,7 +8,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
 
-const DashboardAppointments = ({ isTherapist, onPressAppointment }) => {
+const DashboardAppointments = ({ isTherapist, onPressAppointment, onPressCancel }) => {
   const { store } = useStore();
 
   const { current, next } = useMemo(() => {
@@ -56,7 +56,11 @@ const DashboardAppointments = ({ isTherapist, onPressAppointment }) => {
       {next && (
         <View column justifyCenter>
           <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
-          <AppointmentCard appointment={next} isTherapist={isTherapist} />
+          <AppointmentCard
+            appointment={next}
+            isTherapist={isTherapist}
+            onPressCancel={onPressCancel}
+          />
         </View>
       )}
 

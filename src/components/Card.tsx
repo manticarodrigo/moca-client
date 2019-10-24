@@ -64,7 +64,7 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
       case 'TermsAndConditions':
         return { icon: <TermsAndConditionsIcon />, text: 'Terms & Conditions' };
       case 'join':
-        return { icon: <SupportAndFeedbackIcon />, text: 'joinmoca.com' };
+        return { icon: <SupportAndFeedbackIcon />, text: 'Take me to MOCA\'s Homepage' };
       case 'facebook':
         return { icon: <FacebookIcon />, text: 'Follow on Facebook' };
       case 'twitter':

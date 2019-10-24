@@ -25,9 +25,16 @@ type AppointmentCardProps = {
   current?: boolean;
   isTherapist: boolean;
   onPress?: () => void;
+  onPressCancel?: () => void;
 };
 
-const AppointmentCard = ({ appointment, current, isTherapist, onPress }: AppointmentCardProps) => {
+const AppointmentCard = ({
+  appointment,
+  current,
+  isTherapist,
+  onPress,
+  onPressCancel,
+}: AppointmentCardProps) => {
   const { otherParty, startTime, endTime, price, review, address } = appointment;
 
   const { canStart, canCancel, duration, time, rating } = useMemo(() => ({
@@ -39,7 +46,6 @@ const AppointmentCard = ({ appointment, current, isTherapist, onPress }: Appoint
   }), [current, isTherapist, startTime, endTime, review]);
 
   const hasButton = canStart || canCancel;
-
 
   return (
     <View
@@ -101,7 +107,7 @@ const AppointmentCard = ({ appointment, current, isTherapist, onPress }: Appoint
             variant="secondary"
             spacing={{ mt: 3 }}
             bgColor={canCancel ? 'white' : null}
-            onPress={() => null}
+            onPress={onPressCancel}
           >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}

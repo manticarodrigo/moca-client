@@ -13,6 +13,7 @@ import LogoBackground from '@src/components/LogoBackground';
 import AwayCard from '@src/components/AwayCard';
 
 import AppointmentModal from '@src/modals/AppointmentModal';
+import CancellationModal from '@src/modals/CancellationModal';
 
 import DashboardAlert from './DashboardAlert';
 import DashboardAppointments from './DashboardAppointments';
@@ -26,6 +27,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
   const [isAway] = useState(false);
   const [sessionEnded, setSessionEnded] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState();
+  const [selectedCancelAppointment, setSelectedCancelAppointment] = useState();
 
   const isTherapist = store.user.type === 'PT';
 
@@ -41,6 +43,10 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
     if (store.appointments[0]) {
       setSelectedAppointment(store.appointments[0]);
     }
+  };
+
+  const onPressCancelAppointment = () => {
+    setSelectedCancelAppointment(true);
   };
 
   const onSubmitEndSession = () => {
@@ -67,6 +73,10 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
         onSubmitReview={onSubmitReview}
         onClose={() => setSelectedAppointment(undefined)}
       />
+      <CancellationModal
+        visible={!!selectedCancelAppointment}
+        onToggle={() => setSelectedCancelAppointment(undefined)}
+      />
       <View safeArea flex={1} bgColor="primary">
         <LogoBackground />
 
@@ -90,7 +100,11 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
         <View scroll flex={1}>
           {!isActivated && isTherapist && <DashboardAlert />}
           {isTherapist && isAway && (
-            <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
+            <View
+              column
+              spacing={{ px: 3, py: 4 }}
+              bgColor={!isTherapist ? 'blackTranslucent' : null}
+            >
               <AwayCard dateStart={new Date()} dateEnd={new Date()} />
             </View>
           )}
@@ -98,6 +112,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
             <DashboardAppointments
               isTherapist={isTherapist}
               onPressAppointment={onPressAppointment}
+              onPressCancel={onPressCancelAppointment}
             />
           )}
           <DashboardLinks isActivated={isActivated} />
