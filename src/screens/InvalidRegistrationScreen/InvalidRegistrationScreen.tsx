@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { InvalidLocationNotice, MedicareNotice } from '@src/content';
 
@@ -11,6 +10,7 @@ import { resetRegistration } from '@src/store/actions/RegistrationAction';
 
 import { Colors, Views } from '@src/styles';
 
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
@@ -44,7 +44,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
   };
 
   return (
-    <KeyboardAwareScrollView extraScrollHeight={100}>
+    <KeyboardAwareScrollView>
       <View safeArea>
         <View spacing={{ py: 4, px: 3 }} alignCenter>
           <View alignCenter>

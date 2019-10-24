@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { User } from '@src/services/openapi/api';
 
@@ -16,6 +15,7 @@ import { ToS } from '@src/content';
 
 import { Colors, Views } from '@src/styles';
 
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
@@ -114,22 +114,19 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               <View row spacing={{ py: 4, px: 3 }}>
                 <View flex={1}>
                   <Text variant="title" typography={{ size: 2 }}>
-                    {'Are you currently\n'}
-                    covered by Medicare?
+                    Are you currently covered by Medicare?
                   </Text>
                 </View>
                 <View row flex={1} justifyEnd>
-                  <Button variant="tertiary" onPress={onMedicareAgreement}>
+                  <Button variant="tertiary" spacing={{ mr: 2 }} onPress={onMedicareAgreement}>
                     Yes
                   </Button>
-                  <View spacing={{ ml: 3 }}>
-                    <Button
-                      variant={isMedicarePressed ? 'buttonPressed' : 'tertiary'}
-                      onPress={onMedicareDisagreement}
-                    >
-                      No
-                    </Button>
-                  </View>
+                  <Button
+                    variant={isMedicarePressed ? 'buttonPressed' : 'tertiary'}
+                    onPress={onMedicareDisagreement}
+                  >
+                    No
+                  </Button>
                 </View>
               </View>
             </View>

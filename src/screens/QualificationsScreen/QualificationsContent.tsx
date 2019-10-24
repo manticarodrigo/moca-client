@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
-
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
@@ -22,22 +21,18 @@ export const qualificationOptions = [
   'Hip/Pelvis',
   'Knee',
   'Ankle/Foot',
-  'Other',
 ];
 
 type Props = {
   navigation?: NavigationStackProp;
   modal?: boolean;
-  closeInputModal?: () => void;
+  onClose?: () => void;
 }
 
-const QualificationsContent = (
-  { navigation, modal, closeInputModal }: Props,
-) => {
+const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
   const { store, dispatch } = useStore();
-  const [preferredAilments, setPreferredAilments] = useState(
-    store.user ? store.user.preferredAilments : [],
-  );
+
+  const [preferredAilments, setPreferredAilments] = useState(store.user.preferredAilments);
 
   const isButtonDisabled = !preferredAilments.length;
 
@@ -58,8 +53,7 @@ const QualificationsContent = (
       dispatch(updateUser({ preferredAilments }));
 
       if (modal) {
-        closeInputModal();
-        // api call
+        onClose();
       } else {
         navigation.navigate('AddressScreen', { title: 'Address' });
       }
@@ -69,30 +63,32 @@ const QualificationsContent = (
   };
 
   return (
-    <View scroll>
-      <TouchableWithoutFeedback>
-        <TouchableHighlight>
-          <View flex={1}>
-            <View safeArea spacing={{ pt: 3 }}>
-              <View spacing={{ mx: 3 }}>
-                {!modal
-                  ? (
-                    <View>
-                      <View row wrap justifyCenter>
-                        <Text variant="title" spacing={{ mt: 3 }}>Thanks for signing up,</Text>
-                        <Text variant="title" spacing={{ mt: 3, ml: 1 }}>{store.user.firstName}</Text>
-                      </View>
-                      <View alignCenter spacing={{ mt: 4 }} wrap>
-                        <Text variant="regular" typography={{ align: 'center' }}>
-                            What are your preferred treatment
-                            areas and advanced certifications” should
-                            read “What are your preferred treatment areas?
-                        </Text>
-                      </View>
-                    </View>
-                  )
-                  : null}
-                <View spacing={{ mt: 3 }}>
+    <View safeArea>
+      {modal && (
+        <View variant="borderBottom" alignCenter justifyCenter spacing={{ py: 4 }}>
+          <Text variant="titleSmall">
+            Qualifications
+          </Text>
+        </View>
+      )}
+      <View scroll>
+        <TouchableWithoutFeedback>
+          <TouchableHighlight>
+            <View spacing={{ px: 3 }}>
+              {!modal && (
+                <View spacing={{ py: 5 }}>
+                  <Text variant="title" typography={{ align: 'center' }} numberOfLines={2}>
+                    {`Thanks for signing up, ${store.user.firstName}`}
+                  </Text>
+                  <View spacing={{ pt: 3 }}>
+                    <Text variant="regular" typography={{ align: 'center' }}>
+                      What are your preferred treatment areas?
+                    </Text>
+                  </View>
+                </View>
+              )}
+              <View>
+                <>
                   {qualificationOptions.map((item, index) => (
                     <View
                       key={item}
@@ -110,23 +106,22 @@ const QualificationsContent = (
                       />
                     </View>
                   ))}
-                </View>
-                <View row>
-                  <View flex={1} spacing={{ py: 3 }}>
-                    <Button
-                      variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                      onPress={onPressSubmit}
-                      disabled={isButtonDisabled}
-                    >
-                      {!modal ? 'Continue' : 'Update' }
-                    </Button>
-                  </View>
-                </View>
+                </>
+              </View>
+              <View row spacing={{ py: 4, mb: 6 }} variant="borderTop">
+                <Button
+                  width="100%"
+                  variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                  onPress={onPressSubmit}
+                  disabled={isButtonDisabled}
+                >
+                  {!modal ? 'Continue' : 'Update' }
+                </Button>
               </View>
             </View>
-          </View>
-        </TouchableHighlight>
-      </TouchableWithoutFeedback>
+          </TouchableHighlight>
+        </TouchableWithoutFeedback>
+      </View>
     </View>
   );
 };

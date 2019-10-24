@@ -15,6 +15,7 @@ import {
 
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
@@ -144,7 +145,6 @@ const BankCardModal = ({ isVisible, onToggle }) => {
 
   return (
     <Modal
-      avoidKeyboard
       propagateSwipe
       marginTop={50}
       bgColor="white"
@@ -174,7 +174,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           <View alignCenter justifyCenter spacing={{ mx: 4 }}><MaestroIcon /></View>
         </View>
 
-        <View scroll>
+        <KeyboardAwareScrollView>
           <View flex={2} spacing={{ p: 3 }}>
             {isTherapist ? (
               <BankFields fields={bankFields} onChangeField={onChangeBankField} />
@@ -192,7 +192,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
               Add Account
             </Button>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </View>
 
     </Modal>

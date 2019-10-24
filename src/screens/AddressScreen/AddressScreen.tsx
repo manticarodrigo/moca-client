@@ -87,19 +87,17 @@ AddressScreen.navigationOptions = ({ navigation, navigationOptions }) => {
       backgroundColor: Colors.white,
     },
     headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
-    headerRight: params.isExistingAddress
-    && !params.isOnlyAddress
-      ? (
-        <View
-          alignCenter
-          onPress={() => {
-            params.handleDelete();
-            navigation.goBack();
-          }}
-        >
-          <BinIconRed />
-        </View>
-      ) : null,
+    headerRight: (params.isExistingAddress && !params.isOnlyAddress) && (
+      <View
+        alignCenter
+        onPress={() => {
+          params.handleDelete();
+          navigation.goBack();
+        }}
+      >
+        <BinIconRed />
+      </View>
+    ),
   };
 };
 

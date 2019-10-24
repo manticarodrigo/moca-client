@@ -24,6 +24,7 @@ type ColorKey = keyof typeof Colors;
 
 const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
+
   const [isAddressModalVisible, setIsAddressModalVisible] = useState(false);
 
   const isPatient = store.registration.type === 'PA';
@@ -120,7 +121,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <View row spacing={{ p: 4 }}>
+            <View row spacing={{ py: 4 }}>
               <Button
                 width="100%"
                 variant={buttonDisabled ? 'primaryDisabled' : 'primary'}

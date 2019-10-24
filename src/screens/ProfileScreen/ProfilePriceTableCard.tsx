@@ -20,7 +20,7 @@ const sessionLabels = {
 export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmit }) => (
   <InputModal
     visible={visible}
-    title={`${sessionLabels[type]} Session Price`}
+    title={type && `${sessionLabels[type]} Session Price`}
     placeholder="Price"
     existingValue={existingValue ? existingValue.toString() : ''}
     maxLength={3}
