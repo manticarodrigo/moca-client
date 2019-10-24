@@ -46,25 +46,10 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   const handleAddressPress = (userAddress: Address, index: number) => {
     if (!isOpen) {
-      let title = '';
-      let isOnlyAddress = false;
-
-      if (index === 0) {
-        title = 'Home';
-      } else {
-        title = `Home ${index}`;
-      }
-
-      if (store.user.addresses.length === 1) {
-        isOnlyAddress = true;
-      }
-
       navigation.navigate('AddressScreen', {
         isExistingAddress: true,
-        title,
+        isOnlyAddress: store.user.addresses.length === 1,
         userAddress,
-        isOnlyAddress,
-        index,
         handleDelete: () => handleDeletePress(index) });
     } else {
       setIsOpen(false);

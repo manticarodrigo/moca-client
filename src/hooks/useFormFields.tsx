@@ -18,7 +18,9 @@ const useFormFields = <Fields extends object> (initialState) => {
     fieldRefs.current[key] = ref;
   };
 
-  const updateFormFields = (values: Fields) => setFormFields((prev) => ({ ...prev, ...values }));
+  const updateFormFields = (values: Partial<Fields>) => setFormFields(
+    (prev) => ({ ...prev, ...values }),
+  );
 
   const onChangeField = (key: keyof Fields) => (value: string | boolean, error?: string) => {
     setFormFields({ ...formFields, [key]: value });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import useStore from '@src/hooks/useStore';
 import useFormFields from '@src/hooks/useFormFields';
@@ -32,16 +32,22 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     updateFormFields,
     onChangeField,
     onFocusNext,
-  } = useFormFields<AddAddressForm>(existingFields || {
+  } = useFormFields<AddAddressForm>({
     name: '',
     street: '',
     apartment: '',
     city: '',
     state: '',
     zipCode: '',
-    primary: isRegistering,
+    primary: !!isRegistering,
     coordinates: [0, 0],
   });
+
+  useEffect(() => {
+    if (existingFields) {
+      updateFormFields(existingFields);
+    }
+  }, [existingFields]);
 
   const handleSubmit = () => {
     if (isAnyFieldEmpty) {
