@@ -76,9 +76,11 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               </Text>
             </View>
             <Text variant="regular" spacing={{ mt: 1 }}>
-              {isRegistering
-                ? 'What is your preferred address for treatment?'
-                : 'You can edit and add additional addresses for treatment.'}
+              {isRegistering && (
+                (store.registration.type === 'PT' && 'Please enter your address of operation below.')
+                || 'What is your preferred address for treatment?'
+              )}
+              {!isRegistering && 'You can edit and add additional addresses for treatment.'}
             </Text>
           </View>
           <PlacesSearch onSelect={updateFormFields} />
