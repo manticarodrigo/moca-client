@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
+import useFormFields from '@src/hooks/useFormFields';
 
 import FormField from '@src/components/FormField';
 import View from '@src/components/View';
@@ -18,17 +19,19 @@ const ChangePasswordModal = ({
   isModalVisible,
   sumbitEditPassword,
 }: Props) => {
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-
-  const passwordField = useRef(null);
-  const newPasswordField = useRef(null);
-
-  const isButtonDisabled = !((password && newPassword) !== '');
-
+  const {
+    formFields,
+    setFieldRef,
+    isFormValid,
+    onChangeField,
+    onFocusNext,
+  } = useFormFields<{ currentPassword: string; newPassword: string }>({
+    currentPassword: '',
+    newPassword: '',
+  });
 
   const handleButtonPress = () => {
-    sumbitEditPassword(newPassword);
+    sumbitEditPassword(formFields.newPassword);
   };
 
   return (
@@ -49,31 +52,32 @@ const ChangePasswordModal = ({
         </View>
         <View alignCenter spacing={{ mt: 4, mx: 5 }}>
           <FormField
+            required
             icon="password"
             placeholder="Current password"
-            value={password}
+            value={formFields.currentPassword}
             secureTextEntry
             returnKeyType="next"
-            ref={passwordField}
-            onChangeText={setPassword}
-            onSubmitEditing={() => newPasswordField.current.focus()}
+            onChangeText={onChangeField('currentPassword')}
+            onSubmitEditing={onFocusNext('newPassword')}
           />
           <FormField
+            required
+            ref={setFieldRef('newPassword')}
             icon="password"
             placeholder="New password"
-            value={newPassword}
+            value={formFields.newPassword}
             validation="password"
             secureTextEntry
             returnKeyType="done"
-            ref={newPasswordField}
-            onChangeText={setNewPassword}
+            onChangeText={onChangeField('newPassword')}
           />
           <View row spacing={{ mt: 5 }}>
             <View flex={1}>
               <Button
-                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                variant={!isFormValid ? 'primaryDisabled' : 'primary'}
+                disabled={!isFormValid}
                 onPress={handleButtonPress}
-                disabled={isButtonDisabled}
               >
                 Update
               </Button>
