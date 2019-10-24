@@ -4,6 +4,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { UserTypeEnum } from '@src/services/openapi';
 
 import useStore from '@src/hooks/useStore';
+import { AddAddressForm } from '@src/store/actions/UserAction';
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
 import { Colors } from '@src/styles';
@@ -50,16 +51,22 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const onCloseAddressModal = () => setIsAddressModalVisible(false);
 
-  const onSubmitAddressModal = (address) => {
+  const onSubmitAddressModal = (address: AddAddressForm) => {
     dispatch(updateRegistration({ address }));
 
-    // TODO: check against moca's available zip codes
-    const isAreaAvailable = () => true;
+    const isAreaAvailable = () => {
+      const normalized = address.state.toLowerCase();
+      if (normalized === 'ut' || normalized === 'utah') {
+        return true;
+      }
+
+      return false;
+    };
 
     if (isAreaAvailable()) {
       navigation.push('RegistrationScreen');
     } else {
-      navigation.push('InvalidZipCodeScreen');
+      navigation.push('InvalidRegistrationScreen', { address });
     }
 
     setIsAddressModalVisible(false);
@@ -139,6 +146,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
 SelectionScreen.navigationOptions = ({ navigationOptions }) => ({
   title: null,
   headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle as {},
     color: Colors.primary,
   },
   headerStyle: {

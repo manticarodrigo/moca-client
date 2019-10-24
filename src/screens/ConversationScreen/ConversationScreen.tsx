@@ -57,8 +57,6 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     setOtherUser(params.user);
-
-    navigation.setParams({ user: params.user });
   }, []);
 
   useEffect(() => {

@@ -21,9 +21,8 @@ import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
 import SelectionScreen from '@src/screens/SelectionScreen';
-import InvalidZipCodeScreen from '@src/screens/InvalidZipCodeScreen';
+import InvalidRegistrationScreen from '@src/screens/InvalidRegistrationScreen';
 import RegistrationScreen from '@src/screens/RegistrationScreen';
-import InvalidMedicareScreen from '@src/screens/InvalidMedicareScreen';
 import AddressScreen from '@src/screens/AddressScreen';
 import QualificationsScreen from '@src/screens/QualificationsScreen';
 import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
@@ -57,9 +56,8 @@ const AppStack = createSwitchNavigator(
     AuthStack: createStackNavigator({
       OnboardingScreen,
       SelectionScreen,
-      InvalidZipCodeScreen,
       RegistrationScreen,
-      InvalidMedicareScreen,
+      InvalidRegistrationScreen,
       AddressScreen,
       QualificationsScreen,
     }, defaultNavConfig),

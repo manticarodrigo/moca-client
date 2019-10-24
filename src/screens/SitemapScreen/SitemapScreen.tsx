@@ -13,9 +13,8 @@ const SitemapScreen: NavigationStackScreenComponent = ({ navigation }) => {
       screens: [
         'OnboardingScreen',
         'SelectionScreen',
-        'InvalidZipCodeScreen',
         'RegistrationScreen',
-        'InvalidMedicareScreen',
+        'InvalidRegistrationScreen',
         'QualificationsScreen',
         'AddressScreen',
       ],

@@ -71,7 +71,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
   };
 
-  const onMedicareAgreement = () => navigation.push('InvalidMedicareScreen');
+  const onMedicareAgreement = () => navigation.push('InvalidRegistrationScreen');
 
   const onMedicareDisagreement = () => setIsMedicarePressed(!isMedicarePressed);
 
@@ -224,6 +224,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 RegistrationScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Sign Up',
   headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle as {},
     color: Colors.primary,
   },
   headerStyle: {

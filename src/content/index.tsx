@@ -1,1 +1,3 @@
-export { default as ToS } from './ToS.json';
+export { default as ToS } from './tos.json';
+export { default as InvalidLocationNotice } from './location.json';
+export { default as MedicareNotice } from './medicare.json';

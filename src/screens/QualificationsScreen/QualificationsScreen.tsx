@@ -11,6 +11,7 @@ const QualificationsScreen: NavigationStackScreenComponent = ({ navigation }) =>
 QualificationsScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Qualifications',
   headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle as {},
     color: Colors.primary,
   },
   headerStyle: {
