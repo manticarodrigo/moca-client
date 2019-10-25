@@ -2,7 +2,8 @@ import { AppointmentAction } from '@src/store/actions/AppointmentAction';
 
 import { Appointment as BadAppointment } from '@src/services/openapi';
 
-export type Appointment = Omit<BadAppointment, 'otherParty'> & {
+export type Appointment = Omit<BadAppointment, 'otherParty' | 'startTime'> & {
+  startTime: string;
   otherParty: {
     id: number;
     firstName: string;
@@ -10,6 +11,7 @@ export type Appointment = Omit<BadAppointment, 'otherParty'> & {
     image: string;
   };
 }
+
 export type AppointmentState = Appointment[]
 
 const reducer = (state: AppointmentState, action: AppointmentAction): AppointmentState => {

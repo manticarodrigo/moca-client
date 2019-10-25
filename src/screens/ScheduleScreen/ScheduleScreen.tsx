@@ -1,63 +1,61 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import React, { useState, useEffect } from 'react';
+import { FlatList, ListRenderItem } from 'react-native';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
+import { format } from 'date-fns';
 
-import { Agenda } from 'react-native-calendars';
-import { format, addDays } from 'date-fns';
+import useStore from '@src/hooks/useStore';
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
+
+import { getAppointments } from '@src/store/actions/AppointmentAction';
+import { setAwayDates } from '@src/store/actions/UserAction';
 
 import { Colors, Spacing } from '@src/styles';
 
-import View from '@src/components/View';
-
-import SetAwayModal from '@src/modals/SetAwayModal';
-
 import { ScheduleTabIcon } from '@src/components/icons';
 
-import { setAwayDates } from '@src/store/actions/UserAction';
-import useStore from '@src/hooks/useStore';
+import View from '@src/components/View';
+import SetAwayModal from '@src/modals/SetAwayModal';
 
 import ScheduleRow from './ScheduleRow';
 
 export type ScheduleItem = {
-  dateString: string;
-  appointments: string;
-  completedAppointments: string;
-  timeSpent: string;
-  documents: string;
-  completedDocuments: string;
-  earnings: string;
+  date: string;
+  timestamp: number;
+  appointments: Appointment[];
 }
 
-type ScheduleItemMap = {
-  [key: string]: ScheduleItem[];
-}
+type Props = NavigationStackScreenProps & { isFocused: boolean }
 
-const theme = {
-  backgroundColor: Colors.semiGreyLighter,
-  calendarBackground: Colors.primary,
-  textSectionTitleColor: Colors.white,
-  arrowColor: Colors.secondary,
-  dayTextColor: Colors.white,
-  monthTextColor: Colors.white,
-  textDayFontFamily: 'family-700',
-  todayTextColor: Colors.secondaryLighter,
-  dotColor: Colors.semiGreyLighter,
-  'stylesheet.day.basic': {
-    selected: {
-      backgroundColor: Colors.secondary,
-      borderRadius: 8,
-    },
-  },
-};
-
-const minDate = new Date();
-const maxDate = addDays(new Date(), 365);
-
-const ScheduleScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { dispatch } = useStore();
-  const [items, setItems] = useState<ScheduleItemMap>({});
+const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
+  const { store, dispatch } = useStore();
+  const [items, setItems] = useState<ScheduleItem[]>([]);
   const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
-  const renderNull = useCallback(() => null, []);
+  useEffect(() => {
+    if (store.user.id) {
+      dispatch(getAppointments());
+    }
+  }, [store.user, isFocused, dispatch]);
+
+  useEffect(() => {
+    const itemMap: { [key: string]: ScheduleItem } = {};
+
+    store.appointments.forEach((appointment) => {
+      const startDate = new Date(appointment.startTime);
+      const timestamp = startDate.getTime();
+
+      const date = format(startDate, 'yyyy-MM-dd');
+
+      if (itemMap[date]) {
+        itemMap[date].appointments.push(appointment);
+      } else {
+        itemMap[date] = { date, timestamp, appointments: [appointment] };
+      }
+    });
+
+    setItems(Object.values(itemMap).sort((a, b) => a.timestamp - b.timestamp));
+  }, [store.appointments]);
+
 
   const onToggleAwayModal = () => setIsAwayModalVisible(!isAwayModalVisible);
 
@@ -68,54 +66,20 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const onSubmitAwayDays = async (startDate: string, endDate: string) => {
     try {
       await dispatch(setAwayDates(startDate, endDate));
+
       setIsAwayModalVisible(false);
     } catch (error) {
       // console.log(error);
     }
   };
 
-  const onPressDate = (date) => navigation.push(
-    'ScheduleDayScreen',
-    { selectedDate: date },
-  );
+  const renderItem: ListRenderItem<ScheduleItem> = ({ item }) => {
+    const handlePress = () => navigation.push('ScheduleDayScreen', { scheduleItem: item });
 
-  const loadItemsForMonth = (date) => {
-    setTimeout(() => {
-      const newItems = {};
-
-      for (let i = -15; i < 60; i += 1) {
-        const dateString = format(addDays(date.timestamp, i + 1), 'yyyy-MM-dd');
-
-        if (!newItems[dateString]) {
-          newItems[dateString] = [];
-
-          const hasItemsForDay = Math.random() >= 0.5;
-
-          if (hasItemsForDay) {
-            newItems[dateString].push({
-              dateString,
-              appointments: 3,
-              completedAppointments: 2,
-              timeSpent: 5,
-              documents: 2,
-              completedDocuments: 2,
-              earnings: 60,
-            });
-          }
-        }
-      }
-
-      setItems(newItems);
-    }, 500);
+    return <ScheduleRow item={item} onPressDate={handlePress} />;
   };
 
-  const renderDay = (date, item) => {
-    const handlePress = () => onPressDate(date);
-
-    return <ScheduleRow date={date} item={item} onPressDate={handlePress} />;
-  };
-
-  const rowHasChanged = (r1, r2) => r1.dateString !== r2.dateString;
+  const keyExtractor = (item: ScheduleItem) => item.date;
 
   return (
     <>
@@ -125,18 +89,11 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation }) => {
         onSubmit={onSubmitAwayDays}
 
       />
-      <Agenda
-        items={items}
-        loadItemsForMonth={loadItemsForMonth}
-        renderItem={renderNull}
-        renderEmptyDate={renderNull}
-        rowHasChanged={rowHasChanged}
-        renderDay={renderDay}
-        theme={theme}
-        pastScrollRange={12}
-        futureScrollRange={12}
-        minDate={minDate}
-        maxDate={maxDate}
+      <FlatList
+        style={{ ...Spacing.getStyles({ py: 2 }), backgroundColor: Colors.semiGreyLighter }}
+        data={Object.values(items)}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
       />
     </>
   );

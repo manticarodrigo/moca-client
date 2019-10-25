@@ -21,7 +21,7 @@ export const getEmailError = (email: string) => {
 };
 
 export const getZipCodeError = (zipCode: string) => {
-  if (!zipCode.match('^[+ 0-9]{5}$')) return 'Please enter a valid Zip Code.';
+  if (!zipCode.match('^[+ 0-9]{5}$')) return 'Please enter a valid zip code.';
 
   return undefined;
 };

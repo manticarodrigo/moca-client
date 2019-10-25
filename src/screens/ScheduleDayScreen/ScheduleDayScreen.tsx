@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { format, addMinutes } from 'date-fns';
+import { format, addMinutes, differenceInMinutes } from 'date-fns';
 
 import { mockImg } from '@src/services/mock';
 
@@ -17,40 +17,39 @@ import Image from '@src/components/Image';
 import Tag from '@src/components/Tag';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
+import { ScheduleItem } from '@src/screens/ScheduleScreen/ScheduleScreen';
+
 const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
 
-  const { timestamp = new Date() } = navigation.getParam('selectedDate', {});
-
-
-  const data = Array.from({ length: 25 }, (v, i) => ({
-    id: `id-${i}`,
-    name: 'Jane Doe',
-    start: 1570566600,
-    duration: 45,
-    earnings: 60,
-    reportTimeLeft: 6,
-  }));
-
+  const scheduleItem: ScheduleItem = navigation.getParam('scheduleItem', {});
 
   useEffect(() => {
-    const dayOfMonth = format(timestamp, 'dd');
-    const monthAndYear = format(timestamp, 'MMM yyyy');
-    const dayOfWeek = format(timestamp, 'cccc');
-    const total = data.reduce((acc, { earnings }) => acc + earnings, 0);
+    const dateObj = new Date(scheduleItem.date);
+
+    const dayOfMonth = format(dateObj, 'dd');
+    const monthAndYear = format(dateObj, 'MMM yyyy');
+    const dayOfWeek = format(dateObj, 'cccc');
+    const total = scheduleItem.appointments.reduce((acc, { price }) => acc + price, 0);
 
     navigation.setParams({ total, dayOfMonth, monthAndYear, dayOfWeek });
   }, []);
 
+  const sortedData = useMemo(() => scheduleItem.appointments.sort(
+    (a, b) => new Date(a.startTime).getTime() - new Date(b.endTime).getTime(),
+  ), [scheduleItem.appointments]);
+
   return (
     <View safeArea flex={1} width="100%">
       <FlatList
-        data={data}
-        keyExtractor={({ id }) => id}
+        data={sortedData}
+        keyExtractor={({ id }) => id.toString()}
         renderItem={({ item }) => {
-          const { name, start, duration, earnings, reportTimeLeft } = item;
-          const startFormatted = format(start, 'hh:mm aaaa');
-          const endFormatted = format(addMinutes(start, duration), 'hh:mm aaaa');
+          const { otherParty, startTime, endTime, price } = item;
+
+          const duration = differenceInMinutes(new Date(endTime), new Date(startTime));
+          const startFormatted = format(new Date(startTime), 'hh:mm aaaa');
+          const endFormatted = format(addMinutes(new Date(startTime), duration), 'hh:mm aaaa');
 
           return (
             <SwipeRow disabled={false} onPress={() => null}>
@@ -71,12 +70,14 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                   </View>
                   <View row alignCenter spacing={{ ml: 2 }}>
                     <Image rounded size={36} uri={mockImg} />
-                    <Text variant="titleSmallDark" spacing={{ ml: 2 }}>{name}</Text>
+                    <Text variant="titleSmallDark" spacing={{ ml: 2 }}>
+                      {`${otherParty.firstName} ${otherParty.lastName}`}
+                    </Text>
                   </View>
                 </View>
                 <View column>
-                  <Tag icon="report" type="borderLight" placeholder={`${reportTimeLeft}h`} />
-                  <Tag icon="dollar" type="fill" placeholder={earnings} spacing={{ mt: 2 }} />
+                  <Tag icon="report" type="borderLight" placeholder="10h" />
+                  <Tag icon="dollar" type="fill" placeholder={price} spacing={{ mt: 2 }} />
                 </View>
               </View>
             </SwipeRow>

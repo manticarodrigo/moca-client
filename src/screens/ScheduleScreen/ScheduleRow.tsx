@@ -1,25 +1,57 @@
 import React, { useMemo } from 'react';
-import { format, isToday } from 'date-fns';
+import { format, isToday, isAfter, differenceInMinutes } from 'date-fns';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-const ScheduleRow = ({ date, item, onPressDate }) => {
-  const { isDateToday, month, dayOfWeek } = useMemo(() => ({
-    isDateToday: isToday(date.timestamp),
-    month: format(date.timestamp, 'MMM'),
-    dayOfWeek: format(date.timestamp, 'cccc'),
-  }), [date]);
+import { ScheduleItem } from './ScheduleScreen';
 
-  const {
-    completedDocuments = '0',
-    documents = '0',
-    completedAppointments = '0',
-    appointments = '0',
-    timeSpent = '0',
-    earnings = '0',
-  } = useMemo(() => ({ ...item }), [item]);
+type Props = {
+  item: ScheduleItem;
+  onPressDate: () => void;
+}
+
+const nowDate = new Date();
+
+const ScheduleRow = ({ item, onPressDate }: Props) => {
+  const { date, appointments } = item;
+
+  const { isDateToday, day, month, year, dayOfWeek } = useMemo(() => {
+    const dateObj = new Date(date);
+
+    return {
+      isDateToday: isToday(dateObj),
+      day: format(dateObj, 'd'),
+      month: format(dateObj, 'MMM'),
+      year: format(dateObj, 'yyyy'),
+      dayOfWeek: format(dateObj, 'cccc'),
+    };
+  }, [date]);
+
+  const { total, completed, completedDocs, totalDocs, totalTime, earnings } = useMemo(() => {
+    const data = {
+      total: 0,
+      completed: 0,
+      completedDocs: 0,
+      totalDocs: 0,
+      totalTime: 0,
+      earnings: 0,
+    };
+
+    appointments.forEach((appointment) => {
+      const { startTime, endTime } = appointment;
+
+      data.total += 1;
+      data.totalTime += differenceInMinutes(new Date(endTime), new Date(startTime));
+      data.earnings += appointment.price;
+
+      if (isAfter(new Date(endTime), nowDate)) {
+        data.completed += 1;
+      }
+    });
+    return data;
+  }, [appointments]);
 
   if (!date) return null;
 
@@ -32,9 +64,9 @@ const ScheduleRow = ({ date, item, onPressDate }) => {
       onPress={onPressDate}
     >
       <View column>
-        <View row>
+        <View row alignCenter>
           <Text variant={isDateToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>
-            {date.day}
+            {day}
           </Text>
           <View column spacing={{ ml: 2 }}>
             <Text
@@ -45,7 +77,7 @@ const ScheduleRow = ({ date, item, onPressDate }) => {
             <Text
               variant={isDateToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}
             >
-              {date.year}
+              {year}
             </Text>
           </View>
         </View>
@@ -61,19 +93,19 @@ const ScheduleRow = ({ date, item, onPressDate }) => {
           <Tag
             icon="report"
             type="borderLight"
-            placeholder={`${completedDocuments}/${documents}`}
+            placeholder={`${completedDocs}/${totalDocs}`}
             spacing={{ ml: 2 }}
           />
           <Tag
             icon="appointment"
             type="fill"
-            placeholder={`${completedAppointments}/${appointments}`}
+            placeholder={`${completed}/${total}`}
             spacing={{ ml: 2 }}
           />
         </View>
 
         <View row flex={1} justifyEnd>
-          <Tag icon="clock" type="border" placeholder={timeSpent} spacing={{ ml: 2 }} />
+          <Tag icon="clock" type="border" placeholder={totalTime} spacing={{ ml: 2 }} />
           <Tag icon="dollar" type="fill" placeholder={earnings} spacing={{ ml: 2 }} />
         </View>
       </View>
