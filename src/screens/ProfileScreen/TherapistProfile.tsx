@@ -17,7 +17,6 @@ import {
   InterestIcon,
   RateIcon,
   StatusIcon,
-  SwitchIcon,
 } from '@src/components/icons';
 
 import useStore from '@src/hooks/useStore';
@@ -28,6 +27,7 @@ import ReviewsModal from '@src/modals/ReviewsModal';
 
 import Text from '@src/components/Text';
 import View from '@src/components/View';
+import Toggle from '@src/components/Toggle';
 import GenderToggle from '@src/components/GenderToggle';
 import DatePicker from '@src/components/DatePicker';
 
@@ -39,17 +39,16 @@ type TherapistProfileProps = {
   modal?: boolean;
 };
 
+type UniqueInputModalProps = Omit<InputModalProps, 'visible' | 'onClose'>;
 
 const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const { store: { user }, dispatch } = useStore();
   const userInfo = !modal ? user : therapist;
 
   // const { viewer, onPressImage } = useImageViewer(userInfo.certifications);
-  const [isAvailable, setAvailable] = useState(userInfo.status ? userInfo.status === 'A' : false);
-
 
   const [priceModalProps, setPriceModalProps] = useState(null);
-  const [inputModalProps, setInputModalProps] = useState<Omit<InputModalProps, 'visible' | 'onClose'>>(null);
+  const [inputModalProps, setInputModalProps] = useState<UniqueInputModalProps>(null);
 
   const [modals, setModals] = useState({
     isQualificationModalVisible: false,
@@ -58,7 +57,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
   const onCloseModal = (key: string) => () => setModals({ ...modals, [key]: false });
 
-  const onPressGender = (type: UserGenderEnum) => async () => {
+  const onChangeGender = async (type: UserGenderEnum) => {
     try {
       await dispatch(updateUser({ gender: type }));
     } catch (error) {
@@ -66,18 +65,16 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     }
   };
 
-  const pressStatus = async () => {
-    if (isAvailable) {
+  const onToggleStatus = async (isAvailable) => {
+    if (!isAvailable) {
       try {
         await dispatch(updateUser({ status: TherapistStatusEnum.B }));
-        setAvailable(false);
       } catch (error) {
         // console.log(error);
       }
     } else {
       try {
         await dispatch(updateUser({ status: TherapistStatusEnum.A }));
-        setAvailable(true);
       } catch (error) {
         // console.log(error);
       }
@@ -164,16 +161,12 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'Status',
                     icon: StatusIcon,
                     content: (
-                      <View row justifyCenter>
-                        <View justifyCenter>
-                          {isAvailable ? (
-                            <Text spacing={{ mr: 2 }} variant="regularSmallSuccess">Available</Text>
-                          ) : (
-                            <Text spacing={{ mr: 2 }} variant="regularSmallGrey">Unavailable</Text>
-                          )}
-                        </View>
-                        <View onPress={pressStatus}><SwitchIcon isOn={isAvailable} /></View>
-                      </View>
+                      <Toggle
+                        onLabel="Available"
+                        offLabel="Unavailable"
+                        existingValue={userInfo.status === 'A'}
+                        onToggle={onToggleStatus}
+                      />
                     ),
                   },
                   {
@@ -196,17 +189,11 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                   {
                     title: 'Gender',
                     icon: GenderIcon,
-                    content: modal ? (
-                      <View alignCenter>
-                        <Text variant="boldPrimary" spacing={{ mr: 2 }}>
-                          {userInfo.gender || 'N/A'}
-                        </Text>
-                      </View>
-                    ) : (
+                    content: (
                       <GenderToggle
                         readonly={!!modal}
                         existingValue={userInfo.gender}
-                        onToggle={onPressGender}
+                        onToggle={onChangeGender}
                       />
                     ),
                   },
@@ -232,7 +219,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'License Number',
                     icon: Badge2Icon,
                     content: userInfo.licenseNumber || (modal ? 'N/A' : 'Set License Number'),
-                    onPress: () => !modal && setInputModalProps({
+                    onPress: () => (!modal && !userInfo.licenseNumber) && setInputModalProps({
                       title: 'License Number',
                       existingValue: userInfo.licenseNumber || '',
                       placeholder: 'License number',

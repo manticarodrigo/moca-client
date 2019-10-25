@@ -29,7 +29,7 @@ const GenderToggle = ({ readonly, existingValue, onToggle }) => {
     return (
       <View alignCenter>
         <Text variant="boldDark">
-          {gender}
+          {existingValue || 'N/A'}
         </Text>
       </View>
     );

@@ -48,6 +48,7 @@ export const regularSmallestPrimary = { ...Typography.getStyles({ size: 0, weigh
 export const regularPrimary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) };
 export const regularSecondary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) };
 export const regularGrey = { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) };
+export const regularSmallSemiGreyLighter = { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGreyLighter' }) };
 export const light = { ...Typography.getStyles({ size: 2, weight: '300', color: 'semiGrey' }) };
 export const lightPrimarySmallest = { ...Typography.getStyles({ size: 0, weight: '300', color: 'primary' }) };
 export const lightSecondarySmallest = { ...Typography.getStyles({ size: 0, weight: '300', color: 'secondary' }) };
