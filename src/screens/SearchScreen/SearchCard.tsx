@@ -10,7 +10,7 @@ import Text from '@src/components/Text';
 import Rating from '@src/components/Rating';
 import Button from '@src/components/Button';
 
-const sessions = { thirty: '30', fortyfive: '45', sixty: '60' };
+const sessions = { thirty: '30', fourtyfive: '45', sixty: '60' };
 
 type Props = TherapistSearch & {
   onPressTherapist: (userId: number) => void;

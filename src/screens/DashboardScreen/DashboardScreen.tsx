@@ -32,10 +32,10 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
   const isTherapist = store.user.type === 'PT';
 
   useEffect(() => {
-    if (store.user.id) {
+    if (isFocused && store.user.id) {
       dispatch(getAppointments());
     }
-  }, [store.user, isFocused, dispatch]);
+  }, [isFocused]);
 
   const onPressSearch = () => navigation.push('SearchScreen');
 

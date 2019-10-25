@@ -2,7 +2,7 @@ import storage from '@src/services/storage';
 
 import { UserAction } from '@src/store/actions/UserAction';
 
-import { User, Patient, Therapist, Price, Payment as BadPayment } from '@src/services/openapi';
+import { User, Patient, Therapist, Payment as BadPayment } from '@src/services/openapi';
 import { BrandType } from '@src/services/stripe';
 
 export type Card = {
@@ -32,13 +32,24 @@ export type UserState = &
   email?: string;
   type?: 'PT' | 'PA';
   gender?: 'M' | 'F';
-  prices?: Price[];
   payments?: Payment[];
   storageReady?: boolean;
 }
 
 function appendItem(key: keyof UserState, state, payload) {
   return { ...state, [key]: [...state[key], payload] };
+}
+
+function updateItem(key: keyof UserState, state, payload) {
+  const index = state[key].findIndex((val) => val.id === payload.id);
+
+  if (index === -1) {
+    return state;
+  }
+
+  state[key][index] = payload;
+
+  return state;
 }
 
 const reducer = (state: UserState, action: UserAction): UserState => {
@@ -53,6 +64,9 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       break;
     case 'ADD_USER_ADDRESS_SUCCESS':
       newState = appendItem('addresses', state, action.payload);
+      break;
+    case 'UPDATE_USER_ADDRESS_SUCCESS':
+      newState = updateItem('addresses', state, action.payload);
       break;
     case 'ADD_PAYMENT_SUCCESS':
       newState = appendItem('payments', state, action.payload);

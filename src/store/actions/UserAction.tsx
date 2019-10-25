@@ -5,7 +5,7 @@ import api from '@src/services/api';
 import { StoreState } from '@src/StoreProvider';
 import { UserState } from '@src/store/reducers/UserReducer';
 
-import { User, Address, Price, Payment } from '@src/services/openapi';
+import { User, Address, Price, Payment, PriceSessionTypeEnum } from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'LOGOUT_USER' }
@@ -14,6 +14,7 @@ export type UserAction =
   | { type: 'LOGIN_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'ADD_USER_ADDRESS_SUCCESS'; payload: Address }
+  | { type: 'UPDATE_USER_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'ADD_PRICE_SUCCESS'; payload: Price }
   | { type: 'ADD_PAYMENT_SUCCESS'; payload: Payment }
 
@@ -34,6 +35,7 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
 
   const { data } = await registerMethod({ user: { email, password, firstName, lastName } });
 
+  // @ts-ignore
   dispatch({ type: 'REGISTER_USER_SUCCESS', payload: data });
 
   return data;
@@ -42,22 +44,7 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
 const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
   const { data } = await api.auth.authenticateLoginCreate({ email, password });
 
-  // @ts-ignore
-  const getProfileMethod = data.type === 'PA'
-    ? api.user.userPatientRead
-    : api.user.userTherapistRead_9;
-
-  // @ts-ignore
-  const options = { headers: { Authorization: `Token ${data.token}` } };
-  // @ts-ignore
-  const profileResponse = await getProfileMethod(data.id, options);
-
-  // @ts-ignore
-  const user = { ...profileResponse.data, token: data.token };
-
-  dispatch({ type: 'LOGIN_USER_SUCCESS', payload: user });
-
-  return user;
+  dispatch({ type: 'LOGIN_USER_SUCCESS', payload: data });
 };
 
 
@@ -114,18 +101,28 @@ const addUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
   return data;
 };
 
+const updateUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
+  dispatch: Dispatch<UserAction>,
+  store: StoreState,
+) => {
+  const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
 
-const addPrice = (sessionType: string, price: string) => async (
+  const options = { headers: { Authorization: `Token ${store.user.token}` } };
+
+  const { data } = await api.address.addressPartialUpdate(address.id.toString(), body, options);
+
+  dispatch({ type: 'UPDATE_USER_ADDRESS_SUCCESS', payload: data });
+
+  return data;
+};
+
+const addPrice = (sessionType: PriceSessionTypeEnum, price: number) => async (
   dispatch: Dispatch<UserAction>, store: StoreState,
 ) => {
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
-  const body = { sessionType, price: Number(price) };
+  const body = { sessionType, price };
 
-  const { data } = await api.user.userTherapistTariffsCreate(
-    store.user.id.toString(),
-    body,
-    options,
-  );
+  const { data } = await api.user.userTherapistPricesCreate(body, options);
 
   dispatch({ type: 'ADD_PRICE_SUCCESS', payload: data });
 };
@@ -157,6 +154,7 @@ export {
   loginUser,
   updateUser,
   addUserAddress,
+  updateUserAddress,
   addPrice,
   addPayment,
   setAwayDates,

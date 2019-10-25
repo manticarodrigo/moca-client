@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
+import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 import { format, addDays, subDays, startOfWeek } from 'date-fns';
 
@@ -36,10 +37,10 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
   const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
   useEffect(() => {
-    if (store.user.id) {
+    if (isFocused && store.user.id) {
       dispatch(getAppointments());
     }
-  }, [store.user, isFocused, dispatch]);
+  }, [isFocused]);
 
   useEffect(() => {
     const itemMap: { [key: string]: ScheduleItem } = {};
@@ -140,4 +141,4 @@ ScheduleScreen.navigationOptions = ({ navigation }) => {
   };
 };
 
-export default ScheduleScreen;
+export default withNavigationFocus(ScheduleScreen);

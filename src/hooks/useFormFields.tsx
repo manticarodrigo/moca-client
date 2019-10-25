@@ -22,7 +22,10 @@ const useFormFields = <Fields extends object> (initialState) => {
     (prev) => ({ ...prev, ...values }),
   );
 
-  const onChangeField = (key: keyof Fields) => (value: string | boolean, error?: string) => {
+  const onChangeField = (key: keyof Fields) => (
+    value: string | boolean,
+    error?: string,
+  ) => {
     setFormFields({ ...formFields, [key]: value });
 
     if (error) {

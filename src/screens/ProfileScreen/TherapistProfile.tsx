@@ -5,7 +5,10 @@ import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 
 import { updateUser, addPrice } from '@src/store/actions/UserAction';
 import { UserState } from '@src/store/reducers/UserReducer';
-import { UserGenderEnum, TherapistStatusEnum } from '@src/services/openapi';
+import { UserGenderEnum, TherapistStatusEnum, PriceSessionTypeEnum } from '@src/services/openapi';
+
+import useStore from '@src/hooks/useStore';
+import useNavigation from '@src/hooks/useNavigation';
 
 import {
   RadiusLocationIcon,
@@ -18,8 +21,6 @@ import {
   RateIcon,
   StatusIcon,
 } from '@src/components/icons';
-
-import useStore from '@src/hooks/useStore';
 
 import InputModal, { Props as InputModalProps } from '@src/modals/InputModal';
 import QualificationsModal from '@src/modals/QualificationsModal';
@@ -43,6 +44,8 @@ type UniqueInputModalProps = Omit<InputModalProps, 'visible' | 'onClose'>;
 
 const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
   const { store: { user }, dispatch } = useStore();
+  const navigation = useNavigation();
+
   const userInfo = !modal ? user : therapist;
 
   // const { viewer, onPressImage } = useImageViewer(userInfo.certifications);
@@ -81,8 +84,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     }
   };
 
-  const onSubmitPriceModal = async (sessionType: string, price: string) => {
+  const onSubmitPriceModal = async (sessionType: PriceSessionTypeEnum, price: number) => {
     await dispatch(addPrice(sessionType, price));
+
     setPriceModalProps(null);
   };
 
@@ -94,6 +98,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
     } catch (error) {
       // console.log(error);
     }
+  };
+
+  const onPressAdress = () => {
+    navigation.navigate('AddressSettingsScreen');
   };
 
   return (
@@ -133,6 +141,12 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 readonly={!!modal}
                 rows={[
                   {
+                    title: 'Address',
+                    icon: RadiusLocationIcon,
+                    content: <ArrowRightIcon />,
+                    onPress: onPressAdress,
+                  },
+                  {
                     hideOnReadonly: true,
                     title: 'Service Area',
                     icon: RadiusLocationIcon,
@@ -148,7 +162,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     ),
                     onPress: () => !modal && setInputModalProps({
                       title: 'Service Area',
-                      existingValue: userInfo.operationRadius.toString() || '',
+                      existingValue: userInfo.operationRadius || '',
                       placeholder: 'Radius (mi)',
                       keyboardType: 'number-pad',
                       validation: 'number',
@@ -219,7 +233,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'License Number',
                     icon: Badge2Icon,
                     content: userInfo.licenseNumber || (modal ? 'N/A' : 'Set License Number'),
-                    onPress: () => (!modal && !userInfo.licenseNumber) && setInputModalProps({
+                    onPress: () => (!modal) && setInputModalProps({
                       title: 'License Number',
                       existingValue: userInfo.licenseNumber || '',
                       placeholder: 'License number',

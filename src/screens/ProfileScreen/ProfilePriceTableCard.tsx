@@ -8,11 +8,11 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import InputModal from '@src/modals/InputModal';
 
-const sessions = { thirty: '30', fortyfive: '45', sixty: '60' };
+const sessions = { thirty: '30', fourtyfive: '45', sixty: '60' };
 
 const sessionLabels = {
   thirty: '30min',
-  fortyfive: '45min',
+  fourtyfive: '45min',
   sixty: '60min',
   evaluation: 'Evaluation',
 };
@@ -57,18 +57,20 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
           <Text variant="boldDark">Price Rate</Text>
         </View>
         <View row width="100%" justifyBetween variant="borderBottom">
-          <>
-            {Object.entries(sessions).map(([key, duration]) => {
+          <View row width="100%" spacing={{ pr: 3 }}>
+            {Object.entries(sessions).map(([key, duration], index) => {
               const { price = 0 } = store.user.prices.find(
                 ({ sessionType }) => sessionType === key,
               ) || {};
+
+              const isLast = index === Object.keys(sessions).length - 1;
 
               return (
                 <View
                   key={key}
                   flex={1}
                   spacing={{ mb: 3 }}
-                  variant="borderRight"
+                  variant={!isLast ? 'borderRight' : null}
                 >
                   <View alignCenter>
                     <Text variant="regularSmallGrey">
@@ -87,7 +89,7 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
                 </View>
               );
             })}
-          </>
+          </View>
         </View>
         <View row justifyBetween alignCenter spacing={{ py: 3, pr: 5 }}>
           <Text variant="regularSmallGrey">First time evaluation price</Text>
@@ -96,7 +98,7 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
             onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}
           >
             <Text variant="titleSecondaryLarge">
-              {evaluationTariff.price || status}
+              {`$${evaluationTariff.price}` || status}
             </Text>
           </View>
         </View>

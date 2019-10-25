@@ -35,7 +35,7 @@ export const checkboxConfig = {
     title: 'Session Length',
     items: {
       thirty: { title: '30 min' },
-      fortyfive: { title: '45 min' },
+      fourtyfive: { title: '45 min' },
       sixty: { title: '60 min' },
     },
   },

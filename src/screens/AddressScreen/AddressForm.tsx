@@ -26,7 +26,6 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
 
   const {
     formFields,
-    isAnyFieldEmpty,
     isFormValid,
     setFieldRef,
     updateFormFields,
@@ -50,10 +49,6 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
   }, [existingFields]);
 
   const handleSubmit = () => {
-    if (isAnyFieldEmpty) {
-      return;
-    }
-
     // TODO: validate reverse geocode
     if (isFormValid) {
       onSubmit(formFields);

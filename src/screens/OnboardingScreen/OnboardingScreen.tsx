@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { withNavigationFocus } from 'react-navigation';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -38,8 +39,11 @@ const slides = [
   },
 ];
 
+type Props = NavigationStackScreenProps & {
+  isFocused: boolean;
+}
 
-const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
+const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store } = useStore();
   const [isReady, setIsReady] = useState(false);
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
@@ -47,6 +51,8 @@ const OnboardingScreen = ({ navigation }: NavigationStackScreenProps) => {
   const isAuthenticated = useMemo(() => !!(store.user.id && store.user.token), [store.user]);
 
   const onAuthNavigate = useCallback(() => {
+    if (!isFocused) return;
+
     if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
       navigation.navigate('QualificationsScreen');
     } else if (store.user.addresses.length === 0) {
@@ -133,4 +139,4 @@ OnboardingScreen.navigationOptions = {
   header: null,
 };
 
-export default OnboardingScreen;
+export default withNavigationFocus(OnboardingScreen);

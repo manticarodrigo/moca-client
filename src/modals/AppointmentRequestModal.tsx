@@ -4,6 +4,9 @@ import React, { useState, useMemo } from 'react';
 import { Picker } from 'react-native';
 import { format, parseISO, addMinutes } from 'date-fns';
 
+import { PriceSessionTypeEnum } from '@src/services/openapi';
+import { AppointmentRequest } from '@src/store/actions/ConversationAction';
+
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 import { Colors } from '@src/styles';
@@ -14,14 +17,9 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 
-type DateRange = {
-  start_time: Date;
-  end_time: Date;
-}
-
 type Props = {
   visible: boolean;
-  onSubmit: (data: DateRange) => void;
+  onSubmit: (data: AppointmentRequest) => void;
   onClose: () => void;
 };
 
@@ -54,6 +52,12 @@ const durationOptions = [
   { label: '45min', value: 45 },
   { label: '60min', value: 60 },
 ];
+
+const durationType: { [key: number]: PriceSessionTypeEnum } = {
+  30: PriceSessionTypeEnum.Thirty,
+  45: PriceSessionTypeEnum.Fourtyfive,
+  60: PriceSessionTypeEnum.Sixty,
+};
 
 const timeOptions = getTimes();
 
@@ -96,8 +100,9 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
     const localEndDate = addMinutes(localStartDate, selectedDuration);
 
     const data = {
-      start_time: localStartDate,
-      end_time: localEndDate,
+      startTime: localStartDate,
+      endTime: localEndDate,
+      sessionType: durationType[selectedDuration],
     };
 
     onSubmit(data);

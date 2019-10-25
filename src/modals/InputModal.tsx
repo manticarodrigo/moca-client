@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { TextInputProps } from 'react-native';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
@@ -17,7 +17,7 @@ export type Props = TextInputProps & {
   password?: boolean;
   title: string;
   placeholder: string;
-  existingValue: string;
+  existingValue: string | number;
   validation?: FormFieldProps['validation'];
   buttonText?: string;
   buttonActionText?: boolean;
@@ -44,7 +44,13 @@ const InputModal = (
     isAnyFieldEmpty,
     isFormValid,
     onChangeField,
-  } = useFormFields<{ value: string }>({ value: existingValue || '' });
+  } = useFormFields<{ value: string }>({ value: '' });
+
+  useEffect(() => {
+    if (existingValue) {
+      onChangeField('value')(existingValue.toString());
+    }
+  }, [existingValue]);
 
   const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
 
@@ -56,9 +62,14 @@ const InputModal = (
     return buttonText;
   }, [existingValue, buttonText, buttonActionText]);
 
+  const handleClose = () => {
+    onChangeField('value')('');
+    onClose();
+  };
 
   const handleSubmit = () => {
     if (isFormValid) {
+      onChangeField('value')('');
       onSubmit(formFields.value);
     }
   };
@@ -68,7 +79,7 @@ const InputModal = (
       avoidKeyboard
       marginTop={50}
       isVisible={visible}
-      onToggle={onClose}
+      onToggle={handleClose}
     >
       <View alignCenter>
         <View
