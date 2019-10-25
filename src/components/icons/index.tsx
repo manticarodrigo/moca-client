@@ -108,3 +108,6 @@ export { default as MaxPriceIcon } from './MaxPriceIcon';
 export { default as NoConversationsIcon } from './NoConversationsIcon';
 export { default as ScheduleIcon } from './ScheduleIcon';
 export { default as BookmarkBadgeIcon } from './BookmarkBadgeIcon';
+
+export { default as PreviousArrowIcon } from './PreviousArrowIcon';
+export { default as NextArrowIcon } from './NextArrowIcon';

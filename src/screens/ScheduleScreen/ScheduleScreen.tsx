@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
-import { format } from 'date-fns';
+import { format, addDays, subDays, startOfWeek } from 'date-fns';
 
 import useStore from '@src/hooks/useStore';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
@@ -14,6 +14,8 @@ import { Colors, Spacing } from '@src/styles';
 import { ScheduleTabIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
+import Paginator from '@src/components/Paginator';
+
 import SetAwayModal from '@src/modals/SetAwayModal';
 
 import ScheduleRow from './ScheduleRow';
@@ -28,6 +30,8 @@ type Props = NavigationStackScreenProps & { isFocused: boolean }
 
 const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
+
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [items, setItems] = useState<ScheduleItem[]>([]);
   const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
@@ -56,7 +60,6 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
     setItems(Object.values(itemMap).sort((a, b) => a.timestamp - b.timestamp));
   }, [store.appointments]);
 
-
   const onToggleAwayModal = () => setIsAwayModalVisible(!isAwayModalVisible);
 
   useEffect(() => {
@@ -81,6 +84,24 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
 
   const keyExtractor = (item: ScheduleItem) => item.date;
 
+  const { currentStartOfWeek, weekString, totalEarnings } = useMemo(() => {
+    const start = startOfWeek(currentDate);
+    const end = addDays(start, 6);
+
+    const startDayStr = format(start, 'dd');
+    const endDayStr = format(end, 'dd');
+    const endMonthStr = format(end, 'MMM');
+
+    return {
+      currentStartOfWeek: start,
+      weekString: `${startDayStr}-${endDayStr} ${endMonthStr}`,
+      totalEarnings: store.appointments.reduce((acc, { price }) => acc + price, 0),
+    };
+  }, [currentDate, store.appointments]);
+
+  const onPressPrev = () => setCurrentDate(subDays(currentStartOfWeek, 7));
+  const onPressNext = () => setCurrentDate(addDays(currentStartOfWeek, 7));
+
   return (
     <>
       <SetAwayModal
@@ -88,6 +109,12 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
         onToggle={onToggleAwayModal}
         onSubmit={onSubmitAwayDays}
 
+      />
+      <Paginator
+        title={weekString}
+        subtitle={`$${totalEarnings}`}
+        onPressPrev={onPressPrev}
+        onPressNext={onPressNext}
       />
       <FlatList
         style={{ ...Spacing.getStyles({ py: 2 }), backgroundColor: Colors.semiGreyLighter }}

@@ -22,7 +22,7 @@ const ScheduleRow = ({ item, onPressDate }: Props) => {
 
     return {
       isDateToday: isToday(dateObj),
-      day: format(dateObj, 'd'),
+      day: format(dateObj, 'dd'),
       month: format(dateObj, 'MMM'),
       year: format(dateObj, 'yyyy'),
       dayOfWeek: format(dateObj, 'cccc'),
