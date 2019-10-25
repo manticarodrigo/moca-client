@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useState, useMemo, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
@@ -47,11 +48,19 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (filters.maxPrice) {
-      params.maxPrice = filters.maxPrice;
+      params.max_price = filters.maxPrice;
     }
 
     if (filters.ailments.length) {
       params.ailments = filters.ailments;
+    }
+
+    if (filters.sortBy.highestRated) {
+      params.avg_rating = true;
+    }
+
+    if (filters.sortBy.mostReviews) {
+      params.review_count = true;
     }
 
     dispatch(getSearchResults(params));
