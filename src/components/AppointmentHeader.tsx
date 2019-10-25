@@ -14,7 +14,7 @@ type Props = {
 }
 
 const AppointmentHeader = ({ name, appointmentDuration, appointmentPrice }: Props) => (
-  <View row width="100%" variant="borderBottom">
+  <View row width="100%" variant="borderBottom" spacing={{ px: 3 }}>
     <View row spacing={{ m: 3 }} justifyBetween flex={1}>
       <View row justifyCenter>
         <View spacing={{ mr: 2 }}>

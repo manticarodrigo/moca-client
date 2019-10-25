@@ -17,7 +17,9 @@ export type AppointmentState = Appointment[]
 const reducer = (state: AppointmentState, action: AppointmentAction): AppointmentState => {
   switch (action.type) {
     case 'GET_APPOINTMENTS_SUCCESS':
-      return action.payload;
+      return action.payload.sort(
+        (a, b) => new Date(a.startTime).getTime() - new Date(b.endTime).getTime(),
+      );
     default:
       return state;
   }

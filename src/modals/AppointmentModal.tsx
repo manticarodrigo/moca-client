@@ -26,8 +26,8 @@ const AppointmentModal = ({
           name={`${appointment.otherParty.firstName} ${appointment.otherParty.lastName}`}
           appointmentDuration={
             differenceInMinutes(
-              new Date(appointment.startTime),
               new Date(appointment.endTime),
+              new Date(appointment.startTime),
             ).toString()
           }
         />

@@ -23,35 +23,38 @@ import NotificationBadge from './NotificationBadge';
 type AppointmentCardProps = {
   appointment?: Appointment;
   current?: boolean;
+  past?: boolean;
   isTherapist: boolean;
   onPress?: () => void;
-  onPressCancel?: () => void;
+  onPressBtn?: () => void;
 };
 
 const AppointmentCard = ({
   appointment,
   current,
+  past,
   isTherapist,
   onPress,
-  onPressCancel,
+  onPressBtn,
 }: AppointmentCardProps) => {
   const { otherParty, startTime, endTime, price, review, address } = appointment;
 
-  const { canStart, canCancel, duration, time, rating } = useMemo(() => ({
-    canStart: current && isTherapist,
-    canCancel: !current && !isTherapist,
+  const { canStart, canCancel, canEditNote, duration, time, rating } = useMemo(() => ({
+    canStart: !past && current && isTherapist,
+    canCancel: !past && !current && !isTherapist,
+    canEditNote: past && isTherapist,
     duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
     time: format(new Date(startTime), 'MM/dd - hh:mm aaaa'),
     rating: (review || {}).rating || 0,
-  }), [current, isTherapist, startTime, endTime, review]);
+  }), [current, past, isTherapist, startTime, endTime, review]);
 
-  const hasButton = canStart || canCancel;
+  const hasButton = canStart || canCancel || canEditNote;
 
   return (
     <View
       row
       variant={current ? 'borderCard' : 'card'}
-      spacing={{ pb: (!current && isTherapist) && 0 }}
+      spacing={{ pb: (!past && !current && isTherapist) && 0 }}
       bgColor={!current ? 'whiteTranslucent' : null}
       onPress={onPress}
     >
@@ -73,8 +76,13 @@ const AppointmentCard = ({
             </Text>
           </View>
         </View>
-        <View row justifyEnd={isTherapist} justifyBetween={!isTherapist} spacing={{ py: 1 }}>
-          {!isTherapist && <Rating rating={rating} />}
+        <View
+          row
+          justifyEnd={isTherapist || !rating}
+          justifyBetween={!!(!isTherapist && rating)}
+          spacing={{ py: 1 }}
+        >
+          {!!(!isTherapist && rating) && <Rating rating={rating} />}
           <Text variant="titlePrimaryLarge">
             {`$${price}`}
           </Text>
@@ -107,10 +115,11 @@ const AppointmentCard = ({
             variant="secondary"
             spacing={{ mt: 3 }}
             bgColor={canCancel ? 'white' : null}
-            onPress={onPressCancel}
+            onPress={onPressBtn}
           >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
+            {canEditNote && 'Edit Note'}
           </Button>
         )}
       </View>

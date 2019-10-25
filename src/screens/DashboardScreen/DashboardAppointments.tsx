@@ -49,6 +49,7 @@ const DashboardAppointments = ({ isTherapist, onPressAppointment, onPressCancel 
             appointment={current}
             isTherapist={isTherapist}
             onPress={onPressAppointment}
+            onPressBtn={onPressAppointment}
           />
         </View>
       )}
@@ -59,7 +60,7 @@ const DashboardAppointments = ({ isTherapist, onPressAppointment, onPressCancel 
           <AppointmentCard
             appointment={next}
             isTherapist={isTherapist}
-            onPressCancel={onPressCancel}
+            onPressBtn={onPressCancel}
           />
         </View>
       )}

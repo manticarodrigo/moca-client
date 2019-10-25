@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
+import { format, isAfter } from 'date-fns';
 
 import useStore from '@src/hooks/useStore';
 import useProfileStatus from '@src/hooks/useProfileStatus';
@@ -16,6 +17,7 @@ type Props = { isActivated: boolean }
 
 const DashboardLinks = ({ isActivated }: Props) => {
   const { store } = useStore();
+
   const navigation = useNavigation();
   const profilePercent = useProfileStatus(store.user);
 
@@ -38,11 +40,25 @@ const DashboardLinks = ({ isActivated }: Props) => {
     };
   }, [profilePercent]);
 
-  const latestConversation = useMemo(() => {
+  const lastConversation = useMemo(() => {
     const conversations = store.conversations.list;
 
-    return conversations.find(({ lastMessage }) => lastMessage.type === 'text');
+    if (!conversations.length) return undefined;
+
+    return conversations[0];
   }, [store.conversations.list]);
+
+  const lastAppointmentStr = useMemo(() => {
+    const last = store.appointments.reverse().find(
+      ({ endTime }) => isAfter(new Date(endTime), new Date()),
+    );
+
+    if (!last) return undefined;
+
+    const { otherParty, endTime } = last;
+
+    return `${otherParty.firstName} ${otherParty.lastName} / ${format(new Date(endTime), 'cccc')}`;
+  }, [store.appointments]);
 
   const onPressLink = (screen: string) => () => navigation.navigate(screen);
 
@@ -94,15 +110,15 @@ const DashboardLinks = ({ isActivated }: Props) => {
           onPress={onPressLink('ConversationListScreen')}
         >
           <>
-            {latestConversation ? (
+            {lastConversation ? (
               <>
                 <Text variant="regularSmallDark">
-                  {latestConversation.user.firstName}
+                  {lastConversation.user.firstName}
                   {' '}
-                  {latestConversation.user.lastName}
+                  {lastConversation.user.lastName}
                 </Text>
                 <Text variant="light" numberOfLines={1}>
-                  {latestConversation.lastMessage.content.text}
+                  {lastConversation.lastMessage.content.text || 'Appointment Request'}
                 </Text>
                 <NotificationBadge large />
               </>
@@ -115,14 +131,16 @@ const DashboardLinks = ({ isActivated }: Props) => {
         </LinkCard>
       )}
 
-      {/* {isActivated && (
+      {(isActivated && lastAppointmentStr) && (
         <LinkCard type="history" spacing={{ mb: 2 }} onPress={onPressLink('HistoryScreen')}>
           <Text>
             <Text variant="regularSmallGrey">Last: </Text>
-            <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
+            <Text variant="boldSmallGrey">
+              {lastAppointmentStr}
+            </Text>
           </Text>
         </LinkCard>
-      )} */}
+      )}
 
       {(!isTherapist || isActivated) && <View variant="bottomBounceFill" bgColor="lightGrey" />}
 

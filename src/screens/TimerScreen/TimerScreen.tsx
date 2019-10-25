@@ -19,7 +19,6 @@ const TimerScreen = ({ isTherapist, submitSessionEnded }) => {
   const minutesFormated = minutes.toString().length === 1 ? `0${minutes}` : minutes;
   const secondsFormated = seconds.toString().length === 1 ? `0${seconds}` : seconds;
 
-
   const handleStartTimer = () => {
     setIsTimeStarted(true);
     const interval = setInterval(() => {
@@ -58,7 +57,7 @@ const TimerScreen = ({ isTherapist, submitSessionEnded }) => {
             variant={isTimeStarted ? 'titleWhite' : 'titleSecondaryLight'}
             typography={{ size: 2 }}
           >
-            original time
+            Original Time
           </Text>
           <View row>
             <Text
