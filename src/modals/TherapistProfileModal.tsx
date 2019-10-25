@@ -26,7 +26,7 @@ const TherapistProfileModal = ({ therapistId, visible, onPressMessage, onClose }
 
     const fetchTherapist = async () => {
       const options = { headers: { Authorization: `Token ${store.user.token}` } };
-      const { data } = await api.user.userTherapistRead_9(therapistId, options);
+      const { data } = await api.user.userTherapistRead_20(therapistId, options);
 
       setTherapist(data);
     };

@@ -15,7 +15,7 @@ export type Message = Omit<BadMessage, 'image' | 'content'> & {
     startTime?: string;
     endTime?: string;
     price?: number;
-    status?: 'pending' | 'accepted' | 'rejected';
+    status?: 'pending' | 'accepted' | 'rejected' | 'cancelled';
     image?: string;
     address?: Address;
   };

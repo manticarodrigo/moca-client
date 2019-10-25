@@ -135,6 +135,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
             <View flex={1}>
               <ProfilePriceTableCard
                 readonly={!!modal}
+                existing={userInfo.prices}
                 onOpenPriceModal={setPriceModalProps}
               />
               <ProfileListCard

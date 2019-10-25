@@ -33,10 +33,12 @@ export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmi
   />
 );
 
-const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
+const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
   const { store } = useStore();
 
-  const evaluationTariff = store.user.prices.find(
+  const prices = existing || store.user.prices;
+
+  const evaluationTariff = prices.find(
     ({ sessionType }) => sessionType === 'evaluation',
   ) || { price: 0 };
 
@@ -59,7 +61,7 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
         <View row width="100%" justifyBetween variant="borderBottom">
           <View row width="100%" spacing={{ pr: 3 }}>
             {Object.entries(sessions).map(([key, duration], index) => {
-              const { price = 0 } = store.user.prices.find(
+              const { price = 0 } = prices.find(
                 ({ sessionType }) => sessionType === key,
               ) || {};
 

@@ -21,7 +21,7 @@ const getAppointments = () => async (
   dispatch({ type: 'GET_APPOINTMENTS_SUCCESS', payload: data });
 };
 
-const answerAppointmentRequest = (id: string, status: 'accept' | 'reject') => async (
+const answerAppointmentRequest = (id: string, status: 'accept' | 'reject' | 'cancel') => async (
   dispatch: Dispatch<AppointmentAction>,
   store,
 ) => {
