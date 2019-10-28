@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FlatList } from 'react-native';
+import { StatusBar, FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { format, addMinutes, differenceInMinutes } from 'date-fns';
 
@@ -17,15 +17,15 @@ import Image from '@src/components/Image';
 import Tag from '@src/components/Tag';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
-import { ScheduleItem } from '@src/screens/ScheduleScreen/ScheduleScreen';
+import { ListItem } from '@src/screens/ScheduleScreen/ScheduleScreen';
 
 const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
 
-  const scheduleItem: ScheduleItem = navigation.getParam('scheduleItem', {});
+  const scheduleItem: ListItem = navigation.getParam('scheduleItem', {});
 
   useEffect(() => {
-    const dateObj = new Date(scheduleItem.date);
+    const dateObj = new Date(scheduleItem.timestamp);
 
     const dayOfMonth = format(dateObj, 'dd');
     const monthAndYear = format(dateObj, 'MMM yyyy');
@@ -40,55 +40,58 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   ), [scheduleItem.appointments]);
 
   return (
-    <View safeArea flex={1} width="100%">
-      <FlatList
-        data={sortedData}
-        keyExtractor={({ id }) => id.toString()}
-        renderItem={({ item }) => {
-          const { otherParty, startTime, endTime, price } = item;
-
-          const duration = differenceInMinutes(new Date(endTime), new Date(startTime));
-          const startFormatted = format(new Date(startTime), 'hh:mm aaaa');
-          const endFormatted = format(addMinutes(new Date(startTime), duration), 'hh:mm aaaa');
-
-          return (
-            <SwipeRow disabled={false} onPress={() => null}>
-              <BinRow onPress={() => setCancelModalVisible(true)} />
-              <View
-                row
-                justifyBetween
-                alignCenter
-                spacing={{ p: 3 }}
-                variant="borderBottom"
-                bgColor="white"
-              >
-                <View row>
-                  <ScheduleSectionIcon />
-                  <View column justifyBetween spacing={{ ml: 2 }}>
-                    <Text variant="regularSecondary">{startFormatted}</Text>
-                    <Text variant="regularSecondary">{endFormatted}</Text>
-                  </View>
-                  <View row alignCenter spacing={{ ml: 2 }}>
-                    <Image rounded size={36} uri={mockImg} />
-                    <Text variant="titleSmallDark" spacing={{ ml: 2 }}>
-                      {`${otherParty.firstName} ${otherParty.lastName}`}
-                    </Text>
-                  </View>
-                </View>
-                <View column>
-                  <Tag icon="report" type="borderLight" placeholder="10h" />
-                  <Tag icon="dollar" type="fill" placeholder={price} spacing={{ mt: 2 }} />
-                </View>
-              </View>
-            </SwipeRow>
-          );
-        }}
-      />
+    <>
+      <StatusBar barStyle="dark-content" />
       <CancellationModal
         visible={cancelModalVisible}
         onToggle={() => setCancelModalVisible(false)}
       />
-    </View>
+      <View safeArea flex={1} width="100%">
+        <FlatList
+          data={sortedData}
+          keyExtractor={({ id }) => id.toString()}
+          renderItem={({ item }) => {
+            const { otherParty, startTime, endTime, price } = item;
+
+            const duration = differenceInMinutes(new Date(endTime), new Date(startTime));
+            const startFormatted = format(new Date(startTime), 'hh:mm aaaa');
+            const endFormatted = format(addMinutes(new Date(startTime), duration), 'hh:mm aaaa');
+
+            return (
+              <SwipeRow disabled={false} onPress={() => null}>
+                <BinRow onPress={() => setCancelModalVisible(true)} />
+                <View
+                  row
+                  justifyBetween
+                  alignCenter
+                  spacing={{ p: 3 }}
+                  variant="borderBottom"
+                  bgColor="white"
+                >
+                  <View row>
+                    <ScheduleSectionIcon />
+                    <View column justifyBetween spacing={{ ml: 2 }}>
+                      <Text variant="regularSecondary">{startFormatted}</Text>
+                      <Text variant="regularSecondary">{endFormatted}</Text>
+                    </View>
+                    <View row alignCenter spacing={{ ml: 2 }}>
+                      <Image rounded size={36} uri={mockImg} />
+                      <Text variant="titleSmallDark" spacing={{ ml: 2 }}>
+                        {`${otherParty.firstName} ${otherParty.lastName}`}
+                      </Text>
+                    </View>
+                  </View>
+                  <View column>
+                    <Tag icon="report" type="borderLight" placeholder="10h" />
+                    <Tag icon="dollar" type="fill" placeholder={price} spacing={{ mt: 2 }} />
+                  </View>
+                </View>
+              </SwipeRow>
+            );
+          }}
+        />
+      </View>
+    </>
   );
 };
 

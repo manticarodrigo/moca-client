@@ -133,13 +133,13 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       {viewer}
+      <StatusBar barStyle="dark-content" />
       <AppointmentRequestModal
         visible={appointmentModalVisible}
         onSubmit={onSubmitAppointment}
         onClose={onToggleAppointmentModal}
       />
       <View safeArea column flex={1} bgColor="white">
-        <StatusBar barStyle="dark-content" />
         <ConversationSectionList
           inverted
           ref={setRef}

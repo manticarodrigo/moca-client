@@ -96,12 +96,23 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
   const onDayPress = ({ dateString }) => setSelectedDate(dateString);
 
   const onPressSubmit = () => {
-    const localStartDate = new Date(`${selectedDate}T${selectedTime}:00`);
+    const [year, month, date] = selectedDate.split('-');
+    const [hours, minutes] = selectedTime.split(':');
+
+    // create a date reflecting the value of date and the environment's timezone offset.
+    const localStartDate = new Date(
+      parseInt(year),
+      parseInt(month) - 1,
+      parseInt(date),
+      parseInt(hours),
+      parseInt(minutes),
+    );
+
     const localEndDate = addMinutes(localStartDate, selectedDuration);
 
     const data = {
-      startTime: localStartDate,
-      endTime: localEndDate,
+      startTime: localStartDate.toISOString(),
+      endTime: localEndDate.toISOString(),
       sessionType: durationType[selectedDuration],
     };
 

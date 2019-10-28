@@ -13,8 +13,8 @@ export type ConversationAction =
   | { type: 'SEND_MESSAGE_SUCCESS'; payload: { data: Message; userId: string } }
 
 export type AppointmentRequest = {
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   sessionType: PriceSessionTypeEnum;
 }
 

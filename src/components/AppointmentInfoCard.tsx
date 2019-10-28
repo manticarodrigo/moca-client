@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { format, differenceInMinutes } from 'date-fns';
+import { format, differenceInMinutes, parseISO } from 'date-fns';
 
 import { mockImg } from '@src/services/mock';
 
@@ -21,14 +21,14 @@ type Props = {
   otherUser: UserSnippet;
 }
 
-const AppointmentRequestCard = ({ message, otherUser = {} }: Props) => {
+const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
   const { store } = useStore();
 
   const { endTime, price, startTime, address } = message.content;
 
   const { duration, time } = useMemo(() => ({
     duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
-    time: format(new Date(startTime), 'MM/dd - hh:mm aaaa'),
+    time: format(new Date(parseISO(startTime)), 'MM/dd - hh:mm aaaa'),
   }), [startTime, endTime]);
 
   const onPressLocation = () => {
@@ -86,4 +86,4 @@ const AppointmentRequestCard = ({ message, otherUser = {} }: Props) => {
   );
 };
 
-export default AppointmentRequestCard;
+export default AppointmentInfoCard;

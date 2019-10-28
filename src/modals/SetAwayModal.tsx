@@ -22,19 +22,16 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
   const [startDay, setStartDay] = useState('');
   const [endDay, setEndDay] = useState('');
 
-  const changeToDate = (date: string) => new Date(parseISO(date));
-
-
   const markedDates = useMemo(() => {
     let daysInRange = 0;
 
     const datesMap = {};
 
     if (startDay && endDay) {
-      daysInRange = differenceInDays(changeToDate(endDay), changeToDate(startDay)) + 1;
+      daysInRange = differenceInDays(parseISO(endDay), parseISO(startDay)) + 1;
 
       [...Array(daysInRange)].forEach((el, i) => {
-        const date = format(addDays(changeToDate(startDay), i), 'yyyy-MM-dd');
+        const date = format(addDays(parseISO(startDay), i), 'yyyy-MM-dd');
 
         const isFirst = i === 0;
         const isLast = i === daysInRange - 1;
@@ -47,7 +44,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
         };
       });
     } else if (startDay) {
-      const date = format(changeToDate(startDay), 'yyyy-MM-dd');
+      const date = format(parseISO(startDay), 'yyyy-MM-dd');
 
       datesMap[date] = {
         startingDay: true,
@@ -67,7 +64,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
       setStartDay(dateString);
     }
     if (!endDay && startDay) {
-      if (differenceInDays(changeToDate(dateString), changeToDate(startDay)) <= 0) {
+      if (differenceInDays(parseISO(dateString), parseISO(startDay)) <= 0) {
         setStartDay(dateString);
       } else setEndDay(dateString);
     }

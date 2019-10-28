@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
+import { Address } from '@src/services/openapi';
+
 import useStore from '@src/hooks/useStore';
 import { updateUser } from '@src/store/actions/UserAction';
 
@@ -21,13 +23,6 @@ import BackButton from '@src/components/BackButton';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
 const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  type Address = {
-    street: string;
-    city: string;
-    state: string;
-    apartment: string;
-  }
-
   const [isOpen, setIsOpen] = useState(false);
   const { store, dispatch } = useStore();
 
@@ -76,7 +71,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               <View row flex={1} spacing={{ p: 3 }}>
                 <View>
                   <Text variant="titleSmall" typography={{ size: 2 }}>
-                    {index === 0 ? 'Home' : `Home ${index}`}
+                    {item.name}
                   </Text>
                   <View row spacing={{ mt: 3 }} alignCenter>
                     <View width={20}>
@@ -84,13 +79,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                     </View>
                     <View wrap spacing={{ pr: 2 }}>
                       <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmallGrey">
-                        {item.street}
-                        {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
-                        {', '}
-                        {item.city}
-                        {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
-                        {', '}
-                        {item.state}
+                        {`${item.street}, ${item.city}, ${item.state}`}
                       </Text>
                     </View>
                   </View>

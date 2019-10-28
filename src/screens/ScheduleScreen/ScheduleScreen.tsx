@@ -2,15 +2,17 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
-import { format, addDays, subDays, startOfWeek } from 'date-fns';
+import { format, addDays, subDays, startOfWeek, eachDayOfInterval } from 'date-fns';
+
+import api from '@src/services/api';
 
 import useStore from '@src/hooks/useStore';
+
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
-import { getAppointments } from '@src/store/actions/AppointmentAction';
 import { setAwayDates } from '@src/store/actions/UserAction';
 
-import { Colors, Spacing } from '@src/styles';
+import { Spacing } from '@src/styles';
 
 import { ScheduleTabIcon } from '@src/components/icons';
 
@@ -21,45 +23,104 @@ import SetAwayModal from '@src/modals/SetAwayModal';
 
 import ScheduleRow from './ScheduleRow';
 
-export type ScheduleItem = {
-  date: string;
+export type ListItem = {
   timestamp: number;
   appointments: Appointment[];
 }
+
+type ItemMap = { [date: string]: ListItem }
 
 type Props = NavigationStackScreenProps & { isFocused: boolean }
 
 const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
 
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [items, setItems] = useState<ScheduleItem[]>([]);
+  const [itemMap, setItemMap] = useState<ItemMap>({});
+  const [selectedDate, setSelectedDate] = useState<Date>(startOfWeek(new Date()));
   const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (isFocused && store.user.id) {
-      dispatch(getAppointments());
+  const { items, startDate, endDate, weekString, totalEarnings } = useMemo(() => {
+    const start = startOfWeek(selectedDate);
+    const end = addDays(start, 6);
+
+    const startDayStr = format(start, 'dd');
+    const endDayStr = format(end, 'dd');
+    const endMonthStr = format(end, 'MMM');
+
+    let earnings = 0;
+
+    const currentItems = [];
+    const currentWeekTime = start.getTime();
+    const existing = itemMap[currentWeekTime];
+
+    if (existing) {
+      const currentWeekDays = eachDayOfInterval({ start, end });
+
+      currentWeekDays.forEach((day) => {
+        const timestamp = day.getTime();
+        const { appointments } = itemMap[timestamp];
+
+        earnings += itemMap[timestamp].appointments.reduce((acc, { price }) => acc + price, 0);
+        currentItems.push({ timestamp, appointments });
+      });
     }
-  }, [isFocused]);
+
+    return {
+      items: currentItems,
+      startDate: start,
+      endDate: end,
+      weekString: `${startDayStr}-${endDayStr} ${endMonthStr}`,
+      totalEarnings: earnings,
+    };
+  }, [selectedDate, itemMap]);
 
   useEffect(() => {
-    const itemMap: { [key: string]: ScheduleItem } = {};
+    const getWeekAppointments = async () => {
+      const currentWeekTime = startDate.getTime();
 
-    store.appointments.forEach((appointment) => {
-      const startDate = new Date(appointment.startTime);
-      const timestamp = startDate.getTime();
+      if (itemMap[currentWeekTime]) return;
 
-      const date = format(startDate, 'yyyy-MM-dd');
+      setIsLoading(true);
 
-      if (itemMap[date]) {
-        itemMap[date].appointments.push(appointment);
-      } else {
-        itemMap[date] = { date, timestamp, appointments: [appointment] };
+      try {
+        const query = { start: startDate.toISOString(), end: endDate.toISOString() };
+        const options = { headers: { Authorization: `Token ${store.user.token}` }, query };
+
+        const { data } = await api.appointment.appointmentList(options);
+
+        const currentWeekDays = eachDayOfInterval({ start: startDate, end: endDate });
+        const weekMap: { [date: string]: ListItem } = {};
+
+        currentWeekDays.forEach((day) => {
+          const timestamp = day.getTime();
+
+          weekMap[timestamp] = { timestamp, appointments: [] };
+        });
+
+        data.forEach((appointment) => {
+          const start = new Date(appointment.startTime);
+          start.setHours(0, 0, 0, 0);
+
+          const timestamp = start.getTime();
+
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
+          weekMap[timestamp].appointments.push(appointment);
+        });
+
+        setItemMap((prev) => ({ ...prev, ...weekMap }));
+      } catch (e) {
+        // console.log(e);
+      } finally {
+        setIsLoading(false);
       }
-    });
+    };
 
-    setItems(Object.values(itemMap).sort((a, b) => a.timestamp - b.timestamp));
-  }, [store.appointments]);
+    if (isFocused && store.user.token) {
+      getWeekAppointments();
+    }
+  }, [isFocused, store.user.token, selectedDate]);
 
   const onToggleAwayModal = () => setIsAwayModalVisible(!isAwayModalVisible);
 
@@ -67,9 +128,9 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
     navigation.setParams({ onToggleAwayModal });
   }, []);
 
-  const onSubmitAwayDays = async (startDate: string, endDate: string) => {
+  const onSubmitAwayDays = async (start: string, end: string) => {
     try {
-      await dispatch(setAwayDates(startDate, endDate));
+      await dispatch(setAwayDates(start, end));
 
       setIsAwayModalVisible(false);
     } catch (error) {
@@ -77,31 +138,28 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
     }
   };
 
-  const renderItem: ListRenderItem<ScheduleItem> = ({ item }) => {
+  const renderItem: ListRenderItem<ListItem> = ({ item, index }) => {
+    const isFirst = index === 0;
+    const isLast = index === items.length - 1;
+
     const handlePress = () => navigation.push('ScheduleDayScreen', { scheduleItem: item });
 
-    return <ScheduleRow item={item} onPressDate={handlePress} />;
+    return <ScheduleRow item={item} isFirst={isFirst} isLast={isLast} onPressDate={handlePress} />;
   };
 
-  const keyExtractor = (item: ScheduleItem) => item.date;
+  const keyExtractor = (item: ListItem) => item.timestamp.toString();
 
-  const { currentStartOfWeek, weekString, totalEarnings } = useMemo(() => {
-    const start = startOfWeek(currentDate);
-    const end = addDays(start, 6);
+  const onPressPrev = () => {
+    if (isLoading) return;
 
-    const startDayStr = format(start, 'dd');
-    const endDayStr = format(end, 'dd');
-    const endMonthStr = format(end, 'MMM');
+    setSelectedDate(subDays(startDate, 7));
+  };
 
-    return {
-      currentStartOfWeek: start,
-      weekString: `${startDayStr}-${endDayStr} ${endMonthStr}`,
-      totalEarnings: store.appointments.reduce((acc, { price }) => acc + price, 0),
-    };
-  }, [currentDate, store.appointments]);
+  const onPressNext = () => {
+    if (isLoading) return;
 
-  const onPressPrev = () => setCurrentDate(subDays(currentStartOfWeek, 7));
-  const onPressNext = () => setCurrentDate(addDays(currentStartOfWeek, 7));
+    setSelectedDate(addDays(startDate, 7));
+  };
 
   return (
     <>
@@ -114,15 +172,18 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
       <Paginator
         title={weekString}
         subtitle={`$${totalEarnings}`}
+        loading={isLoading}
         onPressPrev={onPressPrev}
         onPressNext={onPressNext}
       />
-      <FlatList
-        style={{ ...Spacing.getStyles({ py: 2 }), backgroundColor: Colors.semiGreyLighter }}
-        data={Object.values(items)}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-      />
+      <View flex={1} bgColor="semiGreyLighter">
+        <FlatList
+          refreshing={isLoading}
+          data={items}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+        />
+      </View>
     </>
   );
 };

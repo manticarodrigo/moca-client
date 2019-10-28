@@ -1,24 +1,28 @@
 import React, { useMemo } from 'react';
 import { format, isToday, isAfter, differenceInMinutes } from 'date-fns';
 
+import { Views, Texts } from '@src/styles';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import { ScheduleItem } from './ScheduleScreen';
+import { ListItem } from './ScheduleScreen';
 
 type Props = {
-  item: ScheduleItem;
+  item: ListItem;
+  isLast: boolean;
+  isFirst: boolean;
   onPressDate: () => void;
 }
 
 const nowDate = new Date();
 
-const ScheduleRow = ({ item, onPressDate }: Props) => {
-  const { date, appointments } = item;
+const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
+  const { timestamp, appointments } = item;
 
   const { isDateToday, day, month, year, dayOfWeek } = useMemo(() => {
-    const dateObj = new Date(date);
+    const dateObj = new Date(timestamp);
 
     return {
       isDateToday: isToday(dateObj),
@@ -27,7 +31,7 @@ const ScheduleRow = ({ item, onPressDate }: Props) => {
       year: format(dateObj, 'yyyy'),
       dayOfWeek: format(dateObj, 'cccc'),
     };
-  }, [date]);
+  }, [timestamp]);
 
   const { total, completed, completedDocs, totalDocs, totalTime, earnings } = useMemo(() => {
     const data = {
@@ -53,62 +57,94 @@ const ScheduleRow = ({ item, onPressDate }: Props) => {
     return data;
   }, [appointments]);
 
-  if (!date) return null;
+  type Variants = {
+    viewVariant: keyof typeof Views;
+    dayVariant: keyof typeof Texts;
+    monthYearVariant: keyof typeof Texts;
+    dayOfWeekVariant: keyof typeof Texts;
+  }
+
+  const { viewVariant, dayVariant, monthYearVariant, dayOfWeekVariant }: Variants = useMemo(() => {
+    if (total === 0) {
+      return {
+        viewVariant: 'borderCardDisabled',
+        dayVariant: 'titleSemiGreyLarge',
+        monthYearVariant: 'lightSemiGreySmallest',
+        dayOfWeekVariant: 'regularSemiGray',
+      };
+    }
+
+    if (isDateToday) {
+      return {
+        viewVariant: 'borderShadowCard',
+        dayVariant: 'titlePrimaryLarge',
+        monthYearVariant: 'lightPrimarySmallest',
+        dayOfWeekVariant: 'regularPrimary',
+      };
+    }
+
+    return {
+      viewVariant: 'card',
+      dayVariant: 'titleSecondaryLarge',
+      monthYearVariant: 'lightSecondarySmallest',
+      dayOfWeekVariant: 'regularSecondary',
+    };
+  }, [total, isDateToday]);
+
+  if (!timestamp) return null;
 
   return (
     <View
-      variant={isDateToday ? 'borderShadowCard' : 'card'}
+      variant={viewVariant}
       row
       flex={1}
-      spacing={{ mt: 2, mx: 3 }}
-      onPress={onPressDate}
+      spacing={{ mt: isFirst ? 3 : 2, mx: 3, mb: isLast ? 3 : 0 }}
+      onPress={total !== 0 ? onPressDate : undefined}
     >
       <View column>
         <View row alignCenter>
-          <Text variant={isDateToday ? 'titlePrimaryLarge' : 'titleSecondaryLarge'}>
-            {day}
-          </Text>
+          <Text variant={dayVariant}>{day}</Text>
           <View column spacing={{ ml: 2 }}>
-            <Text
-              variant={isDateToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}
-            >
-              {month}
-            </Text>
-            <Text
-              variant={isDateToday ? 'lightPrimarySmallest' : 'lightSecondarySmallest'}
-            >
-              {year}
-            </Text>
+            <Text variant={monthYearVariant}>{month}</Text>
+            <Text variant={monthYearVariant}>{year}</Text>
           </View>
         </View>
 
-        <Text variant={isDateToday ? 'regularPrimary' : 'regularSecondary'}>
-          {dayOfWeek}
-        </Text>
+        <Text variant={dayOfWeekVariant}>{dayOfWeek}</Text>
       </View>
 
       <View column flex={1}>
-
         <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
           <Tag
             icon="report"
-            type="borderLight"
+            type={total === 0 ? 'border' : 'borderLight'}
             placeholder={`${completedDocs}/${totalDocs}`}
             spacing={{ ml: 2 }}
           />
           <Tag
             icon="appointment"
-            type="fill"
+            type={total === 0 ? 'border' : 'fill'}
             placeholder={`${completed}/${total}`}
             spacing={{ ml: 2 }}
           />
         </View>
 
         <View row flex={1} justifyEnd>
-          <Tag icon="clock" type="border" placeholder={totalTime} spacing={{ ml: 2 }} />
-          <Tag icon="dollar" type="fill" placeholder={earnings} spacing={{ ml: 2 }} />
+          <Tag
+            icon="clock"
+            type={total === 0 ? 'border' : 'borderLight'}
+            placeholder={totalTime}
+            spacing={{ ml: 2 }}
+          />
+          <Tag
+            icon="dollar"
+            type={total === 0 ? 'border' : 'fill'}
+            placeholder={earnings}
+            spacing={{ ml: 2 }}
+          />
         </View>
       </View>
+
     </View>
   );
 };

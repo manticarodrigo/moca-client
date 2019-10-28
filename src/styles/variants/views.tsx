@@ -210,6 +210,10 @@ const borderCard: ViewStyle = {
   borderColor: Colors.secondary,
 };
 
+const borderCardDisabled: ViewStyle = {
+  ...card,
+  backgroundColor: Colors.lightGrey,
+};
 
 const shadowCard: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
@@ -341,6 +345,7 @@ export {
   curveBorder,
   curveBorderBottom,
   borderCard,
+  borderCardDisabled,
   shadowCard,
   borderShadowCard,
   profileCard,
