@@ -125,8 +125,9 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
         onToggle={onCloseModal('isQualificationModalVisible')}
       />
       <ReviewsModal
-        isModalVisible={modals.isReviewsModalVisible}
-        closeInputModal={onCloseModal('isReviewsModalVisible')}
+        therapist={userInfo}
+        visible={modals.isReviewsModalVisible}
+        onClose={onCloseModal('isReviewsModalVisible')}
       />
 
       <View scroll bgColor="lightGrey">
@@ -142,6 +143,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                 readonly={!!modal}
                 rows={[
                   {
+                    hideOnReadonly: true,
                     title: 'Address',
                     icon: RadiusLocationIcon,
                     content: <ArrowRightIcon />,
@@ -194,7 +196,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                         </Text>
                       </View>
                     ),
-                    onPress: () => !modal && setModals({ ...modals, isReviewsModalVisible: true }),
+                    onPress: () => setModals({ ...modals, isReviewsModalVisible: true }),
                   },
                 ]}
               />
@@ -222,25 +224,25 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'Personal Bio',
                     icon: BioIcon,
                     content: userInfo.bio || (modal ? 'N/A' : 'Set Personal Bio'),
-                    onPress: () => !modal && setInputModalProps({
+                    onPress: !modal ? () => setInputModalProps({
                       title: 'Personal Bio',
                       existingValue: userInfo.bio || '',
                       placeholder: 'Personal bio',
                       buttonText: 'Bio',
                       onSubmit: onSubmitInputModal('bio'),
-                    }),
+                    }) : undefined,
                   },
                   {
                     title: 'License Number',
                     icon: Badge2Icon,
                     content: userInfo.licenseNumber || (modal ? 'N/A' : 'Set License Number'),
-                    onPress: () => (!modal) && setInputModalProps({
+                    onPress: !modal ? () => setInputModalProps({
                       title: 'License Number',
                       existingValue: userInfo.licenseNumber || '',
                       placeholder: 'License number',
                       buttonText: 'License No.',
                       onSubmit: onSubmitInputModal('licenseNumber'),
-                    }),
+                    }) : undefined,
                   },
                   {
                     title: 'Years of Experience',
@@ -259,7 +261,10 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     title: 'Qualifications',
                     icon: QualificationIcon,
                     content: userInfo.preferredAilments.join(', ') || 'Set Qualifications',
-                    onPress: () => !modal && setModals({ ...modals, isQualificationModalVisible: true }),
+                    onPress: !modal ? () => setModals({
+                      ...modals,
+                      isQualificationModalVisible: true,
+                    }) : undefined,
                   },
                 ]}
               />

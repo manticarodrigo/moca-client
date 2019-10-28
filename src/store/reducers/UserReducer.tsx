@@ -24,6 +24,12 @@ export type Payment = Omit<BadPayment, 'type' | 'paymentInfo'> & {
   paymentInfo: Card & BankAccount;
 }
 
+export type Review = {
+  id: number;
+  rating: number;
+  comment: string;
+}
+
 export type UserState = &
   Omit<User, 'type' | 'email' | 'gender' | 'payments'> &
   Omit<Patient, 'user'> &
@@ -33,6 +39,7 @@ export type UserState = &
   type?: 'PT' | 'PA';
   gender?: 'M' | 'F';
   payments?: Payment[];
+  reviews?: Review[];
   storageReady?: boolean;
 }
 

@@ -4,15 +4,16 @@ import api from '@src/services/api';
 
 import useStore from '@src/hooks/useStore';
 
+import { mockImg } from '@src/services/mock';
+
+import { BookmarkIcon } from '@src/components/icons';
+
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
-
-import { StarsIcon, BookmarkIcon } from '@src/components/icons';
-
-import { mockImg } from '@src/services/mock';
+import Rating from '@src/components/Rating';
 
 import TherapistProfile from '@src/screens/ProfileScreen/TherapistProfile';
 
@@ -53,18 +54,10 @@ const TherapistProfileModal = ({ therapistId, visible, onPressMessage, onClose }
                 <Image rounded size={80} uri={mockImg} />
                 <View column justifyCenter spacing={{ px: 3 }}>
                   <Text variant="title">
-                    {therapist.firstName}
-                    {' '}
-                    {therapist.lastName}
+                    {`${therapist.firstName} ${therapist.lastName}`}
                   </Text>
                   <View row alignCenter>
-                    <Text
-                      spacing={{ mr: 2 }}
-                      variant="lightTextCenter"
-                    >
-                      {therapist.rating}
-                    </Text>
-                    <StarsIcon number={therapist.rating} />
+                    <Rating rating={therapist.rating} />
                   </View>
                 </View>
               </View>

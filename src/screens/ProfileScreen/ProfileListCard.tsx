@@ -56,11 +56,11 @@ const ProfileListCard = ({ column = false, readonly, rows = [], bottomChildren =
         subtitle,
         icon,
         content,
-        onPress = () => null,
+        onPress,
       }, index) => {
         const Icon = icon;
 
-        const last = index === rows.length - 1;
+        const last = index === readableRows.length - 1;
         const rowProps = { last, title, subtitle, onPress, content };
 
         return (

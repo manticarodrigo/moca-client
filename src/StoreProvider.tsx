@@ -64,6 +64,7 @@ export const initialState: StoreState = {
     addresses: [],
     prices: [],
     payments: [],
+    reviews: [],
     preferredAilments: [],
   },
   registration: {
@@ -89,6 +90,8 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
   if (action.type === 'LOGOUT_USER') {
     return initialState;
   }
+
+  // console.log(action.type, newState);
 
   return newState;
 };

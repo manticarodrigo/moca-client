@@ -119,7 +119,7 @@ const AppointmentCard = ({
           >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
-            {canEditNote && 'Edit Note'}
+            {canEditNote && 'Edit Notes'}
           </Button>
         )}
       </View>
