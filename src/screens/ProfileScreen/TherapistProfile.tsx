@@ -48,8 +48,6 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
 
   const userInfo = !modal ? user : therapist;
 
-  // const { viewer, onPressImage } = useImageViewer(userInfo.certifications);
-
   const [priceModalProps, setPriceModalProps] = useState(null);
   const [inputModalProps, setInputModalProps] = useState<UniqueInputModalProps>(null);
 
@@ -225,6 +223,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
                     icon: BioIcon,
                     content: userInfo.bio || (modal ? 'N/A' : 'Set Personal Bio'),
                     onPress: !modal ? () => setInputModalProps({
+                      multiline: true,
                       title: 'Personal Bio',
                       existingValue: userInfo.bio || '',
                       placeholder: 'Personal bio',

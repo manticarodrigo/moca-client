@@ -41,6 +41,12 @@ const useFormFields = <Fields extends object> (initialState) => {
     fieldRefs.current[key].focus();
   };
 
+  const getFieldProps = (key: keyof Fields) => ({
+    ref: setFieldRef(key),
+    value: formFields[key],
+    onChangeText: onChangeField(key),
+  });
+
   return {
     formFields,
     fieldRefs,
@@ -51,6 +57,7 @@ const useFormFields = <Fields extends object> (initialState) => {
     updateFormFields,
     onChangeField,
     onFocusNext,
+    getFieldProps,
   };
 };
 

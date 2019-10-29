@@ -120,7 +120,7 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
     if (isFocused && store.user.token) {
       getWeekAppointments();
     }
-  }, [isFocused, store.user.token, selectedDate]);
+  }, [isFocused, selectedDate]);
 
   const onToggleAwayModal = () => setIsAwayModalVisible(!isAwayModalVisible);
 

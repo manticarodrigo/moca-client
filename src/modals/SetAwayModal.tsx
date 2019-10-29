@@ -78,12 +78,10 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
   const onPressSubmit = () => onSubmit(startDay, endDay);
 
   return (
-    <Modal
-      propagateSwipe
-      isVisible={isVisible}
-      onToggle={onToggle}
-    >
+    <Modal propagateSwipe isVisible={isVisible} onToggle={onToggle}>
+
       <View alignCenter spacing={{ pb: 6 }}>
+
         <View row>
           <View variant="borderBottom" flex={1} spacing={{ pb: 3 }} alignCenter justifyCenter>
             <Text variant="titleSmall">
@@ -91,6 +89,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             </Text>
           </View>
         </View>
+
         <View alignCenter row variant="borderBottom">
           <View
             flex={1}
@@ -119,12 +118,14 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             </Text>
           </View>
         </View>
+
         <View flex={1}>
           <CalendarList
             onDayPress={onDayPress}
             markedDates={markedDates}
           />
         </View>
+
         <View width={WINDOW_WIDTH} spacing={{ p: 4 }} variant="borderTop">
           <Button
             disabled={isButtonDisabled}
@@ -134,7 +135,9 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             Submit Days Off
           </Button>
         </View>
+
       </View>
+
     </Modal>
   );
 };

@@ -4,6 +4,8 @@ import { format, differenceInMinutes } from 'date-fns';
 
 import { mockImg } from '@src/services/mock';
 
+import useStore from '@src/hooks/useStore';
+
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import {
@@ -24,7 +26,6 @@ type AppointmentCardProps = {
   appointment?: Appointment;
   current?: boolean;
   past?: boolean;
-  isTherapist: boolean;
   onPress?: () => void;
   onPressBtn?: () => void;
 };
@@ -33,22 +34,34 @@ const AppointmentCard = ({
   appointment,
   current,
   past,
-  isTherapist,
   onPress,
   onPressBtn,
 }: AppointmentCardProps) => {
   const { otherParty, startTime, endTime, price, review, address } = appointment;
 
-  const { canStart, canCancel, canEditNote, duration, time, rating } = useMemo(() => ({
+  const { store } = useStore();
+
+  const isTherapist = store.user.type === 'PT';
+
+  const {
+    canStart,
+    canCancel,
+    canEditNotes,
+    canEditReview,
+    duration,
+    time,
+    rating,
+  } = useMemo(() => ({
     canStart: !past && current && isTherapist,
     canCancel: !past && !current && !isTherapist,
-    canEditNote: past && isTherapist,
+    canEditNotes: past && isTherapist,
+    canEditReview: past && !isTherapist,
     duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
-    time: format(new Date(startTime), 'MM/dd - hh:mm aaaa'),
-    rating: (review || {}).rating || 0,
+    time: format(new Date(startTime), `MM/dd${past ? '/yy' : ''} - hh:mm aaaa`),
+    rating: (review || {}).rating,
   }), [current, past, isTherapist, startTime, endTime, review]);
 
-  const hasButton = canStart || canCancel || canEditNote;
+  const hasButton = canStart || canCancel || canEditNotes || canEditReview;
 
   return (
     <View
@@ -78,11 +91,11 @@ const AppointmentCard = ({
         </View>
         <View
           row
-          justifyEnd={isTherapist || !rating}
-          justifyBetween={!!(!isTherapist && rating)}
+          justifyEnd={isTherapist}
+          justifyBetween={!isTherapist}
           spacing={{ py: 1 }}
         >
-          {!!(!isTherapist && rating) && <Rating rating={rating} />}
+          {!isTherapist && <Rating rating={rating} />}
           <Text variant="titlePrimaryLarge">
             {`$${price}`}
           </Text>
@@ -119,7 +132,8 @@ const AppointmentCard = ({
           >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
-            {canEditNote && 'Edit Notes'}
+            {canEditNotes && 'Edit Notes'}
+            {canEditReview && 'Edit Review'}
           </Button>
         )}
       </View>

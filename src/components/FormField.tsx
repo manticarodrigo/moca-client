@@ -40,6 +40,7 @@ const FormField = ({
   placeholder,
   icon,
   value,
+  multiline,
   required,
   validation,
   spacing,
@@ -48,17 +49,21 @@ const FormField = ({
   onChangeText,
   ...textInputProps
 }: Props, ref: React.Ref<RNInput>) => {
-  const [isFocused, setIsFocused] = useState();
-  const [didBlur, setDidBlur] = useState();
+  const [focused, setFocused] = useState();
+  const [blurred, setBlurred] = useState();
 
-  const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
+  const focusedOrFilled = focused || value !== '';
+
+  const animatedIsFocused = useMemo(
+    () => new Animated.Value(focusedOrFilled ? 1 : 0), [value],
+  );
 
   useEffect(() => {
     Animated.timing(animatedIsFocused, {
-      toValue: (isFocused || value !== '') ? 1 : 0,
+      toValue: focusedOrFilled ? 1 : 0,
       duration: 200,
     }).start();
-  }, [animatedIsFocused, isFocused, value]);
+  }, [animatedIsFocused, focusedOrFilled, value]);
 
   const validationError = useMemo(() => {
     switch (validation) {
@@ -83,11 +88,11 @@ const FormField = ({
 
   const shouldShowError = useMemo(() => {
     if (validation === 'password') {
-      return (isFocused || didBlur) && validationError;
+      return (focusedOrFilled || blurred) && validationError;
     }
 
-    return didBlur && validationError;
-  }, [validation, didBlur, isFocused, validationError]);
+    return blurred && validationError;
+  }, [validation, blurred, focusedOrFilled, validationError]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -100,32 +105,29 @@ const FormField = ({
       borderRadius: Spacing.spaceSize[2],
       borderWidth: shouldShowError ? 1 : null,
       borderColor: shouldShowError ? Colors.error : null,
-      margin: 0,
-      marginTop: Spacing.spaceSize[2],
-      paddingRight: Spacing.spaceSize[3],
-      paddingLeft: Spacing.spaceSize[3],
-      backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
+      backgroundColor: focused ? Colors.semiGreyLighter : Colors.lightGrey,
+      ...Spacing.getStyles({ m: 0, mt: 2, px: 3 }),
       ...Spacing.getStyles(spacing),
     },
     text: {
       ...Texts.regular,
-      color: Colors.dark,
-      paddingTop: 10,
-      fontSize: 16,
       width: '100%',
-      height: 60,
+      height: 'auto',
+      color: Colors.dark,
+      paddingTop: 32,
+      paddingBottom: multiline ? 24 : 10,
     },
-  }), [shouldShowError, width, height, spacing, isFocused]);
+  }), [shouldShowError, multiline, width, height, spacing, focused]);
 
   const placeholderStyle = {
     position: 'absolute',
     left: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 16],
+      outputRange: [20, 14],
     }),
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 5],
+      outputRange: [22, 8],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -152,12 +154,12 @@ const FormField = ({
   }, [shouldShowError, icon]);
 
   const handleFocus = () => {
-    setIsFocused(true);
+    setFocused(true);
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
-    setDidBlur(true);
+    setFocused(false);
+    setBlurred(true);
   };
 
   const handleChangeText = (text: string) => onChangeText(text, validationError);
@@ -180,6 +182,8 @@ const FormField = ({
               ref={ref}
               style={styles.text}
               value={value}
+              multiline={multiline}
+              scrollEnabled={false}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChangeText={handleChangeText}

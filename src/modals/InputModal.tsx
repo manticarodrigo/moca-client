@@ -14,6 +14,7 @@ import Modal from '@src/components/Modal';
 
 export type Props = TextInputProps & {
   visible: boolean;
+  multiline?: boolean;
   password?: boolean;
   title: string;
   placeholder: string;
@@ -27,7 +28,8 @@ export type Props = TextInputProps & {
 
 const InputModal = (
   {
-    visible = false,
+    visible,
+    multiline,
     title,
     validation,
     existingValue,
@@ -94,6 +96,7 @@ const InputModal = (
         <View alignCenter spacing={{ p: 4 }}>
           <FormField
             value={formFields.value}
+            multiline={multiline}
             validation={validation}
             returnKeyType="done"
             secureTextEntry={password}
