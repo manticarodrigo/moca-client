@@ -3,12 +3,12 @@ import Svg, { Ellipse, G, Path, Polyline, Rect } from 'react-native-svg';
 
 import { Colors } from '@src/styles';
 
-type DiagnosisIconProps = {
+type Props = {
   size?: number;
   tint?: keyof typeof Colors;
 }
 
-const DiagnosisIcon = ({ size = 1, tint }: DiagnosisIconProps) => (
+const InjuryIcon = ({ size = 1, tint }: Props) => (
   <Svg width={49 * size} height={50 * size} viewBox="0 0 49 50">
     <G stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
       <G transform="translate(0, 1)">
@@ -31,4 +31,4 @@ const DiagnosisIcon = ({ size = 1, tint }: DiagnosisIconProps) => (
   </Svg>
 );
 
-export default DiagnosisIcon;
+export default InjuryIcon;

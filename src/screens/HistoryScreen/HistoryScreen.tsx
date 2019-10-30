@@ -20,7 +20,7 @@ type Props = NavigationStackScreenProps & {
 const HistoryScreen: NavigationStackScreenComponent = ({ isFocused }: Props) => {
   const { store } = useStore();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [notesModalVisible, setNotesModalVisible] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState();
 
   useEffect(() => {
     const fetchPastAppointments = async () => {
@@ -43,16 +43,27 @@ const HistoryScreen: NavigationStackScreenComponent = ({ isFocused }: Props) => 
     }
   }, [isFocused]);
 
-  const toggleNotes = () => setNotesModalVisible(!notesModalVisible);
+  const onOpenNotes = (index: number) => () => {
+    if (appointments[index]) {
+      setSelectedAppointment(appointments[index]);
+    }
+  };
+
+  const onCloseNotes = () => setSelectedAppointment(undefined);
 
   return (
     <>
-      <NotesModal visible={notesModalVisible} onClose={toggleNotes} />
+      <NotesModal
+        appointment={selectedAppointment}
+        visible={!!selectedAppointment}
+        onSubmit={(values) => console.log(values)}
+        onClose={onCloseNotes}
+      />
 
       <View scroll height="100%" bgColor="lightGrey" spacing={{ py: 3, px: 2 }}>
-        {appointments.map((appointment) => (
+        {appointments.map((appointment, index) => (
           <View key={appointment.id} spacing={{ p: 2 }}>
-            <AppointmentCard past appointment={appointment} onPressBtn={toggleNotes} />
+            <AppointmentCard past appointment={appointment} onPressBtn={onOpenNotes(index)} />
           </View>
         ))}
       </View>

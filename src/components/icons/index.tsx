@@ -14,7 +14,7 @@ export { default as ClockSimpleIcon } from './ClockSimpleIcon';
 export { default as ContactIcon } from './ContactIcon';
 export { default as CreditCardIcon } from './CreditCardIcon';
 export { default as DeviceMapIcon } from './DeviceMapIcon';
-export { default as DiagnosisIcon } from './DiagnosisIcon';
+export { default as InjuryIcon } from './InjuryIcon';
 export { default as DollarIcon } from './DollarIcon';
 export { default as EveningIcon } from './EveningIcon';
 export { default as FemaleIcon } from './FemaleIcon';

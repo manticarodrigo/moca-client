@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Modal, StyleSheet, StatusBar, ScrollView, ActivityIndicator } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
@@ -33,10 +33,6 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setState((prev) => ({ ...prev, index: uris.length - 1 }));
-  }, [uris]);
-
   const onShow = () => setTimeout(() => setLoading(false));
 
   const onChange = (index) => setState((prev) => ({ ...prev, index }));
@@ -56,7 +52,9 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
       if (response.cancelled === false) {
         setLoading(true);
 
-        setTimeout(() => onAdd(response.uri));
+        if (onAdd) {
+          setTimeout(() => onAdd(response.uri));
+        }
       }
     });
   };
@@ -64,9 +62,9 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
   const onOpenViewer = async () => {
     setLoading(true);
 
-    if (!uris.length) {
+    if (onAdd && !uris.length) {
       await onPressAdd();
-    } else {
+    } else if (uris.length) {
       setState({ open: true, index: 0 });
     }
   };
@@ -82,7 +80,9 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
   return {
     imageViewer: (
       <>
-        <StatusBar barStyle="dark-content" />
+
+        {state.open && <StatusBar barStyle="dark-content" />}
+
         <Modal
           visible={state.open}
           animationType="fade"

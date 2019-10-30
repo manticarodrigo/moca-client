@@ -84,7 +84,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
       )}
 
       {!isTherapist && (
-        <LinkCard type="diagnosis" spacing={{ mb: 2 }} onPress={onPressLink('ProfileScreen')}>
+        <LinkCard type="injury" spacing={{ mb: 2 }} onPress={onPressLink('ProfileScreen')}>
           <Text variant="regularSmallGrey">
             Set my injury
           </Text>

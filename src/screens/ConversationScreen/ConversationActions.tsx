@@ -2,7 +2,7 @@ import React from 'react';
 
 import useStore from '@src/hooks/useStore';
 
-import { DiagnosisIcon, ScheduleIcon } from '@src/components/icons';
+import { InjuryIcon, ScheduleIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
@@ -24,7 +24,7 @@ const ConversationActions = ({ onPressAppointment, onPressInjury }) => {
       ) : (
         <Button
           variant="primarySmall"
-          icon={<DiagnosisIcon size={0.4} tint="white" />}
+          icon={<InjuryIcon size={0.4} tint="white" />}
           spacing={{ mr: 2 }}
           onPress={onPressInjury}
         >

@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import {
   ArrowRightIcon,
   ContactIcon,
-  DiagnosisIcon,
+  InjuryIcon,
   WalletIcon,
   MessagesIcon,
   HistoryIcon,
@@ -16,7 +16,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
-  type: 'wallet' | 'messages' | 'history' | 'diagnosis' | 'contact';
+  type: 'wallet' | 'messages' | 'history' | 'injury' | 'contact';
   spacing?: SpacingProp;
   status?: 'success' | 'error';
   children: JSX.Element;
@@ -32,8 +32,8 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
         return { icon: <MessagesIcon />, title: 'Messages' };
       case 'history':
         return { icon: <HistoryIcon />, title: 'History' };
-      case 'diagnosis':
-        return { icon: <DiagnosisIcon />, title: 'Injury' };
+      case 'injury':
+        return { icon: <InjuryIcon />, title: 'Injury' };
       case 'contact':
         return {
           icon: <ContactIcon tint={status === 'success' ? Colors.success : Colors.error} />,

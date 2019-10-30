@@ -53,15 +53,19 @@ const LabelWrapper = ({ label, onPress, children }) => (
   </View>
 );
 
-const ImageSelector = ({ label = undefined, images = [], setImages = undefined }) => {
+type Props = {
+  images: string[];
+  label?: string;
+  onAdd?: (uri: string) => void;
+}
+
+const ImageSelector = ({ label, images = [], onAdd }: Props) => {
   const { spliced, moreCount } = useMemo(() => ({
     spliced: images.slice(0, 3),
     moreCount: images.length > 3 && images.length - 3,
   }), [images]);
 
-  const onAddImage = (uri: string) => setImages((prev) => ([...prev, uri]));
-
-  const { imageViewer, onOpenViewer } = useImageViewer(images, onAddImage);
+  const { imageViewer, onOpenViewer } = useImageViewer(images, onAdd);
 
   const Wrapper = label ? LabelWrapper : View;
 

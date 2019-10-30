@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
 
-import { UserGenderEnum, User } from '@src/services/openapi';
+import { UserState } from '@src/store/reducers/UserReducer';
+
 import { updateUser } from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
@@ -10,7 +11,7 @@ import useNavigation from '@src/hooks/useNavigation';
 import {
   RadiusLocationIcon,
   CreditCardIcon,
-  DiagnosisIcon,
+  InjuryIcon,
   ArrowRightIcon,
   GenderIcon,
 } from '@src/components/icons';
@@ -19,10 +20,12 @@ import View from '@src/components/View';
 import GenderToggle from '@src/components/GenderToggle';
 import ImageSelector from '@src/components/ImageSelector';
 
+import FormModal from '@src/modals/FormModal';
+
 import ProfileListCard from './ProfileListCard';
 
 type Props = {
-  patient?: User;
+  patient?: UserState;
   modal?: boolean;
 }
 
@@ -32,15 +35,21 @@ const PatientProfile = ({ patient, modal }: Props) => {
 
   const userInfo = !modal ? store.user : patient;
 
+  const { firstName, addresses, gender } = userInfo;
+
+  const injury = userInfo.injury || {
+    title: '',
+    description: '',
+    images: [],
+  };
+
+  const [injuryModalVisible, setInjuryModalVisible] = useState(false);
 
   const onPressAdress = () => {
     navigation.navigate('AddressSettingsScreen');
   };
 
-  const onPressDiagnosis = () => navigation.navigate('DiagnosisScreen');
-  const onPressPayment = () => navigation.navigate('WalletScreen');
-
-  const onPressGender = async (type: UserGenderEnum) => {
+  const onPressGender = async (type: UserState['gender']) => {
     try {
       await dispatch(updateUser({ gender: type }));
     } catch (error) {
@@ -48,58 +57,100 @@ const PatientProfile = ({ patient, modal }: Props) => {
     }
   };
 
+  const { primaryAddress } = useMemo(() => ({
+    primaryAddress: addresses.find(({ primary }) => primary),
+  }), [addresses]);
+
+  const onToggleInjuryModal = () => setInjuryModalVisible(!injuryModalVisible);
+
+  const onSubmitInjury = async (values) => {
+    try {
+      await dispatch(updateUser({ injury: values }));
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+
+  const onPressPayment = () => navigation.navigate('WalletScreen');
+
   return (
-    <View scroll bgColor="lightGrey">
-      <TouchableWithoutFeedback>
-        <TouchableHighlight>
-          <View flex={1}>
-            <ProfileListCard
-              readonly={!!modal}
-              rows={[
-                {
-                  title: 'Address',
-                  icon: RadiusLocationIcon,
-                  content: <ArrowRightIcon />,
-                  onPress: onPressAdress,
-                },
-                {
-                  title: 'Gender',
-                  icon: GenderIcon,
-                  content: (
-                    <GenderToggle
-                      readonly={!!modal}
-                      existingValue={userInfo.gender}
-                      onToggle={onPressGender}
-                    />
-                  ),
-                },
-                {
-                  title: 'My Injury',
-                  subtitle: 'Neck Hernia',
-                  icon: <DiagnosisIcon size={0.5} />,
-                  content: (
-                    <View row alignCenter>
-                      <ImageSelector />
-                      <View spacing={{ pl: 3 }}>
-                        <ArrowRightIcon />
+    <>
+      {!modal && (
+        <FormModal
+          visible={injuryModalVisible}
+          fieldConfig={{
+            title: {
+              value: injury.title,
+              placeholder: 'Title',
+            },
+            description: {
+              value: injury.description,
+              placeholder: 'Description',
+              multiline: true,
+            },
+          }}
+          images={injury.images}
+          title={`${firstName}'s Injury`}
+          submitText="Save Injury"
+          onSubmit={onSubmitInjury}
+          onClose={onToggleInjuryModal}
+        />
+      )}
+
+      <View scroll bgColor="lightGrey">
+        <TouchableWithoutFeedback>
+          <TouchableHighlight>
+            <View flex={1}>
+              <ProfileListCard
+                readonly={!!modal}
+                rows={[
+                  {
+                    title: 'Address',
+                    subtitle: (primaryAddress || {}).street,
+                    icon: RadiusLocationIcon,
+                    content: <ArrowRightIcon />,
+                    onPress: onPressAdress,
+                  },
+                  {
+                    title: 'Gender',
+                    icon: GenderIcon,
+                    content: (
+                      <GenderToggle
+                        readonly={!!modal}
+                        existingValue={gender}
+                        onToggle={onPressGender}
+                      />
+                    ),
+                  },
+                  {
+                    title: 'My Injury',
+                    subtitle: injury.title || ((!modal && 'Add Injury') || 'N/A'),
+                    icon: <InjuryIcon size={0.5} />,
+                    content: (
+                      <View row alignCenter>
+                        <ImageSelector images={injury.images} />
+                        <View spacing={{ pl: 3 }}>
+                          <ArrowRightIcon />
+                        </View>
                       </View>
-                    </View>
-                  ),
-                  onPress: onPressDiagnosis,
-                },
-                {
-                  title: 'Payment Method',
-                  subtitle: 'Add Payment Method',
-                  icon: CreditCardIcon,
-                  content: <ArrowRightIcon />,
-                  onPress: onPressPayment,
-                },
-              ]}
-            />
-          </View>
-        </TouchableHighlight>
-      </TouchableWithoutFeedback>
-    </View>
+                    ),
+                    onPress: !modal && onToggleInjuryModal,
+                  },
+                  {
+                    hideOnReadonly: true,
+                    title: 'Payment Method',
+                    subtitle: 'Add Payment Method',
+                    icon: CreditCardIcon,
+                    content: <ArrowRightIcon />,
+                    onPress: onPressPayment,
+                  },
+                ]}
+              />
+            </View>
+          </TouchableHighlight>
+        </TouchableWithoutFeedback>
+      </View>
+    </>
   );
 };
 
