@@ -98,7 +98,7 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);
 
-const StoreProvider = ({ children }: { children: JSX.Element[] }) => (
+const StoreProvider = ({ children }: { children: JSX.Element }) => (
   <StoreContext.Provider value={useAsyncReducer(rootReducer, initialState)}>
     {children}
   </StoreContext.Provider>

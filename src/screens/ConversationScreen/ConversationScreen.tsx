@@ -139,12 +139,15 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       {imageViewer}
+
       <StatusBar barStyle="dark-content" />
+
       <AppointmentRequestModal
         visible={appointmentModalVisible}
         onSubmit={onSubmitAppointment}
         onClose={onToggleAppointmentModal}
       />
+
       <View safeArea column flex={1} bgColor="white">
         <ConversationSectionList
           inverted

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
@@ -78,10 +79,10 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   return (
     <>
-      <EditInformationModal
-        visible={editInfoModalVisible}
-        onClose={toggleEditInfoModal}
-      />
+      <StatusBar barStyle="dark-content" />
+
+      <EditInformationModal visible={editInfoModalVisible} onClose={toggleEditInfoModal} />
+
       <View safeArea flex={1} bgColor="lightGrey">
 
         <View scroll>

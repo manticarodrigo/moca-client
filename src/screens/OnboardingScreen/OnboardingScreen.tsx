@@ -46,7 +46,7 @@ type Props = NavigationStackScreenProps & {
 const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store } = useStore();
   const [isReady, setIsReady] = useState(false);
-  const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const isAuthenticated = useMemo(() => !!(store.user.id && store.user.token), [store.user]);
 
@@ -58,7 +58,7 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
     } else if (store.user.addresses.length === 0) {
       navigation.navigate('AddressScreen', { title: 'Address' });
     } else {
-      navigation.navigate('DashboardScreen');
+      navigation.navigate('ProfileScreen');
     }
   }, [store.user]);
 
@@ -80,16 +80,15 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
 
   const onPressSignup = () => navigation.push('SelectionScreen');
 
-  const onToggleLoginModal = () => setIsLoginModalVisible(!isLoginModalVisible);
+  const onToggleLoginModal = () => setLoginModalVisible(!loginModalVisible);
 
   return (
     <>
-      <LoginModal
-        visible={isLoginModalVisible}
-        onClose={onToggleLoginModal}
-      />
+      <StatusBar barStyle="dark-content" />
+
+      <LoginModal visible={loginModalVisible} onClose={onToggleLoginModal} />
+
       <View safeArea flex={1} alignCenter bgColor="white">
-        <StatusBar barStyle="dark-content" />
         <ContainedView>
           <View flex={1} row justifyCenter width={WINDOW_WIDTH} spacing={{ p: 4 }}>
             <Image width={175} height={110} file={Logo} />

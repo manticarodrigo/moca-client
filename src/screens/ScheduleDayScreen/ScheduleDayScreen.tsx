@@ -42,10 +42,12 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
+
       <CancellationModal
         visible={cancelModalVisible}
         onToggle={() => setCancelModalVisible(false)}
       />
+
       <View safeArea flex={1} width="100%">
         <FlatList
           data={sortedData}

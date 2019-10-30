@@ -49,12 +49,15 @@ const App = () => {
   }, []);
 
   return appLoaded ? (
-    <StoreProvider>
+    <>
       <StatusBar barStyle="light-content" />
-      <AppStateHandler>
-        <NavigationProvider />
-      </AppStateHandler>
-    </StoreProvider>
+
+      <StoreProvider>
+        <AppStateHandler>
+          <NavigationProvider />
+        </AppStateHandler>
+      </StoreProvider>
+    </>
   ) : null;
 };
 
