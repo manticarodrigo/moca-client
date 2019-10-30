@@ -17,7 +17,7 @@ import {
 
 import View from '@src/components/View';
 import GenderToggle from '@src/components/GenderToggle';
-import ImagesPreview from '@src/components/ImagesPreview';
+import ImageSelector from '@src/components/ImageSelector';
 
 import ProfileListCard from './ProfileListCard';
 
@@ -79,7 +79,7 @@ const PatientProfile = ({ patient, modal }: Props) => {
                   icon: <DiagnosisIcon size={0.5} />,
                   content: (
                     <View row alignCenter>
-                      <ImagesPreview />
+                      <ImageSelector />
                       <View spacing={{ pl: 3 }}>
                         <ArrowRightIcon />
                       </View>

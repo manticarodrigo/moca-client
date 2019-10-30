@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { StatusBar, SectionList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
@@ -47,7 +47,13 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 
   const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
-  const { viewer, onPressImage } = useImageViewer(messages);
+
+  const imageUrls = useMemo(() => messages
+    .filter((m) => m.content.image)
+    .map((m) => m.content.image),
+  [messages]);
+
+  const { imageViewer, onPressImage } = useImageViewer(imageUrls);
 
   useEffect(() => {
     const { params = {} } = navigation.state;
@@ -132,7 +138,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   return (
     <>
-      {viewer}
+      {imageViewer}
       <StatusBar barStyle="dark-content" />
       <AppointmentRequestModal
         visible={appointmentModalVisible}
