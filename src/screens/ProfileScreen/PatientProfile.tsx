@@ -66,6 +66,8 @@ const PatientProfile = ({ patient, modal }: Props) => {
   const onSubmitInjury = async (values) => {
     try {
       await dispatch(updateUser({ injury: values }));
+
+      setInjuryModalVisible(false);
     } catch (error) {
       // console.log(error);
     }

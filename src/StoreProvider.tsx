@@ -64,7 +64,6 @@ export const initialState: StoreState = {
     addresses: [],
     prices: [],
     payments: [],
-    reviews: [],
     preferredAilments: [],
   },
   registration: {

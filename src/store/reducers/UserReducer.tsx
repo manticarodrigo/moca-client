@@ -39,7 +39,6 @@ export type UserState = &
   type?: 'PT' | 'PA';
   gender?: 'M' | 'F';
   payments?: Payment[];
-  reviews?: Review[];
   storageReady?: boolean;
 }
 

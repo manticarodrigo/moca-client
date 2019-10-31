@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { formatDistanceStrict } from 'date-fns';
-
 import { TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
+import { formatDistanceStrict } from 'date-fns';
 
 import { updateUser, addPrice } from '@src/store/actions/UserAction';
 import { UserState } from '@src/store/reducers/UserReducer';
