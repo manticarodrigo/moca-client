@@ -17,9 +17,9 @@ export const loadFonts = async () => {
   });
 };
 
-const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72];
+const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72, 80];
 
-type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
+type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 };
 type TypographyColor = { color?: keyof typeof Colors };
 type TypographyWeight = { weight?: '300' | '500' | '700' | '900' };
 type TypographyAlign = { align?: TextStyle['textAlign'] };

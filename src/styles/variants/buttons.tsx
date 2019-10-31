@@ -160,14 +160,14 @@ const secondaryBig: ButtonVariant = {
   view: {
     ...Spacing.getStyles({ p: 3 }),
     ...Borders.primary,
-    borderWidth: 2,
-    borderColor: Colors.secondaryLightest,
-    backgroundColor: 'transparent',
-    width: '80%',
+    borderWidth: 1,
+    borderColor: Colors.secondary,
+    backgroundColor: Colors.white,
   },
-  text: { ...Typography.getStyles({
-    color: 'secondary', size: 3, weight: '700', align: 'center' }) },
-  underlayColor: null,
+  text: {
+    ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }),
+  },
+  underlayColor: Colors.white,
 };
 
 export {

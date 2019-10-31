@@ -111,3 +111,5 @@ export { default as BookmarkBadgeIcon } from './BookmarkBadgeIcon';
 
 export { default as PreviousArrowIcon } from './PreviousArrowIcon';
 export { default as NextArrowIcon } from './NextArrowIcon';
+
+export { default as TimerBackgroundIcon } from './TimerBackgroundIcon';

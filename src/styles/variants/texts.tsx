@@ -30,6 +30,7 @@ export const titleSmallSuccess = { ...Typography.getStyles({ size: 3, weight: '7
 export const titleSmallError = { ...Typography.getStyles({ size: 3, weight: '700', color: 'error' }) };
 export const boldPrimary = { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary' }) };
 export const boldSecondary = { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) };
+export const boldSemiGreyAlt = { ...Typography.getStyles({ size: 2, weight: '700', color: 'semiGreyAlt' }) };
 export const boldWhite = { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) };
 export const boldDark = { ...Typography.getStyles({ size: 2, weight: '700', color: 'dark' }) };
 export const boldGrey = { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) };
@@ -47,7 +48,6 @@ export const regularSmallGreyishBrown = { ...Typography.getStyles({ size: 1, wei
 export const regularSmallestPrimary = { ...Typography.getStyles({ size: 0, weight: '500', color: 'primary' }) };
 export const regularPrimary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) };
 export const regularSecondary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) };
-// TODO: rename
 export const regularSemiGray = { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) };
 export const regularSemiGrey = { ...Typography.getStyles({ size: 2, weight: '500', color: 'semiGrey' }) };
 export const regularGrey = { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) };

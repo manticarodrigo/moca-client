@@ -43,7 +43,7 @@ const Rating = ({ rating, spacing }: RatingProps) => {
 
   return (
     <View row alignCenter style={styles.view}>
-      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{count}</Text>
+      <Text variant="titleSmallSecondary" spacing={{ mr: 1 }}>{count}</Text>
       {icon}
     </View>
   );

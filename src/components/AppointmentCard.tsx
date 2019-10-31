@@ -1,43 +1,35 @@
 import React, { useMemo } from 'react';
 
-import { format, differenceInMinutes } from 'date-fns';
-
-import { mockImg } from '@src/services/mock';
+import { format } from 'date-fns';
 
 import useStore from '@src/hooks/useStore';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
-import {
-  ClockIcon,
-  InfoIcon,
-  MessagesIcon,
-  PinIcon,
-} from '@src/components/icons';
+import { MessagesIcon, PinIcon } from '@src/components/icons';
 
 import View from './View';
-import Image from './Image';
 import Text from './Text';
 import Button from './Button';
-import Rating from './Rating';
+import AppointmentHeader from './AppointmentHeader';
 import NotificationBadge from './NotificationBadge';
 
 type AppointmentCardProps = {
   appointment?: Appointment;
-  current?: boolean;
+  upcoming?: boolean;
   past?: boolean;
-  onPress?: () => void;
-  onPressBtn?: () => void;
+  onPress?: (appointment: Appointment) => void;
+  onPressBtn?: (appointment: Appointment) => void;
 };
 
 const AppointmentCard = ({
   appointment,
-  current,
+  upcoming,
   past,
   onPress,
   onPressBtn,
 }: AppointmentCardProps) => {
-  const { otherParty, startTime, endTime, price, review, address } = appointment;
+  const { startTime, address } = appointment;
 
   const { store } = useStore();
 
@@ -48,69 +40,46 @@ const AppointmentCard = ({
     canCancel,
     canEditNotes,
     canEditReview,
-    duration,
     time,
-    rating,
   } = useMemo(() => ({
-    canStart: !past && current && isTherapist,
-    canCancel: !past && !current && !isTherapist,
+    canStart: !past && !upcoming && isTherapist,
+    canCancel: !past && upcoming && !isTherapist,
     canEditNotes: past && isTherapist,
     canEditReview: past && !isTherapist,
-    duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
     time: format(new Date(startTime), `MM/dd${past ? '/yy' : ''} - hh:mm aaaa`),
-    rating: (review || {}).rating,
-  }), [current, past, isTherapist, startTime, endTime, review]);
+  }), [upcoming, past, isTherapist, startTime]);
 
   const hasButton = canStart || canCancel || canEditNotes || canEditReview;
+
+  const handlePress = () => onPress(appointment);
+
+  const handlePressBtn = () => onPressBtn(appointment);
 
   return (
     <View
       row
-      variant={current ? 'borderCard' : 'card'}
-      spacing={{ pb: (!past && !current && isTherapist) && 0 }}
-      bgColor={!current ? 'whiteTranslucent' : null}
-      onPress={onPress}
+      variant={!upcoming ? 'borderCard' : 'card'}
+      spacing={{ pb: (!past && upcoming && isTherapist) && 0 }}
+      bgColor={upcoming ? 'whiteTranslucent' : undefined}
+      onPress={handlePress}
     >
-      <View>
-        <Image rounded size={48} uri={mockImg} />
-        <View width={48} height={48} justifyCenter alignCenter>
-          <InfoIcon />
-        </View>
-      </View>
-      <View flex={1} spacing={{ pl: 3 }}>
-        <View row justifyBetween>
-          <Text variant={current ? 'title' : 'titleSmall'} numberOfLines={2}>
-            {`${otherParty.firstName} ${otherParty.lastName}`}
-          </Text>
-          <View row>
-            <ClockIcon />
-            <Text variant="regularSmall" spacing={{ ml: 1 }}>
-              {`${duration}min`}
-            </Text>
-          </View>
-        </View>
-        <View
-          row
-          justifyEnd={isTherapist}
-          justifyBetween={!isTherapist}
-          spacing={{ py: 1 }}
-        >
-          {!isTherapist && <Rating rating={rating} />}
-          <Text variant="titlePrimaryLarge">
-            {`$${price}`}
-          </Text>
-        </View>
-        <View row justifyBetween spacing={{ py: isTherapist && current && 2 }}>
+      <AppointmentHeader
+        showInfo
+        upcoming={upcoming}
+        isTherapist={isTherapist}
+        appointment={appointment}
+      >
+        <View row justifyBetween spacing={{ py: isTherapist && !upcoming && 2 }}>
           <View row flex={1}>
-            <View column flex={1} spacing={{ mt: (isTherapist && !current) && -5 }}>
-              <Text variant={current && isTherapist ? 'boldSecondary' : 'boldGrey'}>
+            <View column flex={1} spacing={{ mt: (isTherapist && upcoming) && -5 }}>
+              <Text variant={!upcoming && isTherapist ? 'boldSecondary' : 'boldGrey'}>
                 {time}
               </Text>
               <Text variant="regular">{address.street}</Text>
             </View>
           </View>
 
-          {current && isTherapist && (
+          {!upcoming && isTherapist && (
             <View row>
               <View variant="iconButton" onPress={() => null}>
                 <MessagesIcon size={0.5} />
@@ -128,7 +97,7 @@ const AppointmentCard = ({
             variant="secondary"
             spacing={{ mt: 3 }}
             bgColor={canCancel ? 'white' : null}
-            onPress={onPressBtn}
+            onPress={handlePressBtn}
           >
             {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
@@ -136,7 +105,7 @@ const AppointmentCard = ({
             {canEditReview && 'Edit Review'}
           </Button>
         )}
-      </View>
+      </AppointmentHeader>
     </View>
   );
 };

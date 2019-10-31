@@ -165,9 +165,11 @@ const FormField = ({
   const handleChangeText = (text: string) => onChangeText(text, validationError);
 
   useEffect(() => {
-    // effect to update useFormFields hook errors when error changes
-    // TODO: find a way to update hook only once
-    onChangeText(value, validationError);
+    if (validation) {
+      // effect to update useFormFields hook errors when error changes
+      // TODO: find a way to update hook only once
+      onChangeText(value, validationError);
+    }
   }, [validationError]);
 
   return (
@@ -183,6 +185,7 @@ const FormField = ({
               style={styles.text}
               value={value}
               multiline={multiline}
+              returnKeyType={multiline ? 'default' : undefined}
               scrollEnabled={false}
               onFocus={handleFocus}
               onBlur={handleBlur}

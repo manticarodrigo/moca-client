@@ -2,37 +2,43 @@ import React, { useMemo } from 'react';
 
 import { isBefore, isAfter } from 'date-fns';
 
-import useStore from '@src/hooks/useStore';
-
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
-const DashboardAppointments = ({ isTherapist, onPressAppointment, onPressCancel }) => {
-  const { store } = useStore();
+const nowDate = new Date();
 
+type Props = {
+  isTherapist: boolean;
+  appointments: Appointment[];
+  onPressAppointment: (appointment: Appointment) => void;
+  onPressAppointmentAction: (appointment: Appointment) => void;
+}
+
+const DashboardAppointments = ({
+  isTherapist,
+  appointments,
+  onPressAppointment,
+  onPressAppointmentAction,
+}: Props) => {
   const { current, next } = useMemo(() => {
-    if (!store.appointments.length) {
+    if (!appointments.length) {
       return { current: undefined, next: undefined };
     }
 
-    const sortedAppointments = store.appointments.sort(
-      (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
-    );
-
-    const nowDate = new Date();
-
     return {
-      current: sortedAppointments.find(
+      current: appointments.find(
         ({ startTime, endTime }) => (
           isBefore(new Date(startTime), nowDate) && isAfter(new Date(endTime), nowDate)
         ),
       ),
-      next: sortedAppointments.find(
+      next: appointments.find(
         ({ startTime }) => isAfter(new Date(startTime), nowDate),
       ),
     };
-  }, [store.appointments]);
+  }, [appointments]);
+
 
   return (
     <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
@@ -45,7 +51,6 @@ const DashboardAppointments = ({ isTherapist, onPressAppointment, onPressCancel 
         <View column justifyCenter spacing={{ mb: 3 }}>
           <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
           <AppointmentCard
-            current
             appointment={current}
             onPress={onPressAppointment}
             onPressBtn={onPressAppointment}
@@ -57,8 +62,9 @@ const DashboardAppointments = ({ isTherapist, onPressAppointment, onPressCancel 
         <View column justifyCenter>
           <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
           <AppointmentCard
+            upcoming
             appointment={next}
-            onPressBtn={onPressCancel}
+            onPressBtn={onPressAppointmentAction}
           />
         </View>
       )}
