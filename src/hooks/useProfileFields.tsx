@@ -42,7 +42,7 @@ const useProfileFields = (
 
     const primaryAddress = addresses.find(({ primary }) => primary) || { street: '' };
 
-    const therapistFirstRows: ProfileSection['rows'] = [
+    let therapistFirstRows: ProfileSection['rows'] = [
       {
         icon: RadiusLocationIcon,
         field: 'operationRadius',
@@ -69,6 +69,18 @@ const useProfileFields = (
       },
     ];
 
+    // add filters to remove rows on readonly
+    therapistFirstRows = readonly
+      ? therapistFirstRows.filter(({ field }) => {
+        switch (field) {
+          case 'status':
+            return false;
+          default:
+            return true;
+        }
+      })
+      : therapistFirstRows;
+
     const patientFirstRows: ProfileSection['rows'] = [
       {
         icon: SmallInjuryIcon,
@@ -80,7 +92,7 @@ const useProfileFields = (
       },
     ];
 
-    const firstRows: ProfileSection['rows'] = [
+    let firstRows: ProfileSection['rows'] = [
       {
         icon: RadiusLocationIcon,
         field: 'addresses',
@@ -99,6 +111,18 @@ const useProfileFields = (
       },
       ...(!isTherapist ? patientFirstRows : []),
     ];
+
+    // add filters to remove rows on readonly
+    firstRows = readonly
+      ? firstRows.filter(({ field }) => {
+        switch (field) {
+          case 'addresses':
+            return false;
+          default:
+            return true;
+        }
+      })
+      : firstRows;
 
     const middleRows: ProfileSection['rows'] = [
       {
