@@ -8,28 +8,6 @@ import ModalView from '@src/components/ModalView';
 
 import { mockImg } from '@src/services/mock';
 import { StarsIcon } from '@src/components/icons';
-// add scroll view
-
-const therapists = [{
-  username: 'ahmed',
-  rating: 4,
-},
-{
-  username: 'ahmed',
-  comment: 'it was very good',
-  rating: 1,
-}, {
-  username: 'ahmed',
-  comment: 'it was very good',
-  rating: 2,
-},
-{
-  username: 'ahmed',
-  comment: 'it was very good',
-  rating: 4,
-},
-];
-
 
 type BookmarkedProps = {
   closeInputModal: () => void;

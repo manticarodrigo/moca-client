@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import api from '@src/services/api';
 
-import useStore from '@src/hooks/useStore';
-
+import { WINDOW_WIDTH } from '@src/utlities/constants';
 import { mockImg } from '@src/services/mock';
+
+import useStore from '@src/hooks/useStore';
 
 import { BookmarkIcon } from '@src/components/icons';
 
@@ -15,9 +16,7 @@ import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import Rating from '@src/components/Rating';
 
-import TherapistProfile from '@src/screens/ProfileScreen/TherapistProfile';
-import PatientProfile from '@src/screens/ProfileScreen/PatientProfile';
-import { WINDOW_WIDTH } from '@src/utlities/constants';
+import ProfileList from '@src/screens/ProfileScreen/ProfileList';
 
 const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
   const { store } = useStore();
@@ -63,17 +62,15 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
                   <Text variant="title">
                     {`${profile.firstName} ${profile.lastName}`}
                   </Text>
-                  <View row alignCenter>
-                    <Rating rating={profile.rating} />
-                  </View>
+                  {!isTherapist && (
+                    <View row alignCenter>
+                      <Rating rating={profile.rating} />
+                    </View>
+                  )}
                 </View>
               </View>
               <View width={WINDOW_WIDTH} flex={3} bgColor="white">
-                {isTherapist ? (
-                  <PatientProfile modal patient={profile} />
-                ) : (
-                  <TherapistProfile modal therapist={profile} />
-                )}
+                <ProfileList readonly user={profile} />
               </View>
               <View flex={1} variant="borderTop" spacing={{ p: 4 }}>
                 <Button onPress={handlePressMessage}>

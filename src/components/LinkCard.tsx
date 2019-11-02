@@ -61,7 +61,7 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
       <View row justifyBetween spacing={{ p: 1 }} onPress={onPress}>
 
         <View row flex={1}>
-          <View column spacing={{ mr: 3 }}>{icon}</View>
+          <View column spacing={{ mr: 3 }} width={48}>{icon}</View>
           <View column flex={1}>
             <Text variant={titleVariant} spacing={{ mb: 2 }}>{title}</Text>
             {children}

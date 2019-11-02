@@ -4,14 +4,13 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
 
+const mock = {
+  title: 'Neck Hernia',
+  details: 'My back is injured I need emergency therapy …',
+};
+
 const InjuryCard = () => {
-
-  const InjuryExample = {
-    title: 'Neck Hernia',
-    details: 'Too bad my back is injured I need emergency therapy …',
-  }
-
-  const { title, details } = InjuryExample;
+  const { title, details } = mock;
 
   return (
     <View row variant="curveBorder" bgColor="white" spacing={{ p: 3, pb: 5, m: 4 }}>

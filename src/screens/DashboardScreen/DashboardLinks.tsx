@@ -123,8 +123,8 @@ const DashboardLinks = ({ isActivated }: Props) => {
                 <NotificationBadge large />
               </>
             ) : (
-              <Text variant="regularSmallDark">
-                No messages were found
+              <Text variant="regularSmallGrey">
+                No messages found
               </Text>
             )}
           </>

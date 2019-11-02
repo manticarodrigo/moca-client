@@ -3,9 +3,9 @@ import { Dispatch } from 'react';
 
 import api from '@src/services/api';
 import { StoreState } from '@src/StoreProvider';
-import { UserState } from '@src/store/reducers/UserReducer';
+import { UserState, Price } from '@src/store/reducers/UserReducer';
 
-import { User, Address, Price, Payment, PriceSessionTypeEnum } from '@src/services/openapi';
+import { User, Address, Payment } from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'LOGOUT_USER' }
@@ -75,6 +75,7 @@ const updateUser = (partialState: UserState) => async (
   const body = { user, ...rest };
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
+  // @ts-ignore
   const { data } = await updateMethod(store.user.id.toString(), body, options);
 
   dispatch({ type: 'UPDATE_USER_SUCCESS', payload: data as UserState });
@@ -116,12 +117,13 @@ const updateUserAddress = ({ coordinates, ...address }: AddAddressForm) => async
   return data;
 };
 
-const addPrice = (sessionType: PriceSessionTypeEnum, price: number) => async (
+const addPrice = (sessionType: Price['sessionType'], price: number) => async (
   dispatch: Dispatch<UserAction>, store: StoreState,
 ) => {
   const options = { headers: { Authorization: `Token ${store.user.token}` } };
   const body = { sessionType, price };
 
+  // @ts-ignore
   const { data } = await api.user.userTherapistPricesCreate(body, options);
 
   dispatch({ type: 'ADD_PRICE_SUCCESS', payload: data });

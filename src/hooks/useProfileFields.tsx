@@ -1,0 +1,175 @@
+import React, { useMemo } from 'react';
+import { formatDistanceStrict } from 'date-fns';
+
+import { UserState } from '@src/store/reducers/UserReducer';
+
+import {
+  RadiusLocationIcon,
+  GenderIcon,
+  CreditCardIcon,
+  StatusIcon,
+  RateIcon,
+  InjuryIcon,
+  QualificationIcon,
+  Badge2Icon,
+  BioIcon,
+  InterestIcon,
+} from '@src/components/icons';
+
+import { Props as ProfileSection } from '@src/screens/ProfileScreen/ProfileListCard';
+
+const SmallInjuryIcon = () => <InjuryIcon size={0.5} />;
+
+const useProfileFields = (
+  isTherapist: boolean,
+  readonly: boolean,
+  profile: UserState,
+  onPressField: (key: keyof UserState) => () => void,
+) => {
+  const sections: ProfileSection[] = useMemo(() => {
+    const {
+      addresses = [],
+      operationRadius = 10,
+      status,
+      reviewCount = 0,
+      gender,
+      injury = { title: '', description: '', images: [] },
+      bio,
+      licenseNumber,
+      certDate,
+      preferredAilments = [],
+    } = profile || {};
+
+    const primaryAddress = addresses.find(({ primary }) => primary) || { street: '' };
+
+    const therapistFirstRows: ProfileSection['rows'] = [
+      {
+        icon: RadiusLocationIcon,
+        field: 'operationRadius',
+        title: 'Service Area',
+        subtitle: (operationRadius && `${operationRadius} miles`)
+          || (!readonly ? 'Add Radius' : 'N/A'),
+        existingValue: !readonly && `${operationRadius}`,
+        onPress: !readonly ? onPressField('operationRadius') : undefined,
+      },
+      {
+        icon: StatusIcon,
+        field: 'status',
+        title: 'Status',
+        subtitle: readonly && (status === 'A' ? 'Available' : 'Unavailable'),
+        existingValue: !readonly ? status === 'A' : undefined,
+        onPress: !readonly ? onPressField('status') : undefined,
+      },
+      {
+        icon: RateIcon,
+        field: 'reviewCount',
+        title: 'Reviews',
+        subtitle: `${reviewCount.toString()} reviews`,
+        onPress: onPressField('reviewCount'),
+      },
+    ];
+
+    const patientFirstRows: ProfileSection['rows'] = [
+      {
+        icon: SmallInjuryIcon,
+        field: 'injury',
+        title: 'Injury',
+        subtitle: injury.title || (!readonly ? 'Add Injury' : 'N/A'),
+        existingValue: injury.images,
+        onPress: !readonly ? onPressField('injury') : undefined,
+      },
+    ];
+
+    const firstRows: ProfileSection['rows'] = [
+      {
+        icon: RadiusLocationIcon,
+        field: 'addresses',
+        title: 'Address',
+        subtitle: primaryAddress.street || (!readonly ? 'Add primary address' : 'N/A'),
+        onPress: !readonly ? onPressField('addresses') : undefined,
+      },
+      ...(isTherapist ? therapistFirstRows : []),
+      {
+        icon: GenderIcon,
+        field: 'gender',
+        title: 'Gender',
+        subtitle: (readonly && (gender === 'M' ? 'Male' : 'Female')) || undefined,
+        existingValue: !readonly ? gender : undefined,
+        onPress: !readonly ? onPressField('gender') : undefined,
+      },
+      ...(!isTherapist ? patientFirstRows : []),
+    ];
+
+    const middleRows: ProfileSection['rows'] = [
+      {
+        icon: BioIcon,
+        field: 'bio',
+        title: 'Personal Bio',
+        subtitle: bio || (!readonly ? 'Set Personal Bio' : 'N/A'),
+        onPress: !readonly ? onPressField('bio') : undefined,
+      },
+      {
+        icon: Badge2Icon,
+        field: 'licenseNumber',
+        title: 'License Number',
+        subtitle: licenseNumber || (!readonly ? 'Set License Number' : 'N/A'),
+        onPress: (!licenseNumber && !readonly) ? onPressField('licenseNumber') : undefined,
+      },
+      {
+        icon: InterestIcon,
+        field: 'certDate',
+        title: 'Years of Experience',
+        subtitle: certDate ? formatDistanceStrict(new Date(certDate), new Date()) : undefined,
+        existingValue: !certDate ? '' : undefined,
+        onPress: (!certDate && !readonly) ? onPressField('certDate') : undefined,
+      },
+      {
+        icon: QualificationIcon,
+        field: 'preferredAilments',
+        title: 'Qualifications',
+        subtitle: preferredAilments.join(', ') || (!readonly ? 'Set Qualifications' : 'N/A'),
+        onPress: !readonly ? onPressField('preferredAilments') : undefined,
+      },
+    ];
+
+    let lastRows: ProfileSection['rows'] = [
+      {
+        icon: CreditCardIcon,
+        field: 'payments',
+        title: isTherapist ? 'Bank Information' : 'Payment Method',
+        subtitle: `Add ${isTherapist ? 'Bank Information' : 'Payment Method'}`,
+        onPress: !readonly ? onPressField('payments') : undefined,
+      },
+    ];
+
+    // add filters to remove rows on readonly
+    lastRows = readonly
+      ? lastRows.filter(({ field }) => {
+        switch (field) {
+          case 'payments':
+            return false;
+          default:
+            return true;
+        }
+      })
+      : lastRows;
+
+    const baseSections: ProfileSection[] = [
+      {
+        readonly,
+        rows: firstRows,
+      },
+      ...(isTherapist ? [{ readonly, column: true, rows: middleRows }] : []),
+      {
+        readonly,
+        rows: lastRows,
+      },
+    ];
+
+    return baseSections;
+  }, [readonly, profile]);
+
+  return sections;
+};
+
+export default useProfileFields;

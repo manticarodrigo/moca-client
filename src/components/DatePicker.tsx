@@ -6,6 +6,7 @@ import RNDatePicker from 'react-native-datepicker';
 
 const DatePicker = ({ existingDate, placeholder, onChange }) => (
   <RNDatePicker
+    showIcon={false}
     style={{ width: 150 }}
     date={existingDate}
     mode="date"
@@ -22,6 +23,14 @@ const DatePicker = ({ existingDate, placeholder, onChange }) => (
       dateInput: {
         borderWidth: 0,
         alignItems: 'flex-start',
+        height: 'auto',
+      },
+      dateTouchBody: {
+        paddingTop: 8,
+        height: 'auto',
+      },
+      dateText: {
+        ...Texts.regularSmallGrey,
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore

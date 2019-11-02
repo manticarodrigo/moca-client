@@ -227,45 +227,6 @@ const borderShadowCard: ViewStyle = {
   borderColor: Colors.primary,
 };
 
-const profileSection: ViewStyle = {
-  ...Spacing.getStyles({ mb: 3 }),
-  backgroundColor: Colors.white,
-};
-
-const profileCard: ViewStyle = {
-  ...Spacing.getStyles({ pr: 4 }),
-  width: '100%',
-  height: 80,
-  backgroundColor: Colors.white,
-  alignItems: 'center',
-  borderBottomWidth: 1,
-  borderColor: Colors.secondaryLighter,
-};
-
-const profileCardLast: ViewStyle = {
-  ...profileCard,
-  borderColor: Colors.white,
-};
-
-const profileIconCard: ViewStyle = {
-  ...profileCard,
-  ...Spacing.getStyles({ px: 3 }),
-  width: 56,
-};
-
-const profileData: ViewStyle = {
-  ...Spacing.getStyles({ pt: 3, pr: 4, pb: 4 }),
-  width: '100%',
-  backgroundColor: Colors.white,
-  borderBottomWidth: 1,
-  borderColor: Colors.secondaryLighter,
-};
-
-const profileDataLast: ViewStyle = {
-  ...profileData,
-  borderBottomWidth: 0,
-};
-
 const iconButton: ViewStyle = {
   ...Spacing.getStyles({ p: 2 }),
   ...Shadow.getStyles({ color: 'primary', blur: 2, alpha: 0.08 }),
@@ -277,17 +238,6 @@ const iconButton: ViewStyle = {
   borderWidth: 1,
   borderColor: Colors.secondaryLighter,
   aspectRatio: 1,
-};
-
-const genderButton: ViewStyle = {
-  ...Spacing.getStyles({ m: 1 }),
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: 32,
-  width: 64,
-  borderRadius: 6,
-  borderWidth: 1,
-  borderColor: Colors.secondaryLighter,
 };
 
 const bottomBounceFill: ViewStyle = {
@@ -348,12 +298,7 @@ export {
   borderCardDisabled,
   shadowCard,
   borderShadowCard,
-  profileCard,
-  profileData,
-  profileSection,
-  profileIconCard,
   iconButton,
-  genderButton,
   bottomBounceFill,
   roundedBorder,
   roundedBorderGrey,
@@ -363,8 +308,6 @@ export {
   patientView,
   notificationBadge,
   notificationBadgeLarge,
-  profileDataLast,
-  profileCardLast,
   star,
   starFirst,
   starLast,

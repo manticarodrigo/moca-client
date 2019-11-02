@@ -4,6 +4,7 @@ import { NavigationStackScreenProps, NavigationStackScreenComponent } from 'reac
 
 import useStore from '@src/hooks/useStore';
 
+import { UserState } from '@src/store/reducers/UserReducer';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import api from '@src/services/api';
@@ -17,7 +18,7 @@ type Props = NavigationStackScreenProps & {
   isFocused?: boolean;
 }
 
-const HistoryScreen: NavigationStackScreenComponent = ({ isFocused }: Props) => {
+const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store } = useStore();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedAppointment, setSelectedAppointment] = useState();
@@ -43,6 +44,10 @@ const HistoryScreen: NavigationStackScreenComponent = ({ isFocused }: Props) => 
     }
   }, [isFocused]);
 
+  const onMessageUser = (user: UserState) => {
+    navigation.navigate('ConversationScreen', { user });
+  };
+
   const onOpenNotes = (index: number) => () => {
     if (appointments[index]) {
       setSelectedAppointment(appointments[index]);
@@ -63,7 +68,12 @@ const HistoryScreen: NavigationStackScreenComponent = ({ isFocused }: Props) => 
       <View scroll height="100%" bgColor="lightGrey" spacing={{ py: 3, px: 2 }}>
         {appointments.map((appointment, index) => (
           <View key={appointment.id} spacing={{ p: 2 }}>
-            <AppointmentCard past appointment={appointment} onPressBtn={onOpenNotes(index)} />
+            <AppointmentCard
+              past
+              appointment={appointment}
+              onPressBtn={onOpenNotes(index)}
+              onMessageUser={onMessageUser}
+            />
           </View>
         ))}
       </View>

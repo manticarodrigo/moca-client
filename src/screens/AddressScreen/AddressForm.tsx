@@ -24,6 +24,8 @@ type Props = {
 const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Props) => {
   const { store } = useStore();
 
+  const isRegisteringTherapist = store.registration.type === 'PT';
+
   const {
     formFields,
     isFormValid,
@@ -72,7 +74,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
             </View>
             <Text variant="regular" spacing={{ mt: 1 }}>
               {isRegistering && (
-                (store.registration.type === 'PT' && 'Please enter your address of operation below.')
+                (isRegisteringTherapist && 'Please enter your address of operation below.')
                 || 'What is your preferred address for treatment?'
               )}
               {!isRegistering && 'You can edit and add additional addresses for treatment.'}

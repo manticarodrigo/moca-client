@@ -14,8 +14,7 @@ import Text from '@src/components/Text';
 import View from '@src/components/View';
 import LogoBackground from '@src/components/LogoBackground';
 
-import PatientProfile from './PatientProfile';
-import TherapistProfile from './TherapistProfile';
+import ProfileList from './ProfileList';
 
 const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store } = useStore();
@@ -23,7 +22,6 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const isTherapist = store.user.type === 'PT';
 
   const onPressSettings = () => navigation.navigate('ProfileSettingsScreen');
-
 
   return (
     <View safeArea flex={1} bgColor="primary">
@@ -49,7 +47,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
       </View>
 
-      { isTherapist ? <TherapistProfile /> : <PatientProfile /> }
+      <ProfileList />
     </View>
   );
 };
@@ -58,7 +56,6 @@ ProfileScreen.navigationOptions = ({ navigationOptions }) => ({
   header: null,
   headerStyle: {
     ...navigationOptions.headerStyle as {},
-    // for back transition from settings
     backgroundColor: Colors.white,
   },
 });

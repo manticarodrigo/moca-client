@@ -51,6 +51,8 @@ const InputModal = (
   useEffect(() => {
     if (existingValue) {
       onChangeField('value')(existingValue.toString());
+    } else {
+      onChangeField('value')('');
     }
   }, [existingValue]);
 

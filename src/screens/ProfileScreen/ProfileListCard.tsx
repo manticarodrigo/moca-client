@@ -1,82 +1,147 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+
+import { UserState } from '@src/store/reducers/UserReducer';
+
+import { ArrowRightIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Toggle from '@src/components/Toggle';
+import RadioButtons from '@src/components/RadioButtons';
+import ImageSelector from '@src/components/ImageSelector';
+import DatePicker from '@src/components/DatePicker';
 
-const Row = ({ last, title, subtitle, content, onPress }) => (
-  <View
-    row
-    flex={1}
-    variant={last ? 'profileCardLast' : 'profileCard'}
-    justifyBetween
-    onPress={onPress}
-  >
-    {subtitle ? (
-      <View>
-        <Text variant="boldDark">{title}</Text>
-        <View spacing={{ pt: 2 }}>
-          <Text variant="regularSmallGrey">{subtitle}</Text>
-        </View>
-      </View>
-    ) : (
-      <View justifyCenter>
-        <Text variant="boldDark">{title}</Text>
-      </View>
-    )}
-    {content}
-  </View>
-);
+type RowBase = {
+  readonly?: boolean;
+  column?: boolean;
+  last?: boolean;
+  icon?: React.FunctionComponent;
+  title: string;
+  subtitle?: string;
+}
 
-const Column = ({ last, title, content, onPress }) => (
-  <View
-    variant={last ? 'profileDataLast' : 'profileData'}
-    onPress={onPress}
-  >
-    <Text variant="boldDark">{title}</Text>
-    <View spacing={{ pt: 2 }} width={295}>
-      {typeof content === 'string' ? (
-        <Text variant="regularSmallGrey">
-          {content}
-        </Text>
-      ) : content}
-    </View>
-  </View>
-);
+type Row = RowBase & {
+  field: keyof UserState;
+  existingValue?: string | string[] | boolean;
+  onPress?: (value?: string | boolean) => void;
+};
 
-const ProfileListCard = ({ column = false, readonly, rows = [], bottomChildren = null }) => {
-  const readableRows = useMemo(() => readonly
-    ? rows.filter(({ hideOnReadonly }) => !hideOnReadonly)
-    : rows,
-  [rows, readonly]);
+const Row = ({ field, readonly, column, last, title, subtitle, existingValue, onPress }: Row) => {
+  const hasOwnSubmit = field === 'status' || field === 'gender' || field === 'certDate';
+
+  const renderContent = () => {
+    switch (field) {
+      case 'status':
+        if (typeof existingValue === 'boolean') {
+          return (
+            <Toggle
+              onLabel="Available"
+              offLabel="Unavailable"
+              existingValue={existingValue}
+              onToggle={onPress}
+            />
+          );
+        }
+        return null;
+      case 'gender':
+        if (typeof existingValue === 'string') {
+          return (
+            <RadioButtons
+              readonly={readonly}
+              options={[{ label: 'Male', value: 'M' }, { label: 'Female', value: 'F' }]}
+              existingValue={existingValue}
+              onChange={onPress}
+            />
+          );
+        }
+        return null;
+      case 'injury':
+        if (typeof existingValue === 'object') {
+          return (
+            <View row alignCenter>
+              <ImageSelector images={existingValue} />
+              {!readonly && (
+                <View spacing={{ pl: 3 }}>
+                  <ArrowRightIcon />
+                </View>
+              )}
+            </View>
+          );
+        }
+        return null;
+      case 'certDate':
+        if (typeof existingValue === 'string') {
+          return (
+            <DatePicker
+              existingDate={existingValue}
+              placeholder="Set License Date"
+              onChange={onPress}
+            />
+          );
+        }
+        return null;
+      default:
+        return !readonly && !column ? <ArrowRightIcon /> : undefined;
+    }
+  };
 
   return (
-    <View variant="profileSection">
-      {readableRows.map(({
-        title,
-        subtitle,
-        icon,
-        content,
-        onPress,
-      }, index) => {
-        const Icon = icon;
-
-        const last = index === readableRows.length - 1;
-        const rowProps = { last, title, subtitle, onPress, content };
-
-        return (
-          <View key={title} row alignCenter>
-            <View spacing={{ p: 3 }}>
-              {typeof icon === 'function' ? (
-                <Icon />
-              ) : icon}
-            </View>
-            {column ? <Column {...rowProps} /> : <Row {...rowProps} />}
+    <View
+      flex={!column ? 1 : undefined}
+      row={!column}
+      justifyBetween={!column}
+      alignCenter={!column}
+      spacing={{ pt: column && 3, pr: 4, pb: column && 4 }}
+      variant={!last ? 'borderBottom' : undefined}
+      width="100%"
+      height={!column ? 80 : undefined}
+      bgColor="white"
+      onPress={!hasOwnSubmit ? onPress : undefined}
+    >
+      {subtitle ? (
+        <View>
+          <Text variant="boldDark">{title}</Text>
+          <View spacing={{ pt: 2 }}>
+            <Text variant="regularSmallGrey">{subtitle}</Text>
           </View>
-        );
-      })}
-      {bottomChildren}
+        </View>
+      ) : (
+        <View justifyCenter>
+          <Text variant="boldDark">{title}</Text>
+        </View>
+      )}
+      {renderContent()}
     </View>
   );
 };
+
+export type Props = {
+  column?: boolean;
+  readonly?: boolean;
+  rows: Row[];
+  bottomChildren?: JSX.Element[] | JSX.Element;
+}
+
+const ProfileListCard = ({ column, readonly, rows, bottomChildren }: Props) => (
+  <View spacing={{ mb: 3 }} bgColor="white">
+    <>
+      {rows.map((props, index) => {
+        const last = index === rows.length - 1;
+
+        const rowProps = { readonly, column, last, ...props };
+
+        return (
+          <View key={props.field} row alignCenter>
+            <View width={55} spacing={{ p: 3 }}>
+              <props.icon />
+            </View>
+            <Row {...rowProps} />
+          </View>
+        );
+      })}
+    </>
+    <>{bottomChildren}</>
+  </View>
+);
 
 export default ProfileListCard;

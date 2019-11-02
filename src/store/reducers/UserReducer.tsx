@@ -2,7 +2,13 @@ import storage from '@src/services/storage';
 
 import { UserAction } from '@src/store/actions/UserAction';
 
-import { User, Patient, Therapist, Payment as BadPayment } from '@src/services/openapi';
+import {
+  User,
+  Patient,
+  Therapist,
+  Payment as BadPayment,
+  Price as BadPrice,
+} from '@src/services/openapi';
 import { BrandType } from '@src/services/stripe';
 
 export type Card = {
@@ -24,6 +30,10 @@ export type Payment = Omit<BadPayment, 'type' | 'paymentInfo'> & {
   paymentInfo: Card & BankAccount;
 }
 
+export type Price = Omit<BadPrice, 'sessionType'> & {
+  sessionType: 'thirty' | 'fourtyfive' | 'sixty' | 'evaluation';
+}
+
 export type Review = {
   id: number;
   rating: number;
@@ -33,11 +43,13 @@ export type Review = {
 export type UserState = &
   Omit<User, 'type' | 'email' | 'gender' | 'payments'> &
   Omit<Patient, 'user'> &
-  Omit<Therapist, 'user'> & {
+  Omit<Therapist, 'user' | 'status' | 'prices'> & {
   token?: string;
   email?: string;
   type?: 'PT' | 'PA';
+  status?: 'A' | 'B';
   gender?: 'M' | 'F';
+  prices?: Price[];
   payments?: Payment[];
   storageReady?: boolean;
 }
@@ -74,11 +86,11 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'UPDATE_USER_ADDRESS_SUCCESS':
       newState = updateItem('addresses', state, action.payload);
       break;
+    case 'ADD_PRICE_SUCCESS':
+      newState = updateItem('prices', state, action.payload);
+      break;
     case 'ADD_PAYMENT_SUCCESS':
       newState = appendItem('payments', state, action.payload);
-      break;
-    case 'ADD_PRICE_SUCCESS':
-      newState = appendItem('prices', state, action.payload);
       break;
     default:
       break;

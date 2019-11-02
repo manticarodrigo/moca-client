@@ -27,7 +27,9 @@ const WalletScreen = () => {
               variant={index === 0 ? 'roundedBorderLeft' : 'roundedBorderRight'}
               onPress={() => handlePress(index)}
             >
-              <Text variant={index === active ? 'titleSmallWhite' : 'titleSmallSecondary'}>{value}</Text>
+              <Text variant={index === active ? 'titleSmallWhite' : 'titleSmallSecondary'}>
+                {value}
+              </Text>
             </View>
           ))}
         </View>

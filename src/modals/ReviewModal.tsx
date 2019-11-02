@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -39,7 +39,7 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }) => {
             How was your session?
           </Text>
           <View row alignCenter variant="shadow">
-            {[...Array(maxRate)].map((value, index) => (
+            {[...Array(maxRate)].map((_, index) => (
               <StarCard
                 key={index}
                 first={index === 0}
