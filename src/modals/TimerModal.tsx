@@ -50,9 +50,9 @@ const TimerModal = ({
     if (visible) {
       onStart();
 
-      if (!isTherapist) {
-        setTimeout(handleEnd, 3000);
-      }
+      // if (!isTherapist) {
+      //   setTimeout(handleEnd, 3000);
+      // }
     } else {
       onPause();
     }

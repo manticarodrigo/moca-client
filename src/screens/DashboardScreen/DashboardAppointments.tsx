@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-
 import { isBefore, isAfter } from 'date-fns';
+
+import { UserState } from '@src/store/reducers/UserReducer';
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
-import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 const nowDate = new Date();
 
@@ -14,6 +15,7 @@ type Props = {
   appointments: Appointment[];
   onPressAppointment: (appointment: Appointment) => void;
   onPressAppointmentAction: (appointment: Appointment) => void;
+  onMessageUser: (user: UserState) => void;
 }
 
 const DashboardAppointments = ({
@@ -21,6 +23,7 @@ const DashboardAppointments = ({
   appointments,
   onPressAppointment,
   onPressAppointmentAction,
+  onMessageUser,
 }: Props) => {
   const { current, next } = useMemo(() => {
     if (!appointments.length) {
@@ -54,6 +57,7 @@ const DashboardAppointments = ({
             appointment={current}
             onPress={onPressAppointment}
             onPressBtn={onPressAppointment}
+            onMessageUser={onMessageUser}
           />
         </View>
       )}
@@ -65,6 +69,7 @@ const DashboardAppointments = ({
             upcoming
             appointment={next}
             onPressBtn={onPressAppointmentAction}
+            onMessageUser={onMessageUser}
           />
         </View>
       )}

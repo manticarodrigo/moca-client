@@ -1,8 +1,9 @@
 import { AppointmentAction } from '@src/store/actions/AppointmentAction';
+import { Address } from '@src/store/reducers/ConversationReducer';
 
 import { Appointment as BadAppointment } from '@src/services/openapi';
 
-export type Appointment = Omit<BadAppointment, 'otherParty' | 'startTime'> & {
+export type Appointment = Omit<BadAppointment, 'otherParty' | 'startTime' | 'address'> & {
   startTime: string;
   otherParty: {
     id: number;
@@ -10,6 +11,7 @@ export type Appointment = Omit<BadAppointment, 'otherParty' | 'startTime'> & {
     lastName: string;
     image: string;
   };
+  address: Address;
 }
 
 export type AppointmentState = Appointment[]

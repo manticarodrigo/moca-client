@@ -130,7 +130,7 @@ const TherapistProfile = ({ modal, therapist }: TherapistProfileProps) => {
       <View scroll bgColor="lightGrey">
         <TouchableWithoutFeedback>
           <TouchableHighlight>
-            <View flex={1}>
+            <View flex={1} spacing={{ pb: modal ? 6 : 0 }}>
               <ProfilePriceTableCard
                 readonly={!!modal}
                 existing={userInfo.prices}

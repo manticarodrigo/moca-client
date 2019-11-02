@@ -6,6 +6,7 @@ import { subHours } from 'date-fns';
 import api from '@src/services/api';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
+import { UserState } from '@src/store/reducers/UserReducer';
 
 import useStore from '@src/hooks/useStore';
 
@@ -79,6 +80,12 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
     setModalState((prev) => ({ ...prev, cancellation: true }));
   };
 
+  const onMessageUser = (user: UserState) => {
+    setModalState((prev) => ({ ...prev, appointment: false }));
+
+    navigation.navigate('ConversationScreen', { user });
+  };
+
   const onCloseModal = (key: keyof ModalState) => () => setModalState(
     (prev) => ({ ...prev, [key]: false }),
   );
@@ -150,6 +157,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
               isTherapist={isTherapist}
               onPressAppointment={onPressAppointment}
               onPressAppointmentAction={onPressAppointmentAction}
+              onMessageUser={onMessageUser}
             />
           )}
           <DashboardLinks isActivated={isActivated} />

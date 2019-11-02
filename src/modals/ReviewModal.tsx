@@ -1,6 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
@@ -9,20 +11,14 @@ import AppointmentHeader from '@src/components/AppointmentHeader';
 import FormField from '@src/components/FormField';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
-import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 const maxRate = 5;
 
 const ReviewModal = ({ visible, appointment, onSubmit, onClose }) => {
-  const [visibleAsync, setVisibleAsync] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
   const buttonText = rating ? 'Submit Review' : 'Skip Review for now';
-
-  useEffect(() => {
-    setTimeout(() => setVisibleAsync(visible), 500);
-  }, [visible]);
 
   const onPressRating = (index: number) => () => setRating(index);
 
@@ -33,7 +29,7 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }) => {
   };
 
   return (
-    <Modal isVisible={visibleAsync} onToggle={onClose}>
+    <Modal isVisible={visible} onToggle={onClose}>
       <View row spacing={{ py: 2, px: 4 }} variant="borderBottom">
         <AppointmentHeader isTherapist={false} appointment={appointment} />
       </View>

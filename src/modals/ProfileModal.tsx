@@ -16,26 +16,33 @@ import Button from '@src/components/Button';
 import Rating from '@src/components/Rating';
 
 import TherapistProfile from '@src/screens/ProfileScreen/TherapistProfile';
+import PatientProfile from '@src/screens/ProfileScreen/PatientProfile';
+import { WINDOW_WIDTH } from '@src/utlities/constants';
 
-
-const TherapistProfileModal = ({ therapistId, visible, onPressMessage, onClose }) => {
+const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
   const { store } = useStore();
-  const [therapist, setTherapist] = useState();
+  const [profile, setProfile] = useState();
+
+  const isTherapist = store.user.type === 'PT';
 
   useEffect(() => {
-    if (!therapistId) return;
+    if (!userId) return;
 
-    const fetchTherapist = async () => {
+    const fetchProfile = async () => {
       const options = { headers: { Authorization: `Token ${store.user.token}` } };
-      const { data } = await api.user.userTherapistRead_20(therapistId, options);
+      const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_20;
 
-      setTherapist(data);
+      const { data } = await method(userId, options);
+
+      setProfile(data);
     };
 
-    fetchTherapist();
-  }, [therapistId]);
+    fetchProfile();
+  }, [userId]);
 
-  const handlePressMessage = () => onPressMessage(therapist);
+  const handlePressMessage = () => onMessage(profile);
+
+  const buttonText = isTherapist ? 'Send Message' : 'Message / Schedule';
 
   return (
     <Modal
@@ -48,25 +55,29 @@ const TherapistProfileModal = ({ therapistId, visible, onPressMessage, onClose }
           <View alignEnd spacing={{ mr: 3 }}>
             <BookmarkIcon />
           </View>
-          {therapist && (
+          {profile && (
             <>
               <View row spacing={{ p: 4 }} bgColor="white" variant="borderBottom">
                 <Image rounded size={80} uri={mockImg} />
                 <View column justifyCenter spacing={{ px: 3 }}>
                   <Text variant="title">
-                    {`${therapist.firstName} ${therapist.lastName}`}
+                    {`${profile.firstName} ${profile.lastName}`}
                   </Text>
                   <View row alignCenter>
-                    <Rating rating={therapist.rating} />
+                    <Rating rating={profile.rating} />
                   </View>
                 </View>
               </View>
-              <View flex={3} bgColor="white">
-                <TherapistProfile therapist={therapist} modal />
+              <View width={WINDOW_WIDTH} flex={3} bgColor="white">
+                {isTherapist ? (
+                  <PatientProfile modal patient={profile} />
+                ) : (
+                  <TherapistProfile modal therapist={profile} />
+                )}
               </View>
               <View flex={1} variant="borderTop" spacing={{ p: 4 }}>
                 <Button onPress={handlePressMessage}>
-                    Message / Schedule
+                  {buttonText}
                 </Button>
               </View>
             </>
@@ -78,4 +89,4 @@ const TherapistProfileModal = ({ therapistId, visible, onPressMessage, onClose }
   );
 };
 
-export default TherapistProfileModal;
+export default ProfileModal;

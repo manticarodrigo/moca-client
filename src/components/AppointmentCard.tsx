@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
-
 import { format } from 'date-fns';
+
+import { openMapMarker } from '@src/utlities/maps';
 
 import useStore from '@src/hooks/useStore';
 
+import { UserState } from '@src/store/reducers/UserReducer';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import { MessagesIcon, PinIcon } from '@src/components/icons';
@@ -20,6 +22,7 @@ type AppointmentCardProps = {
   past?: boolean;
   onPress?: (appointment: Appointment) => void;
   onPressBtn?: (appointment: Appointment) => void;
+  onMessageUser: (user: UserState) => void;
 };
 
 const AppointmentCard = ({
@@ -28,46 +31,54 @@ const AppointmentCard = ({
   past,
   onPress,
   onPressBtn,
+  onMessageUser,
 }: AppointmentCardProps) => {
-  const { startTime, address } = appointment;
+  const { startTime, address, otherParty } = appointment;
 
   const { store } = useStore();
 
   const isTherapist = store.user.type === 'PT';
 
   const {
-    canStart,
     canCancel,
     canEditNotes,
     canEditReview,
     time,
   } = useMemo(() => ({
-    canStart: !past && !upcoming && isTherapist,
-    canCancel: !past && upcoming && !isTherapist,
+    canCancel: !past && upcoming,
     canEditNotes: past && isTherapist,
     canEditReview: past && !isTherapist,
     time: format(new Date(startTime), `MM/dd${past ? '/yy' : ''} - hh:mm aaaa`),
   }), [upcoming, past, isTherapist, startTime]);
 
-  const hasButton = canStart || canCancel || canEditNotes || canEditReview;
+  const hasButton = canCancel || canEditNotes || canEditReview;
 
   const handlePress = () => onPress(appointment);
 
   const handlePressBtn = () => onPressBtn(appointment);
 
+  const handlePressChat = () => onMessageUser(appointment.otherParty);
+
+  const handlePressLocation = () => {
+    const label = `${otherParty.firstName}'s Location`;
+    const [lat, lng] = address.location.coordinates;
+
+    openMapMarker(label, lat, lng);
+  };
+
   return (
     <View
       row
       variant={!upcoming ? 'borderCard' : 'card'}
-      spacing={{ pb: (!past && upcoming && isTherapist) && 0 }}
       bgColor={upcoming ? 'whiteTranslucent' : undefined}
-      onPress={handlePress}
+      onPress={onPress && handlePress}
     >
       <AppointmentHeader
         showInfo
         upcoming={upcoming}
         isTherapist={isTherapist}
         appointment={appointment}
+        onMessageUser={onMessageUser}
       >
         <View row justifyBetween spacing={{ py: isTherapist && !upcoming && 2 }}>
           <View row flex={1}>
@@ -79,15 +90,17 @@ const AppointmentCard = ({
             </View>
           </View>
 
-          {!upcoming && isTherapist && (
+          {!upcoming && (
             <View row>
-              <View variant="iconButton" onPress={() => null}>
+              <View variant="iconButton" onPress={handlePressChat}>
                 <MessagesIcon size={0.5} />
                 <NotificationBadge />
               </View>
-              <View variant="iconButton" spacing={{ ml: 2 }} onPress={() => null}>
-                <PinIcon size={0.8} />
-              </View>
+              {isTherapist && (
+                <View variant="iconButton" spacing={{ ml: 2 }} onPress={handlePressLocation}>
+                  <PinIcon size={0.8} />
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -99,7 +112,6 @@ const AppointmentCard = ({
             bgColor={canCancel ? 'white' : null}
             onPress={handlePressBtn}
           >
-            {canStart && 'Begin Session'}
             {canCancel && 'Cancel Appointment'}
             {canEditNotes && 'Edit Notes'}
             {canEditReview && 'Edit Review'}

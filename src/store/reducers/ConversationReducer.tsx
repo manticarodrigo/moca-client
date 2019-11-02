@@ -1,7 +1,7 @@
 import { ConversationAction } from '@src/store/actions/ConversationAction';
 import { UserSnippet, Message as BadMessage, Address as BadAddress } from '@src/services/openapi';
 
-type Address = Omit<BadAddress, 'location'> & {
+export type Address = Omit<BadAddress, 'location'> & {
   location: {
     type: 'Point';
     coordinates: [number, number];

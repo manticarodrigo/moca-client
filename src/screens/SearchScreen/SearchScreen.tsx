@@ -10,7 +10,7 @@ import { FilterParams } from '@src/store/reducers/SearchReducer';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import TherapistProfileModal from '@src/modals/TherapistProfileModal';
+import ProfileModal from '@src/modals/ProfileModal';
 
 import SearchField from './SearchField';
 import SearchActiveFilters from './SearchActiveFilters';
@@ -94,10 +94,10 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   return (
     <>
-      <TherapistProfileModal
+      <ProfileModal
         visible={!!selectedId}
-        therapistId={selectedId}
-        onPressMessage={onMessageTherapist}
+        userId={selectedId}
+        onMessage={onMessageTherapist}
         onClose={() => setSelectedId(undefined)}
       />
       <SearchField
