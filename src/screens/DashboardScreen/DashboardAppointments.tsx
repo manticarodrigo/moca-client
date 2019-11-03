@@ -42,7 +42,6 @@ const DashboardAppointments = ({
     };
   }, [appointments]);
 
-
   return (
     <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
 

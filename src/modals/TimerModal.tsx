@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { format } from 'date-fns';
+import { format, differenceInMinutes, differenceInSeconds } from 'date-fns';
 
 import { TimerBackgroundIcon } from '@src/components/icons';
 
@@ -17,7 +17,7 @@ const TimerModal = ({
   onEnd,
   onClose,
 }) => {
-  const { startTime } = appointment || {};
+  const { startTime, endTime } = appointment || {};
   const [secondsCounter, setSecondsCounter] = useState(0);
   const [didTimeStart, setDidTimeStart] = useState(false);
 
@@ -33,7 +33,7 @@ const TimerModal = ({
     setDidTimeStart(true);
 
     const interval = setInterval(() => {
-      setSecondsCounter((counter) => counter + 1);
+      setSecondsCounter((counter) => counter - 1);
     }, 1000);
 
     timer.current = interval;
@@ -41,18 +41,32 @@ const TimerModal = ({
 
   const onPause = () => clearInterval(timer.current);
 
+  const handleClose = () => {
+    onPause();
+    onClose();
+  };
+
   const handleEnd = () => {
     onPause();
     onEnd();
   };
 
   useEffect(() => {
+    const totalMinutes = differenceInMinutes(new Date(endTime), new Date(startTime));
+    const elapsed = differenceInSeconds(new Date(), new Date(startTime));
+
+    setSecondsCounter((totalMinutes * 60) - elapsed);
+  }, [startTime, endTime, visible]);
+
+  useEffect(() => {
+    if (secondsCounter === 1) {
+      handleEnd();
+    }
+  }, [secondsCounter]);
+
+  useEffect(() => {
     if (visible) {
       onStart();
-
-      // if (!isTherapist) {
-      //   setTimeout(handleEnd, 3000);
-      // }
     } else {
       onPause();
     }
@@ -63,7 +77,7 @@ const TimerModal = ({
   );
 
   return (
-    <Modal isVisible={visible} onToggle={onClose}>
+    <Modal isVisible={visible} onToggle={handleClose}>
       <View row spacing={{ py: 2, px: 4 }} variant="borderBottom">
         <AppointmentHeader isTherapist={isTherapist} appointment={appointment} />
       </View>

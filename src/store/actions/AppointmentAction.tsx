@@ -34,10 +34,7 @@ const getUpcomingAppointments = () => async (
   const { data } = await api.appointment.appointmentList(options);
 
   // @ts-ignore
-  const { patient, therapist, ...rest } = data; // therapist/patient come back as ids so remove them
-
-  // @ts-ignore
-  dispatch({ type: 'GET_UPCOMING_APPOINTMENTS_SUCCESS', payload: rest });
+  dispatch({ type: 'GET_UPCOMING_APPOINTMENTS_SUCCESS', payload: data });
 };
 
 const getLastAppointment = () => async (
@@ -78,7 +75,10 @@ const updateAppointment = (
   // @ts-ignore
   const { data } = await api.appointment.appointmentPartialUpdate(appointmentId, body, options);
 
-  dispatch({ type: 'UPDATE_APPOINTMENT_SUCCESS', payload: data });
+  // @ts-ignore
+  const { patient, therapist, ...rest } = data; // therapist/patient come back as ids so remove them
+
+  dispatch({ type: 'UPDATE_APPOINTMENT_SUCCESS', payload: rest });
 };
 
 export {
