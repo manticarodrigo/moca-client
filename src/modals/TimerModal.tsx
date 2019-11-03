@@ -2,18 +2,22 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { format, differenceInMinutes, differenceInSeconds } from 'date-fns';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import { TimerBackgroundIcon } from '@src/components/icons';
 
 import Modal from '@src/components/Modal';
-import Text from '@src/components/Text';
 import View from '@src/components/View';
-import Button from '@src/components/Button';
 import AppointmentHeader from '@src/components/AppointmentHeader';
+import SegmentedControl from '@src/components/SegmentedControl';
+import Text from '@src/components/Text';
+import Button from '@src/components/Button';
 
 const TimerModal = ({
   visible,
   isTherapist,
   appointment,
+  onOpenNotes,
   onEnd,
   onClose,
 }) => {
@@ -51,6 +55,12 @@ const TimerModal = ({
     onEnd();
   };
 
+  const handleOpenNotes = () => {
+    handleClose();
+
+    setTimeout(onOpenNotes, 1000);
+  };
+
   useEffect(() => {
     const totalMinutes = differenceInMinutes(new Date(endTime), new Date(startTime));
     const elapsed = differenceInSeconds(new Date(), new Date(startTime));
@@ -78,8 +88,22 @@ const TimerModal = ({
 
   return (
     <Modal isVisible={visible} onToggle={handleClose}>
-      <View row spacing={{ py: 2, px: 4 }} variant="borderBottom">
-        <AppointmentHeader isTherapist={isTherapist} appointment={appointment} />
+      <View width={WINDOW_WIDTH} variant="borderBottom">
+        <View row spacing={{ py: 2, px: 4 }}>
+          <AppointmentHeader
+            minimal={isTherapist}
+            isTherapist={isTherapist}
+            appointment={appointment}
+          />
+        </View>
+        {isTherapist && (
+          <SegmentedControl
+            light
+            selected="timer"
+            options={[{ value: 'timer', label: 'Timer' }, { value: 'notes', label: 'Notes' }]}
+            onChange={handleOpenNotes}
+          />
+        )}
       </View>
       <View alignCenter>
         <View

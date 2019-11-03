@@ -16,6 +16,7 @@ import Text from './Text';
 import Rating from './Rating';
 
 type Props = {
+  minimal?: boolean;
   upcoming?: boolean;
   showInfo?: boolean;
   isTherapist: boolean;
@@ -25,6 +26,7 @@ type Props = {
 }
 
 const AppointmentHeader = ({
+  minimal,
   upcoming,
   showInfo,
   isTherapist,
@@ -86,17 +88,20 @@ const AppointmentHeader = ({
               </Text>
             </View>
           </View>
-          <View
-            row
-            justifyEnd={isTherapist}
-            justifyBetween={!isTherapist}
-            spacing={{ py: 1 }}
-          >
-            {!isTherapist && <Rating rating={rating} spacing={{ mt: -3 }} />}
-            <Text variant="titlePrimaryLarge">
-              {`$${price}`}
-            </Text>
-          </View>
+
+          {!minimal && (
+            <View
+              row
+              justifyEnd={isTherapist}
+              justifyBetween={!isTherapist}
+              spacing={{ py: 1 }}
+            >
+              {!isTherapist && <Rating rating={rating} spacing={{ mt: -3 }} />}
+              <Text variant="titlePrimaryLarge">
+                {`$${price}`}
+              </Text>
+            </View>
+          )}
           <>
             {children}
           </>

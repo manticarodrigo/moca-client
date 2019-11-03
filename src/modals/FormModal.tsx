@@ -21,7 +21,8 @@ type Props<State> = {
   visible: boolean;
   fieldConfig: FieldConfig;
   images: string[];
-  title: string;
+  header?: JSX.Element;
+  title?: string;
   subtitle?: string;
   submitText: string;
   onSubmit: (formFields: State) => void;
@@ -32,6 +33,7 @@ const FormModal = <State extends { [key: string]: string }> ({
   visible,
   fieldConfig,
   images = [],
+  header,
   title,
   subtitle,
   submitText,
@@ -61,15 +63,17 @@ const FormModal = <State extends { [key: string]: string }> ({
 
       <View alignCenter spacing={{ pb: 6 }}>
 
-        <View row>
-          <View flex={1} row alignCenter spacing={{ p: 4 }} variant="borderBottom">
-            <Image rounded size={70} />
-            <View spacing={{ pl: 4, py: 4 }}>
-              <Text variant="titlePrimary">{title}</Text>
-              {!!subtitle && <Text variant="regularDark">{subtitle}</Text>}
+        {header || (
+          <View row>
+            <View flex={1} row alignCenter spacing={{ p: 4 }} variant="borderBottom">
+              <Image rounded size={70} />
+              <View spacing={{ pl: 4, py: 4 }}>
+                <Text variant="titlePrimary">{title}</Text>
+                {!!subtitle && <Text variant="regularDark">{subtitle}</Text>}
+              </View>
             </View>
           </View>
-        </View>
+        )}
 
         <View flex={1} bgColor="lightGrey">
           <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }} extraHeight={0}>

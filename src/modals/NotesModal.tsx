@@ -1,29 +1,26 @@
 import React, { useMemo } from 'react';
 
-import { format } from 'date-fns';
-
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
+
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
+import View from '@src/components/View';
+import AppointmentHeader from '@src/components/AppointmentHeader';
+import SegmentedControl from '@src/components/SegmentedControl';
 
 import FormModal from './FormModal';
 
 type Props = {
-  appointment: Appointment;
   visible: boolean;
+  current?: boolean;
+  appointment: Appointment;
+  onOpenTimer?: () => void;
   onSubmit: (values: Appointment['note']) => void;
   onClose: () => void;
 }
 
-const NotesModal = ({ appointment, onClose, onSubmit }: Props) => {
-  const { note, otherParty, startTime } = appointment || {};
-
-  const { otherPartyName, dateString } = useMemo(() => {
-    const { firstName = '', lastName = '' } = otherParty || {};
-
-    return {
-      otherPartyName: `${firstName} ${lastName}`,
-      dateString: startTime ? format(new Date(startTime), 'MM/dd/yyyy hh:mm aaaa') : '',
-    };
-  }, [otherParty, startTime]);
+const NotesModal = ({ visible, current, appointment, onOpenTimer, onClose, onSubmit }: Props) => {
+  const { note } = appointment || {};
 
   const fieldConfig = useMemo(() => {
     const {
@@ -43,13 +40,35 @@ const NotesModal = ({ appointment, onClose, onSubmit }: Props) => {
     };
   }, [note]);
 
+  const handleOpenNotes = () => {
+    onClose();
+    setTimeout(() => onOpenTimer(), 1000);
+  };
+
+  const isCurrent = !!(current && onOpenTimer);
+
+  const header = (
+    <View width={WINDOW_WIDTH} variant="borderBottom">
+      <View row spacing={{ py: 2, px: 4 }}>
+        <AppointmentHeader minimal={isCurrent} isTherapist appointment={appointment} />
+      </View>
+      {isCurrent && (
+        <SegmentedControl
+          light
+          selected="notes"
+          options={[{ value: 'timer', label: 'Timer' }, { value: 'notes', label: 'Notes' }]}
+          onChange={handleOpenNotes}
+        />
+      )}
+    </View>
+  );
+
   return (
     <FormModal
-      visible={!!appointment}
+      visible={visible}
       fieldConfig={fieldConfig}
       images={[]}
-      title={otherPartyName}
-      subtitle={dateString}
+      header={header}
       submitText="Save Notes"
       onSubmit={onSubmit}
       onClose={onClose}

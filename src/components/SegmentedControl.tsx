@@ -3,22 +3,33 @@ import React from 'react';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-const SegmentedControl = ({ activeKey, tabMap, onPress }) => (
-  <View bgColor="primary" alignCenter>
+type Option = {
+  label: string;
+  value: string;
+}
+
+type Props = {
+  light?: boolean;
+  options: Option[];
+  selected: string;
+  onChange: (value: string) => void;
+}
+
+const SegmentedControl = ({ light, options, selected, onChange }: Props) => (
+  <View bgColor={light ? 'white' : 'primary'} alignCenter>
     <View row justifyCenter spacing={{ p: 4 }}>
-      {Object.entries(tabMap).map(([key, value], index) => (
+      {options.map(({ value, label }, index) => (
         <View
-          key={key}
+          key={value}
           alignCenter
           flex={1}
-          bgColor={key === activeKey ? 'secondary' : 'primary'}
           spacing={{ p: 2 }}
           variant={index === 0 ? 'roundedBorderLeft' : 'roundedBorderRight'}
-          onPress={() => onPress(key)}
+          bgColor={value === selected ? 'secondary' : 'transparent'}
+          onPress={value !== selected ? () => onChange(value) : undefined}
         >
-          <Text variant={key === activeKey ? 'titleSmallWhite' : 'titleSmallSecondary'}>
-            {/* @ts-ignore */}
-            {value}
+          <Text variant={value === selected ? 'titleSmallWhite' : 'titleSmallSecondary'}>
+            {label}
           </Text>
         </View>
       ))}

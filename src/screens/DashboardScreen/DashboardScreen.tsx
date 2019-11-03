@@ -7,7 +7,11 @@ import { UserState } from '@src/store/reducers/UserReducer';
 
 import useStore from '@src/hooks/useStore';
 
-import { getUpcomingAppointments, getLastAppointment } from '@src/store/actions/AppointmentAction';
+import {
+  getUpcomingAppointments,
+  getLastAppointment,
+  updateAppointment,
+} from '@src/store/actions/AppointmentAction';
 
 import { SearchIcon } from '@src/components/icons';
 
@@ -17,6 +21,7 @@ import LogoBackground from '@src/components/LogoBackground';
 import AwayCard from '@src/components/AwayCard';
 
 import TimerModal from '@src/modals/TimerModal';
+import NotesModal from '@src/modals/NotesModal';
 import CancellationModal from '@src/modals/CancellationModal';
 
 import DashboardAlert from './DashboardAlert';
@@ -29,18 +34,17 @@ type Props = NavigationStackScreenProps & { isFocused: boolean }
 const isActivated = true;
 const isAway = false;
 
-const initialModalState = {
-  timer: false,
-  review: false,
-  cancellation: false,
+type ModalState = {
+  timer?: boolean;
+  notes?: boolean;
+  review?: boolean;
+  cancellation?: boolean;
 };
-
-type ModalState = typeof initialModalState;
 
 const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment>();
-  const [modalState, setModalState] = useState<Partial<ModalState>>(initialModalState);
+  const [modalState, setModalState] = useState<ModalState>({});
 
   const isTherapist = store.user.type === 'PT';
 
@@ -72,16 +76,26 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
     setModalState({ cancellation: true });
   };
 
+  const onCloseModals = () => setModalState({});
+
+  const onOpenNotes = () => setModalState({ notes: true });
+
+  const onOpenTimer = () => setModalState({ timer: true });
+
   const onMessageUser = (user: UserState) => {
     setModalState({});
 
     navigation.navigate('ConversationScreen', { user });
   };
 
-  const onCloseModals = () => setModalState({});
-
   const onEndTimer = () => {
     // TODO: end time early API
+    onCloseModals();
+  };
+
+  const onSubmitNote = async (note: Appointment['note']) => {
+    await dispatch(updateAppointment(selectedAppointment.id.toString(), { note }));
+
     onCloseModals();
   };
 
@@ -91,9 +105,21 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
         visible={modalState.timer}
         appointment={selectedAppointment}
         isTherapist={isTherapist}
+        onOpenNotes={onOpenNotes}
         onClose={onCloseModals}
         onEnd={onEndTimer}
       />
+
+      {isTherapist && (
+        <NotesModal
+          current
+          visible={modalState.notes}
+          appointment={selectedAppointment}
+          onOpenTimer={onOpenTimer}
+          onClose={onCloseModals}
+          onSubmit={onSubmitNote}
+        />
+      )}
 
       <CancellationModal
         visible={modalState.cancellation}
