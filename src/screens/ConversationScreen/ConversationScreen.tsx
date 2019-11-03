@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { StatusBar, SectionList } from 'react-native';
-import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import { withNavigationFocus } from 'react-navigation';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
 import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
 import { Message } from '@src/store/reducers/ConversationReducer';
@@ -34,7 +35,9 @@ import ConversationInputs from './ConversationInputs';
 
 const ConversationSectionList: SectionList<Message> = SectionList;
 
-const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
+type Props = NavigationStackScreenProps & { isFocused: boolean }
+
+const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
   const [otherUser, setOtherUser] = useState<UserSnippet>();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -66,21 +69,15 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (!otherUser) {
-      return;
-    }
+    if (otherUser && isFocused) dispatch(getConversation(otherUser.id));
+  }, [isFocused, otherUser, dispatch]);
+
+  useEffect(() => {
+    if (!otherUser) return;
 
     const updated = store.conversations.map[otherUser.id];
-
-
-    if (!updated) {
-      dispatch(getConversation(otherUser.id));
-
-      return;
-    }
-
-    setMessages(updated);
-  }, [otherUser, store.conversations.map, dispatch]);
+    if (updated) setMessages(updated);
+  }, [otherUser, store.conversations.map]);
 
 
   const onChangeText = (text: string) => setInputText(text);
@@ -211,4 +208,4 @@ ConversationScreen.navigationOptions = ({ navigation: { state } }) => ({
   },
 });
 
-export default ConversationScreen;
+export default withNavigationFocus(ConversationScreen);

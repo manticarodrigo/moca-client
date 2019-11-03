@@ -74,7 +74,11 @@ export const initialState: StoreState = {
     list: [],
     map: {},
   },
-  appointments: [],
+  appointments: {
+    upcoming: [],
+    last: undefined,
+    past: [],
+  },
 };
 
 const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {

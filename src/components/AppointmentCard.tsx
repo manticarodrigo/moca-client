@@ -51,6 +51,18 @@ const AppointmentCard = ({
     time: format(new Date(startTime), `MM/dd${past ? '/yy' : ''} - hh:mm aaaa`),
   }), [upcoming, past, isTherapist, startTime]);
 
+  const variant = useMemo(() => {
+    if (upcoming) {
+      return 'card';
+    }
+
+    if (past) {
+      return 'borderBottom';
+    }
+
+    return 'borderCard';
+  }, [upcoming, past]);
+
   const hasButton = canCancel || canEditNotes || canEditReview;
 
   const handlePress = () => onPress(appointment);
@@ -69,8 +81,9 @@ const AppointmentCard = ({
   return (
     <View
       row
-      variant={!upcoming ? 'borderCard' : 'card'}
-      bgColor={upcoming ? 'whiteTranslucent' : undefined}
+      variant={variant}
+      spacing={past ? { p: 3 } : undefined}
+      bgColor={upcoming ? 'whiteTranslucent' : 'white'}
       onPress={onPress && handlePress}
     >
       <AppointmentHeader

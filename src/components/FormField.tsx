@@ -162,7 +162,7 @@ const FormField = ({
     setBlurred(true);
   };
 
-  const handleChangeText = (text: string) => onChangeText(text, validationError);
+  const handleChangeText = (text: string) => onChangeText(text);
 
   useEffect(() => {
     if (validation) {

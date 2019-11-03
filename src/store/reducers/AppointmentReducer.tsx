@@ -1,3 +1,4 @@
+
 import { AppointmentAction } from '@src/store/actions/AppointmentAction';
 import { Address } from '@src/store/reducers/ConversationReducer';
 
@@ -14,14 +15,34 @@ export type Appointment = Omit<BadAppointment, 'otherParty' | 'startTime' | 'add
   address: Address;
 }
 
-export type AppointmentState = Appointment[]
+export type AppointmentState = {
+  upcoming: Appointment[];
+  last: Appointment;
+  past: Appointment[];
+};
+
+function updateItem(key: keyof AppointmentState, state, payload) {
+  const index = state[key].findIndex((val) => val.id === payload.id);
+
+  if (index === -1) {
+    return state;
+  }
+
+  state[key][index] = { ...state[key][index], ...payload };
+
+  return state;
+}
 
 const reducer = (state: AppointmentState, action: AppointmentAction): AppointmentState => {
   switch (action.type) {
-    case 'GET_APPOINTMENTS_SUCCESS':
-      return action.payload.sort(
-        (a, b) => new Date(a.startTime).getTime() - new Date(b.endTime).getTime(),
-      );
+    case 'GET_UPCOMING_APPOINTMENTS_SUCCESS':
+      return { ...state, upcoming: action.payload };
+    case 'GET_LAST_APPOINTMENT_SUCCESS':
+      return { ...state, last: action.payload.length ? action.payload[0] : undefined };
+    case 'GET_PAST_APPOINTMENTS_SUCCESS':
+      return { ...state, past: action.payload };
+    case 'UPDATE_APPOINTMENT_SUCCESS':
+      return updateItem('past', state, action.payload);
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { format, isAfter } from 'date-fns';
+import { format } from 'date-fns';
 
 import useStore from '@src/hooks/useStore';
 import useProfileStatus from '@src/hooks/useProfileStatus';
@@ -40,6 +40,17 @@ const DashboardLinks = ({ isActivated }: Props) => {
     };
   }, [profilePercent]);
 
+  const paymentsStr = useMemo(() => {
+    const { payments = [] } = store.user;
+
+    return payments.length ? (
+      (payments[0].paymentInfo.last4
+        && `**** **** **** **** ${payments[0].paymentInfo.last4}`
+      )
+      || payments[0].paymentInfo.routingNumber
+    ) : 'Set payment info';
+  }, [store.user]);
+
   const lastConversation = useMemo(() => {
     const conversations = store.conversations.list;
 
@@ -49,9 +60,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
   }, [store.conversations.list]);
 
   const lastAppointmentStr = useMemo(() => {
-    const last = store.appointments.reverse().find(
-      ({ endTime }) => isAfter(new Date(endTime), new Date()),
-    );
+    const { last } = store.appointments;
 
     if (!last) return undefined;
 
@@ -86,20 +95,14 @@ const DashboardLinks = ({ isActivated }: Props) => {
       {!isTherapist && (
         <LinkCard type="injury" spacing={{ mb: 2 }} onPress={onPressLink('ProfileScreen')}>
           <Text variant="regularSmallGrey">
-            Set my injury
+            {store.user.injury ? store.user.injury.title : 'Set my injury'}
           </Text>
         </LinkCard>
       )}
 
       <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={onPressLink('WalletScreen')}>
         <Text variant="regularSmallGrey">
-          {store.user.payments.length ? (
-            (
-              store.user.payments[0].paymentInfo.last4
-              && `**** **** **** **** ${store.user.payments[0].paymentInfo.last4}`
-            )
-            || store.user.payments[0].paymentInfo.routingNumber
-          ) : 'Set payment info'}
+          {paymentsStr}
         </Text>
       </LinkCard>
 

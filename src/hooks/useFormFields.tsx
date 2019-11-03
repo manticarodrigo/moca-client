@@ -49,6 +49,7 @@ const useFormFields = <Fields extends object> (initialState) => {
 
   return {
     formFields,
+    setFormFields,
     fieldRefs,
     isAnyFieldEmpty,
     isEveryFieldEmpty,

@@ -4,7 +4,7 @@ import { SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
-import { ConversationState } from '@src/store/reducers/ConversationReducer';
+import { Conversation } from '@src/store/reducers/ConversationReducer';
 import { getConversations } from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
@@ -17,7 +17,7 @@ import Text from '@src/components/Text';
 
 import ConversationListCard from './ConversationListCard';
 
-const ConversationSectionList: SectionList<ConversationState> = SectionList;
+const ConversationSectionList: SectionList<Conversation> = SectionList;
 
 type Props = NavigationStackScreenProps & { isFocused: boolean }
 
@@ -43,7 +43,7 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
   };
 
   return (
-    <View column flex={1} bgColor="lightGrey">
+    <View safeArea flex={1} bgColor="lightGrey">
       {!sections.length ? (
         <View flex={1} justifyCenter alignCenter>
           <NoConversationsIcon />
@@ -53,11 +53,9 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
         </View>
       ) : (
         <ConversationSectionList
-          // @ts-ignore
           sections={sections}
           renderItem={({ item }) => (
             <ConversationListCard
-              // @ts-ignore
               conversation={item}
               onPress={handleCardPress}
             />

@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import { ScrollView } from 'react-native';
+import React, { useState, useMemo, useEffect } from 'react';
 
 import useFormFields from '@src/hooks/useFormFields';
 
@@ -7,6 +6,7 @@ import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import Text from '@src/components/Text';
 import FormField, { Props as FormFieldProps } from '@src/components/FormField';
 import Image from '@src/components/Image';
@@ -40,13 +40,17 @@ const FormModal = <State extends { [key: string]: string }> ({
 }: Props<State>) => {
   const [localImages, setLocalImages] = useState(images);
 
-  const formState = useMemo(
+  const initialState = useMemo(
     () => Object.entries(fieldConfig).reduce(
       (a, [key, config]) => ({ ...a, [key]: config.value }), {},
     ), [fieldConfig],
   );
 
-  const { formFields, getFieldProps } = useFormFields<State>(formState);
+  const { formFields, setFormFields, getFieldProps } = useFormFields<State>(initialState);
+
+  useEffect(() => {
+    setFormFields(initialState as State);
+  }, [initialState]);
 
   const onAddImage = (uri: string) => setLocalImages((prev) => [...prev, uri]);
 
@@ -68,7 +72,7 @@ const FormModal = <State extends { [key: string]: string }> ({
         </View>
 
         <View flex={1} bgColor="lightGrey">
-          <ScrollView contentContainerStyle={{ width: WINDOW_WIDTH }}>
+          <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }} extraHeight={0}>
             <View width="100%" spacing={{ p: 4, my: 3 }} bgColor="white">
               <>
                 {Object.entries(fieldConfig).map(([key, config]) => (
@@ -87,7 +91,7 @@ const FormModal = <State extends { [key: string]: string }> ({
                 />
               </View>
             </View>
-          </ScrollView>
+          </KeyboardAwareScrollView>
         </View>
 
         <View width={WINDOW_WIDTH} spacing={{ p: 4 }} variant="borderTop">

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
-import { subHours } from 'date-fns';
-
-import api from '@src/services/api';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 import { UserState } from '@src/store/reducers/UserReducer';
 
 import useStore from '@src/hooks/useStore';
+
+import { getUpcomingAppointments, getLastAppointment } from '@src/store/actions/AppointmentAction';
 
 import { SearchIcon } from '@src/components/icons';
 
@@ -18,7 +17,6 @@ import LogoBackground from '@src/components/LogoBackground';
 import AwayCard from '@src/components/AwayCard';
 
 import TimerModal from '@src/modals/TimerModal';
-import ReviewModal from '@src/modals/ReviewModal';
 import CancellationModal from '@src/modals/CancellationModal';
 
 import DashboardAlert from './DashboardAlert';
@@ -32,32 +30,25 @@ const isActivated = true;
 const isAway = false;
 
 const initialModalState = {
-  appointment: false,
+  timer: false,
+  review: false,
   cancellation: false,
 };
 
 type ModalState = typeof initialModalState;
 
 const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
-  const { store } = useStore();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const { store, dispatch } = useStore();
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment>();
-  const [modalState, setModalState] = useState<ModalState>(initialModalState);
-  const [sessionEnded, setSessionEnded] = useState(false);
+  const [modalState, setModalState] = useState<Partial<ModalState>>(initialModalState);
 
   const isTherapist = store.user.type === 'PT';
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const query = { start: subHours(new Date(), 1).toISOString(), limit: 3 };
-        const options = { headers: { Authorization: `Token ${store.user.token}` }, query };
-
-        const { data } = await api.appointment.appointmentList(options);
-
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        setAppointments(data);
+        await dispatch(getUpcomingAppointments());
+        dispatch(getLastAppointment());
       } catch (e) {
         // console.log(e);
       }
@@ -72,52 +63,41 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
   const onPressAppointment = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
-    setModalState((prev) => ({ ...prev, appointment: true }));
+
+    return setModalState({ timer: true });
   };
 
   const onPressAppointmentAction = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
-    setModalState((prev) => ({ ...prev, cancellation: true }));
+    setModalState({ cancellation: true });
   };
 
   const onMessageUser = (user: UserState) => {
-    setModalState((prev) => ({ ...prev, appointment: false }));
+    setModalState({});
 
     navigation.navigate('ConversationScreen', { user });
   };
 
-  const onCloseModal = (key: keyof ModalState) => () => setModalState(
-    (prev) => ({ ...prev, [key]: false }),
-  );
+  const onCloseModals = () => setModalState({});
 
   const onEndTimer = () => {
-    setSessionEnded(true);
+    // TODO: end time early API
+    onCloseModals();
   };
-
-  const onSubmitReview = (review) => console.log(review);
 
   return (
     <>
       <TimerModal
-        visible={!sessionEnded && modalState.appointment}
+        visible={modalState.timer}
         appointment={selectedAppointment}
         isTherapist={isTherapist}
-        onClose={onCloseModal('appointment')}
+        onClose={onCloseModals}
         onEnd={onEndTimer}
       />
 
-      {!isTherapist && (
-        <ReviewModal
-          visible={sessionEnded && modalState.appointment}
-          appointment={selectedAppointment}
-          onClose={onCloseModal('appointment')}
-          onSubmit={onSubmitReview}
-        />
-      )}
-
       <CancellationModal
         visible={modalState.cancellation}
-        onToggle={onCloseModal('cancellation')}
+        onToggle={onCloseModals}
       />
 
       <View safeArea flex={1} bgColor="primary">
@@ -153,7 +133,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
           )}
           {(!isTherapist || isActivated) && (
             <DashboardAppointments
-              appointments={appointments}
+              appointments={store.appointments.upcoming}
               isTherapist={isTherapist}
               onPressAppointment={onPressAppointment}
               onPressAppointmentAction={onPressAppointmentAction}

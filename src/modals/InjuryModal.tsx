@@ -4,21 +4,14 @@ import FormModal from './FormModal';
 
 const InjuryModal = ({ visible, patient, onSubmit, onClose }) => {
   const { firstName, injury } = patient || {};
-  const { title, description, images } = injury || {};
+  const { title = '', description = '', images } = injury || {};
 
   return (
     <FormModal
       visible={visible}
       fieldConfig={{
-        title: {
-          value: title,
-          placeholder: 'Title',
-        },
-        description: {
-          value: description,
-          placeholder: 'Description',
-          multiline: true,
-        },
+        title: { value: title, placeholder: 'Title' },
+        description: { multiline: true, value: description, placeholder: 'Description' },
       }}
       images={images}
       title={firstName ? `${firstName}'s Injury` : undefined}

@@ -38,7 +38,16 @@ const useProfileFields = (
       licenseNumber,
       certDate,
       preferredAilments = [],
+      payments = [],
     } = profile || {};
+
+
+    const paymentsSubtitle = payments.length ? (
+      (payments[0].paymentInfo.last4
+        && `**** **** **** **** ${payments[0].paymentInfo.last4}`
+      )
+      || payments[0].paymentInfo.routingNumber
+    ) : 'Set payment info';
 
     const primaryAddress = addresses.find(({ primary }) => primary) || { street: '' };
 
@@ -160,8 +169,8 @@ const useProfileFields = (
       {
         icon: CreditCardIcon,
         field: 'payments',
-        title: isTherapist ? 'Bank Information' : 'Payment Method',
-        subtitle: `Add ${isTherapist ? 'Bank Information' : 'Payment Method'}`,
+        title: isTherapist ? 'Payment Information' : 'Payment Method',
+        subtitle: paymentsSubtitle,
         onPress: !readonly ? onPressField('payments') : undefined,
       },
     ];

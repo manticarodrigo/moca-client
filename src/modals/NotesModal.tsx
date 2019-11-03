@@ -14,9 +14,18 @@ type Props = {
 }
 
 const NotesModal = ({ appointment, onClose, onSubmit }: Props) => {
-  const { formFields, otherPartyName, dateString } = useMemo(() => {
-    const { note, otherParty, startTime } = appointment || {};
+  const { note, otherParty, startTime } = appointment || {};
 
+  const { otherPartyName, dateString } = useMemo(() => {
+    const { firstName = '', lastName = '' } = otherParty || {};
+
+    return {
+      otherPartyName: `${firstName} ${lastName}`,
+      dateString: startTime ? format(new Date(startTime), 'MM/dd/yyyy hh:mm aaaa') : '',
+    };
+  }, [otherParty, startTime]);
+
+  const fieldConfig = useMemo(() => {
     const {
       subjective = '',
       objective = '',
@@ -25,22 +34,14 @@ const NotesModal = ({ appointment, onClose, onSubmit }: Props) => {
       diagnosis = '',
     } = note || {};
 
-    const { firstName = '', lastName = '' } = otherParty || {};
-
     return {
-      formFields: { subjective, objective, treatment, assessment, diagnosis },
-      otherPartyName: `${firstName} ${lastName}`,
-      dateString: startTime ? format(new Date(startTime), 'MM/dd/yyyy hh:mm aaaa') : '',
+      subjective: { multiline: true, value: subjective, placeholder: 'Subjective' },
+      objective: { multiline: true, value: objective, placeholder: 'Objective' },
+      treatment: { multiline: true, value: treatment, placeholder: 'Treatment' },
+      assessment: { multiline: true, value: assessment, placeholder: 'Assessment' },
+      diagnosis: { multiline: true, value: diagnosis, placeholder: 'Diagnosis' },
     };
-  }, [appointment]);
-
-  const fieldConfig = useMemo(() => ({
-    subjective: { multiline: true, value: formFields.subjective, placeholder: 'Subjective' },
-    objective: { multiline: true, value: formFields.objective, placeholder: 'Objective' },
-    treatment: { multiline: true, value: formFields.treatment, placeholder: 'Treatment' },
-    assessment: { multiline: true, value: formFields.assessment, placeholder: 'Assessment' },
-    diagnosis: { multiline: true, value: formFields.diagnosis, placeholder: 'Diagnosis' },
-  }), [formFields]);
+  }, [note]);
 
   return (
     <FormModal
