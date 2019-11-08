@@ -33,13 +33,14 @@ const useProfileFields = (
       status,
       reviewCount = 0,
       gender,
-      injury = { title: '', description: '', images: [] },
       bio,
       licenseNumber,
       certDate,
       preferredAilments = [],
       payments = [],
     } = profile || {};
+
+    const injury = (profile && profile.injury) || { title: '', description: '', images: [] };
 
 
     const paymentsSubtitle = payments.length ? (
