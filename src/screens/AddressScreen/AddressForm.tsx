@@ -67,14 +67,14 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
         <View spacing={{ mx: 3 }} alignCenter>
           <View spacing={{ py: 4 }} alignCenter>
             <View row>
-              <Text variant="title" spacing={{ mt: 3 }}>
+              <Text variant="title" mt={3}>
                 {isRegistering ? 'Thanks for signing up, ' : 'Hello, '}
               </Text>
-              <Text variant="title" spacing={{ mt: 3 }}>
+              <Text variant="title" mt={3}>
                 {store.user.firstName}
               </Text>
             </View>
-            <Text variant="regular" spacing={{ mt: 1 }}>
+            <Text variant="regular" mt={1}>
               {isRegistering && (
                 (isRegisteringTherapist && 'Please enter your address of operation below.')
                 || 'What is your preferred address for treatment?'
@@ -141,7 +141,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           {!isRegistering && (
             <View variant="borderTop" row spacing={{ py: 4 }}>
               <View flex={1} row justifyEnd alignCenter>
-                <Text variant="regularDark" spacing={{ pr: 2 }}>Set as primary?</Text>
+                <Text variant="regularDark" pr={2}>Set as primary?</Text>
                 <Checkbox
                   checked={formFields.primary}
                   onChange={onChangeField('primary')}

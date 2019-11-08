@@ -91,7 +91,7 @@ const CancellationModal = ({ visible, onToggle }) => {
 
               </View>
               {opened[key] && (
-                <Text variant="light" color="dark" spacing={{ mt: 2 }}>{reason.details}</Text>
+                <Text variant="light" color="dark" mt={2}>{reason.details}</Text>
               )}
             </View>
           ))}

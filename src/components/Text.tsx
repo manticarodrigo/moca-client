@@ -3,9 +3,8 @@ import { StyleSheet, Text as RNText, TextProps as RNTextProps, TextStyle } from 
 
 import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from '@src/styles';
 
-type TextProps = RNTextProps & {
+type TextProps = RNTextProps & SpacingProp & {
   style?: TextStyle;
-  spacing?: SpacingProp;
   variant?: keyof typeof Texts;
   color?: keyof typeof Colors;
   weight?: TypographyProp['weight'];
@@ -17,7 +16,6 @@ type TextProps = RNTextProps & {
 
 const Text = ({
   style,
-  spacing,
   variant,
   weight,
   size,
@@ -25,8 +23,10 @@ const Text = ({
   color,
   decoration,
   children,
-  ...textProps
+  ...restProps
 }: TextProps) => {
+  const { spacing, rest } = Spacing.parseProps(restProps);
+
   const styles = useMemo(() => StyleSheet.create({
     text: {
       ...Spacing.getStyles(spacing),
@@ -36,7 +36,7 @@ const Text = ({
   }), [spacing, variant, weight, size, align, color, decoration]);
 
   return (
-    <RNText style={[styles.text, style]} {...textProps}>
+    <RNText style={[styles.text, style]} {...rest}>
       {children}
     </RNText>
   );

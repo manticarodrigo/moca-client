@@ -13,10 +13,11 @@ const DashboardAlert = () => (
     </View>
     <View justifyCenter>
       <Text
+        pt={3}
+        px={4}
         variant="regularSmall"
         color="secondaryLighter"
         align="center"
-        spacing={{ px: 4, pt: 3 }}
       >
         In order to provide quality and safety for
         MOCA’s Patients and Providers, we have sent

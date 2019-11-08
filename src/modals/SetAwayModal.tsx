@@ -100,7 +100,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             <Text
               variant="semiBold"
               color={!startDay ? 'secondaryLight' : undefined}
-              spacing={{ pt: 1 }}
+              pt={1}
             >
               {startDay || 'Select Date'}
             </Text>
@@ -114,7 +114,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             <Text
               variant="semiBold"
               color={!endDay ? 'secondaryLight' : undefined}
-              spacing={{ pt: 1 }}
+              pt={1}
             >
               {endDay || 'Select Date'}
             </Text>

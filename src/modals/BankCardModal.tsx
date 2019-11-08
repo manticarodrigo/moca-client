@@ -182,7 +182,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
               <CardFields fields={cardFields} onChangeField={onChangeCardField} />
             )}
             {errorString && (
-              <Text spacing={{ mt: 3 }} variant="regular" size={1} color="error" align="center">
+              <Text mt={3} variant="regular" size={1} color="error" align="center">
                 {errorString}
               </Text>
             )}

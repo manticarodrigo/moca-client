@@ -17,9 +17,9 @@ const InjuryCard = () => {
       <View flex={3}>
         <Text variant="semiBold" color="dark">My Injury</Text>
         <Text variant="regular">{title}</Text>
-        <Text variant="light" color="dark" spacing={{ mt: 3 }}>{details}</Text>
+        <Text variant="light" color="dark" mt={3}>{details}</Text>
       </View>
-      <View flex={1} alignCenter spacing={{}}>
+      <View flex={1} alignCenter>
         <Image rounded size={58} />
       </View>
     </View>

@@ -107,7 +107,7 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
                     <View>
                       {icon}
                     </View>
-                    <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
+                    <Text variant="title" pt={4} pb={2}>
                       {title}
                     </Text>
                     <Text variant="regular" align="center">
@@ -123,7 +123,7 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
                 </Button>
                 <View row justifyCenter spacing={{ mt: 4 }}>
                   <Text variant="regular">Already have an account?</Text>
-                  <Text variant="link" spacing={{ ml: 1 }} onPress={onToggleLoginModal}>Login</Text>
+                  <Text ml={1} variant="link" onPress={onToggleLoginModal}>Login</Text>
                 </View>
               </View>
             </>

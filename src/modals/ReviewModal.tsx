@@ -86,7 +86,7 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }: Props) => {
       </View>
       <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }}>
         <View style={{ width: 'auto', marginRight: 'auto', marginLeft: 'auto' }}>
-          <Text spacing={{ mt: 4, mb: 3 }} variant="title" align="center">
+          <Text mt={4} mb={3} variant="title" align="center">
             How was your session?
           </Text>
           <View row alignCenter variant="shadow">

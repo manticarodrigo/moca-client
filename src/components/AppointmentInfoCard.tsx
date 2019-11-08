@@ -56,7 +56,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
           <View row alignCenter justifyBetween spacing={{ pt: 3 }}>
             <View row>
               <ClockIcon />
-              <Text variant="regularSmall" spacing={{ ml: 1 }}>
+              <Text variant="regularSmall" ml={1}>
                 {`${duration}min`}
               </Text>
             </View>

@@ -63,15 +63,15 @@ const BillingHistoryTab = () => {
             </Text>
           </View>
           <View flex={1} column justifyEnd variant="borderRight" spacing={{ px: 3 }}>
-            <Text variant="semiBold" spacing={{ ml: 2 }}>{session.therapist}</Text>
+            <Text ml={2} variant="semiBold">{session.therapist}</Text>
             <View flex={1} row wrap spacing={{ my: 2 }}>
               <View row alignCenter spacing={{ m: 1 }}>
                 <ClockIcon />
-                <Text variant="regular" spacing={{ mx: 1 }}>{session.duration}</Text>
+                <Text mx={1} variant="regular">{session.duration}</Text>
               </View>
               <View row alignCenter spacing={{ m: 1 }}>
                 <CreditCardIcon />
-                <Text variant="regular" spacing={{ mx: 1 }}>{session.paymentMethod}</Text>
+                <Text mx={1} variant="regular">{session.paymentMethod}</Text>
               </View>
             </View>
           </View>

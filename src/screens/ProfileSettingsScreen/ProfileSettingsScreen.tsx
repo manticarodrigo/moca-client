@@ -92,15 +92,15 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
             </View>
             <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
               <Text variant="light">Name</Text>
-              <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.firstName}</Text>
+              <Text variant="regularDark" pt={1} pb={2}>{store.user.firstName}</Text>
             </View>
             <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
               <Text variant="light">Last Name</Text>
-              <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.lastName}</Text>
+              <Text variant="regularDark" pt={1} pb={2}>{store.user.lastName}</Text>
             </View>
             <View width="90%" bgColor="white" spacing={{ my: 1 }}>
               <Text variant="light">Email Address</Text>
-              <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.email}</Text>
+              <Text variant="regularDark" pt={1} pb={2}>{store.user.email}</Text>
             </View>
             <Button
               variant="secondaryShadow"

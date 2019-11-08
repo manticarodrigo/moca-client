@@ -96,7 +96,7 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
             {text}
           </Text>
           {details && (
-            <Text variant="light" size={2} color="grey" spacing={{ mt: 1 }}>
+            <Text variant="light" size={2} color="grey" mt={1}>
               {details}
             </Text>
           )}

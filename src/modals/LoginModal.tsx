@@ -108,7 +108,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
               <View flex={1} alignEnd>
                 <Text
                   variant="link"
-                  spacing={{ ml: 1 }}
+                  ml={1}
                   onPress={toggleForgotPasswordModal}
                 >
                   Forgot Password?

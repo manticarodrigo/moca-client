@@ -49,7 +49,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
         <View spacing={{ py: 4, px: 3 }} alignCenter>
           <View alignCenter>
             <BigEnvelopeRedIcon />
-            <Text variant="title" color="error" spacing={{ py: 4 }}>
+            <Text variant="title" color="error" py={4}>
               SORRY!
             </Text>
             <Text variant="regularSmall" align="center">

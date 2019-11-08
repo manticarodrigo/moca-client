@@ -83,7 +83,7 @@ const AppointmentHeader = ({
             </Text>
             <View row>
               <ClockIcon />
-              <Text variant="regular" size={1} spacing={{ ml: 1 }}>
+              <Text variant="regular" size={1} ml={1}>
                 {`${duration}min`}
               </Text>
             </View>

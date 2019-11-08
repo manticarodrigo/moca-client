@@ -62,7 +62,7 @@ const SearchActiveFilters = ({ filters }) => {
             {ailments.map((item) => (
               <View key={item} row alignCenter spacing={{ pr: 2 }}>
                 <SmallCheckIcon />
-                <Text spacing={{ pl: 1 }} variant="regular" size={0} color="primary">{item}</Text>
+                <Text pl={1} variant="regular" size={0} color="primary">{item}</Text>
               </View>
             ))}
           </View>

@@ -81,7 +81,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                         <PinGreyIcon />
                       </View>
                       <View wrap spacing={{ pr: 2 }}>
-                        <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmall" color="grey">
+                        <Text mt={2} ml={2} variant="regularSmall" color="grey">
                           {`${item.street}, ${item.city}, ${item.state}`}
                         </Text>
                       </View>
@@ -91,7 +91,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                         <BuildingIcon />
                       </View>
                       <View wrap>
-                        <Text spacing={{ ml: 2, mt: 2 }} variant="regularSmall" color="grey">
+                        <Text mt={2} ml={2} variant="regularSmall" color="grey">
                           {item.apartment}
                         </Text>
                       </View>

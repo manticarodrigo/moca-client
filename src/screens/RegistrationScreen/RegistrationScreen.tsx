@@ -101,11 +101,11 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <KeyboardAwareScrollView>
           <View alignCenter spacing={{ py: 5, px: 3 }}>
             <SecondaryLogoIcon />
-            <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
-            <Text variant="regular" spacing={{ mt: 2 }}>
+            <Text variant="title" mt={3}>Moca is available in your area</Text>
+            <Text variant="regular" mt={2}>
               We need some information to
             </Text>
-            <Text variant="regular" spacing={{ mt: 1, mb: 2 }}>
+            <Text variant="regular" mt={1} mb={2}>
               get you started.
             </Text>
           </View>
@@ -182,14 +182,15 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </View>
           <View spacing={{ p: 3 }} alignCenter>
             <View alignCenter row spacing={{ mt: 2 }}>
-              <Text variant="regularSmall" spacing={{ mt: 1 }}>
+              <Text variant="regularSmall" mt={1}>
                 By continuing, I accept the Moca
               </Text>
               <Text
+                mt={1}
+                ml={1}
                 variant="link"
                 size={1}
                 color="secondary"
-                spacing={{ ml: 1, mt: 1 }}
                 onPress={onPressTermsOfService}
               >
                 terms of service
@@ -200,11 +201,11 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 and have read the
               </Text>
               <Text
+                ml={1}
                 variant="link"
                 size={1}
                 color="secondary"
                 onPress={onPressPrivacy}
-                spacing={{ ml: 1 }}
               >
                 privacy policy.
               </Text>

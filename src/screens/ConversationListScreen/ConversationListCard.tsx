@@ -35,7 +35,7 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
       <View row spacing={{ p: 1 }}>
         <Image rounded size={60} uri={image} />
         <View column spacing={{ pl: 3 }}>
-          <Text variant="semiBold" size={2} spacing={{ mb: 2 }}>
+          <Text variant="semiBold" size={2} mb={2}>
             {name}
           </Text>
           <Text variant="regularSmall" color="grey">{time}</Text>
@@ -45,7 +45,9 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
         variant="light"
         color="grey"
         numberOfLines={1}
-        spacing={{ mt: 3, px: 1, pb: 3 }}
+        mt={3}
+        px={1}
+        pb={3}
       >
         {text}
       </Text>

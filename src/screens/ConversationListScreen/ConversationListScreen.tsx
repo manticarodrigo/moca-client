@@ -47,7 +47,7 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
       {!sections.length ? (
         <View flex={1} justifyCenter alignCenter>
           <NoConversationsIcon />
-          <Text variant="title" color="semiGrey" align="center" spacing={{ pt: 4 }}>
+          <Text variant="title" color="semiGrey" align="center" pt={4}>
             You have not started any conversations.
           </Text>
         </View>

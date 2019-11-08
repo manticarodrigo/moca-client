@@ -55,7 +55,7 @@ const BookmarkedModal = (
                     <Text variant="semiBold">{therapist.username}</Text>
                     <View row alignCenter>
                       <Text
-                        spacing={{ mr: 2 }}
+                        mr={2}
                         variant="regularSmall"
                         color="grey"
                       >

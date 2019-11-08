@@ -56,3 +56,9 @@ export const getStyles = (prop?: SpacingProp): ViewStyle => {
 
   return viewStyle;
 };
+
+export const parseProps = (props: SpacingProp & object) => {
+  const { m, mt, mr, mb, ml, p, pt, pr, pb, pl, ...rest } = props;
+
+  return { spacing: { m, mt, mr, mb, ml, p, pt, pr, pb, pl }, rest };
+};

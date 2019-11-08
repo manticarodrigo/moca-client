@@ -117,7 +117,7 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
               <View>
                 <SearchActiveFilters filters={filters} />
                 <View alignCenter>
-                  <Text variant="light" spacing={{ pt: 4, p: 3 }}>
+                  <Text pt={4} p={3} variant="light">
                     There are
                     {' '}
                     <Text variant="regular">

@@ -32,8 +32,8 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => {
       <ScrollView ref={scrollViewRef}>
         <View alignCenter spacing={{ py: 5 }}>
           <AddLocationBigIcon />
-          <Text variant="title" spacing={{ mt: 4 }}>Where are you located?</Text>
-          <Text variant="regular" spacing={{ mt: 2 }}>
+          <Text variant="title" mt={4}>Where are you located?</Text>
+          <Text variant="regular" mt={2}>
             Enter your address to check MOCA&apos;s
           </Text>
           <Text variant="regular">

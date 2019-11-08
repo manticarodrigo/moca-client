@@ -83,7 +83,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
               <Text variant="title">Please select your</Text>
               <View alignCenter row>
                 <Text variant="title" color="secondary">MOCA</Text>
-                <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
+                <Text ml={1} variant="title">Profile</Text>
               </View>
             </View>
             <View flex={1} row alignCenter width="100%" spacing={{ py: 4 }}>

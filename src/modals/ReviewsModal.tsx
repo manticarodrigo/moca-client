@@ -67,7 +67,7 @@ const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
                       {`${item.patient.firstName} ${item.patient.lastName}`}
                     </Text>
                     <Rating rating={item.rating} />
-                    <Text spacing={{ mt: 1 }} variant="regularSmall" color="grey">
+                    <Text mt={1} variant="regularSmall" color="grey">
                       {item.comment}
                     </Text>
                   </View>

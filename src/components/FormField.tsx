@@ -199,7 +199,7 @@ const FormField = ({
         </Wrapper>
       </Wrapper>
       {shouldShowError && (
-        <Text variant="regular" size={1} color="error" spacing={{ mt: 2 }}>
+        <Text variant="regular" size={1} color="error" mt={2}>
           {validationError}
         </Text>
       )}

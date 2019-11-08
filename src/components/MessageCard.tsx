@@ -41,7 +41,7 @@ const MessageCard = ({ message, alignRight, onPressImage }: Props) => {
       <Text
         {...commonProps}
         color={alignRight ? 'secondaryLighter' : 'semiGreyAlt'}
-        spacing={{ mt: 2 }}
+        mt={2}
       >
         {time}
       </Text>

@@ -63,7 +63,7 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
         <View row flex={1}>
           <View column spacing={{ mr: 3 }} width={48}>{icon}</View>
           <View column flex={1}>
-            <Text variant="semiBold" color={titleColor} spacing={{ mb: 2 }}>{title}</Text>
+            <Text variant="semiBold" color={titleColor} mb={2}>{title}</Text>
             {children}
           </View>
         </View>

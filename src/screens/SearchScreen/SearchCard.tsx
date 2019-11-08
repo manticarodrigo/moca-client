@@ -49,9 +49,9 @@ const SearchCard = ({
           <View alignEnd>
             <View row>
               <ClockIcon />
-              <Text variant="regular" spacing={{ ml: 2 }}>{sessionTypes || 'N/A'}</Text>
+              <Text ml={2} variant="regular">{sessionTypes || 'N/A'}</Text>
             </View>
-            <Text variant="title" spacing={{ mt: 2 }}>
+            <Text mt={2} variant="title">
               {prices.length ? `~$${avgPrice}` : 'N/A'}
             </Text>
           </View>

@@ -8,12 +8,11 @@ import { ConsentIcon, CloseIcon } from '@src/components/icons';
 import Button from '@src/components/Button';
 
 type ConsentModalProps = {
-  visible: boolean,
-  onPressButton?: () => void,
+  visible: boolean;
+  onPressButton?: () => void;
 }
 
 const ConsentModal = ({ visible, onPressButton }: ConsentModalProps) => {
-
   const [visibility, setVisibility] = useState(visible);
 
   return (
@@ -39,14 +38,14 @@ const ConsentModal = ({ visible, onPressButton }: ConsentModalProps) => {
           <ConsentIcon />
         </View>
         <View alignCenter spacing={{ my: 5, mx: 4 }}>
-          <Text variant="regularDark" spacing={{ m: 1 }}>By scheduling this appointment, you</Text>
-          <Text variant="regularDark" spacing={{ m: 1 }}>consent to treatment for all scheduled</Text>
-          <Text variant="regularDark" spacing={{ m: 1 }}>sessions with therapist for this injury.</Text>
+          <Text variant="regularDark" m={1}>By scheduling this appointment, you</Text>
+          <Text variant="regularDark" m={1}>consent to treatment for all scheduled</Text>
+          <Text variant="regularDark" m={1}>sessions with therapist for this injury.</Text>
         </View>
         <Button variant="primary" spacing={{ m: 2 }} onPress={onPressButton}>Give Consent</Button>
       </View>
     </Modal>
   );
-}
+};
 
 export default ConsentModal;

@@ -67,11 +67,11 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
         </View>
         <View row alignCenter spacing={{ m: 1 }}>
           <ClockIcon white />
-          <Text variant="bold" spacing={{ ml: 2 }}>
+          <Text variant="bold" ml={2}>
             {hour}
           </Text>
         </View>
-        <Text variant="title" weight="900" size={5} color="white" spacing={{ mt: 2 }}>
+        <Text variant="title" weight="900" size={5} color="white" mt={2}>
           {`$${price} for ${duration}min`}
         </Text>
 
