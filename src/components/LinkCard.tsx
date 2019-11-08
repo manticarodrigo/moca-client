@@ -44,14 +44,14 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
     }
   }, [type, status]);
 
-  const titleVariant = useMemo(() => {
+  const titleColor = useMemo(() => {
     switch (status) {
       case 'success':
-        return 'titleSmallSuccess';
+        return 'success';
       case 'error':
-        return 'titleSmallError';
+        return 'error';
       default:
-        return 'titleSmall';
+        return undefined;
     }
   }, [status]);
 
@@ -63,7 +63,7 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
         <View row flex={1}>
           <View column spacing={{ mr: 3 }} width={48}>{icon}</View>
           <View column flex={1}>
-            <Text variant={titleVariant} spacing={{ mb: 2 }}>{title}</Text>
+            <Text variant="semiBold" color={titleColor} spacing={{ mb: 2 }}>{title}</Text>
             {children}
           </View>
         </View>

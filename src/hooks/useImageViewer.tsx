@@ -101,7 +101,7 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
               <BackButton />
             </View>
 
-            <Text variant="titlePrimary">{`${state.index + 1}/${uris.length}`}</Text>
+            <Text variant="title">{`${state.index + 1}/${uris.length}`}</Text>
 
             <View width={40} />
           </View>
@@ -140,7 +140,7 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
                   bgColor="secondaryLight"
                   onPress={onPressAdd}
                 >
-                  <Text variant="titleWhite">+</Text>
+                  <Text variant="title" color="white">+</Text>
                 </View>
               )}
               <>

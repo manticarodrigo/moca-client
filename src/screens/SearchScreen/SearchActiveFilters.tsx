@@ -43,9 +43,10 @@ const SearchActiveFilters = ({ filters }) => {
             <View alignCenter key={title} spacing={{ p: 3 }} width={90}>
               <Icon />
               <Text
-                variant="boldSmallestPrimary"
+                variant="semiBold"
+                size={0}
+                align="center"
                 spacing={{ pt: 2 }}
-                typography={{ align: 'center' }}
                 numberOfLines={2}
               >
                 {title}
@@ -56,12 +57,12 @@ const SearchActiveFilters = ({ filters }) => {
       </View>
       {ailments && !!ailments.length && (
         <View row variant="borderTop" spacing={{ py: 3, px: 4 }}>
-          <Text variant="boldSmallestSecondaryLight">A. of Pain</Text>
+          <Text variant="semiBold" size={0} color="secondaryLight">A. of Pain</Text>
           <View row wrap spacing={{ px: 4 }}>
             {ailments.map((item) => (
               <View key={item} row alignCenter spacing={{ pr: 2 }}>
                 <SmallCheckIcon />
-                <Text spacing={{ pl: 1 }} variant="regularSmallestPrimary">{item}</Text>
+                <Text spacing={{ pl: 1 }} variant="regular" size={0} color="primary">{item}</Text>
               </View>
             ))}
           </View>

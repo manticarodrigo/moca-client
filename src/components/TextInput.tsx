@@ -10,7 +10,7 @@ import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from 
 
 const variants: { [key: string]: TextStyle } = {
   conversation: {
-    ...Texts.regularGrey,
+    ...Typography.getStyles({ ...Texts.regularSmall, color: 'grey' }),
     height: '100%',
     borderRadius: 24,
     backgroundColor: Colors.lightGrey,

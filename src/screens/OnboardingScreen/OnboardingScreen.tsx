@@ -110,7 +110,7 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
                     <Text variant="title" spacing={{ pt: 4, pb: 2 }}>
                       {title}
                     </Text>
-                    <Text variant="regular" typography={{ align: 'center' }}>
+                    <Text variant="regular" align="center">
                       {text}
                     </Text>
                   </View>

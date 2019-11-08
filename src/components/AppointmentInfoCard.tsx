@@ -60,7 +60,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
                 {`${duration}min`}
               </Text>
             </View>
-            <Text variant="titlePrimaryLarge">
+            <Text variant="titleLarge">
               {`$${price}`}
             </Text>
           </View>
@@ -69,7 +69,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
       <View row justifyBetween variant="borderTop" spacing={{ p: 3 }}>
         <View row flex={1}>
           <View column flex={1}>
-            <Text variant="boldSecondary">{time}</Text>
+            <Text variant="semiBold" color="secondary">{time}</Text>
             <Text variant="regular">{address.street}</Text>
           </View>
         </View>

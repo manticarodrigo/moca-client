@@ -120,15 +120,17 @@ const TimerModal = ({
               </View>
             )}
             <Text
-              variant={didTimeStart ? 'titleWhite' : 'titleSecondary'}
-              typography={{ size: 1 }}
+              variant="title"
+              color={didTimeStart ? 'white' : 'secondary'}
+              size={1}
             >
               {`Scheduled Time - ${scheduledTimeString}`}
             </Text>
             <View row spacing={{ py: 2 }}>
               <Text
-                variant={didTimeStart ? 'boldWhite' : 'boldSemiGreyAlt'}
-                typography={{ size: 9 }}
+                variant="semiBold"
+                color={didTimeStart ? 'white' : 'semiGreyAlt'}
+                size={9}
               >
                 {`${minutesFormated}:${secondsFormated}`}
               </Text>

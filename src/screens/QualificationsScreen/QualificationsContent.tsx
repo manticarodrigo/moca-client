@@ -66,7 +66,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
     <View safeArea>
       {modal && (
         <View variant="borderBottom" alignCenter justifyCenter spacing={{ py: 4 }}>
-          <Text variant="titleSmall">
+          <Text variant="semiBold">
             Qualifications
           </Text>
         </View>
@@ -77,11 +77,11 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
             <View spacing={{ px: 3 }}>
               {!modal && (
                 <View spacing={{ py: 5 }}>
-                  <Text variant="title" typography={{ align: 'center' }} numberOfLines={2}>
+                  <Text variant="title" align="center" numberOfLines={2}>
                     {`Thanks for signing up, ${store.user.firstName}`}
                   </Text>
                   <View spacing={{ pt: 3 }}>
-                    <Text variant="regular" typography={{ align: 'center' }}>
+                    <Text variant="regular" align="center">
                       What are your preferred treatment areas?
                     </Text>
                   </View>
@@ -99,7 +99,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
                       spacing={{ py: 3 }}
                       width="100%"
                     >
-                      <Text variant="titleSmall">{item}</Text>
+                      <Text variant="semiBold">{item}</Text>
                       <Checkbox
                         checked={preferredAilments.includes(item)}
                         onChange={onCheckboxChange(item)}

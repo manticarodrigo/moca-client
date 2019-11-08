@@ -158,7 +158,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           justifyCenter
           height={50}
         >
-          <Text variant="titleSmallDark">Add New Card</Text>
+          <Text variant="semiBold" color="dark">Add New Card</Text>
         </View>
         <View
           variant="borderBottom"
@@ -182,7 +182,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
               <CardFields fields={cardFields} onChangeField={onChangeCardField} />
             )}
             {errorString && (
-              <Text spacing={{ mt: 3 }} variant="errorSmall" typography={{ align: 'center' }}>
+              <Text spacing={{ mt: 3 }} variant="regular" size={1} color="error" align="center">
                 {errorString}
               </Text>
             )}

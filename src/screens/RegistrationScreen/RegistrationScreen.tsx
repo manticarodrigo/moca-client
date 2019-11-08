@@ -113,7 +113,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
             <View width="100%" variant="borderTop">
               <View row spacing={{ py: 4, px: 3 }}>
                 <View flex={1}>
-                  <Text variant="title" typography={{ size: 2 }}>
+                  <Text variant="semiBold">
                     Are you currently covered by Medicare?
                   </Text>
                 </View>
@@ -182,30 +182,28 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </View>
           <View spacing={{ p: 3 }} alignCenter>
             <View alignCenter row spacing={{ mt: 2 }}>
-              <Text
-                variant="regular"
-                spacing={{ mt: 1 }}
-                typography={{ size: 1 }}
-              >
+              <Text variant="regularSmall" spacing={{ mt: 1 }}>
                 By continuing, I accept the Moca
               </Text>
               <Text
                 variant="link"
-                onPress={onPressTermsOfService}
-                typography={{ size: 1, color: 'secondary' }}
+                size={1}
+                color="secondary"
                 spacing={{ ml: 1, mt: 1 }}
+                onPress={onPressTermsOfService}
               >
                 terms of service
               </Text>
             </View>
             <View alignCenter row spacing={{ mt: 1 }}>
-              <Text variant="regular" typography={{ size: 1 }}>
+              <Text variant="regularSmall">
                 and have read the
               </Text>
               <Text
                 variant="link"
+                size={1}
+                color="secondary"
                 onPress={onPressPrivacy}
-                typography={{ size: 1, color: 'secondary' }}
                 spacing={{ ml: 1 }}
               >
                 privacy policy.

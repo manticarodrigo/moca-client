@@ -131,13 +131,13 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
         {isActivated && isTherapist && (
           <View row justifyCenter alignCenter spacing={{ p: 4, pt: 3 }}>
-            <Text variant="titleSmallWhite">Appointments</Text>
+            <Text variant="semiBold" color="white">Appointments</Text>
           </View>
         )}
 
         {!isTherapist && (
           <View row justifyBetween alignCenter spacing={{ p: 4, pt: 5 }}>
-            <Text variant="titleWhite">{`Hi, ${store.user.firstName}`}</Text>
+            <Text variant="title" color="white">{`Hi, ${store.user.firstName}`}</Text>
             <View variant="rounded" spacing={{ p: 2 }} bgColor="secondary" onPress={onPressSearch}>
               <View spacing={{ p: 1 }}>
                 <SearchIcon tint="#fff" />

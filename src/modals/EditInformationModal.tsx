@@ -65,7 +65,7 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
       <View alignCenter>
         <View row>
           <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
-            <Text variant="titleSmall">
+            <Text variant="semiBold">
               Edit Information
             </Text>
           </View>

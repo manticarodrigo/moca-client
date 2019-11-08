@@ -78,12 +78,12 @@ const AppointmentHeader = ({
         </View>
         <View flex={1} spacing={{ pl: 3 }}>
           <View row justifyBetween>
-            <Text variant={upcoming ? 'titleSmall' : 'title'} numberOfLines={2}>
+            <Text variant={upcoming ? 'semiBold' : 'title'} numberOfLines={2}>
               {name}
             </Text>
             <View row>
               <ClockIcon />
-              <Text variant="regularSmall" spacing={{ ml: 1 }}>
+              <Text variant="regular" size={1} spacing={{ ml: 1 }}>
                 {`${duration}min`}
               </Text>
             </View>
@@ -97,7 +97,7 @@ const AppointmentHeader = ({
               spacing={{ py: 1 }}
             >
               {!isTherapist && <Rating rating={rating} spacing={{ mt: -3 }} />}
-              <Text variant="titlePrimaryLarge">
+              <Text variant="titleLarge">
                 {`$${price}`}
               </Text>
             </View>

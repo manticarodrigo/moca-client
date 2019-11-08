@@ -1,24 +1,39 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
 
-import { Spacing, SpacingProp, Typography, TypographyProp, Texts } from '@src/styles';
+import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from '@src/styles';
 
 type TextProps = RNTextProps & {
-  variant?: keyof typeof Texts;
   style?: TextStyle;
   spacing?: SpacingProp;
-  typography?: TypographyProp;
+  variant?: keyof typeof Texts;
+  color?: keyof typeof Colors;
+  weight?: TypographyProp['weight'];
+  size?: TypographyProp['size'];
+  align?: TypographyProp['align'];
+  decoration?: TypographyProp['decoration'];
   children: (string|number|JSX.Element) | (string|number|JSX.Element)[];
 };
 
-const Text = ({ variant, style, spacing, typography, children, ...textProps }: TextProps) => {
+const Text = ({
+  style,
+  spacing,
+  variant,
+  weight,
+  size,
+  align,
+  color,
+  decoration,
+  children,
+  ...textProps
+}: TextProps) => {
   const styles = useMemo(() => StyleSheet.create({
     text: {
-      ...Texts[variant],
       ...Spacing.getStyles(spacing),
-      ...Typography.getStyles(typography),
+      ...Typography.getStyles(Texts[variant]),
+      ...Typography.getStyles({ weight, size, color, align, decoration }),
     },
-  }), [variant, spacing, typography]);
+  }), [spacing, variant, weight, size, align, color, decoration]);
 
   return (
     <RNText style={[styles.text, style]} {...textProps}>

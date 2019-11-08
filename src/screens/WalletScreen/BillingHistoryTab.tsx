@@ -53,8 +53,8 @@ const BillingHistoryTab = () => {
         // eslint-disable-next-line react/no-array-index-key
         <View key={index} row variant="borderBottom" spacing={{ py: 3 }}>
           <View column justifyCenter variant="borderRight" spacing={{ px: 3 }}>
-            <Text typography={{ size: 5, color: 'secondary', weight: '300', align: 'center' }}>{session.day}</Text>
-            <Text typography={{ size: 2, color: 'secondary', weight: '500' }}>
+            <Text variant="light" size={5} color="secondary" align="center">{session.day}</Text>
+            <Text variant="regular" color="secondary">
               {session.month}
               {' '}
               /
@@ -63,7 +63,7 @@ const BillingHistoryTab = () => {
             </Text>
           </View>
           <View flex={1} column justifyEnd variant="borderRight" spacing={{ px: 3 }}>
-            <Text variant="titleSmall" spacing={{ ml: 2 }}>{session.therapist}</Text>
+            <Text variant="semiBold" spacing={{ ml: 2 }}>{session.therapist}</Text>
             <View flex={1} row wrap spacing={{ my: 2 }}>
               <View row alignCenter spacing={{ m: 1 }}>
                 <ClockIcon />
@@ -76,7 +76,7 @@ const BillingHistoryTab = () => {
             </View>
           </View>
           <View justifyCenter spacing={{ px: 4 }}>
-            <Text variant="titlePrimary">{session.payment}</Text>
+            <Text variant="title">{session.payment}</Text>
           </View>
         </View>
       ))}

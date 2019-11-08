@@ -56,7 +56,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
       </View>
       <View flex={1}>
         <View row alignCenter spacing={{ py: 3 }}>
-          <Text variant="boldDark">Price Rate</Text>
+          <Text variant="semiBold" color="dark">Price Rate</Text>
         </View>
         <View row width="100%" justifyBetween variant="borderBottom">
           <View row width="100%" spacing={{ pr: 3 }}>
@@ -75,7 +75,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
                   variant={!isLast ? 'borderRight' : null}
                 >
                   <View alignCenter>
-                    <Text variant="regularSmallGrey">
+                    <Text variant="regularSmall" color="grey">
                       {duration}
                       min
                     </Text>
@@ -83,7 +83,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
                       spacing={{ pt: 1 }}
                       onPress={!readonly && onPressPrice(key, price)}
                     >
-                      <Text variant="titleSecondaryLarge">
+                      <Text variant="title" size={5} color="secondary">
                         {price ? `$${price}` : status}
                       </Text>
                     </View>
@@ -94,12 +94,12 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
           </View>
         </View>
         <View row justifyBetween alignCenter spacing={{ py: 3, pr: 5 }}>
-          <Text variant="regularSmallGrey">First time evaluation price</Text>
+          <Text variant="regularSmall" color="grey">First time evaluation price</Text>
           <View
             alignEnd
             onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}
           >
-            <Text variant="titleSecondaryLarge">
+            <Text variant="title" size={5} color="secondary">
               {`$${evaluationTariff.price}` || status}
             </Text>
           </View>

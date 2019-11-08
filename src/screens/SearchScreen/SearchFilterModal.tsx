@@ -114,7 +114,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
 
               return (
                 <View key={sectionKey} variant="borderBottom" height={180}>
-                  <Text variant="boldGrey" spacing={{ m: 3 }}>
+                  <Text variant="semiBold" color="grey" spacing={{ m: 3 }}>
                     {checkboxConfig[sectionKey].title}
                   </Text>
                   <View
@@ -150,9 +150,10 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
                             >
                               <IconComponent focused={focused} />
                               <Text
+                                variant="semiBold"
+                                color={focused ? 'white' : 'secondary'}
+                                align="center"
                                 spacing={icon ? { mt: 2 } : null}
-                                variant={focused ? 'boldWhite' : 'boldSecondary'}
-                                typography={{ align: 'center' }}
                                 numberOfLines={2}
                               >
                                 {title}
@@ -168,7 +169,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
             })}
           </>
           <View variant="borderBottom" height={180}>
-            <Text variant="boldGrey" spacing={{ m: 3 }}>Desired Cost</Text>
+            <Text variant="semiBold" color="grey" spacing={{ m: 3 }}>Desired Cost</Text>
             <View spacing={{ px: 3 }}>
               <FormField
                 keyboardType="number-pad"
@@ -180,7 +181,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
             </View>
           </View>
           <View variant="borderBottom">
-            <Text variant="boldGrey" spacing={{ m: 3 }}>Areas(s) of Pain</Text>
+            <Text variant="semiBold" color="grey" spacing={{ m: 3 }}>Area(s) of Pain</Text>
             <View row wrap style={{ alignItems: 'flex-start' }} spacing={{ px: 4 }}>
               {qualificationOptions.map((item) => (
                 <View
@@ -194,7 +195,9 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
                     checked={filters.ailments.includes(item)}
                     onChange={(checked) => onChangeAilment(item, checked)}
                   />
-                  <Text variant="boldSmallSecondary" spacing={{ ml: 2 }}>{item}</Text>
+                  <Text variant="semiBold" size={1} color="semiGrey" spacing={{ ml: 2 }}>
+                    {item}
+                  </Text>
                 </View>
               ))}
             </View>

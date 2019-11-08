@@ -28,7 +28,7 @@ const SegmentedControl = ({ light, options, selected, onChange }: Props) => (
           bgColor={value === selected ? 'secondary' : 'transparent'}
           onPress={value !== selected ? () => onChange(value) : undefined}
         >
-          <Text variant={value === selected ? 'titleSmallWhite' : 'titleSmallSecondary'}>
+          <Text variant="semiBold" color={value === selected ? 'white' : 'secondary'}>
             {label}
           </Text>
         </View>

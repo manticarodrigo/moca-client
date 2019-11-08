@@ -92,11 +92,11 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
           {icon}
         </View>
         <View column spacing={{ mr: 5, ml: 3 }} justifyCenter={!details}>
-          <Text variant={large ? 'titleSmall' : 'regularDark'}>
+          <Text variant={large ? 'semiBold' : 'regularDark'}>
             {text}
           </Text>
           {details && (
-            <Text typography={{ size: 2, weight: '300', color: 'grey' }} spacing={{ mt: 1 }}>
+            <Text variant="light" size={2} color="grey" spacing={{ mt: 1 }}>
               {details}
             </Text>
           )}

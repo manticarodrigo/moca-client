@@ -39,7 +39,7 @@ const BookmarkedModal = (
       <View alignCenter>
         <View row>
           <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
-            <Text variant="titleSmall">
+            <Text variant="semiBold">
               Bookmarks
             </Text>
           </View>
@@ -52,11 +52,12 @@ const BookmarkedModal = (
                 <View row spacing={{ ml: 3, my: 3 }}>
                   <Image rounded size={40} uri={mockImg} />
                   <View column spacing={{ px: 3, mt: 1 }}>
-                    <Text variant="titleSmall">{therapist.username}</Text>
+                    <Text variant="semiBold">{therapist.username}</Text>
                     <View row alignCenter>
                       <Text
                         spacing={{ mr: 2 }}
-                        variant="regularGrey"
+                        variant="regularSmall"
+                        color="grey"
                       >
                         {therapist.rating}
                       </Text>

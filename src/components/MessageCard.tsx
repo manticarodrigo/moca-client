@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 
+import { TypographyProp } from '@src/styles';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
@@ -11,6 +13,11 @@ type Props = {
   message: Message;
   alignRight: boolean;
   onPressImage: () => void;
+};
+
+const commonProps: TypographyProp = {
+  weight: '500',
+  align: 'right',
 };
 
 const MessageCard = ({ message, alignRight, onPressImage }: Props) => {
@@ -26,21 +33,15 @@ const MessageCard = ({ message, alignRight, onPressImage }: Props) => {
         </View>
       )}
       <Text
-        typography={{
-          color: alignRight ? 'white' : 'dark',
-          weight: '500',
-          align: 'right',
-        }}
+        {...commonProps}
+        color={alignRight ? 'white' : 'dark'}
       >
         {text}
       </Text>
       <Text
+        {...commonProps}
+        color={alignRight ? 'secondaryLighter' : 'semiGreyAlt'}
         spacing={{ mt: 2 }}
-        typography={{
-          color: alignRight ? 'secondaryLighter' : 'semiGreyAlt',
-          weight: '500',
-          align: 'right',
-        }}
       >
         {time}
       </Text>

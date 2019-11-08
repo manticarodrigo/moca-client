@@ -84,7 +84,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
 
         <View row>
           <View variant="borderBottom" flex={1} spacing={{ pb: 3 }} alignCenter justifyCenter>
-            <Text variant="titleSmall">
+            <Text variant="semiBold">
               Set Away Days
             </Text>
           </View>
@@ -96,9 +96,10 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             variant="borderRight"
             spacing={{ p: 3 }}
           >
-            <Text variant="regularGrey">Start</Text>
+            <Text variant="regularSmall" color="grey">Start</Text>
             <Text
-              variant={startDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
+              variant="semiBold"
+              color={!startDay ? 'secondaryLight' : undefined}
               spacing={{ pt: 1 }}
             >
               {startDay || 'Select Date'}
@@ -109,9 +110,10 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
             spacing={{ py: 2, px: 3 }}
             bgColor="white"
           >
-            <Text variant="regularGrey">End</Text>
+            <Text variant="regularSmall" color="grey">End</Text>
             <Text
-              variant={endDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
+              variant="semiBold"
+              color={!endDay ? 'secondaryLight' : undefined}
               spacing={{ pt: 1 }}
             >
               {endDay || 'Select Date'}

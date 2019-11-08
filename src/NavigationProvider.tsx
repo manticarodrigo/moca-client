@@ -10,7 +10,6 @@ import BackButton from '@src/components/BackButton';
 import TabBar from '@src/components/TabBar';
 import TabBarIcon from '@src/components/TabBarIcon';
 
-import SitemapScreen from '@src/screens/SitemapScreen';
 import OnboardingScreen from '@src/screens/OnboardingScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
 import SearchScreen from '@src/screens/SearchScreen';
@@ -51,7 +50,6 @@ const defaultNavConfig = {
 
 const AppStack = createSwitchNavigator(
   {
-    // SitemapScreen,
 
     AuthStack: createStackNavigator({
       OnboardingScreen,

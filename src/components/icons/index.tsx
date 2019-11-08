@@ -52,14 +52,6 @@ export { default as SwitchIcon } from './SwitchIcon';
 export { default as TherapistIcon } from './TherapistIcon';
 export { default as AddCardIcon } from './AddCardIcon';
 
-// Rating icons
-export { default as StarZeroIcon } from './StarZeroIcon';
-export { default as StarOneIcon } from './StarOneIcon';
-export { default as StarTwoIcon } from './StarTwoIcon';
-export { default as StarThreeIcon } from './StarThreeIcon';
-export { default as StarFourIcon } from './StarFourIcon';
-export { default as StarFiveIcon } from './StarFiveIcon';
-
 // FormField icons
 export { default as ErrorIcon } from './ErrorIcon';
 export { default as EmailIcon } from './EmailIcon';

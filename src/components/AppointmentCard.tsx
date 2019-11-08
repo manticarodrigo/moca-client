@@ -96,7 +96,10 @@ const AppointmentCard = ({
         <View row justifyBetween spacing={{ py: isTherapist && !upcoming && 2 }}>
           <View row flex={1}>
             <View column flex={1} spacing={{ mt: (isTherapist && upcoming) && -5 }}>
-              <Text variant={!upcoming && isTherapist ? 'boldSecondary' : 'boldGrey'}>
+              <Text
+                variant="semiBold"
+                color={!upcoming && isTherapist ? 'secondary' : 'grey'}
+              >
                 {time}
               </Text>
               <Text variant="regular">{address.street}</Text>

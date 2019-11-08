@@ -29,9 +29,9 @@ const Toggle = ({ onLabel, offLabel, existingValue, onToggle }: Props) => {
     <View row justifyCenter>
       <View justifyCenter>
         {isOn ? (
-          <Text spacing={{ mr: 2 }} variant="regularSmallSuccess">{onLabel}</Text>
+          <Text spacing={{ mr: 2 }} variant="regularSmall" color="success">{onLabel}</Text>
         ) : (
-          <Text spacing={{ mr: 2 }} variant="regularSmallGrey">{offLabel}</Text>
+          <Text spacing={{ mr: 2 }} variant="regularSmall" color="grey">{offLabel}</Text>
         )}
       </View>
       <View onPress={onPress}>

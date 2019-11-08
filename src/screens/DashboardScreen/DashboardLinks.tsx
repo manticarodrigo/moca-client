@@ -82,7 +82,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
           onPress={onPressLink('ProfileScreen')}
         >
           <View>
-            <Text variant={profileReady ? 'regularSmallSuccess' : 'regularSmallError'}>
+            <Text variant="regularSmall" color={profileReady ? 'success' : 'error'}>
               {profilePercentString}
             </Text>
             <View variant="progressBar" spacing={{ mt: 2 }}>
@@ -94,14 +94,14 @@ const DashboardLinks = ({ isActivated }: Props) => {
 
       {!isTherapist && (
         <LinkCard type="injury" spacing={{ mb: 2 }} onPress={onPressLink('ProfileScreen')}>
-          <Text variant="regularSmallGrey">
+          <Text variant="regularSmall" color="grey">
             {store.user.injury ? store.user.injury.title : 'Set my injury'}
           </Text>
         </LinkCard>
       )}
 
       <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={onPressLink('WalletScreen')}>
-        <Text variant="regularSmallGrey">
+        <Text variant="regularSmall" color="grey">
           {paymentsStr}
         </Text>
       </LinkCard>
@@ -115,7 +115,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
           <>
             {lastConversation ? (
               <>
-                <Text variant="regularSmallDark">
+                <Text variant="regularSmall" color="dark">
                   {lastConversation.user.firstName}
                   {' '}
                   {lastConversation.user.lastName}
@@ -126,7 +126,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
                 <NotificationBadge large />
               </>
             ) : (
-              <Text variant="regularSmallGrey">
+              <Text variant="regularSmall" color="grey">
                 No messages found
               </Text>
             )}
@@ -137,8 +137,8 @@ const DashboardLinks = ({ isActivated }: Props) => {
       {(isActivated && lastAppointmentStr) && (
         <LinkCard type="history" spacing={{ mb: 2 }} onPress={onPressLink('HistoryScreen')}>
           <Text>
-            <Text variant="regularSmallGrey">Last: </Text>
-            <Text variant="boldSmallGrey">
+            <Text variant="regularSmall" color="grey">Last: </Text>
+            <Text variant="semiBold" size={1} color="grey">
               {lastAppointmentStr}
             </Text>
           </Text>

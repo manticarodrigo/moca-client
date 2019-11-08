@@ -39,7 +39,7 @@ const SearchCard = ({
       <View flex={1} spacing={{ px: 3 }}>
         <View row justifyBetween>
           <View>
-            <Text variant="titleSmall">
+            <Text variant="semiBold">
               {firstName}
               {' '}
               {lastName}
@@ -51,19 +51,19 @@ const SearchCard = ({
               <ClockIcon />
               <Text variant="regular" spacing={{ ml: 2 }}>{sessionTypes || 'N/A'}</Text>
             </View>
-            <Text variant="titlePrimary" spacing={{ mt: 2 }}>
+            <Text variant="title" spacing={{ mt: 2 }}>
               {prices.length ? `~$${avgPrice}` : 'N/A'}
             </Text>
           </View>
         </View>
         <View row spacing={{ pt: 2 }}>
           <View flex={2} variant="borderTopAndRight" spacing={{ py: 2, pl: 3, pr: 5 }}>
-            <Text variant="regularSmallGrey">
+            <Text variant="regularSmall" color="grey">
               License Number
             </Text>
           </View>
           <View flex={1} variant="borderTop" spacing={{ py: 2, px: 3 }}>
-            <Text variant="regularSmallGrey">
+            <Text variant="regularSmall" color="grey">
               {licenseNumber || 'N/A'}
             </Text>
           </View>

@@ -35,16 +35,17 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
       <View row spacing={{ p: 1 }}>
         <Image rounded size={60} uri={image} />
         <View column spacing={{ pl: 3 }}>
-          <Text spacing={{ mb: 2 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
+          <Text variant="semiBold" size={2} spacing={{ mb: 2 }}>
             {name}
           </Text>
-          <Text typography={{ size: 1, weight: '500', color: 'grey' }}>{time}</Text>
+          <Text variant="regularSmall" color="grey">{time}</Text>
         </View>
       </View>
       <Text
+        variant="light"
+        color="grey"
         numberOfLines={1}
         spacing={{ mt: 3, px: 1, pb: 3 }}
-        typography={{ size: 2, weight: '300', color: 'grey' }}
       >
         {text}
       </Text>

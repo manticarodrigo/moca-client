@@ -93,7 +93,7 @@ const InputModal = (
           justifyCenter
           spacing={{ py: 4 }}
         >
-          <Text variant="titleSmall">{title || ''}</Text>
+          <Text variant="semiBold">{title || ''}</Text>
         </View>
         <View alignCenter spacing={{ p: 4 }}>
           <FormField

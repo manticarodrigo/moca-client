@@ -1,7 +1,7 @@
 import React from 'react';
 import { CalendarList as RNCalendarList } from 'react-native-calendars';
 
-import { Colors, Texts, Spacing } from '@src/styles';
+import { Colors, Typography, Texts, Spacing } from '@src/styles';
 
 const CalendarList = ({ onDayPress, markedDates }) => (
   <RNCalendarList
@@ -21,16 +21,19 @@ const CalendarList = ({ onDayPress, markedDates }) => (
       },
       'stylesheet.calendar.header': {
         header: { ...Spacing.getStyles({ pt: 4, px: 2 }), alignItems: 'center' },
-        monthText: { ...Texts.boldPrimary },
+        monthText: { ...Typography.getStyles(Texts.semiBold) },
         week: {
           ...Spacing.getStyles({ py: 3, px: 4 }),
           flexDirection: 'row',
           justifyContent: 'space-between',
         },
-        dayHeader: { ...Texts.regularSmallGreyishBrown, textTransform: 'uppercase' },
+        dayHeader: {
+          ...Typography.getStyles({ ...Texts.regularSmall, color: 'greyishBrown' }),
+          textTransform: 'uppercase',
+        },
       },
       'stylesheet.day.period': {
-        text: { ...Texts.regularGrey, marginTop: 7 },
+        text: { ...Typography.getStyles({ ...Texts.regularSmall, color: 'grey' }), marginTop: 7 },
       },
     }}
 

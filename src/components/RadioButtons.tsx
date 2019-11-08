@@ -43,7 +43,7 @@ const RadioButtons = ({ options = [], readonly, existingValue, onChange }: Props
   if (readonly) {
     return (
       <View alignCenter>
-        <Text variant="boldDark">
+        <Text variant="semiBold" color="dark">
           {existingValue || 'N/A'}
         </Text>
       </View>
@@ -64,7 +64,10 @@ const RadioButtons = ({ options = [], readonly, existingValue, onChange }: Props
             bgColor={isSelected ? 'secondaryLight' : 'white'}
             onPress={onPressOption(value)}
           >
-            <Text variant={isSelected ? 'boldWhite' : 'regularSecondary'}>
+            <Text
+              variant={isSelected ? 'semiBold' : 'regular'}
+              color={isSelected ? 'white' : 'secondary'}
+            >
               {label}
             </Text>
           </View>

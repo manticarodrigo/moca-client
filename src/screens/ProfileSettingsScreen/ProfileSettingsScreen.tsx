@@ -110,7 +110,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
             </Button>
           </View>
           <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-            <Text variant="regularSemiGrey">Account</Text>
+            <Text variant="regular">Account</Text>
           </View>
           <View>
             {accountSettings.map((type) => (
@@ -118,7 +118,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
             ))}
           </View>
           <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-            <Text variant="regularSemiGrey">Support</Text>
+            <Text variant="regular">Support</Text>
           </View>
           <View>
             {supportSettings.map((type) => (
@@ -126,7 +126,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
             ))}
           </View>
           <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-            <Text variant="regularSemiGrey">Follow Us</Text>
+            <Text variant="regular">Follow Us</Text>
           </View>
           <View>
             {followUs.map((type) => (

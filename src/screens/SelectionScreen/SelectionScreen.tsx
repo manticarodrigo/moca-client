@@ -82,7 +82,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
             <View spacing={{ p: 4 }} alignCenter>
               <Text variant="title">Please select your</Text>
               <View alignCenter row>
-                <Text variant="title" typography={{ color: 'secondary' }}>MOCA</Text>
+                <Text variant="title" color="secondary">MOCA</Text>
                 <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
               </View>
             </View>
@@ -98,8 +98,9 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
               >
                 <PatientIcon focused={isPatient} />
                 <Text
-                  variant="title"
-                  typography={{ color: patientTextColor, weight: '900' }}
+                  variant="bold"
+                  size={4}
+                  color={patientTextColor}
                 >
                   PATIENT
                 </Text>
@@ -114,8 +115,9 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
               >
                 <TherapistIcon focused={isTherapist} />
                 <Text
-                  variant="title"
-                  typography={{ color: therapistTextColor, weight: '900' }}
+                  variant="bold"
+                  size={4}
+                  color={therapistTextColor}
                 >
                   THERAPIST
                 </Text>

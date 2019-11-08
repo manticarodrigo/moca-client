@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import useStore from '@src/hooks/useStore';
 import useFormFields from '@src/hooks/useFormFields';
 
@@ -61,7 +63,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
 
   return (
     <View safeArea spacing={{ pt: 3 }} alignCenter>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }}>
         <View spacing={{ mx: 3 }} alignCenter>
           <View spacing={{ py: 4 }} alignCenter>
             <View row>

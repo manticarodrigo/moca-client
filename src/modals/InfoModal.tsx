@@ -9,7 +9,7 @@ const InfoModal = ({ visible, title, json, onClose }) => (
     <View safeArea>
       <View row>
         <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
-          <Text variant="titleSmall">{title}</Text>
+          <Text variant="semiBold">{title}</Text>
         </View>
       </View>
       <View flex={1} spacing={{ m: 3 }}>

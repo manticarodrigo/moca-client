@@ -73,12 +73,12 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                   <View row>
                     <ScheduleSectionIcon />
                     <View column justifyBetween spacing={{ ml: 2 }}>
-                      <Text variant="regularSecondary">{startFormatted}</Text>
-                      <Text variant="regularSecondary">{endFormatted}</Text>
+                      <Text variant="regularSmall" color="secondary">{startFormatted}</Text>
+                      <Text variant="regularSmall" color="secondary">{endFormatted}</Text>
                     </View>
                     <View row alignCenter spacing={{ ml: 2 }}>
                       <Image rounded size={36} uri={mockImg} />
-                      <Text variant="titleSmallDark" spacing={{ ml: 2 }}>
+                      <Text variant="semiBold" color="dark" spacing={{ ml: 2 }}>
                         {`${otherParty.firstName} ${otherParty.lastName}`}
                       </Text>
                     </View>
@@ -99,10 +99,10 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
 const HeaderTitle = ({ dayOfMonth = '', monthAndYear = '', dayOfWeek = '' }) => (
   <View row flex={1} spacing={{ p: 3 }}>
-    <Text variant="titlePrimaryLarge">{dayOfMonth}</Text>
+    <Text variant="titleLarge">{dayOfMonth}</Text>
     <View spacing={{ ml: 2 }}>
-      <Text variant="lightPrimarySmallest">{monthAndYear}</Text>
-      <Text variant="regularPrimary">{dayOfWeek}</Text>
+      <Text variant="light" size={0} color="primary">{monthAndYear}</Text>
+      <Text variant="regularSmall" color="primary">{dayOfWeek}</Text>
     </View>
   </View>
 );

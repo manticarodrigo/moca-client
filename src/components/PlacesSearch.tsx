@@ -4,9 +4,11 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import useStore from '@src/hooks/useStore';
 import { AddAddressForm } from '@src/store/actions/UserAction';
 
-import { Colors, Spacing, Texts, Views } from '@src/styles';
+import { Colors, Spacing, Texts, Views, Typography } from '@src/styles';
 import { SearchIcon } from './icons';
 import View from './View';
+
+const regularText = Typography.getStyles(Texts.regular);
 
 const styles = {
   container: {
@@ -26,7 +28,7 @@ const styles = {
     backgroundColor: 'transparent',
   },
   textInput: {
-    ...Texts.regular,
+    ...regularText,
     marginTop: 0,
     marginLeft: 0,
     marginRight: 0,
@@ -35,7 +37,7 @@ const styles = {
     height: 60,
   },
   description: {
-    ...Texts.regular,
+    ...regularText,
   },
   separator: {
     height: 1,

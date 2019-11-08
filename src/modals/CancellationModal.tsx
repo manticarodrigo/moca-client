@@ -61,8 +61,8 @@ const CancellationModal = ({ visible, onToggle }) => {
         width="100%"
         bgColor="white"
       >
-        <Text variant="titleDark">Choose your reason</Text>
-        <Text variant="titleDark">for cancellation.</Text>
+        <Text variant="title" color="dark">Choose your reason</Text>
+        <Text variant="title" color="dark">for cancellation.</Text>
       </View>
       <View scroll width="100%" style={{ flex: 0 }} spacing={{ p: 4 }}>
         <View>
@@ -81,7 +81,7 @@ const CancellationModal = ({ visible, onToggle }) => {
                   />
                 </View>
                 <View flex={1} justifyCenter spacing={{ px: 3 }}>
-                  <Text numberOfLines={2} variant="titleSmallDark">
+                  <Text numberOfLines={2} variant="semiBold" color="dark">
                     {reason.title}
                   </Text>
                 </View>
@@ -91,7 +91,7 @@ const CancellationModal = ({ visible, onToggle }) => {
 
               </View>
               {opened[key] && (
-                <Text variant="smallDark" spacing={{ mt: 2 }}>{reason.details}</Text>
+                <Text variant="light" color="dark" spacing={{ mt: 2 }}>{reason.details}</Text>
               )}
             </View>
           ))}

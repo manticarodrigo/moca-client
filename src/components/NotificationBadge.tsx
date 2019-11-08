@@ -5,7 +5,7 @@ import Text from '@src/components/Text';
 
 const NotificationBadge = ({ large = false, count = 0 }) => count > 0 ? (
   <View variant={large ? 'notificationBadgeLarge' : 'notificationBadge'}>
-    <Text variant="boldWhiteSmallest">
+    <Text variant="semiBold" size={0} color="white">
       {count}
     </Text>
   </View>

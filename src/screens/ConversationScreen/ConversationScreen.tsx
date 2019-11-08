@@ -162,7 +162,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
           )}
           renderSectionFooter={({ section: { title } }) => (
             <View spacing={{ ml: 3, py: 4 }}>
-              <Text typography={{ size: 2, color: 'semiGrey', weight: '500', align: 'center' }}>
+              <Text variant="regular" align="center">
                 {title.charAt(0).toUpperCase() + title.slice(1)}
               </Text>
             </View>
@@ -191,7 +191,7 @@ type TitleProp = { user?: UserSnippet }
 const Title = ({ user }: TitleProp) => (
   <View row flex={1} alignCenter>
     <Image rounded size={48} uri={user.image || undefined} />
-    <Text variant="titleSmall" spacing={{ ml: 3 }}>
+    <Text variant="semiBold" spacing={{ ml: 3 }}>
       {user.firstName}
       {' '}
       {user.lastName}

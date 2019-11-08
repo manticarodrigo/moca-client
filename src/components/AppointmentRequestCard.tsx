@@ -52,24 +52,26 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
           {' '}
           {isTherapist ? 'for' : 'from'}
           {' '}
-          <Text variant="boldDark">{`${otherUser.firstName} ${otherUser.lastName}`}</Text>
+          <Text variant="semiBold" color="dark">
+            {`${otherUser.firstName} ${otherUser.lastName}`}
+          </Text>
         </Text>
       </View>
 
       <View alignCenter spacing={{ p: 3 }} bgColor="secondaryLight">
         <View row alignCenter spacing={{ ml: -3 }}>
           <ScheduleTabIcon white />
-          <Text variant="regularPrimaryBold">
+          <Text variant="bold">
             {date}
           </Text>
         </View>
         <View row alignCenter spacing={{ m: 1 }}>
           <ClockIcon white />
-          <Text variant="regularPrimaryBold" spacing={{ ml: 2 }}>
+          <Text variant="bold" spacing={{ ml: 2 }}>
             {hour}
           </Text>
         </View>
-        <Text variant="titleWhiteBold" spacing={{ mt: 2 }}>
+        <Text variant="title" weight="900" size={5} color="white" spacing={{ mt: 2 }}>
           {`$${price} for ${duration}min`}
         </Text>
 
@@ -86,10 +88,16 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
         bgColor={(isCancelled || isRejected) ? 'error' : null}
         onPress={(!isCancelled && !isRejected) && onPressReject}
       >
-        <Text variant={(isCancelled || isRejected) ? 'titleWhite' : 'titleSmallError'}>
+        <Text
+          variant="title"
+          color={(isCancelled || isRejected) ? 'white' : 'error'}
+        >
           {isCancelled && 'Cancelled'}
           {isRejected && 'Rejected'}
-          {(!isCancelled && !isRejected) && ((isTherapist && 'Cancel') || (!isTherapist && 'Reject'))}
+          {(
+            !isCancelled && !isRejected) && (
+            (isTherapist && 'Cancel') || (!isTherapist && 'Reject')
+          )}
         </Text>
       </View>
     </View>

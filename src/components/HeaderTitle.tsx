@@ -3,7 +3,7 @@ import React from 'react';
 import Text from '@src/components/Text';
 
 const HeaderTitle = ({ title }) => (
-  <Text spacing={{ ml: 3 }} typography={{ size: 3, weight: '700', color: 'primary' }}>
+  <Text variant="semiBold" size={2} spacing={{ ml: 3 }}>
     {title}
   </Text>
 );

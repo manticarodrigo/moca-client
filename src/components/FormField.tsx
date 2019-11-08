@@ -17,7 +17,7 @@ import {
 
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
-import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
+import { Spacing, SpacingProp, Colors, Texts, Typography } from '@src/styles';
 
 import Wrapper from '@src/components/View';
 
@@ -110,7 +110,7 @@ const FormField = ({
       ...Spacing.getStyles(spacing),
     },
     text: {
-      ...Texts.regular,
+      ...Typography.getStyles(Texts.regular),
       width: '100%',
       height: 'auto',
       color: Colors.dark,
@@ -199,7 +199,7 @@ const FormField = ({
         </Wrapper>
       </Wrapper>
       {shouldShowError && (
-        <Text spacing={{ mt: 2 }} variant="errorSmall">
+        <Text variant="regular" size={1} color="error" spacing={{ mt: 2 }}>
           {validationError}
         </Text>
       )}

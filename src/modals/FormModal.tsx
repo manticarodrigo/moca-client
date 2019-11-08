@@ -68,7 +68,7 @@ const FormModal = <State extends { [key: string]: string }> ({
             <View flex={1} row alignCenter spacing={{ p: 4 }} variant="borderBottom">
               <Image rounded size={70} />
               <View spacing={{ pl: 4, py: 4 }}>
-                <Text variant="titlePrimary">{title}</Text>
+                <Text variant="title">{title}</Text>
                 {!!subtitle && <Text variant="regularDark">{subtitle}</Text>}
               </View>
             </View>

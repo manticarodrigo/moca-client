@@ -50,7 +50,7 @@ const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
       <View width="100%">
         <View row>
           <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
-            <Text variant="titleSmall">
+            <Text variant="semiBold">
               Reviews
             </Text>
           </View>
@@ -63,11 +63,13 @@ const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
               <View variant="borderBottom" flex={1} row>
                 <View row spacing={{ ml: 3, my: 3 }}>
                   <View spacing={{ px: 3, mt: 1 }}>
-                    <Text variant="titleSmall">
+                    <Text variant="semiBold">
                       {`${item.patient.firstName} ${item.patient.lastName}`}
                     </Text>
                     <Rating rating={item.rating} />
-                    <Text spacing={{ mt: 1 }} variant="regularGrey">{item.comment}</Text>
+                    <Text spacing={{ mt: 1 }} variant="regularSmall" color="grey">
+                      {item.comment}
+                    </Text>
                   </View>
                 </View>
               </View>

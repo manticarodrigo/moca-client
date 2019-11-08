@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { format, isToday, isAfter, differenceInMinutes } from 'date-fns';
 
-import { Views, Texts } from '@src/styles';
+import { Views, Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -59,36 +59,19 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
 
   type Variants = {
     viewVariant: keyof typeof Views;
-    dayVariant: keyof typeof Texts;
-    monthYearVariant: keyof typeof Texts;
-    dayOfWeekVariant: keyof typeof Texts;
+    color: keyof typeof Colors;
   }
 
-  const { viewVariant, dayVariant, monthYearVariant, dayOfWeekVariant }: Variants = useMemo(() => {
+  const { viewVariant, color }: Variants = useMemo(() => {
     if (total === 0) {
-      return {
-        viewVariant: 'borderCardDisabled',
-        dayVariant: 'titleSemiGreyLarge',
-        monthYearVariant: 'lightSemiGreySmallest',
-        dayOfWeekVariant: 'regularSemiGray',
-      };
+      return { viewVariant: 'borderCardDisabled', color: 'semiGrey' };
     }
 
     if (isDateToday) {
-      return {
-        viewVariant: 'borderShadowCard',
-        dayVariant: 'titlePrimaryLarge',
-        monthYearVariant: 'lightPrimarySmallest',
-        dayOfWeekVariant: 'regularPrimary',
-      };
+      return { viewVariant: 'borderShadowCard', color: 'primary' };
     }
 
-    return {
-      viewVariant: 'card',
-      dayVariant: 'titleSecondaryLarge',
-      monthYearVariant: 'lightSecondarySmallest',
-      dayOfWeekVariant: 'regularSecondary',
-    };
+    return { viewVariant: 'card', color: 'secondary' };
   }, [total, isDateToday]);
 
   if (!timestamp) return null;
@@ -103,14 +86,14 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
     >
       <View column>
         <View row alignCenter>
-          <Text variant={dayVariant}>{day}</Text>
+          <Text variant="title" color={color}>{day}</Text>
           <View column spacing={{ ml: 2 }}>
-            <Text variant={monthYearVariant}>{month}</Text>
-            <Text variant={monthYearVariant}>{year}</Text>
+            <Text variant="lightSmallest" color={color}>{month}</Text>
+            <Text variant="lightSmallest" color={color}>{year}</Text>
           </View>
         </View>
 
-        <Text variant={dayOfWeekVariant}>{dayOfWeek}</Text>
+        <Text variant="regularSmall" color={color}>{dayOfWeek}</Text>
       </View>
 
       <View column flex={1}>

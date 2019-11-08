@@ -47,7 +47,7 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
       {!sections.length ? (
         <View flex={1} justifyCenter alignCenter>
           <NoConversationsIcon />
-          <Text variant="titleSemiGrey" typography={{ align: 'center' }} spacing={{ pt: 4 }}>
+          <Text variant="title" color="semiGrey" align="center" spacing={{ pt: 4 }}>
             You have not started any conversations.
           </Text>
         </View>
@@ -62,7 +62,7 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
           )}
           renderSectionHeader={({ section }) => (
             <View spacing={{ ml: 3, py: 3 }}>
-              <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+              <Text variant="regular">
                 {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
               </Text>
             </View>

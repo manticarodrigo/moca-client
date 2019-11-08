@@ -46,12 +46,12 @@ const DashboardAppointments = ({
     <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
 
       {!isTherapist && (
-        <Text variant="titleSmallSecondaryLight" spacing={{ mb: 3 }}>Appointments</Text>
+        <Text variant="semiBold" color="secondaryLight" spacing={{ mb: 3 }}>Appointments</Text>
       )}
 
       {current && (
         <View column justifyCenter spacing={{ mb: 3 }}>
-          <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
+          <Text variant="semiBold" color="white" spacing={{ mb: 2 }}>Current</Text>
           <AppointmentCard
             appointment={current}
             onPress={onPressAppointment}
@@ -63,7 +63,7 @@ const DashboardAppointments = ({
 
       {next && (
         <View column justifyCenter>
-          <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
+          <Text variant="semiBold" color="white" spacing={{ mb: 2 }}>Next</Text>
           <AppointmentCard
             upcoming
             appointment={next}
@@ -73,7 +73,7 @@ const DashboardAppointments = ({
         </View>
       )}
 
-      {(!current && !next) && <Text variant="boldWhite">No appointments found.</Text>}
+      {(!current && !next) && <Text variant="semiBold" color="white">No appointments found.</Text>}
     </View>
   );
 };

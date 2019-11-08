@@ -45,7 +45,7 @@ const ChangePasswordModal = ({
       <View alignCenter>
         <View row>
           <View variant="borderBottom" flex={1} spacing={{ py: 4 }} alignCenter justifyCenter>
-            <Text variant="titleSmall">
+            <Text variant="semiBold">
               Edit Password
             </Text>
           </View>
