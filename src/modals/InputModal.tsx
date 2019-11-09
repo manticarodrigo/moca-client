@@ -7,10 +7,23 @@ import useFormFields from '@src/hooks/useFormFields';
 
 import FormField, { Props as FormFieldProps } from '@src/components/FormField';
 import View from '@src/components/View';
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import Button from '@src/components/Button';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
 
+const ScrollView = ({ children }) => (
+  <KeyboardAwareScrollView
+    viewIsInsideTabBar
+    extraScrollHeight={-100}
+    resetScrollToCoords={{ x: 0, y: 0 }}
+    contentContainerStyle={{ width: WINDOW_WIDTH }}
+  >
+    <View p={4}>
+      {children}
+    </View>
+  </KeyboardAwareScrollView>
+);
 
 export type Props = TextInputProps & {
   visible: boolean;
@@ -78,6 +91,8 @@ const InputModal = (
     }
   };
 
+  const InputWrapper = multiline ? ScrollView : View;
+
   return (
     <Modal
       avoidKeyboard
@@ -95,7 +110,7 @@ const InputModal = (
         >
           <Text variant="semiBold">{title || ''}</Text>
         </View>
-        <View alignCenter p={4}>
+        <InputWrapper alignCenter={!multiline} p={!multiline ? 4 : undefined}>
           <FormField
             value={formFields.value}
             multiline={multiline}
@@ -117,7 +132,7 @@ const InputModal = (
               </Button>
             </View>
           </View>
-        </View>
+        </InputWrapper>
       </View>
     </Modal>
   );
