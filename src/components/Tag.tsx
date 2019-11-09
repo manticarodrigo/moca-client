@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 
 import { StyleSheet } from 'react-native';
-import { Spacing, SpacingProp, Colors } from '@src/styles';
+import { Spacing, SpacingProps, Colors } from '@src/styles';
 
 import { ReportIcon, AppointmentIcon, ClockSimpleIcon, DollarIcon } from '@src/components/icons';
 
 import Text from './Text';
 import View from './View';
 
-type TagProps = SpacingProp & {
+type TagProps = SpacingProps & {
   placeholder: string | number;
   icon?: 'report' | 'appointment' | 'clock' | 'dollar';
   type?: 'fill' | 'border' | 'borderLight';
@@ -16,7 +16,7 @@ type TagProps = SpacingProp & {
 }
 
 const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: TagProps) => {
-  const { spacing } = Spacing.parseProps(restProps);
+  const [spacing] = Spacing.parseProps(restProps);
 
   const borderColor = useMemo(() => {
     switch (type) {

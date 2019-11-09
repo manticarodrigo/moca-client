@@ -1,19 +1,19 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { Spacing, SpacingProp } from '@src/styles';
+import { Spacing, SpacingProps } from '@src/styles';
 
 import { StarsIcon } from '@src/components/icons';
 
 import View from './View';
 import Text from './Text';
 
-type RatingProps = SpacingProp & {
+type RatingProps = SpacingProps & {
   light?: boolean;
   rating?: number;
 }
 
 const Rating = ({ light, rating, ...restProps }: RatingProps) => {
-  const { spacing } = Spacing.parseProps(restProps);
+  const [spacing] = Spacing.parseProps(restProps);
 
   const styles = useMemo(() => StyleSheet.create({
     view: { ...Spacing.getStyles(spacing) },

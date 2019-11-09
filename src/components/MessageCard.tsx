@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
 
-import { TypographyProp } from '@src/styles';
+import { TypographyProps } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -15,7 +15,7 @@ type Props = {
   onPressImage: () => void;
 };
 
-const commonProps: TypographyProp = {
+const commonProps: TypographyProps = {
   weight: '500',
   align: 'right',
 };

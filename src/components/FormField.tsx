@@ -17,7 +17,7 @@ import {
 
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
-import { Spacing, SpacingProp, Colors, Texts, Typography } from '@src/styles';
+import { Spacing, SpacingProps, Colors, Texts, Typography } from '@src/styles';
 
 import Wrapper from '@src/components/View';
 
@@ -30,7 +30,7 @@ export type Props = TextInputProps & {
   value: string;
   required?: boolean;
   validation?: 'email' | 'password' | 'zip' | 'number';
-  spacing?: SpacingProp;
+  spacing?: SpacingProps;
   width?: number | string;
   height?: number | string;
   onChangeText?: (text: string, error?: string) => void;

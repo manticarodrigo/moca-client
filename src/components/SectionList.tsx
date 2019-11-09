@@ -5,10 +5,10 @@ import {
   SectionListProps as RNSectionListProps,
 } from 'react-native';
 
-import { Colors, Spacing, SpacingProp } from '@src/styles';
+import { Colors, Spacing, SpacingProps } from '@src/styles';
 
 type SectionListProps<Item> = RNSectionListProps<Item> & {
-  spacing?: SpacingProp;
+  spacing?: SpacingProps;
   bgColor?: keyof typeof Colors;
 };
 

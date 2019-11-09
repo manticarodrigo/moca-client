@@ -6,7 +6,7 @@ import {
   TextInputProps as RNTextInputProps,
 } from 'react-native';
 
-import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from '@src/styles';
+import { Spacing, SpacingProps, Typography, TypographyProps, Colors, Texts } from '@src/styles';
 
 const variants: { [key: string]: TextStyle } = {
   conversation: {
@@ -17,17 +17,16 @@ const variants: { [key: string]: TextStyle } = {
   },
 };
 
-type TextInputProps = RNTextInputProps & SpacingProp & {
+type TextInputProps = RNTextInputProps & TypographyProps & SpacingProps & {
   variant?: keyof typeof variants;
-  typography?: TypographyProp;
 };
 
 const TextInput = ({
   variant,
-  typography,
   ...restProps
 }: TextInputProps, ref: React.Ref<RNTextInput>) => {
-  const { spacing, rest } = Spacing.parseProps(restProps);
+  const [typography, typographyRest] = Typography.parseProps(restProps);
+  const [spacing, spacingRest] = Spacing.parseProps(typographyRest);
 
   const styles = useMemo(() => StyleSheet.create({
     text: {
@@ -37,7 +36,7 @@ const TextInput = ({
     },
   }), [variant, typography, spacing]);
 
-  return <RNTextInput ref={ref} style={styles.text} {...rest} />;
+  return <RNTextInput ref={ref} style={styles.text} {...spacingRest} />;
 };
 
 export default forwardRef(TextInput);

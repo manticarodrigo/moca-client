@@ -1,42 +1,33 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
 
-import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from '@src/styles';
+import { Spacing, SpacingProps, Typography, TypographyProps, Texts } from '@src/styles';
 
-type TextProps = RNTextProps & SpacingProp & {
+type TextProps = RNTextProps & TypographyProps & SpacingProps & {
   style?: TextStyle;
   variant?: keyof typeof Texts;
-  color?: keyof typeof Colors;
-  weight?: TypographyProp['weight'];
-  size?: TypographyProp['size'];
-  align?: TypographyProp['align'];
-  decoration?: TypographyProp['decoration'];
   children: (string|number|JSX.Element) | (string|number|JSX.Element)[];
 };
 
 const Text = ({
   style,
   variant,
-  weight,
-  size,
-  align,
-  color,
-  decoration,
   children,
   ...restProps
 }: TextProps) => {
-  const { spacing, rest } = Spacing.parseProps(restProps);
+  const [typography, typographyRest] = Typography.parseProps(restProps);
+  const [spacing, spacingRest] = Spacing.parseProps(typographyRest);
 
   const styles = useMemo(() => StyleSheet.create({
     text: {
-      ...Spacing.getStyles(spacing),
       ...Typography.getStyles(Texts[variant]),
-      ...Typography.getStyles({ weight, size, color, align, decoration }),
+      ...Typography.getStyles(typography),
+      ...Spacing.getStyles(spacing),
     },
-  }), [spacing, variant, weight, size, align, color, decoration]);
+  }), [typography, variant, spacing]);
 
   return (
-    <RNText style={[styles.text, style]} {...rest}>
+    <RNText style={[styles.text, style]} {...spacingRest}>
       {children}
     </RNText>
   );

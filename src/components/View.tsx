@@ -14,13 +14,13 @@ import {
   Position,
   PositionProp,
   Spacing,
-  SpacingProp,
+  SpacingProps,
   Shadow,
   ShadowProp,
   Colors,
 } from '@src/styles';
 
-type ViewProps = SpacingProp & {
+type ViewProps = SpacingProps & {
   style?: ViewStyle | ViewStyle[];
   safeArea?: boolean;
   scroll?: boolean;
@@ -72,9 +72,9 @@ const View = ({
   bgColor,
   children,
   onPress,
-  ...rest
+  ...restProps
 }: ViewProps) => {
-  const { spacing } = Spacing.parseProps(rest);
+  const [spacing] = Spacing.parseProps(restProps);
 
   const ViewType: typeof React.Component = useMemo(() => {
     if (safeArea) return SafeAreaView;

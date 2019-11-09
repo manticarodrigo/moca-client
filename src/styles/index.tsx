@@ -10,10 +10,10 @@ import * as Views from './variants/views';
 import * as Buttons from './variants/buttons';
 import * as Texts from './variants/texts';
 
-export { SpacingProp } from './global/spacing';
+export { SpacingProps } from './global/spacing';
 export { PositionProp, PositionIndex } from './global/positions';
 export { ShadowProp } from './global/shadow';
-export { TypographyProp } from './global/typography';
+export { TypographyProps } from './global/typography';
 
 export {
   Position,

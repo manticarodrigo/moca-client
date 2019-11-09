@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'react-native';
 
-import { Spacing, SpacingProp, Colors, Buttons, Shadow } from '@src/styles';
+import { Spacing, SpacingProps, Colors, Buttons, Shadow } from '@src/styles';
 
-type ButtonProps = TouchableHighlightProps & SpacingProp & {
+type ButtonProps = TouchableHighlightProps & SpacingProps & {
   variant?: keyof typeof Buttons;
   icon?: JSX.Element;
   width?: number | string;
@@ -21,7 +21,7 @@ const Button = ({
   children,
   ...restProps
 }: ButtonProps) => {
-  const { spacing, rest } = Spacing.parseProps(restProps);
+  const [spacing, rest] = Spacing.parseProps(restProps);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
