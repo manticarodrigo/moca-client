@@ -8,15 +8,16 @@ import { ReportIcon, AppointmentIcon, ClockSimpleIcon, DollarIcon } from '@src/c
 import Text from './Text';
 import View from './View';
 
-type TagProps = {
+type TagProps = SpacingProp & {
   placeholder: string | number;
   icon?: 'report' | 'appointment' | 'clock' | 'dollar';
   type?: 'fill' | 'border' | 'borderLight';
   center?: boolean;
-  spacing?: SpacingProp;
 }
 
-const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagProps) => {
+const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: TagProps) => {
+  const { spacing } = Spacing.parseProps(restProps);
+
   const borderColor = useMemo(() => {
     switch (type) {
       case 'fill':

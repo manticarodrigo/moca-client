@@ -69,8 +69,8 @@ const SearchCard = ({
           </View>
         </View>
         <Button
+          mt={2}
           variant="secondary"
-          spacing={{ mt: 2 }}
           onPress={handlePressMessage}
         >
           Message / Schedule

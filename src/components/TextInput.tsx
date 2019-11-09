@@ -17,18 +17,18 @@ const variants: { [key: string]: TextStyle } = {
   },
 };
 
-type TextInputProps = RNTextInputProps & {
+type TextInputProps = RNTextInputProps & SpacingProp & {
   variant?: keyof typeof variants;
   typography?: TypographyProp;
-  spacing?: SpacingProp;
 };
 
 const TextInput = ({
   variant,
   typography,
-  spacing,
-  ...textProps
+  ...restProps
 }: TextInputProps, ref: React.Ref<RNTextInput>) => {
+  const { spacing, rest } = Spacing.parseProps(restProps);
+
   const styles = useMemo(() => StyleSheet.create({
     text: {
       ...Spacing.getStyles(spacing),
@@ -37,7 +37,7 @@ const TextInput = ({
     },
   }), [variant, typography, spacing]);
 
-  return <RNTextInput ref={ref} style={styles.text} {...textProps} />;
+  return <RNTextInput ref={ref} style={styles.text} {...rest} />;
 };
 
 export default forwardRef(TextInput);

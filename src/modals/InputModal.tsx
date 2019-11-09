@@ -108,10 +108,10 @@ const InputModal = (
           <View row>
             <View flex={1}>
               <Button
-                spacing={{ mt: 3 }}
+                mt={3}
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleSubmit}
                 disabled={isButtonDisabled}
+                onPress={handleSubmit}
               >
                 {buttonTextValue}
               </Button>

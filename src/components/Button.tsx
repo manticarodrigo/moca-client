@@ -3,9 +3,8 @@ import { StyleSheet, TouchableHighlight, TouchableHighlightProps, Text } from 'r
 
 import { Spacing, SpacingProp, Colors, Buttons, Shadow } from '@src/styles';
 
-type ButtonProps = TouchableHighlightProps & {
+type ButtonProps = TouchableHighlightProps & SpacingProp & {
   variant?: keyof typeof Buttons;
-  spacing?: SpacingProp;
   icon?: JSX.Element;
   width?: number | string;
   bgColor?: keyof typeof Colors;
@@ -15,14 +14,15 @@ type ButtonProps = TouchableHighlightProps & {
 
 const Button = ({
   variant = 'primary',
-  spacing,
   icon,
   width,
   bgColor,
   shadow,
   children,
-  ...buttonProps
+  ...restProps
 }: ButtonProps) => {
+  const { spacing, rest } = Spacing.parseProps(restProps);
+
   const styles = useMemo(() => StyleSheet.create({
     view: {
       width,
@@ -42,7 +42,7 @@ const Button = ({
     <TouchableHighlight
       style={styles.view}
       underlayColor={Buttons[variant].underlayColor}
-      {...buttonProps}
+      {...rest}
     >
       <>
         {icon}

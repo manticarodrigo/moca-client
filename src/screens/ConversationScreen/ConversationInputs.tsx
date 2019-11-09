@@ -15,8 +15,8 @@ const ConversationInputs = ({ text, onChangeText, onPressCamera, onPressSend }) 
       </View>
       <View flex={1} px={2}>
         <TextInput
+          px={3}
           variant="conversation"
-          spacing={{ px: 3 }}
           onChangeText={onChangeText}
           placeholder="Type your message..."
           value={text}

@@ -3,7 +3,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 
-import { StarsIcon, CogIcon } from '@src/components/icons';
+import { CogIcon } from '@src/components/icons';
 
 import { mockImg } from '@src/services/mock';
 

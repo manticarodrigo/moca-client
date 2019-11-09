@@ -77,7 +77,7 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
         </Text>
 
         {(!isTherapist && status === 'pending') && (
-          <Button variant="primary" spacing={{ mt: 3 }} onPress={onPressAccept}>
+          <Button mt={3} variant="primary" onPress={onPressAccept}>
             Accept Appointment
           </Button>
         )}

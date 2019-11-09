@@ -14,18 +14,18 @@ const ConversationActions = ({ onPressAppointment, onPressInjury }) => {
     <View scroll horizontal row p={3}>
       {store.user.type === 'PT' ? (
         <Button
-          variant="primarySmall"
+          mr={2}
           icon={<ScheduleIcon />}
-          spacing={{ mr: 2 }}
+          variant="primarySmall"
           onPress={onPressAppointment}
         >
           Send Appointment
         </Button>
       ) : (
         <Button
+          mr={2}
           variant="primarySmall"
           icon={<InjuryIcon size={0.4} tint="white" />}
-          spacing={{ mr: 2 }}
           onPress={onPressInjury}
         >
           Add Injury Info

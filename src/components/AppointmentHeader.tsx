@@ -96,7 +96,7 @@ const AppointmentHeader = ({
               justifyBetween={!isTherapist}
               py={1}
             >
-              {!isTherapist && <Rating rating={rating} spacing={{ mt: -3 }} />}
+              {!isTherapist && <Rating mt={-3} rating={rating} />}
               <Text variant="titleLarge">
                 {`$${price}`}
               </Text>

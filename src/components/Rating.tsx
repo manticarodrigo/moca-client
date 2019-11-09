@@ -7,13 +7,14 @@ import { StarsIcon } from '@src/components/icons';
 import View from './View';
 import Text from './Text';
 
-type RatingProps = {
+type RatingProps = SpacingProp & {
   light?: boolean;
   rating?: number;
-  spacing?: SpacingProp;
 }
 
-const Rating = ({ light, rating, spacing }: RatingProps) => {
+const Rating = ({ light, rating, ...restProps }: RatingProps) => {
+  const { spacing } = Spacing.parseProps(restProps);
+
   const styles = useMemo(() => StyleSheet.create({
     view: { ...Spacing.getStyles(spacing) },
   }), [spacing]);

@@ -118,7 +118,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                   </Text>
                 </View>
                 <View row flex={1} justifyEnd>
-                  <Button variant="tertiary" spacing={{ mr: 2 }} onPress={onMedicareAgreement}>
+                  <Button mr={2} variant="tertiary" onPress={onMedicareAgreement}>
                     Yes
                   </Button>
                   <Button

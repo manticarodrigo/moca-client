@@ -101,31 +101,31 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
       <View column flex={1}>
         <View row flex={1} justifyEnd mb={2}>
           <Tag
+            ml={2}
             icon="report"
             type={total === 0 ? 'border' : 'borderLight'}
             placeholder={`${completedDocs}/${totalDocs}`}
-            spacing={{ ml: 2 }}
           />
           <Tag
+            ml={2}
             icon="appointment"
             type={total === 0 ? 'border' : 'fill'}
             placeholder={`${completed}/${total}`}
-            spacing={{ ml: 2 }}
           />
         </View>
 
         <View row flex={1} justifyEnd>
           <Tag
+            ml={2}
             icon="clock"
             type={total === 0 ? 'border' : 'borderLight'}
             placeholder={totalTime}
-            spacing={{ ml: 2 }}
           />
           <Tag
+            ml={2}
             icon="dollar"
             type={total === 0 ? 'border' : 'fill'}
             placeholder={earnings}
-            spacing={{ ml: 2 }}
           />
         </View>
       </View>

@@ -123,8 +123,8 @@ const AppointmentCard = ({
 
         {hasButton && (
           <Button
+            mt={3}
             variant="secondary"
-            spacing={{ mt: 3 }}
             bgColor={canCancel ? 'white' : null}
             onPress={handlePressBtn}
           >

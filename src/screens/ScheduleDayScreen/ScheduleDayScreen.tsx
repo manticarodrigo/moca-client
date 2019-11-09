@@ -85,7 +85,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                   </View>
                   <View>
                     <Tag icon="report" type="borderLight" placeholder="10h" />
-                    <Tag icon="dollar" type="fill" placeholder={price} spacing={{ mt: 2 }} />
+                    <Tag mt={2} icon="dollar" type="fill" placeholder={price} />
                   </View>
                 </View>
               </SwipeRow>

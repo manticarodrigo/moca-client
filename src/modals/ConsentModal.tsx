@@ -39,11 +39,11 @@ const ConsentModal = ({ visible, onPressButton }: ConsentModalProps) => {
           <ConsentIcon />
         </View>
         <View alignCenter my={5} mx={4}>
-          <Text variant="regularDark" m={1}>By scheduling this appointment, you</Text>
-          <Text variant="regularDark" m={1}>consent to treatment for all scheduled</Text>
-          <Text variant="regularDark" m={1}>sessions with therapist for this injury.</Text>
+          <Text m={1} variant="regularDark">By scheduling this appointment, you</Text>
+          <Text m={1} variant="regularDark">consent to treatment for all scheduled</Text>
+          <Text m={1} variant="regularDark">sessions with therapist for this injury.</Text>
         </View>
-        <Button variant="primary" spacing={{ m: 2 }} onPress={onPressButton}>Give Consent</Button>
+        <Button m={2} variant="primary" onPress={onPressButton}>Give Consent</Button>
       </View>
     </Modal>
   );
