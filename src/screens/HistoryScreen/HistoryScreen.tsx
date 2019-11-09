@@ -14,7 +14,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
 
-import NotesModal from '@src/modals/NotesModal';
+import AppointmentModal from '@src/modals/AppointmentModal';
 import ReviewModal from '@src/modals/ReviewModal';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
@@ -66,10 +66,12 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
   return (
     <>
       {isTherapist ? (
-        <NotesModal
+        <AppointmentModal
+          past
+          isTherapist
           appointment={selectedAppointment}
           visible={isTherapist && !!selectedAppointment}
-          onSubmit={onSubmitNote}
+          onSubmitNotes={onSubmitNote}
           onClose={onCloseModal}
         />
       ) : (

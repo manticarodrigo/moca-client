@@ -20,8 +20,7 @@ import Text from '@src/components/Text';
 import LogoBackground from '@src/components/LogoBackground';
 import AwayCard from '@src/components/AwayCard';
 
-import TimerModal from '@src/modals/TimerModal';
-import NotesModal from '@src/modals/NotesModal';
+import AppointmentModal from '@src/modals/AppointmentModal';
 import CancellationModal from '@src/modals/CancellationModal';
 
 import DashboardAlert from './DashboardAlert';
@@ -78,10 +77,6 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
   const onCloseModals = () => setModalState({});
 
-  const onOpenNotes = () => setModalState({ notes: true });
-
-  const onOpenTimer = () => setModalState({ timer: true });
-
   const onMessageUser = (user: UserState) => {
     setModalState({});
 
@@ -90,6 +85,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
   const onEndTimer = () => {
     // TODO: end time early API
+    // check if notes are finished, if not, navigate to the tab
     onCloseModals();
   };
 
@@ -101,25 +97,14 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
   return (
     <>
-      <TimerModal
+      <AppointmentModal
         visible={modalState.timer}
         appointment={selectedAppointment}
         isTherapist={isTherapist}
-        onOpenNotes={onOpenNotes}
         onClose={onCloseModals}
-        onEnd={onEndTimer}
+        onEndTimer={onEndTimer}
+        onSubmitNotes={onSubmitNote}
       />
-
-      {isTherapist && (
-        <NotesModal
-          current
-          visible={modalState.notes}
-          appointment={selectedAppointment}
-          onOpenTimer={onOpenTimer}
-          onClose={onCloseModals}
-          onSubmit={onSubmitNote}
-        />
-      )}
 
       <CancellationModal
         visible={modalState.cancellation}
