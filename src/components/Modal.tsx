@@ -10,17 +10,19 @@ import { Colors } from '@src/styles';
 import View from '@src/components/View';
 
 type Props = ModalProps & {
-  children: JSX.Element | JSX.Element[];
+  hideToggle?: boolean;
   marginTop?: number;
   bgColor?: keyof typeof Colors;
   onToggle: () => void;
+  children: JSX.Element | JSX.Element[];
 };
 
 const Modal = ({
-  children,
+  hideToggle,
   marginTop = 100,
   bgColor = 'white',
   onToggle,
+  children,
   ...modalProps
 }: Props) => {
   const styles = useMemo(() => StyleSheet.create({
@@ -42,9 +44,11 @@ const Modal = ({
       {...modalProps}
     >
       <View variant="modal" alignCenter bgColor={bgColor}>
-        <View alignCenter py={3} onPress={onToggle}>
-          <OpenIcon />
-        </View>
+        {!hideToggle && (
+          <View alignCenter py={3} onPress={onToggle}>
+            <OpenIcon />
+          </View>
+        )}
         <>
           {children}
         </>

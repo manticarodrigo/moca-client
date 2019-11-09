@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { TouchableHighlight } from 'react-native';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import { Colors } from '@src/styles';
 
 import { qualificationOptions } from '@src/screens/QualificationsScreen/QualificationsContent';
@@ -13,6 +15,7 @@ import {
   MaleIcon,
   FemaleIcon,
   BothGendersIcon,
+  ArrowDown,
 } from '@src/components/icons';
 
 import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
@@ -64,20 +67,24 @@ export type FilterState = {
   ailments: string[];
 }
 
+const initialState = {
+  sortBy: {},
+  sessionLength: {},
+  gender: {},
+  maxPrice: '',
+  ailments: [],
+};
+
 const SearchFilterModal = ({ isVisible, onClose }) => {
-  const [filters, setFilters] = useState<FilterState>({
-    sortBy: {},
-    sessionLength: {},
-    gender: {},
-    maxPrice: '',
-    ailments: [],
-  });
+  const [filters, setFilters] = useState<FilterState>(initialState);
 
   const onPressCheckbox = (section: string, item: string, value: boolean) => {
     setFilters((prevState) => ({
       ...prevState, [section]: { ...prevState[section], [item]: value },
     }));
   };
+
+  const onPressClear = () => setFilters(initialState);
 
   const onChangeMaxPrice = (maxPrice: string) => {
     setFilters((prevState) => ({ ...prevState, maxPrice }));
@@ -99,12 +106,16 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
 
   return (
     <Modal
-      // avoidKeyboard
+      hideToggle
       propagateSwipe
-      // marginTop={50}
       isVisible={isVisible}
       onToggle={onToggle}
     >
+      <View row justifyBetween alignCenter p={4} width={WINDOW_WIDTH} variant="borderBottom">
+        <Text variant="semiBold" color="error" onPress={onPressClear}>Clear</Text>
+        <Text variant="title">Filters</Text>
+        <View onPress={onToggle}><ArrowDown large /></View>
+      </View>
       <KeyboardAwareScrollView>
         <View safeArea mb={6} width="100%" bgColor="white">
           <>
