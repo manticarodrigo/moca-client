@@ -31,13 +31,11 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
   }, [conversation]);
 
   return (
-    <View variant="borderBottom" spacing={{ p: 3 }} onPress={handleCardPress} bgColor="white">
-      <View row spacing={{ p: 1 }}>
+    <View p={3} variant="borderBottom" bgColor="white" onPress={handleCardPress}>
+      <View row p={1}>
         <Image rounded size={60} uri={image} />
-        <View column spacing={{ pl: 3 }}>
-          <Text variant="semiBold" size={2} mb={2}>
-            {name}
-          </Text>
+        <View pl={3}>
+          <Text variant="semiBold" size={2} mb={2}>{name}</Text>
           <Text variant="regularSmall" color="grey">{time}</Text>
         </View>
       </View>

@@ -51,8 +51,8 @@ const BillingHistoryTab = () => {
     <View width="100%" height="100%" scroll>
       {sessionHistory.map((session, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <View key={index} row variant="borderBottom" spacing={{ py: 3 }}>
-          <View column justifyCenter variant="borderRight" spacing={{ px: 3 }}>
+        <View key={index} row py={3} variant="borderBottom">
+          <View column justifyCenter px={3} variant="borderRight">
             <Text variant="light" size={5} color="secondary" align="center">{session.day}</Text>
             <Text variant="regular" color="secondary">
               {session.month}
@@ -62,20 +62,20 @@ const BillingHistoryTab = () => {
               {session.year}
             </Text>
           </View>
-          <View flex={1} column justifyEnd variant="borderRight" spacing={{ px: 3 }}>
+          <View flex={1} column justifyEnd px={3} variant="borderRight">
             <Text ml={2} variant="semiBold">{session.therapist}</Text>
-            <View flex={1} row wrap spacing={{ my: 2 }}>
-              <View row alignCenter spacing={{ m: 1 }}>
+            <View flex={1} my={2} row wrap>
+              <View row alignCenter m={1}>
                 <ClockIcon />
                 <Text mx={1} variant="regular">{session.duration}</Text>
               </View>
-              <View row alignCenter spacing={{ m: 1 }}>
+              <View row alignCenter m={1}>
                 <CreditCardIcon />
                 <Text mx={1} variant="regular">{session.paymentMethod}</Text>
               </View>
             </View>
           </View>
-          <View justifyCenter spacing={{ px: 4 }}>
+          <View justifyCenter px={4}>
             <Text variant="title">{session.payment}</Text>
           </View>
         </View>

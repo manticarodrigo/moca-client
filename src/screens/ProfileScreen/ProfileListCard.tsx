@@ -61,9 +61,7 @@ const Row = ({ field, readonly, column, last, title, subtitle, existingValue, on
             <View row alignCenter>
               <ImageSelector images={existingValue} />
               {!readonly && (
-                <View spacing={{ pl: 3 }}>
-                  <ArrowRightIcon />
-                </View>
+                <View pl={3}><ArrowRightIcon /></View>
               )}
             </View>
           );
@@ -91,7 +89,9 @@ const Row = ({ field, readonly, column, last, title, subtitle, existingValue, on
       row={!column}
       justifyBetween={!column}
       alignCenter={!column}
-      spacing={{ pt: column && 3, pr: 4, pb: column && 4 }}
+      pt={column ? 3 : undefined}
+      pr={4}
+      pb={column ? 4 : undefined}
       variant={!last ? 'borderBottom' : undefined}
       width="100%"
       height={!column ? 80 : undefined}
@@ -101,7 +101,7 @@ const Row = ({ field, readonly, column, last, title, subtitle, existingValue, on
       {subtitle ? (
         <View>
           <Text variant="semiBold" color="dark">{title}</Text>
-          <View spacing={{ pt: 2 }}>
+          <View pt={2}>
             <Text variant="regularSmall" color="grey">{subtitle}</Text>
           </View>
         </View>
@@ -123,7 +123,7 @@ export type Props = {
 }
 
 const ProfileListCard = ({ column, readonly, rows, bottomChildren }: Props) => (
-  <View spacing={{ mb: 3 }} bgColor="white">
+  <View mb={3} bgColor="white">
     <>
       {rows.map((props, index) => {
         const last = index === rows.length - 1;
@@ -132,9 +132,7 @@ const ProfileListCard = ({ column, readonly, rows, bottomChildren }: Props) => (
 
         return (
           <View key={props.field} row alignCenter>
-            <View width={55} spacing={{ p: 3 }}>
-              <props.icon />
-            </View>
+            <View p={3} width={55}><props.icon /></View>
             <Row {...rowProps} />
           </View>
         );

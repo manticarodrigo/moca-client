@@ -99,7 +99,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
       <View safeArea>
         <KeyboardAwareScrollView>
-          <View alignCenter spacing={{ py: 5, px: 3 }}>
+          <View alignCenter py={5} px={3}>
             <SecondaryLogoIcon />
             <Text variant="title" mt={3}>Moca is available in your area</Text>
             <Text variant="regular" mt={2}>
@@ -111,7 +111,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </View>
           {isPatient && (
             <View width="100%" variant="borderTop">
-              <View row spacing={{ py: 4, px: 3 }}>
+              <View row py={4} px={3}>
                 <View flex={1}>
                   <Text variant="semiBold">
                     Are you currently covered by Medicare?
@@ -131,7 +131,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </View>
             </View>
           )}
-          <View spacing={{ p: 3 }}>
+          <View p={3}>
             <FormField
               placeholder="First Name"
               value={formFields.firstName}
@@ -169,7 +169,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               onChangeText={onChangeField('password')}
             />
           </View>
-          <View row spacing={{ p: 3 }}>
+          <View row p={3}>
             <View flex={1}>
               <Button
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
@@ -180,8 +180,8 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               </Button>
             </View>
           </View>
-          <View spacing={{ p: 3 }} alignCenter>
-            <View alignCenter row spacing={{ mt: 2 }}>
+          <View alignCenter p={3}>
+            <View row alignCenter mt={2}>
               <Text variant="regularSmall" mt={1}>
                 By continuing, I accept the Moca
               </Text>
@@ -196,7 +196,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 terms of service
               </Text>
             </View>
-            <View alignCenter row spacing={{ mt: 1 }}>
+            <View row alignCenter mt={1}>
               <Text variant="regularSmall">
                 and have read the
               </Text>

@@ -11,7 +11,7 @@ const ConversationActions = ({ onPressAppointment, onPressInjury }) => {
   const { store } = useStore();
 
   return (
-    <View scroll horizontal row spacing={{ p: 3 }}>
+    <View scroll horizontal row p={3}>
       {store.user.type === 'PT' ? (
         <Button
           variant="primarySmall"

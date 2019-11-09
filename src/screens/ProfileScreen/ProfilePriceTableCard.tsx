@@ -50,16 +50,16 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
   });
 
   return (
-    <View row spacing={{ my: 3 }} bgColor="white">
-      <View spacing={{ p: 3 }}>
+    <View row my={3} bgColor="white">
+      <View p={3}>
         <PriceRateIcon />
       </View>
       <View flex={1}>
-        <View row alignCenter spacing={{ py: 3 }}>
+        <View row alignCenter py={3}>
           <Text variant="semiBold" color="dark">Price Rate</Text>
         </View>
         <View row width="100%" justifyBetween variant="borderBottom">
-          <View row width="100%" spacing={{ pr: 3 }}>
+          <View row width="100%" pr={3}>
             {Object.entries(sessions).map(([key, duration], index) => {
               const { price = 0 } = prices.find(
                 ({ sessionType }) => sessionType === key,
@@ -71,7 +71,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
                 <View
                   key={key}
                   flex={1}
-                  spacing={{ mb: 3 }}
+                  mb={3}
                   variant={!isLast ? 'borderRight' : null}
                 >
                   <View alignCenter>
@@ -79,10 +79,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
                       {duration}
                       min
                     </Text>
-                    <View
-                      spacing={{ pt: 1 }}
-                      onPress={!readonly && onPressPrice(key, price)}
-                    >
+                    <View pt={1} onPress={!readonly && onPressPrice(key, price)}>
                       <Text variant="title" size={5} color="secondary">
                         {price ? `$${price}` : status}
                       </Text>
@@ -93,7 +90,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
             })}
           </View>
         </View>
-        <View row justifyBetween alignCenter spacing={{ py: 3, pr: 5 }}>
+        <View row justifyBetween alignCenter py={3} pr={5}>
           <Text variant="regularSmall" color="grey">First time evaluation price</Text>
           <View
             alignEnd

@@ -121,7 +121,7 @@ const PlacesSearch = ({ onChangeText, onSelect }: Props) => {
       nearbyPlacesAPI="GooglePlacesSearch"
       currentLocationLabel="Current location"
       debounce={200}
-      renderLeftButton={() => <View justifyCenter spacing={{ px: 3 }}><SearchIcon /></View>}
+      renderLeftButton={() => <View justifyCenter px={3}><SearchIcon /></View>}
       textInputProps={{
         onChangeText,
         autoCorrect: false,

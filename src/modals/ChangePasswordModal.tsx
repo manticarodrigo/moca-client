@@ -44,13 +44,13 @@ const ChangePasswordModal = ({
 
       <View alignCenter>
         <View row>
-          <View variant="borderBottom" flex={1} spacing={{ py: 4 }} alignCenter justifyCenter>
+          <View alignCenter justifyCenter flex={1} py={4} variant="borderBottom">
             <Text variant="semiBold">
               Edit Password
             </Text>
           </View>
         </View>
-        <View alignCenter spacing={{ mt: 4, mx: 5 }}>
+        <View alignCenter mt={4} mx={5}>
           <FormField
             required
             icon="password"
@@ -72,7 +72,7 @@ const ChangePasswordModal = ({
             returnKeyType="done"
             onChangeText={onChangeField('newPassword')}
           />
-          <View row spacing={{ mt: 5 }}>
+          <View row mt={5}>
             <View flex={1}>
               <Button
                 variant={!isFormValid ? 'primaryDisabled' : 'primary'}

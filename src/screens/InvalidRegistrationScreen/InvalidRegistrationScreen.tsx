@@ -46,7 +46,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
   return (
     <KeyboardAwareScrollView>
       <View safeArea>
-        <View spacing={{ py: 4, px: 3 }} alignCenter>
+        <View alignCenter py={4} px={3}>
           <View alignCenter>
             <BigEnvelopeRedIcon />
             <Text variant="title" color="error" py={4}>
@@ -56,7 +56,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
               {address ? InvalidLocationNotice.content : MedicareNotice.content}
             </Text>
           </View>
-          <View alignCenter spacing={{ py: 3 }}>
+          <View alignCenter py={3}>
             <FormField
               icon="email"
               placeholder="Email address"
@@ -67,7 +67,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
               onChangeText={onChangeField('email')}
             />
           </View>
-          <View row spacing={{ py: 3 }}>
+          <View row py={3}>
             <View flex={1}>
               <Button
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

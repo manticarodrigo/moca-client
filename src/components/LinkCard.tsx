@@ -10,20 +10,19 @@ import {
   HistoryIcon,
 } from '@src/components/icons';
 
-import { SpacingProp, Colors } from '@src/styles';
+import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
   type: 'wallet' | 'messages' | 'history' | 'injury' | 'contact';
-  spacing?: SpacingProp;
   status?: 'success' | 'error';
   children: JSX.Element;
   onPress: () => void;
 };
 
-const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) => {
+const LinkCard = ({ type, status, children, onPress }: LinkCardProps) => {
   const { icon, title } = useMemo(() => {
     switch (type) {
       case 'wallet':
@@ -56,19 +55,19 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
   }, [status]);
 
   return (
-    <View column variant="shadowCard" spacing={spacing}>
+    <View column variant="shadowCard" mb={2}>
 
-      <View row justifyBetween spacing={{ p: 1 }} onPress={onPress}>
+      <View row justifyBetween p={1} onPress={onPress}>
 
         <View row flex={1}>
-          <View column spacing={{ mr: 3 }} width={48}>{icon}</View>
+          <View column mr={3} width={48}>{icon}</View>
           <View column flex={1}>
             <Text variant="semiBold" color={titleColor} mb={2}>{title}</Text>
             {children}
           </View>
         </View>
 
-        <View row alignCenter spacing={{ ml: 3 }}>
+        <View row alignCenter ml={3}>
           <ArrowRightIcon />
         </View>
 

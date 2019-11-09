@@ -86,19 +86,19 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
       <View safeArea flex={1} bgColor="lightGrey">
 
         <View scroll>
-          <View alignCenter bgColor="white" spacing={{ py: 4 }}>
-            <View alignCenter justifyCenter spacing={{ p: 4 }}>
+          <View alignCenter py={4} bgColor="white">
+            <View alignCenter justifyCenter p={4}>
               <Image rounded size={120} />
             </View>
-            <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
+            <View my={1} variant="borderBottom" width="90%" bgColor="white">
               <Text variant="light">Name</Text>
               <Text variant="regularDark" pt={1} pb={2}>{store.user.firstName}</Text>
             </View>
-            <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
+            <View my={1} variant="borderBottom" width="90%" bgColor="white">
               <Text variant="light">Last Name</Text>
               <Text variant="regularDark" pt={1} pb={2}>{store.user.lastName}</Text>
             </View>
-            <View width="90%" bgColor="white" spacing={{ my: 1 }}>
+            <View my={1} width="90%" bgColor="white">
               <Text variant="light">Email Address</Text>
               <Text variant="regularDark" pt={1} pb={2}>{store.user.email}</Text>
             </View>
@@ -109,7 +109,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               Edit Information
             </Button>
           </View>
-          <View justifyCenter spacing={{ p: 3, ml: 2 }}>
+          <View justifyCenter p={3} ml={2}>
             <Text variant="regular">Account</Text>
           </View>
           <View>
@@ -117,7 +117,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
             ))}
           </View>
-          <View justifyCenter spacing={{ p: 3, ml: 2 }}>
+          <View justifyCenter p={3} ml={2}>
             <Text variant="regular">Support</Text>
           </View>
           <View>
@@ -125,7 +125,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
             ))}
           </View>
-          <View justifyCenter spacing={{ p: 3, ml: 2 }}>
+          <View justifyCenter p={3} ml={2}>
             <Text variant="regular">Follow Us</Text>
           </View>
           <View>
@@ -133,7 +133,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
             ))}
           </View>
-          <View alignCenter spacing={{ p: 3 }}>
+          <View alignCenter p={3}>
             <Button
               width="100%"
               icon={<LogoutIcon />}

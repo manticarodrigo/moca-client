@@ -125,9 +125,9 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
       isVisible={visible}
       onToggle={onClose}
     >
-      <View alignCenter spacing={{ pb: 6 }}>
+      <View alignCenter pb={6}>
         <View row>
-          <View variant="borderBottom" flex={1} spacing={{ pb: 3 }} alignCenter justifyCenter>
+          <View alignCenter justifyCenter flex={1} pb={3} variant="borderBottom">
             <Text variant="semiBold">
               Create Appointment
             </Text>
@@ -162,7 +162,7 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
           />
         </View>
 
-        <View width={WINDOW_WIDTH} spacing={{ p: 4 }} variant="borderTop">
+        <View p={4} width={WINDOW_WIDTH} variant="borderTop">
           <Button
             disabled={isButtonDisabled}
             variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

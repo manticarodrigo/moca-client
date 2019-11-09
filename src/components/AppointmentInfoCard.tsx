@@ -39,21 +39,21 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
   };
 
   return (
-    <View variant="rounded" spacing={{ m: 3, mt: 0 }} bgColor="white">
-      <View row spacing={{ p: 3 }}>
+    <View m={3} mt={0} variant="rounded" bgColor="white">
+      <View row p={3}>
         <View>
           <Image rounded size={48} uri={mockImg} />
         </View>
-        <View flex={1} spacing={{ pl: 3 }}>
+        <View flex={1} pl={3}>
           <View row justifyBetween>
             <Text variant="title" numberOfLines={2}>
               {`${otherUser.firstName} ${otherUser.lastName}`}
             </Text>
-            <View row spacing={{ mt: -3 }}>
+            <View row mt={-3}>
               <BookmarkBadgeIcon />
             </View>
           </View>
-          <View row alignCenter justifyBetween spacing={{ pt: 3 }}>
+          <View row alignCenter justifyBetween pt={3}>
             <View row>
               <ClockIcon />
               <Text variant="regularSmall" ml={1}>
@@ -66,7 +66,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
           </View>
         </View>
       </View>
-      <View row justifyBetween variant="borderTop" spacing={{ p: 3 }}>
+      <View row justifyBetween variant="borderTop" p={3}>
         <View row flex={1}>
           <View column flex={1}>
             <Text variant="semiBold" color="secondary">{time}</Text>
@@ -76,7 +76,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
 
         {store.user.type === 'PT' && (
           <View row>
-            <View variant="iconButton" spacing={{ ml: 2 }} onPress={onPressLocation}>
+            <View variant="iconButton" ml={2} onPress={onPressLocation}>
               <PinIcon size={0.8} />
             </View>
           </View>

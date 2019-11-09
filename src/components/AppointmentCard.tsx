@@ -82,7 +82,7 @@ const AppointmentCard = ({
     <View
       row
       variant={variant}
-      spacing={past ? { p: 3 } : undefined}
+      p={past && 3}
       bgColor={upcoming ? 'whiteTranslucent' : 'white'}
       onPress={onPress && handlePress}
     >
@@ -93,9 +93,9 @@ const AppointmentCard = ({
         appointment={appointment}
         onMessageUser={onMessageUser}
       >
-        <View row justifyBetween spacing={{ py: isTherapist && !upcoming && 2 }}>
+        <View row justifyBetween py={isTherapist && !upcoming && 2}>
           <View row flex={1}>
-            <View column flex={1} spacing={{ mt: (isTherapist && upcoming) && -5 }}>
+            <View column flex={1} mt={(isTherapist && upcoming) && -5}>
               <Text
                 variant="semiBold"
                 color={!upcoming && isTherapist ? 'secondary' : 'grey'}
@@ -113,7 +113,7 @@ const AppointmentCard = ({
                 <NotificationBadge />
               </View>
               {isTherapist && (
-                <View variant="iconButton" spacing={{ ml: 2 }} onPress={handlePressLocation}>
+                <View ml={2} variant="iconButton" onPress={handlePressLocation}>
                   <PinIcon size={0.8} />
                 </View>
               )}

@@ -51,14 +51,14 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
     >
       <View bgColor="lightGrey">
         <View bgColor="white">
-          <View alignEnd spacing={{ mr: 3 }}>
+          <View alignEnd mr={3}>
             <BookmarkIcon />
           </View>
           {profile && (
             <>
-              <View row spacing={{ p: 4 }} bgColor="white" variant="borderBottom">
+              <View row p={4} bgColor="white" variant="borderBottom">
                 <Image rounded size={80} uri={mockImg} />
-                <View column justifyCenter spacing={{ px: 3 }}>
+                <View column justifyCenter px={3}>
                   <Text variant="title">
                     {`${profile.firstName} ${profile.lastName}`}
                   </Text>
@@ -72,7 +72,7 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
               <View width={WINDOW_WIDTH} flex={3} bgColor="white">
                 <ProfileList readonly user={profile} />
               </View>
-              <View flex={1} variant="borderTop" spacing={{ p: 4 }}>
+              <View flex={1} p={4} variant="borderTop">
                 <Button onPress={handlePressMessage}>
                   {buttonText}
                 </Button>

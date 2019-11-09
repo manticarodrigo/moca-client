@@ -80,10 +80,10 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
   return (
     <Modal propagateSwipe isVisible={isVisible} onToggle={onToggle}>
 
-      <View alignCenter spacing={{ pb: 6 }}>
+      <View alignCenter pb={6}>
 
         <View row>
-          <View variant="borderBottom" flex={1} spacing={{ pb: 3 }} alignCenter justifyCenter>
+          <View variant="borderBottom" flex={1} pb={3} alignCenter justifyCenter>
             <Text variant="semiBold">
               Set Away Days
             </Text>
@@ -91,11 +91,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
         </View>
 
         <View alignCenter row variant="borderBottom">
-          <View
-            flex={1}
-            variant="borderRight"
-            spacing={{ p: 3 }}
-          >
+          <View flex={1} p={3} variant="borderRight">
             <Text variant="regularSmall" color="grey">Start</Text>
             <Text
               variant="semiBold"
@@ -105,11 +101,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
               {startDay || 'Select Date'}
             </Text>
           </View>
-          <View
-            flex={1}
-            spacing={{ py: 2, px: 3 }}
-            bgColor="white"
-          >
+          <View flex={1} py={2} px={3} bgColor="white">
             <Text variant="regularSmall" color="grey">End</Text>
             <Text
               variant="semiBold"
@@ -128,7 +120,7 @@ const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
           />
         </View>
 
-        <View width={WINDOW_WIDTH} spacing={{ p: 4 }} variant="borderTop">
+        <View p={4} width={WINDOW_WIDTH} variant="borderTop">
           <Button
             disabled={isButtonDisabled}
             variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

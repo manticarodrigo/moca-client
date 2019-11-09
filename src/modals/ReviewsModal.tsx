@@ -61,8 +61,8 @@ const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
           renderItem={({ item }) => (
             <View row alignCenter>
               <View variant="borderBottom" flex={1} row>
-                <View row spacing={{ ml: 3, my: 3 }}>
-                  <View spacing={{ px: 3, mt: 1 }}>
+                <View row my={3} ml={3}>
+                  <View mt={1} px={3}>
                     <Text variant="semiBold">
                       {`${item.patient.firstName} ${item.patient.lastName}`}
                     </Text>

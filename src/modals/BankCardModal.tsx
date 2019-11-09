@@ -168,14 +168,14 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           height={60}
           width="100%"
         >
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><MasterCardIcon /></View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><VisaIcon /></View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><AmexIcon /></View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><MaestroIcon /></View>
+          <View alignCenter justifyCenter mx={4}><MasterCardIcon /></View>
+          <View alignCenter justifyCenter mx={4}><VisaIcon /></View>
+          <View alignCenter justifyCenter mx={4}><AmexIcon /></View>
+          <View alignCenter justifyCenter mx={4}><MaestroIcon /></View>
         </View>
 
         <KeyboardAwareScrollView>
-          <View flex={2} spacing={{ p: 3 }}>
+          <View flex={2} p={3}>
             {isTherapist ? (
               <BankFields fields={bankFields} onChangeField={onChangeBankField} />
             ) : (
@@ -187,7 +187,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
               </Text>
             )}
           </View>
-          <View flex={1} spacing={{ p: 3, pb: 6 }}>
+          <View flex={1} p={3} pb={6}>
             <Button onPress={onFormSubmit}>
               Add Account
             </Button>

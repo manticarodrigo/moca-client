@@ -72,20 +72,19 @@ const DashboardLinks = ({ isActivated }: Props) => {
   const onPressLink = (screen: string) => () => navigation.navigate(screen);
 
   return (
-    <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor={bgColor}>
+    <View column flex={1} px={3} py={4} bgColor={bgColor}>
 
       {profilePercent !== 100 && (
         <LinkCard
           type="contact"
           status={profileReady ? 'success' : 'error'}
-          spacing={{ mb: 2 }}
           onPress={onPressLink('ProfileScreen')}
         >
           <View>
             <Text variant="regularSmall" color={profileReady ? 'success' : 'error'}>
               {profilePercentString}
             </Text>
-            <View variant="progressBar" spacing={{ mt: 2 }}>
+            <View mt={2} variant="progressBar">
               <View variant="progressBarIndicator" style={styles.progressBarIndicator} />
             </View>
           </View>
@@ -93,25 +92,21 @@ const DashboardLinks = ({ isActivated }: Props) => {
       )}
 
       {!isTherapist && (
-        <LinkCard type="injury" spacing={{ mb: 2 }} onPress={onPressLink('ProfileScreen')}>
+        <LinkCard type="injury" onPress={onPressLink('ProfileScreen')}>
           <Text variant="regularSmall" color="grey">
             {store.user.injury ? store.user.injury.title : 'Set my injury'}
           </Text>
         </LinkCard>
       )}
 
-      <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={onPressLink('WalletScreen')}>
+      <LinkCard type="wallet" onPress={onPressLink('WalletScreen')}>
         <Text variant="regularSmall" color="grey">
           {paymentsStr}
         </Text>
       </LinkCard>
 
       {isActivated && (
-        <LinkCard
-          type="messages"
-          spacing={{ mb: 2 }}
-          onPress={onPressLink('ConversationListScreen')}
-        >
+        <LinkCard type="messages" onPress={onPressLink('ConversationListScreen')}>
           <>
             {lastConversation ? (
               <>
@@ -135,7 +130,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
       )}
 
       {(isActivated && lastAppointmentStr) && (
-        <LinkCard type="history" spacing={{ mb: 2 }} onPress={onPressLink('HistoryScreen')}>
+        <LinkCard type="history" onPress={onPressLink('HistoryScreen')}>
           <Text>
             <Text variant="regularSmall" color="grey">Last: </Text>
             <Text variant="semiBold" size={1} color="grey">

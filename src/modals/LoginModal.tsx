@@ -84,7 +84,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
               </Text>
             </View>
           </View>
-          <View alignCenter spacing={{ mt: 4, mx: 5 }}>
+          <View alignCenter mt={4} mx={5}>
             <FormField
               icon="email"
               placeholder="Email address"
@@ -104,7 +104,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
               returnKeyType="done"
               onChangeText={onChangeField('password')}
             />
-            <View row spacing={{ mt: 3 }}>
+            <View row mt={3}>
               <View flex={1} alignEnd>
                 <Text
                   variant="link"
@@ -115,7 +115,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
                 </Text>
               </View>
             </View>
-            <View row spacing={{ mt: 5 }}>
+            <View row mt={5}>
               <View flex={1}>
                 <Button
                   variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

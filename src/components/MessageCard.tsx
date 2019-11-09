@@ -26,22 +26,15 @@ const MessageCard = ({ message, alignRight, onPressImage }: Props) => {
   const { time } = useMemo(() => ({ time: format(new Date(createdAt), 'hh:mm') }), [createdAt]);
 
   return (
-    <View column variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
+    <View variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
       {image && (
-        <View column spacing={{ mb: 2 }} onPress={onPressImage}>
-          <Image width={200} height={200} uri={image} />
-        </View>
+        <View mb={2} onPress={onPressImage}><Image width={200} height={200} uri={image} /></View>
       )}
+      <Text color={alignRight ? 'white' : 'dark'} {...commonProps}>{text}</Text>
       <Text
-        {...commonProps}
-        color={alignRight ? 'white' : 'dark'}
-      >
-        {text}
-      </Text>
-      <Text
-        {...commonProps}
-        color={alignRight ? 'secondaryLighter' : 'semiGreyAlt'}
         mt={2}
+        color={alignRight ? 'secondaryLighter' : 'semiGreyAlt'}
+        {...commonProps}
       >
         {time}
       </Text>

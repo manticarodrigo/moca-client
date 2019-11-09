@@ -17,13 +17,13 @@ type Props = {
 
 const SegmentedControl = ({ light, options, selected, onChange }: Props) => (
   <View bgColor={light ? 'white' : 'primary'} alignCenter>
-    <View row justifyCenter spacing={{ p: 4 }}>
+    <View row justifyCenter p={4}>
       {options.map(({ value, label }, index) => (
         <View
           key={value}
           alignCenter
           flex={1}
-          spacing={{ p: 2 }}
+          p={2}
           variant={index === 0 ? 'roundedBorderLeft' : 'roundedBorderRight'}
           bgColor={value === selected ? 'secondary' : 'transparent'}
           onPress={value !== selected ? () => onChange(value) : undefined}

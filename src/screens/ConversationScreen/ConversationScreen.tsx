@@ -161,7 +161,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
             />
           )}
           renderSectionFooter={({ section: { title } }) => (
-            <View spacing={{ ml: 3, py: 4 }}>
+            <View ml={3} py={4}>
               <Text variant="regular" align="center">
                 {title.charAt(0).toUpperCase() + title.slice(1)}
               </Text>

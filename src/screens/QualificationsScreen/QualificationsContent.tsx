@@ -65,7 +65,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
   return (
     <View safeArea>
       {modal && (
-        <View variant="borderBottom" alignCenter justifyCenter spacing={{ py: 4 }}>
+        <View alignCenter justifyCenter py={4} variant="borderBottom">
           <Text variant="semiBold">
             Qualifications
           </Text>
@@ -74,13 +74,13 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
       <View scroll>
         <TouchableWithoutFeedback>
           <TouchableHighlight>
-            <View spacing={{ px: 3 }}>
+            <View px={3}>
               {!modal && (
-                <View spacing={{ py: 5 }}>
+                <View py={5}>
                   <Text variant="title" align="center" numberOfLines={2}>
                     {`Thanks for signing up, ${store.user.firstName}`}
                   </Text>
-                  <View spacing={{ pt: 3 }}>
+                  <View pt={3}>
                     <Text variant="regular" align="center">
                       What are your preferred treatment areas?
                     </Text>
@@ -95,9 +95,9 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
                       row
                       justifyBetween
                       alignCenter
-                      {...(modal && index === 0 ? '' : { variant: 'borderTop' })}
-                      spacing={{ py: 3 }}
+                      py={3}
                       width="100%"
+                      {...(modal && index === 0 ? '' : { variant: 'borderTop' })}
                     >
                       <Text variant="semiBold">{item}</Text>
                       <Checkbox
@@ -108,7 +108,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
                   ))}
                 </>
               </View>
-              <View row spacing={{ py: 4, mb: 6 }} variant="borderTop">
+              <View row mb={6} py={5} variant="borderTop">
                 <Button
                   width="100%"
                   variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

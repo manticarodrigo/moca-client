@@ -106,7 +106,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
       onToggle={onToggle}
     >
       <KeyboardAwareScrollView>
-        <View safeArea width="100%" bgColor="white" spacing={{ mb: 6 }}>
+        <View safeArea mb={6} width="100%" bgColor="white">
           <>
             {Object.keys(checkboxConfig).map((sectionKey) => {
               const section = checkboxConfig[sectionKey];
@@ -117,11 +117,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
                   <Text m={3} variant="semiBold" color="grey">
                     {checkboxConfig[sectionKey].title}
                   </Text>
-                  <View
-                    spacing={{ px: 3 }}
-                    height={100}
-                    variant="shadow"
-                  >
+                  <View px={3} height={100} variant="shadow">
                     <View row flex={1} variant="roundedBorder">
                       {sectionItems.map(([itemKey, value], index) => {
                         // @ts-ignore
@@ -141,10 +137,10 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
                             onPress={handlePress}
                           >
                             <View
-                              flex={1}
                               alignCenter
                               justifyCenter
-                              spacing={{ p: 3 }}
+                              flex={1}
+                              p={3}
                               variant={index < sectionItems.length - 1 ? 'borderRight' : null}
                               bgColor={focused ? 'secondary' : 'white'}
                             >
@@ -170,7 +166,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
           </>
           <View variant="borderBottom" height={180}>
             <Text m={3} variant="semiBold" color="grey">Desired Cost</Text>
-            <View spacing={{ px: 3 }}>
+            <View px={3}>
               <FormField
                 keyboardType="number-pad"
                 icon="dollar"
@@ -182,15 +178,9 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
           </View>
           <View variant="borderBottom">
             <Text m={3} variant="semiBold" color="grey">Area(s) of Pain</Text>
-            <View row wrap style={{ alignItems: 'flex-start' }} spacing={{ px: 4 }}>
+            <View row wrap alignStart px={4}>
               {qualificationOptions.map((item) => (
-                <View
-                  key={item}
-                  row
-                  alignCenter
-                  spacing={{ py: 3 }}
-                  width="50%"
-                >
+                <View key={item} row alignCenter py={3} width="50%">
                   <Checkbox
                     checked={filters.ailments.includes(item)}
                     onChange={(checked) => onChangeAilment(item, checked)}

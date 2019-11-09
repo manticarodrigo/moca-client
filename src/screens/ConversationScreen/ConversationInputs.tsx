@@ -9,11 +9,11 @@ import TextInput from '@src/components/TextInput';
 
 const ConversationInputs = ({ text, onChangeText, onPressCamera, onPressSend }) => (
   <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={125}>
-    <View variant="borderTop" row alignCenter height={72} spacing={{ p: 3 }} bgColor="white">
-      <View spacing={{ p: 1 }} onPress={onPressCamera}>
+    <View row alignCenter p={3} height={72} variant="borderTop" bgColor="white">
+      <View p={1} onPress={onPressCamera}>
         <CameraIcon />
       </View>
-      <View flex={1} spacing={{ px: 2 }}>
+      <View flex={1} px={2}>
         <TextInput
           variant="conversation"
           spacing={{ px: 3 }}
@@ -22,7 +22,7 @@ const ConversationInputs = ({ text, onChangeText, onPressCamera, onPressSend }) 
           value={text}
         />
       </View>
-      <View spacing={{ p: 1 }} onPress={onPressSend}>
+      <View p={1} onPress={onPressSend}>
         <SendIcon active={text.length} />
       </View>
     </View>

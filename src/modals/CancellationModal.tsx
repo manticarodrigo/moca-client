@@ -56,7 +56,7 @@ const CancellationModal = ({ visible, onToggle }) => {
     >
       <View
         alignCenter
-        spacing={{ p: 4 }}
+        p={4}
         variant="borderBottom"
         width="100%"
         bgColor="white"
@@ -64,12 +64,13 @@ const CancellationModal = ({ visible, onToggle }) => {
         <Text variant="title" color="dark">Choose your reason</Text>
         <Text variant="title" color="dark">for cancellation.</Text>
       </View>
-      <View scroll width="100%" style={{ flex: 0 }} spacing={{ p: 4 }}>
+      <View scroll width="100%" flex={0} p={4}>
         <View>
           {Object.entries(cancellationReasons).map(([key, reason]) => (
             <View
               key={reason.title}
-              spacing={{ p: 3, my: 1 }}
+              my={1}
+              p={3}
               variant="roundedBorderGrey"
               onPress={() => onPressAccordion(key)}
             >
@@ -80,7 +81,7 @@ const CancellationModal = ({ visible, onToggle }) => {
                     onChange={() => onClickCheckbox(key)}
                   />
                 </View>
-                <View flex={1} justifyCenter spacing={{ px: 3 }}>
+                <View justifyCenter flex={1} px={3}>
                   <Text numberOfLines={2} variant="semiBold" color="dark">
                     {reason.title}
                   </Text>
@@ -96,7 +97,7 @@ const CancellationModal = ({ visible, onToggle }) => {
             </View>
           ))}
         </View>
-        <View spacing={{ py: 4, pb: 6 }}>
+        <View py={4} pb={6}>
           <Button
             variant={checked ? 'primary' : 'primaryDisabled'}
             disabled={!!checked}

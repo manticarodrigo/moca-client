@@ -7,7 +7,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 const Paginator = ({ title, subtitle, loading, onPressPrev, onPressNext }) => (
-  <View row justifyBetween alignCenter spacing={{ p: 3 }} bgColor="primary">
+  <View row justifyBetween alignCenter p={3} bgColor="primary">
 
     <TouchableOpacity
       activeOpacity={loading ? 0.5 : undefined}

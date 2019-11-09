@@ -37,16 +37,16 @@ const SearchActiveFilters = ({ filters }) => {
 
   return (
     <View variant="shadow" bgColor="white">
-      <View scroll horizontal spacing={{ px: 4 }}>
+      <View scroll horizontal px={4}>
         <View row alignCenter>
           {active.map(({ Icon, title }) => (
-            <View alignCenter key={title} spacing={{ p: 3 }} width={90}>
+            <View alignCenter key={title} p={3} width={90}>
               <Icon />
               <Text
                 variant="semiBold"
                 size={0}
                 align="center"
-                spacing={{ pt: 2 }}
+                pt={2}
                 numberOfLines={2}
               >
                 {title}
@@ -56,11 +56,11 @@ const SearchActiveFilters = ({ filters }) => {
         </View>
       </View>
       {ailments && !!ailments.length && (
-        <View row variant="borderTop" spacing={{ py: 3, px: 4 }}>
+        <View row py={3} px={4} variant="borderTop">
           <Text variant="semiBold" size={0} color="secondaryLight">A. of Pain</Text>
-          <View row wrap spacing={{ px: 4 }}>
+          <View row wrap px={4}>
             {ailments.map((item) => (
-              <View key={item} row alignCenter spacing={{ pr: 2 }}>
+              <View key={item} row alignCenter pr={2}>
                 <SmallCheckIcon />
                 <Text pl={1} variant="regular" size={0} color="primary">{item}</Text>
               </View>

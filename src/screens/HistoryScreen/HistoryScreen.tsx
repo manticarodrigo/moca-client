@@ -93,7 +93,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
             />
           ))}
           renderSectionHeader={({ section }) => (
-            <View spacing={{ ml: 3, py: 3 }}>
+            <View ml={3} py={3}>
               <Text variant="regular">
                 {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
               </Text>

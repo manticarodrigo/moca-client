@@ -76,7 +76,7 @@ const AppointmentHeader = ({
             </View>
           )}
         </View>
-        <View flex={1} spacing={{ pl: 3 }}>
+        <View pl={3} flex={1}>
           <View row justifyBetween>
             <Text variant={upcoming ? 'semiBold' : 'title'} numberOfLines={2}>
               {name}
@@ -94,7 +94,7 @@ const AppointmentHeader = ({
               row
               justifyEnd={isTherapist}
               justifyBetween={!isTherapist}
-              spacing={{ py: 1 }}
+              py={1}
             >
               {!isTherapist && <Rating rating={rating} spacing={{ mt: -3 }} />}
               <Text variant="titleLarge">

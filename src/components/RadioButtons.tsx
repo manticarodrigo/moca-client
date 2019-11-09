@@ -58,8 +58,10 @@ const RadioButtons = ({ options = [], readonly, existingValue, onChange }: Props
         return (
           <View
             key={value}
+            mr={index < options.length - 1 ? 1 : 0}
+            py={2}
+            px={3}
             style={styles.radioButton}
-            spacing={{ mr: index < options.length - 1 ? 1 : 0, py: 2, px: 3 }}
             shadow={isSelected ? { blur: 2, alpha: 0.05, color: 'secondaryLight' } : undefined}
             bgColor={isSelected ? 'secondaryLight' : 'white'}
             onPress={onPressOption(value)}

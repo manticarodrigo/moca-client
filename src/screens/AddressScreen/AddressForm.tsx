@@ -62,10 +62,10 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
   };
 
   return (
-    <View safeArea spacing={{ pt: 3 }} alignCenter>
+    <View safeArea alignCenter pt={3}>
       <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }}>
-        <View spacing={{ mx: 3 }} alignCenter>
-          <View spacing={{ py: 4 }} alignCenter>
+        <View alignCenter mx={3}>
+          <View alignCenter py={4}>
             <View row>
               <Text variant="title" mt={3}>
                 {isRegistering ? 'Thanks for signing up, ' : 'Hello, '}
@@ -83,7 +83,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
             </Text>
           </View>
           <PlacesSearch onSelect={updateFormFields} />
-          <View spacing={{ mb: 3, mt: 4 }} alignCenter>
+          <View alignCenter mt={4} mb={3}>
             <FormField
               required
               placeholder="Name"
@@ -139,7 +139,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
             />
           </View>
           {!isRegistering && (
-            <View variant="borderTop" row spacing={{ py: 4 }}>
+            <View row py={4} variant="borderTop">
               <View flex={1} row justifyEnd alignCenter>
                 <Text variant="regularDark" pr={2}>Set as primary?</Text>
                 <Checkbox
@@ -149,7 +149,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               </View>
             </View>
           )}
-          <View row spacing={{ py: 4 }}>
+          <View row py={4}>
             <View flex={1}>
               <Button
                 variant={!isFormValid ? 'primaryDisabled' : 'primary'}

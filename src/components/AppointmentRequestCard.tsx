@@ -40,13 +40,14 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
 
   return (
     <View
+      m={3}
+      mt={0}
       style={{ overflow: 'hidden' }}
-      spacing={{ m: 3, mt: 0 }}
       variant="rounded"
       bgColor="white"
     >
 
-      <View alignCenter spacing={{ p: 3 }}>
+      <View alignCenter p={3}>
         <Text variant="regularDark">
           Appointment request
           {' '}
@@ -58,14 +59,14 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
         </Text>
       </View>
 
-      <View alignCenter spacing={{ p: 3 }} bgColor="secondaryLight">
-        <View row alignCenter spacing={{ ml: -3 }}>
+      <View alignCenter p={3} bgColor="secondaryLight">
+        <View row alignCenter ml={-3}>
           <ScheduleTabIcon white />
           <Text variant="bold">
             {date}
           </Text>
         </View>
-        <View row alignCenter spacing={{ m: 1 }}>
+        <View row alignCenter m={1}>
           <ClockIcon white />
           <Text variant="bold" ml={2}>
             {hour}
@@ -84,7 +85,7 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
       </View>
       <View
         alignCenter
-        spacing={{ p: 4 }}
+        p={4}
         bgColor={(isCancelled || isRejected) ? 'error' : null}
         onPress={(!isCancelled && !isRejected) && onPressReject}
       >

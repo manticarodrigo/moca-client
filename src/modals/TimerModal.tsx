@@ -89,7 +89,7 @@ const TimerModal = ({
   return (
     <Modal isVisible={visible} onToggle={handleClose}>
       <View width={WINDOW_WIDTH} variant="borderBottom">
-        <View row spacing={{ py: 2, px: 4 }}>
+        <View row py={2} px={4}>
           <AppointmentHeader
             minimal={isTherapist}
             isTherapist={isTherapist}
@@ -108,10 +108,11 @@ const TimerModal = ({
       <View alignCenter>
         <View
           row
-          variant="borderBottom"
           alignCenter
+          py={3}
+          px={4}
+          variant="borderBottom"
           bgColor={didTimeStart ? 'secondary' : 'white'}
-          spacing={{ py: 3, px: 4 }}
         >
           <View flex={1} alignCenter>
             {!!didTimeStart && (
@@ -126,7 +127,7 @@ const TimerModal = ({
             >
               {`Scheduled Time - ${scheduledTimeString}`}
             </Text>
-            <View row spacing={{ py: 2 }}>
+            <View row py={2}>
               <Text
                 variant="semiBold"
                 color={didTimeStart ? 'white' : 'semiGreyAlt'}
@@ -139,7 +140,7 @@ const TimerModal = ({
         </View>
 
         {isTherapist && (
-          <View row spacing={{ py: 6, px: 5 }}>
+          <View row py={6} px={5}>
             <View flex={1}>
               {didTimeStart ? (
                 <Button width="100%" onPress={handleEnd}>End Session</Button>

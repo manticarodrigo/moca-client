@@ -74,7 +74,7 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagPr
       justifyCenter={center}
       justifyBetween={!center}
       alignCenter
-      spacing={{ px: 2 }}
+      px={2}
       bgColor={type === 'fill' ? 'secondary' : null}
       style={styles.view}
     >

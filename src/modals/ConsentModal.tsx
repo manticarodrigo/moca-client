@@ -27,17 +27,18 @@ const ConsentModal = ({ visible, onPressButton }: ConsentModalProps) => {
     >
       <View
         flex={1}
+        my={8}
+        p={3}
         variant="curveBorder"
         bgColor="white"
-        spacing={{ my: 8, p: 3 }}
       >
-        <View alignEnd spacing={{ m: 1 }} onPress={() => setVisibility(!visibility)}>
+        <View alignEnd m={1} onPress={() => setVisibility(!visibility)}>
           <CloseIcon />
         </View>
         <View alignCenter>
           <ConsentIcon />
         </View>
-        <View alignCenter spacing={{ my: 5, mx: 4 }}>
+        <View alignCenter my={5} mx={4}>
           <Text variant="regularDark" m={1}>By scheduling this appointment, you</Text>
           <Text variant="regularDark" m={1}>consent to treatment for all scheduled</Text>
           <Text variant="regularDark" m={1}>sessions with therapist for this injury.</Text>

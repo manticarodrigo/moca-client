@@ -30,7 +30,7 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => {
       onToggle={onClose}
     >
       <ScrollView ref={scrollViewRef}>
-        <View alignCenter spacing={{ py: 5 }}>
+        <View alignCenter py={5}>
           <AddLocationBigIcon />
           <Text variant="title" mt={4}>Where are you located?</Text>
           <Text variant="regular" mt={2}>
@@ -40,7 +40,7 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => {
             availability in your area.
           </Text>
         </View>
-        <View width={WINDOW_WIDTH} alignCenter spacing={{ py: 4, px: 3 }}>
+        <View width={WINDOW_WIDTH} alignCenter py={4} px={3}>
           <PlacesSearch onChangeText={onChangeText} onSelect={onSubmit} />
         </View>
       </ScrollView>

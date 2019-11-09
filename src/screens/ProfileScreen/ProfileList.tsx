@@ -230,7 +230,7 @@ const ProfileList = ({ user, readonly }: Props) => {
       <View scroll bgColor="lightGrey">
         <TouchableWithoutFeedback>
           <TouchableHighlight>
-            <View flex={1} spacing={{ pb: readonly ? 6 : 0 }}>
+            <View flex={1} pb={readonly ? 6 : 0}>
               <>
                 {isTherapistProfile && (
                   <ProfilePriceTableCard

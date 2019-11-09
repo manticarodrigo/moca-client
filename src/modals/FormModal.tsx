@@ -61,13 +61,13 @@ const FormModal = <State extends { [key: string]: string }> ({
   return (
     <Modal propagateSwipe isVisible={visible} onToggle={onClose}>
 
-      <View alignCenter spacing={{ pb: 6 }}>
+      <View alignCenter pb={6}>
 
         {header || (
           <View row>
-            <View flex={1} row alignCenter spacing={{ p: 4 }} variant="borderBottom">
+            <View row alignCenter flex={1} p={4} variant="borderBottom">
               <Image rounded size={70} />
-              <View spacing={{ pl: 4, py: 4 }}>
+              <View py={4} pl={4}>
                 <Text variant="title">{title}</Text>
                 {!!subtitle && <Text variant="regularDark">{subtitle}</Text>}
               </View>
@@ -77,7 +77,7 @@ const FormModal = <State extends { [key: string]: string }> ({
 
         <View flex={1} bgColor="lightGrey">
           <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }} extraHeight={0}>
-            <View width="100%" spacing={{ p: 4, my: 3 }} bgColor="white">
+            <View my={3} p={4} width="100%" bgColor="white">
               <>
                 {Object.entries(fieldConfig).map(([key, config]) => (
                   <FormField
@@ -87,7 +87,7 @@ const FormModal = <State extends { [key: string]: string }> ({
                   />
                 ))}
               </>
-              <View row spacing={{ pt: 5, px: 3, pb: 2 }}>
+              <View row pt={5} px={3} pb={2}>
                 <ImageSelector
                   label="Add Images"
                   images={images}
@@ -98,7 +98,7 @@ const FormModal = <State extends { [key: string]: string }> ({
           </KeyboardAwareScrollView>
         </View>
 
-        <View width={WINDOW_WIDTH} spacing={{ p: 4 }} variant="borderTop">
+        <View width={WINDOW_WIDTH} p={4} variant="borderTop">
           <Button variant="primary" onPress={onPressSubmit}>
             {submitText}
           </Button>

@@ -58,7 +58,12 @@ export const getStyles = (prop?: SpacingProp): ViewStyle => {
 };
 
 export const parseProps = (props: SpacingProp & object) => {
-  const { m, mt, mr, mb, ml, p, pt, pr, pb, pl, ...rest } = props;
+  const { m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl, ...rest } = props;
+  const spacing = { m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl };
 
-  return { spacing: { m, mt, mr, mb, ml, p, pt, pr, pb, pl }, rest };
+  Object.keys(spacing).forEach((key) => {
+    if (!spacing[key]) delete spacing[key];
+  });
+
+  return { spacing, rest };
 };

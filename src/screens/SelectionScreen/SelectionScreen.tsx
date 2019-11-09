@@ -76,25 +76,25 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <View safeArea alignCenter>
-        <View spacing={{ mx: 3 }} alignCenter>
+        <View alignCenter mx={3}>
           <ContainedView>
 
-            <View spacing={{ p: 4 }} alignCenter>
+            <View alignCenter p={4}>
               <Text variant="title">Please select your</Text>
               <View alignCenter row>
                 <Text variant="title" color="secondary">MOCA</Text>
                 <Text ml={1} variant="title">Profile</Text>
               </View>
             </View>
-            <View flex={1} row alignCenter width="100%" spacing={{ py: 4 }}>
+            <View row alignCenter flex={1} py={4} width="100%">
               <View
                 variant={isPatient ? 'patientViewPressed' : 'patientView'}
+                justifyBetween
                 alignCenter
                 flex={1}
-                justifyBetween
-                onPress={onPressType(UserTypeEnum.PA)}
+                mr={1}
                 bgColor={patientBgColor}
-                spacing={{ mr: 1 }}
+                onPress={onPressType(UserTypeEnum.PA)}
               >
                 <PatientIcon focused={isPatient} />
                 <Text
@@ -123,7 +123,7 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <View row spacing={{ py: 4 }}>
+            <View row py={4}>
               <Button
                 width="100%"
                 variant={buttonDisabled ? 'primaryDisabled' : 'primary'}

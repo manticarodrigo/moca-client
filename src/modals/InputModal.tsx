@@ -87,15 +87,15 @@ const InputModal = (
     >
       <View alignCenter>
         <View
-          variant="borderBottom"
-          width={WINDOW_WIDTH}
           alignCenter
           justifyCenter
-          spacing={{ py: 4 }}
+          width={WINDOW_WIDTH}
+          py={4}
+          variant="borderBottom"
         >
           <Text variant="semiBold">{title || ''}</Text>
         </View>
-        <View alignCenter spacing={{ p: 4 }}>
+        <View alignCenter p={4}>
           <FormField
             value={formFields.value}
             multiline={multiline}

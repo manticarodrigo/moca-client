@@ -80,18 +80,18 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
     <View
       row
       justifyBetween
+      p={large ? 3 : 2}
+      variant="borderBottom"
       width="100%"
       height={large ? 80 : 60}
       bgColor="white"
-      variant="borderBottom"
-      spacing={{ p: large ? 3 : 2 }}
       onPress={onPress}
     >
       <View row>
-        <View spacing={{ m: 2 }}>
+        <View m={2}>
           {icon}
         </View>
-        <View column spacing={{ mr: 5, ml: 3 }} justifyCenter={!details}>
+        <View column justifyCenter={!details} mr={5} ml={3}>
           <Text variant={large ? 'semiBold' : 'regularDark'}>
             {text}
           </Text>
@@ -104,13 +104,13 @@ const Card = ({ type, title, arrow, details, large, onPress, selected }: CardPro
       </View>
       {arrow
         && (
-          <View spacing={{ m: 3, pb: large ? null : 3 }}>
+          <View m={3} pb={!large ? 3 : undefined}>
             <ArrowRightIcon />
           </View>
         )}
       {selected
         && (
-          <View spacing={{ m: 2 }}>
+          <View m={2}>
             <CheckedIcon />
           </View>
         )}

@@ -70,7 +70,7 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
             </Text>
           </View>
         </View>
-        <View alignCenter spacing={{ mt: 4, mx: 5 }}>
+        <View alignCenter mt={4} mx={5}>
           <FormField
             placeholder="First name"
             value={formFields.firstName}
@@ -96,7 +96,7 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
             keyboardType="email-address"
             onChangeText={onChangeField('email')}
           />
-          <View row spacing={{ mt: 5 }}>
+          <View row mt={5}>
             <View flex={1}>
               <Button
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}

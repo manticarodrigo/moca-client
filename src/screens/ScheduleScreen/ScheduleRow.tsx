@@ -78,16 +78,18 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
 
   return (
     <View
-      variant={viewVariant}
       row
       flex={1}
-      spacing={{ mt: isFirst ? 3 : 2, mx: 3, mb: isLast ? 3 : 0 }}
+      mt={isFirst ? 3 : 2}
+      mx={3}
+      mb={isLast ? 3 : 0}
+      variant={viewVariant}
       onPress={total !== 0 ? onPressDate : undefined}
     >
-      <View column>
+      <View>
         <View row alignCenter>
-          <Text variant="title" color={color}>{day}</Text>
-          <View column spacing={{ ml: 2 }}>
+          <Text variant="titleLarge" color={color}>{day}</Text>
+          <View ml={2}>
             <Text variant="lightSmallest" color={color}>{month}</Text>
             <Text variant="lightSmallest" color={color}>{year}</Text>
           </View>
@@ -97,7 +99,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
       </View>
 
       <View column flex={1}>
-        <View row flex={1} justifyEnd spacing={{ mb: 2 }}>
+        <View row flex={1} justifyEnd mb={2}>
           <Tag
             icon="report"
             type={total === 0 ? 'border' : 'borderLight'}

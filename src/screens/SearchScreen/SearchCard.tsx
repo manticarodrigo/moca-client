@@ -34,9 +34,9 @@ const SearchCard = ({
   const avgPrice = prices.reduce((total, { price }) => total + price, 0) / prices.length;
 
   return (
-    <View row spacing={{ my: 2, p: 4 }} bgColor="white" onPress={handlePressCard}>
+    <View row my={2} p={4} bgColor="white" onPress={handlePressCard}>
       <Image rounded size={58} />
-      <View flex={1} spacing={{ px: 3 }}>
+      <View flex={1} px={3}>
         <View row justifyBetween>
           <View>
             <Text variant="semiBold">
@@ -56,13 +56,13 @@ const SearchCard = ({
             </Text>
           </View>
         </View>
-        <View row spacing={{ pt: 2 }}>
-          <View flex={2} variant="borderTopAndRight" spacing={{ py: 2, pl: 3, pr: 5 }}>
+        <View row pt={2}>
+          <View flex={2} py={2} pr={5} pl={3} variant="borderTopAndRight">
             <Text variant="regularSmall" color="grey">
               License Number
             </Text>
           </View>
-          <View flex={1} variant="borderTop" spacing={{ py: 2, px: 3 }}>
+          <View flex={1} py={2} px={3} variant="borderTop">
             <Text variant="regularSmall" color="grey">
               {licenseNumber || 'N/A'}
             </Text>

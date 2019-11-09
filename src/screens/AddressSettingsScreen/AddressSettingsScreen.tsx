@@ -71,22 +71,22 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                 variant="borderBottom"
                 bgColor="white"
               >
-                <View row flex={1} spacing={{ p: 3 }}>
+                <View row flex={1} p={3}>
                   <View>
                     <Text variant="semiBold" size={2}>
                       {item.name}
                     </Text>
-                    <View row spacing={{ mt: 3 }} alignCenter>
+                    <View row alignCenter mt={3}>
                       <View width={20}>
                         <PinGreyIcon />
                       </View>
-                      <View wrap spacing={{ pr: 2 }}>
+                      <View wrap pr={2}>
                         <Text mt={2} ml={2} variant="regularSmall" color="grey">
                           {`${item.street}, ${item.city}, ${item.state}`}
                         </Text>
                       </View>
                     </View>
-                    <View row spacing={{ mt: 2 }} wrap alignCenter>
+                    <View row wrap alignCenter mt={2}>
                       <View width={20}>
                         <BuildingIcon />
                       </View>
@@ -103,22 +103,17 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
           )}
           ListFooterComponent={() => (
             <View
-              variant="borderBottom"
-              spacing={{ mt: 3, pb: 3 }}
               row
               alignCenter
               justifyBetween
+              mt={3}
+              pb={3}
+              variant="borderBottom"
               onPress={handleNewAddressPress}
             >
-              <View spacing={{ ml: 3 }}>
-                <AddIcon />
-              </View>
-              <Text variant="semiBold" size={2}>
-                Add new Address
-              </Text>
-              <View spacing={{ mr: 3 }}>
-                <ArrowRightIcon />
-              </View>
+              <View ml={3}><AddIcon /></View>
+              <Text variant="semiBold" size={2}>Add new Address</Text>
+              <View mr={3}><ArrowRightIcon /></View>
             </View>
           )}
         />

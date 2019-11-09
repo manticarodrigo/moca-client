@@ -49,7 +49,7 @@ const NotesModal = ({ visible, current, appointment, onOpenTimer, onClose, onSub
 
   const header = (
     <View width={WINDOW_WIDTH} variant="borderBottom">
-      <View row spacing={{ py: 2, px: 4 }}>
+      <View row py={2} px={4}>
         <AppointmentHeader minimal={isCurrent} isTherapist appointment={appointment} />
       </View>
       {isCurrent && (

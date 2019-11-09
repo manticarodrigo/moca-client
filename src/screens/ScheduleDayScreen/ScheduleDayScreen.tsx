@@ -66,24 +66,24 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                   row
                   justifyBetween
                   alignCenter
-                  spacing={{ p: 3 }}
+                  p={3}
                   variant="borderBottom"
                   bgColor="white"
                 >
                   <View row>
                     <ScheduleSectionIcon />
-                    <View column justifyBetween spacing={{ ml: 2 }}>
+                    <View justifyBetween ml={2}>
                       <Text variant="regularSmall" color="secondary">{startFormatted}</Text>
                       <Text variant="regularSmall" color="secondary">{endFormatted}</Text>
                     </View>
-                    <View row alignCenter spacing={{ ml: 2 }}>
+                    <View row alignCenter ml={2}>
                       <Image rounded size={36} uri={mockImg} />
                       <Text ml={2} variant="semiBold" color="dark">
                         {`${otherParty.firstName} ${otherParty.lastName}`}
                       </Text>
                     </View>
                   </View>
-                  <View column>
+                  <View>
                     <Tag icon="report" type="borderLight" placeholder="10h" />
                     <Tag icon="dollar" type="fill" placeholder={price} spacing={{ mt: 2 }} />
                   </View>
@@ -98,9 +98,9 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
 };
 
 const HeaderTitle = ({ dayOfMonth = '', monthAndYear = '', dayOfWeek = '' }) => (
-  <View row flex={1} spacing={{ p: 3 }}>
+  <View row flex={1} p={3}>
     <Text variant="titleLarge">{dayOfMonth}</Text>
-    <View spacing={{ ml: 2 }}>
+    <View ml={2}>
       <Text variant="light" size={0} color="primary">{monthAndYear}</Text>
       <Text variant="regularSmall" color="primary">{dayOfWeek}</Text>
     </View>
@@ -108,9 +108,7 @@ const HeaderTitle = ({ dayOfMonth = '', monthAndYear = '', dayOfWeek = '' }) => 
 );
 
 const HeaderRight = ({ total = '' }) => (
-  <View spacing={{ p: 3 }}>
-    <Tag icon="dollar" type="fill" placeholder={total} />
-  </View>
+  <View p={3}><Tag icon="dollar" type="fill" placeholder={total} /></View>
 );
 
 ScheduleDayScreen.navigationOptions = ({ navigation, navigationOptions }) => {

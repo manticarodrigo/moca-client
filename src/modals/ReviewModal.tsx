@@ -34,11 +34,11 @@ const Star = ({ first, last, onPress, clicked }: StarProps) => {
 
   return (
     <View
-      bgColor={clicked ? 'secondaryLight' : 'white'}
       alignCenter
+      p={3}
       variant={viewVariant}
+      bgColor={clicked ? 'secondaryLight' : 'white'}
       onPress={onPress}
-      spacing={{ p: 3 }}
     >
       <StarIcon clicked={clicked} />
     </View>
@@ -81,7 +81,7 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }: Props) => {
 
   return (
     <Modal isVisible={visible} onToggle={onClose}>
-      <View row spacing={{ py: 2, px: 4 }} variant="borderBottom">
+      <View row py={2} px={4} variant="borderBottom">
         <AppointmentHeader isTherapist={false} appointment={appointment} />
       </View>
       <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }}>
@@ -100,7 +100,7 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }: Props) => {
               />
             ))}
           </View>
-          <View alignCenter spacing={{ mt: 4, mb: 4 }}>
+          <View alignCenter my={4}>
             <FormField
               multiline
               placeholder="Add review"

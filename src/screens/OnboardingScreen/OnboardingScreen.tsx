@@ -90,19 +90,20 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
 
       <View safeArea flex={1} alignCenter bgColor="white">
         <ContainedView>
-          <View flex={1} row justifyCenter width={WINDOW_WIDTH} spacing={{ p: 4 }}>
+          <View flex={1} row justifyCenter width={WINDOW_WIDTH} p={4}>
             <Image width={175} height={110} file={Logo} />
           </View>
           {isReady && (
             <>
-              <View flex={3} spacing={{ p: 4 }}>
+              <View flex={3} p={4}>
                 <Slider slides={slides.map(({ icon, title, text }) => (
                   <View
                     key={title}
-                    flex={1}
                     justifyCenter
                     alignCenter
-                    spacing={{ p: 5, mt: -6 }}
+                    flex={1}
+                    mt={-6}
+                    p={5}
                   >
                     <View>
                       {icon}
@@ -117,11 +118,11 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
                 ))}
                 />
               </View>
-              <View flex={1} spacing={{ p: 4 }}>
+              <View flex={1} p={4}>
                 <Button onPress={onPressSignup}>
                   Signup
                 </Button>
-                <View row justifyCenter spacing={{ mt: 4 }}>
+                <View row justifyCenter mt={4}>
                   <Text variant="regular">Already have an account?</Text>
                   <Text ml={1} variant="link" onPress={onToggleLoginModal}>Login</Text>
                 </View>

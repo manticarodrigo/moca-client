@@ -130,16 +130,16 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
         <LogoBackground />
 
         {isActivated && isTherapist && (
-          <View row justifyCenter alignCenter spacing={{ p: 4, pt: 3 }}>
+          <View row justifyCenter alignCenter p={4} pt={3}>
             <Text variant="semiBold" color="white">Appointments</Text>
           </View>
         )}
 
         {!isTherapist && (
-          <View row justifyBetween alignCenter spacing={{ p: 4, pt: 5 }}>
+          <View row justifyBetween alignCenter p={4} pt={5}>
             <Text variant="title" color="white">{`Hi, ${store.user.firstName}`}</Text>
-            <View variant="rounded" spacing={{ p: 2 }} bgColor="secondary" onPress={onPressSearch}>
-              <View spacing={{ p: 1 }}>
+            <View p={2} variant="rounded" bgColor="secondary" onPress={onPressSearch}>
+              <View p={1}>
                 <SearchIcon tint="#fff" />
               </View>
             </View>
@@ -150,8 +150,8 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
           {!isActivated && isTherapist && <DashboardAlert />}
           {!!(isTherapist && isAway) && (
             <View
-              column
-              spacing={{ px: 3, py: 4 }}
+              py={4}
+              px={3}
               bgColor={!isTherapist ? 'blackTranslucent' : null}
             >
               <AwayCard dateStart={new Date()} dateEnd={new Date()} />

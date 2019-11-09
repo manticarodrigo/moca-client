@@ -42,7 +42,7 @@ const Modal = ({
       {...modalProps}
     >
       <View variant="modal" alignCenter bgColor={bgColor}>
-        <View alignCenter spacing={{ py: 3 }} onPress={onToggle}>
+        <View alignCenter py={3} onPress={onToggle}>
           <OpenIcon />
         </View>
         <>

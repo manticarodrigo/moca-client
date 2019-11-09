@@ -43,14 +43,14 @@ const DashboardAppointments = ({
   }, [appointments]);
 
   return (
-    <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
+    <View px={3} py={4} bgColor={!isTherapist ? 'blackTranslucent' : null}>
 
       {!isTherapist && (
         <Text mb={3} variant="semiBold" color="secondaryLight">Appointments</Text>
       )}
 
       {current && (
-        <View column justifyCenter spacing={{ mb: 3 }}>
+        <View justifyCenter mb={3}>
           <Text mb={2} variant="semiBold" color="white">Current</Text>
           <AppointmentCard
             appointment={current}

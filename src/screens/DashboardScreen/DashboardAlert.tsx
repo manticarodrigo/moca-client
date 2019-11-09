@@ -6,9 +6,9 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 const DashboardAlert = () => (
-  <View alignCenter justifyCenter spacing={{ py: 4 }}>
+  <View alignCenter justifyCenter py={4}>
     <BigEnvelopeIcon />
-    <View justifyCenter spacing={{ pt: 4 }}>
+    <View justifyCenter pt={4}>
       <Text variant="semiBold" color="white">You’re almost there!</Text>
     </View>
     <View justifyCenter>

@@ -92,7 +92,9 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
             row
             justifyBetween
             style={{ borderBottomWidth: 2 }}
-            spacing={{ pt: 6, px: 3, pb: 4 }}
+            pt={6}
+            px={3}
+            pb={4}
             width={WINDOW_WIDTH}
             variant="borderBottom"
             bgColor="white"
@@ -124,7 +126,8 @@ const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string)
           </View>
           <View
             style={{ borderTopWidth: 2 }}
-            spacing={{ pt: 2, pb: 5 }}
+            pt={2}
+            pb={5}
             width={WINDOW_WIDTH}
             variant="borderTop"
             bgColor="white"

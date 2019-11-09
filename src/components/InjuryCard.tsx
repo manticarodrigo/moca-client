@@ -13,7 +13,7 @@ const InjuryCard = () => {
   const { title, details } = mock;
 
   return (
-    <View row variant="curveBorder" bgColor="white" spacing={{ p: 3, pb: 5, m: 4 }}>
+    <View m={4} p={3} pb={5} row variant="curveBorder" bgColor="white">
       <View flex={3}>
         <Text variant="semiBold" color="dark">My Injury</Text>
         <Text variant="regular">{title}</Text>

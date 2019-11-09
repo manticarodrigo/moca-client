@@ -17,13 +17,13 @@ const Toast = ({ centered, children }: ToastProps) => (
     bgColor="successLight"
     width="100%"
   >
-    <View spacing={{ p: 4 }}>
+    <View p={4}>
       <CheckIcon />
     </View>
-    <View flex={1} alignCenter={centered} width="100%" spacing={{ py: 4 }}>
+    <View flex={1} alignCenter={centered} py={4} width="100%">
       <Text variant="semiBold" color="white" px={2} numberOfLines={3}>{children}</Text>
     </View>
-    <View spacing={{ p: 4 }} />
+    <View p={4} />
   </View>
 );
 
