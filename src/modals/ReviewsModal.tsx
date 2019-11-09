@@ -51,7 +51,7 @@ const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
         <View row>
           <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
             <Text variant="semiBold">
-              Reviews
+              Review(s)
             </Text>
           </View>
         </View>
