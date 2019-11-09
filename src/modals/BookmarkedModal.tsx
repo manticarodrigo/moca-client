@@ -6,7 +6,6 @@ import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
 
-import { mockImg } from '@src/services/mock';
 import { StarsIcon } from '@src/components/icons';
 
 type BookmarkedProps = {
@@ -45,7 +44,7 @@ const BookmarkedModal = (
             <View key={index} row alignCenter>
               <View variant="borderBottom" flex={1} row>
                 <View row ml={3} my={3}>
-                  <Image rounded size={40} uri={mockImg} />
+                  <Image rounded size={40} uri={therapist.image} />
                   <View mt={1} px={3}>
                     <Text variant="semiBold">{therapist.username}</Text>
                     <View row alignCenter>

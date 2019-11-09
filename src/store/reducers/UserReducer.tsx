@@ -8,6 +8,7 @@ import {
   Therapist,
   Payment as BadPayment,
   Price as BadPrice,
+  UserSnippet,
 } from '@src/services/openapi';
 import { BrandType } from '@src/services/stripe';
 
@@ -41,6 +42,7 @@ export type Review = {
 }
 
 export type UserState = &
+  UserSnippet &
   Omit<User, 'type' | 'email' | 'gender' | 'payments'> &
   Omit<Patient, 'user'> &
   Omit<Therapist, 'user' | 'status' | 'prices'> & {

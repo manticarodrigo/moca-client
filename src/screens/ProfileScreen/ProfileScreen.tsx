@@ -5,8 +5,6 @@ import useStore from '@src/hooks/useStore';
 
 import { CogIcon } from '@src/components/icons';
 
-import { mockImg } from '@src/services/mock';
-
 import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
@@ -36,7 +34,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
 
       <View row p={4}>
-        <Image rounded size={80} uri={mockImg} />
+        <Image rounded size={80} uri={store.user.image} />
         <View justifyCenter px={3}>
           <Text variant="title" color="white">
             {`${store.user.firstName} ${store.user.lastName}`}

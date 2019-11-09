@@ -3,8 +3,6 @@ import { StatusBar, FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { format, addMinutes, differenceInMinutes } from 'date-fns';
 
-import { mockImg } from '@src/services/mock';
-
 import { ScheduleSectionIcon } from '@src/components/icons';
 
 import CancellationModal from '@src/modals/CancellationModal';
@@ -77,7 +75,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                       <Text variant="regularSmall" color="secondary">{endFormatted}</Text>
                     </View>
                     <View row alignCenter ml={2}>
-                      <Image rounded size={36} uri={mockImg} />
+                      <Image rounded size={36} uri={otherParty.image} />
                       <Text ml={2} variant="semiBold" color="dark">
                         {`${otherParty.firstName} ${otherParty.lastName}`}
                       </Text>

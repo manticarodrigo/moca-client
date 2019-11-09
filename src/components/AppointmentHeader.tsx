@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { differenceInMinutes } from 'date-fns';
 
-import { mockImg } from '@src/services/mock';
-
 import { UserState } from '@src/store/reducers/UserReducer';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
@@ -37,7 +35,7 @@ const AppointmentHeader = ({
   const [profileVisible, setProfileVisible] = useState(false);
 
   const { price = '', review, startTime, endTime, otherParty } = appointment || {};
-  const { id, firstName = '', lastName = '' } = otherParty || {};
+  const { id, firstName = '', lastName = '', image } = otherParty || {};
   const { rating } = review || {};
 
   const { userId, name = '', duration = '' } = useMemo(() => ({
@@ -69,7 +67,7 @@ const AppointmentHeader = ({
 
       <View row flex={1}>
         <View onPress={onMessageUser && toggleProfile}>
-          <Image rounded size={48} uri={mockImg} />
+          <Image rounded size={48} uri={image} />
           {showInfo && (
             <View width={48} height={48} justifyCenter alignCenter>
               <InfoIcon />

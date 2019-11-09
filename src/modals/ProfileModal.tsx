@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import api from '@src/services/api';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
-import { mockImg } from '@src/services/mock';
 
 import useStore from '@src/hooks/useStore';
 
@@ -57,7 +56,7 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
           {profile && (
             <>
               <View row p={4} bgColor="white" variant="borderBottom">
-                <Image rounded size={80} uri={mockImg} />
+                <Image rounded size={80} uri={profile.image} />
                 <View column justifyCenter px={3}>
                   <Text variant="title">
                     {`${profile.firstName} ${profile.lastName}`}

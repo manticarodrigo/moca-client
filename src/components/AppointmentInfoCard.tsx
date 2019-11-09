@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import { format, differenceInMinutes, parseISO } from 'date-fns';
 
-import { mockImg } from '@src/services/mock';
-
 import { openMapMarker } from '@src/utlities/maps';
 
 import useStore from '@src/hooks/useStore';
@@ -42,7 +40,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
     <View m={3} mt={0} variant="rounded" bgColor="white">
       <View row p={3}>
         <View>
-          <Image rounded size={48} uri={mockImg} />
+          <Image rounded size={48} uri={otherUser.image} />
         </View>
         <View flex={1} pl={3}>
           <View row justifyBetween>

@@ -6,8 +6,6 @@ import {
   ImageStyle,
 } from 'react-native';
 
-import { mockImg } from '@src/services/mock';
-
 type ImageProps = {
   style?: ImageStyle;
   rounded?: boolean;
@@ -18,7 +16,16 @@ type ImageProps = {
   file?: ImageRequireSource;
 };
 
-const Image = ({ style, rounded, size, width, height, uri = mockImg, file }: ImageProps) => {
+const Image = ({
+  style,
+  rounded,
+  size,
+  width,
+  height,
+  uri,
+  // eslint-disable-next-line global-require
+  file = require('../assets/pngs/user.png'),
+}: ImageProps) => {
   const styles = useMemo(() => StyleSheet.create({
     image: {
       ...style,
@@ -28,7 +35,7 @@ const Image = ({ style, rounded, size, width, height, uri = mockImg, file }: Ima
     },
   }), [style, rounded, size, width, height]);
 
-  return <RNImage style={styles.image} source={file || { uri }} />;
+  return <RNImage style={styles.image} source={uri ? { uri } : file} />;
 };
 
 export default Image;
