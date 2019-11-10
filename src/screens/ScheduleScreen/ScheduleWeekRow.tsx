@@ -37,8 +37,8 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
     const data = {
       total: 0,
       completed: 0,
-      completedDocs: 0,
       totalDocs: 0,
+      completedDocs: 0,
       totalTime: 0,
       earnings: 0,
     };
@@ -47,11 +47,16 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
       const { startTime, endTime } = appointment;
 
       data.total += 1;
+      data.totalDocs += 1;
       data.totalTime += differenceInMinutes(new Date(endTime), new Date(startTime));
       data.earnings += appointment.price;
 
       if (isAfter(new Date(endTime), nowDate)) {
         data.completed += 1;
+      }
+
+      if (appointment.note) {
+        data.completedDocs += 1;
       }
     });
     return data;
