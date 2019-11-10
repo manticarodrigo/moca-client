@@ -35,7 +35,9 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate }: Pro
 
   const { items, startDate, endDate, weekString, totalEarnings } = useMemo(() => {
     const start = startOfWeek(selectedDate);
+    start.setHours(0, 0, 0, 0);
     const end = addDays(start, 6);
+    end.setHours(23, 59, 59, 999);
 
     const startDayStr = format(start, 'dd');
     const endDayStr = format(end, 'dd');
