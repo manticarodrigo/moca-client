@@ -27,10 +27,9 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
     if (!userId) return;
 
     const fetchProfile = async () => {
-      const options = { headers: { Authorization: `Token ${store.user.token}` } };
       const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_20;
 
-      const { data } = await method(userId, options);
+      const { data } = await method(userId);
 
       setProfile(data);
     };

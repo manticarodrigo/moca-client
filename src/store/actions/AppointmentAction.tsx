@@ -13,36 +13,27 @@ export type AppointmentAction =
   | { type: 'GET_PAST_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'UPDATE_APPOINTMENT_SUCCESS'; payload: Appointment }
 
-const answerAppointmentRequest = (id: string, status: 'accept' | 'reject' | 'cancel') => async (
-  dispatch: Dispatch<AppointmentAction>,
-  store,
-) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-
-  await api.appointment.appointmentRequestCreate(id, status, options);
+const answerAppointmentRequest = (
+  id: string,
+  status: 'accept' | 'reject' | 'cancel',
+) => async (dispatch: Dispatch<AppointmentAction>) => {
+  await api.appointment.appointmentRequestCreate(id, status);
 
   dispatch({ type: 'ANSWER_APPOINTMENT_REQUEST_SUCCESS' });
 };
 
-const getUpcomingAppointments = () => async (
-  dispatch: Dispatch<AppointmentAction>,
-  store,
-) => {
+const getUpcomingAppointments = () => async (dispatch: Dispatch<AppointmentAction>) => {
   const query = { start: subHours(new Date(), 1).toISOString(), limit: 3 };
-  const options = { headers: { Authorization: `Token ${store.user.token}` }, query };
 
-  const { data } = await api.appointment.appointmentList(options);
+  const { data } = await api.appointment.appointmentList({ query });
 
   // @ts-ignore
   dispatch({ type: 'GET_UPCOMING_APPOINTMENTS_SUCCESS', payload: data });
 };
 
-const getLastAppointment = () => async (
-  dispatch: Dispatch<AppointmentAction>,
-  store,
-) => {
+const getLastAppointment = () => async (dispatch: Dispatch<AppointmentAction>) => {
   const query = { end: new Date().toISOString(), limit: -1 };
-  const options = { headers: { Authorization: `Token ${store.user.token}` }, query };
+  const options = { query };
 
   const { data } = await api.appointment.appointmentList(options);
 
@@ -50,14 +41,10 @@ const getLastAppointment = () => async (
   dispatch({ type: 'GET_LAST_APPOINTMENT_SUCCESS', payload: data });
 };
 
-const getPastAppointments = () => async (
-  dispatch: Dispatch<AppointmentAction>,
-  store,
-) => {
+const getPastAppointments = () => async (dispatch: Dispatch<AppointmentAction>) => {
   const query = { end: new Date().toISOString() };
-  const options = { headers: { Authorization: `Token ${store.user.token}` }, query };
 
-  const { data } = await api.appointment.appointmentList(options);
+  const { data } = await api.appointment.appointmentList({ query });
 
   // @ts-ignore
   dispatch({ type: 'GET_PAST_APPOINTMENTS_SUCCESS', payload: data });
@@ -66,19 +53,15 @@ const getPastAppointments = () => async (
 const updateAppointment = (
   appointmentId: string,
   body: Pick<Appointment, 'review' | 'note'>,
-) => async (
-  dispatch: Dispatch<AppointmentAction>,
-  store,
-) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-
+) => async (dispatch: Dispatch<AppointmentAction>) => {
   // @ts-ignore
-  const { data } = await api.appointment.appointmentPartialUpdate(appointmentId, body, options);
+  const { data } = await api.appointment.appointmentPartialUpdate(appointmentId, body);
 
-  // @ts-ignore
-  const { patient, therapist, ...rest } = data; // therapist/patient come back as ids so remove them
+  // therapist/patient come back as ids so remove them
+  delete data.therapist;
+  delete data.patient;
 
-  dispatch({ type: 'UPDATE_APPOINTMENT_SUCCESS', payload: rest });
+  dispatch({ type: 'UPDATE_APPOINTMENT_SUCCESS', payload: data });
 };
 
 export {

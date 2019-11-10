@@ -6,8 +6,6 @@ import { Review } from '@src/services/openapi';
 
 import { UserState } from '@src/store/reducers/UserReducer';
 
-import useStore from '@src/hooks/useStore';
-
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
@@ -21,14 +19,12 @@ type Props = {
 };
 
 const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
-  const { store } = useStore();
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const options = { headers: { Authorization: `Token ${store.user.token}` } };
-        const { data } = await api.review.reviewRead(therapist.id.toString(), options);
+        const { data } = await api.review.reviewRead(therapist.id.toString());
 
         setReviews(data);
       } catch (e) {

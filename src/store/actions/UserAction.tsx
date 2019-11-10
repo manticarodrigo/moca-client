@@ -73,10 +73,9 @@ const updateUser = (partialState: UserState) => async (
     : api.user.userTherapistPartialUpdate;
 
   const body = { user, ...rest };
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
   // @ts-ignore
-  const { data } = await updateMethod(store.user.id.toString(), body, options);
+  const { data } = await updateMethod(store.user.id.toString(), body);
 
   dispatch({ type: 'UPDATE_USER_SUCCESS', payload: data as UserState });
 
@@ -87,54 +86,44 @@ export type AddAddressForm = Omit<Address, 'location'> & {
   coordinates?: [number, number];
 }
 
-const addUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
-  dispatch: Dispatch<UserAction>,
-  store: StoreState,
-) => {
+const addUserAddress = (
+  { coordinates, ...address }: AddAddressForm,
+) => async (dispatch: Dispatch<UserAction>) => {
   const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
 
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-
-  const { data } = await api.address.addressCreate(body, options);
+  const { data } = await api.address.addressCreate(body);
 
   dispatch({ type: 'ADD_USER_ADDRESS_SUCCESS', payload: data });
 
   return data;
 };
 
-const updateUserAddress = ({ coordinates, ...address }: AddAddressForm) => async (
-  dispatch: Dispatch<UserAction>,
-  store: StoreState,
-) => {
+const updateUserAddress = (
+  { coordinates, ...address }: AddAddressForm,
+) => async (dispatch: Dispatch<UserAction>) => {
   const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
 
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-
-  const { data } = await api.address.addressPartialUpdate(address.id.toString(), body, options);
+  const { data } = await api.address.addressPartialUpdate(address.id.toString(), body);
 
   dispatch({ type: 'UPDATE_USER_ADDRESS_SUCCESS', payload: data });
 
   return data;
 };
 
-const addPrice = (sessionType: Price['sessionType'], price: number) => async (
-  dispatch: Dispatch<UserAction>, store: StoreState,
-) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
+const addPrice = (
+  sessionType: Price['sessionType'],
+  price: number,
+) => async (dispatch: Dispatch<UserAction>) => {
   const body = { sessionType, price };
 
   // @ts-ignore
-  const { data } = await api.user.userTherapistPricesCreate(body, options);
+  const { data } = await api.user.userTherapistPricesCreate(body);
 
   dispatch({ type: 'ADD_PRICE_SUCCESS', payload: data });
 };
 
-const addPayment = (info: Payment) => async (
-  dispatch: Dispatch<UserAction>, store: StoreState,
-) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-
-  const { data } = await api.payment.paymentCreate(info, options);
+const addPayment = (info: Payment) => async (dispatch: Dispatch<UserAction>) => {
+  const { data } = await api.payment.paymentCreate(info);
 
   dispatch({ type: 'ADD_PAYMENT_SUCCESS', payload: data });
 };
@@ -144,7 +133,6 @@ const setAwayDates = (startDate: string, endDate: string) => async (
   store: StoreState,
 ) => {
   // const body = { data: { startDate, endDate } };
-  // const options = { headers: { Authorization: `Token ${store.user.token}` } };
   // to be added
 };
 

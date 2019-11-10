@@ -1,21 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import { StatusBar } from 'react-native';
 import { registerRootComponent } from 'expo';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { activateKeepAwake } from 'expo-keep-awake';
 
+import { instance as apiInstance } from '@src/services/api';
+
 import storage from '@src/services/storage';
 
 import useStore from '@src/hooks/useStore';
-import { updateUserState } from '@src/store/actions/UserAction';
+import { logoutUser, updateUserState } from '@src/store/actions/UserAction';
 
 import StoreProvider from '@src/StoreProvider';
 import NavigationProvider from '@src/NavigationProvider';
 
 import { Typography } from '@src/styles';
 
-const AppStateHandler = ({ children }) => {
+const AppStateHandler = ({ navigatorRef, children }) => {
   const { store, dispatch } = useStore();
 
   useEffect(() => {
@@ -27,6 +30,19 @@ const AppStateHandler = ({ children }) => {
 
         dispatch(updateUserState({ ...local, storageReady: true }));
       }
+
+      const navigation = navigatorRef.current as NavigationContainerComponent;
+
+      apiInstance.interceptors.response.use(undefined, ({ response }) => {
+        // if response is unauthorized
+        if (response.status === 401) {
+          dispatch(logoutUser());
+
+          navigation.dispatch(
+            NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
+          );
+        }
+      });
     };
 
     onMount();
@@ -37,6 +53,7 @@ const AppStateHandler = ({ children }) => {
 
 const App = () => {
   const [appLoaded, setAppLoaded] = useState(false);
+  const navigationRef = useRef();
 
   useEffect(() => {
     const initialize = async () => {
@@ -53,8 +70,8 @@ const App = () => {
       <StatusBar barStyle="light-content" />
 
       <StoreProvider>
-        <AppStateHandler>
-          <NavigationProvider />
+        <AppStateHandler navigatorRef={navigationRef}>
+          <NavigationProvider ref={navigationRef} />
         </AppStateHandler>
       </StoreProvider>
     </>

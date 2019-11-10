@@ -62,9 +62,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
 
       try {
         const query = { start: startDate.toISOString(), end: endDate.toISOString() };
-        const options = { headers: { Authorization: `Token ${store.user.token}` }, query };
 
-        const { data } = await api.appointment.appointmentList(options);
+        const { data } = await api.appointment.appointmentList({ query });
 
         const monthMap: MarkedDates = {};
 

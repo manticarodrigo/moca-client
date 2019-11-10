@@ -1,5 +1,7 @@
 import storage from '@src/services/storage';
 
+import { instance as apiInstance } from '@src/services/api';
+
 import { UserAction } from '@src/store/actions/UserAction';
 
 import {
@@ -103,6 +105,8 @@ const reducer = (state: UserState, action: UserAction): UserState => {
   } else {
     storage.storeUser(newState);
   }
+
+  apiInstance.defaults.headers.common.Authorization = newState.token && `Token ${newState.token}`;
 
   return newState;
 };

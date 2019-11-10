@@ -18,37 +18,28 @@ export type AppointmentRequest = {
   sessionType: PriceSessionTypeEnum;
 }
 
-const getConversations = () => async (
-  dispatch: Dispatch<ConversationAction>,
-  store,
-) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-  const { data } = await api.chat.chatList(options);
+const getConversations = () => async (dispatch: Dispatch<ConversationAction>) => {
+  const { data } = await api.chat.chatList();
 
   // @ts-ignore
   dispatch({ type: 'GET_CONVERSATIONS_SUCCESS', payload: data });
 };
 
-const getConversation = (userId: number) => async (
-  dispatch: Dispatch<ConversationAction>,
-  store,
-) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-  const { data } = await api.chat.chatRead(userId.toString(), options);
+const getConversation = (userId: number) => async (dispatch: Dispatch<ConversationAction>) => {
+  const { data } = await api.chat.chatRead(userId.toString());
 
   // @ts-ignore
   dispatch({ type: 'GET_CONVERSATION_SUCCESS', payload: { data, userId } });
 };
 
-const sendMessage = (userId: number, text: string) => async (
-  dispatch: Dispatch<ConversationAction>,
-  store,
-) => {
+const sendMessage = (
+  userId: number,
+  text: string,
+) => async (dispatch: Dispatch<ConversationAction>) => {
   const body = { type: MessageTypeEnum.Text, content: { text } };
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
 
   // @ts-ignore
-  const { data } = await api.chat.chatCreate(userId.toString(), body, options);
+  const { data } = await api.chat.chatCreate(userId.toString(), body);
 
   // @ts-ignore
   dispatch({ type: 'SEND_MESSAGE_SUCCESS', payload: { data, userId } });
@@ -61,8 +52,6 @@ const sendAppointmentRequest = (
   dispatch: Dispatch<ConversationAction>,
   store: StoreState,
 ) => {
-  const options = { headers: { Authorization: `Token ${store.user.token}` } };
-
   const body = {
     type: MessageTypeEnum.AppointmentRequest,
     content: {
@@ -74,7 +63,7 @@ const sendAppointmentRequest = (
   };
 
   // @ts-ignore
-  const { data } = await api.chat.chatCreate(userId.toString(), body, options);
+  const { data } = await api.chat.chatCreate(userId.toString(), body);
 
   // @ts-ignore
   dispatch({ type: 'SEND_MESSAGE_SUCCESS', payload: { data, userId } });

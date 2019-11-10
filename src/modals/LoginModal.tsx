@@ -15,6 +15,8 @@ import Button from '@src/components/Button';
 
 import InputModal from '@src/modals/InputModal';
 
+import Toast from '@src/components/Toast';
+
 
 type Props = {
   visible: boolean;
@@ -23,6 +25,7 @@ type Props = {
 
 const LoginModal = ({ visible, onClose }: Props) => {
   const { dispatch } = useStore();
+  const [hasError, setHasError] = useState();
 
   const {
     formFields,
@@ -44,8 +47,9 @@ const LoginModal = ({ visible, onClose }: Props) => {
     if (isFormValid) {
       try {
         await dispatch(loginUser(formFields.email, formFields.password));
-      } catch (error) {
-        // console.log(error);
+      } catch {
+        setHasError(true);
+        setTimeout(() => setHasError(false), 1000);
       }
     }
   };
@@ -84,6 +88,11 @@ const LoginModal = ({ visible, onClose }: Props) => {
               </Text>
             </View>
           </View>
+          {hasError && (
+            <Toast>
+              Woops
+            </Toast>
+          )}
           <View alignCenter mt={4} mx={5}>
             <FormField
               icon="email"
