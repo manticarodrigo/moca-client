@@ -32,7 +32,7 @@ const tabOptions = [{ value: 'week', label: 'Week' }, { value: 'month', label: '
 const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { dispatch } = useStore();
 
-  const [activeTab, setActiveTab] = useState('month');
+  const [activeTab, setActiveTab] = useState('week');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
