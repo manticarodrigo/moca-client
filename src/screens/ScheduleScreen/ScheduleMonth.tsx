@@ -46,8 +46,10 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
 
   const { startDate, endDate } = useMemo(() => {
     const start = startOfMonth(selectedDate);
+    start.setHours(0, 0, 0, 0);
     const dayCount = differenceInDays(endOfMonth(start), start);
     const end = addDays(start, dayCount);
+    end.setHours(23, 59, 59, 999);
 
     return { startDate: start, endDate: end };
   }, [selectedDate]);
@@ -102,7 +104,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
     const existing = markedDates[day.dateString] || {};
 
     const scheduleItem = {
-      timestamp: day.timestamp,
+      // month is an index
+      timestamp: new Date(day.year, day.month - 1, day.day).toISOString(),
       appointments: existing.appointments,
     };
 

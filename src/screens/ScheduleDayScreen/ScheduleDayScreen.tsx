@@ -33,7 +33,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
     const total = appointments.reduce((acc, { price }) => acc + price, 0);
 
     navigation.setParams({ total, dayOfMonth, monthAndYear, dayOfWeek });
-  }, []);
+  }, [scheduleItem]);
 
   const sortedData = useMemo(() => appointments.sort(
     (a, b) => new Date(a.startTime).getTime() - new Date(b.endTime).getTime(),
