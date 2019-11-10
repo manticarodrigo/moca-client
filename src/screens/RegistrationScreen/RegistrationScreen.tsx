@@ -113,7 +113,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
             <View width="100%" variant="borderTop">
               <View row py={4} px={3}>
                 <View flex={1}>
-                  <Text variant="semiBold">
+                  <Text variant="semiBoldLarge">
                     Are you currently covered by Medicare?
                   </Text>
                 </View>

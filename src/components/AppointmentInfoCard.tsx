@@ -67,7 +67,7 @@ const AppointmentInfoCard = ({ message, otherUser = {} }: Props) => {
       <View row justifyBetween variant="borderTop" p={3}>
         <View row flex={1}>
           <View column flex={1}>
-            <Text variant="semiBold" color="secondary">{time}</Text>
+            <Text variant="semiBoldLarge" color="secondary">{time}</Text>
             <Text variant="regular">{address.street}</Text>
           </View>
         </View>

@@ -108,7 +108,7 @@ const InputModal = (
           py={4}
           variant="borderBottom"
         >
-          <Text variant="semiBold">{title || ''}</Text>
+          <Text variant="semiBoldLarge">{title || ''}</Text>
         </View>
         <InputWrapper alignCenter={!multiline} p={!multiline ? 4 : undefined}>
           <FormField

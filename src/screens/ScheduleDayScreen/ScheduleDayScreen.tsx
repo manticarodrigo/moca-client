@@ -86,7 +86,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                       </View>
                       <View row alignCenter ml={2}>
                         <Image rounded size={36} uri={otherParty.image} />
-                        <Text ml={2} variant="semiBold" color="dark">
+                        <Text ml={2} variant="semiBoldLarge" color="dark">
                           {`${otherParty.firstName} ${otherParty.lastName}`}
                         </Text>
                       </View>

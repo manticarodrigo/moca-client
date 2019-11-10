@@ -21,7 +21,7 @@ const Toast = ({ centered, children }: ToastProps) => (
       <CheckIcon />
     </View>
     <View flex={1} alignCenter={centered} py={4} width="100%">
-      <Text variant="semiBold" color="white" px={2} numberOfLines={3}>{children}</Text>
+      <Text variant="semiBoldLarge" color="white" px={2} numberOfLines={3}>{children}</Text>
     </View>
     <View p={4} />
   </View>

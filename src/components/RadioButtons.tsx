@@ -43,7 +43,7 @@ const RadioButtons = ({ options = [], readonly, existingValue, onChange }: Props
   if (readonly) {
     return (
       <View alignCenter>
-        <Text variant="semiBold" color="dark">
+        <Text variant="semiBoldLarge" color="dark">
           {existingValue || 'N/A'}
         </Text>
       </View>

@@ -29,7 +29,7 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
       <View row justifyBetween alignCenter width="100%" p={4} pt={3}>
         <View width={32} height={32} />
-        <Text variant="semiBold" color="white">Profile</Text>
+        <Text variant="semiBoldLarge" color="white">Profile</Text>
         <View onPress={onPressSettings}><CogIcon /></View>
       </View>
 

@@ -21,7 +21,7 @@ const Rating = ({ light, rating, ...restProps }: RatingProps) => {
 
   return (
     <View row alignCenter style={styles.view}>
-      <Text mr={2} variant="semiBold" color={light ? 'secondaryLighter' : 'secondary'}>
+      <Text mr={2} variant="semiBoldLarge" color={light ? 'secondaryLighter' : 'secondary'}>
         {rating ? rating.toFixed(2) : 'N/A'}
       </Text>
       <StarsIcon number={rating} />

@@ -100,14 +100,14 @@ const Row = ({ field, readonly, column, last, title, subtitle, existingValue, on
     >
       {subtitle ? (
         <View>
-          <Text variant="semiBold" color="dark">{title}</Text>
+          <Text variant="semiBoldLarge" color="dark">{title}</Text>
           <View pt={2}>
             <Text variant="regularSmall" color="grey">{subtitle}</Text>
           </View>
         </View>
       ) : (
         <View justifyCenter>
-          <Text variant="semiBold" color="dark">{title}</Text>
+          <Text variant="semiBoldLarge" color="dark">{title}</Text>
         </View>
       )}
       {renderContent()}

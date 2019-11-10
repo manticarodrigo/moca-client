@@ -66,7 +66,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
     <View safeArea>
       {modal && (
         <View alignCenter justifyCenter py={4} variant="borderBottom">
-          <Text variant="semiBold">
+          <Text variant="semiBoldLarge">
             Qualifications
           </Text>
         </View>
@@ -99,7 +99,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
                       width="100%"
                       {...(modal && index === 0 ? '' : { variant: 'borderTop' })}
                     >
-                      <Text variant="semiBold">{item}</Text>
+                      <Text variant="semiBoldLarge">{item}</Text>
                       <Checkbox
                         checked={preferredAilments.includes(item)}
                         onChange={onCheckboxChange(item)}

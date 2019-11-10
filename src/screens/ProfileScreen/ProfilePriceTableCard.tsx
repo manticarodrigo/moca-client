@@ -56,7 +56,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
       </View>
       <View flex={1}>
         <View row alignCenter py={3}>
-          <Text variant="semiBold" color="dark">Price Rate</Text>
+          <Text variant="semiBoldLarge" color="dark">Price Rate</Text>
         </View>
         <View row width="100%" justifyBetween variant="borderBottom">
           <View row width="100%" pr={3}>

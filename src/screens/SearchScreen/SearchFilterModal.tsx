@@ -112,7 +112,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
       onToggle={onToggle}
     >
       <View row justifyBetween alignCenter p={4} width={WINDOW_WIDTH} variant="borderBottom">
-        <Text variant="semiBold" color="error" onPress={onPressClear}>Clear</Text>
+        <Text variant="semiBoldLarge" color="error" onPress={onPressClear}>Clear</Text>
         <Text variant="title">Filters</Text>
         <View onPress={onToggle}><ArrowDown large /></View>
       </View>
@@ -125,7 +125,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
 
               return (
                 <View key={sectionKey} variant="borderBottom" height={180}>
-                  <Text m={3} variant="semiBold" color="grey">
+                  <Text m={3} variant="semiBoldLarge" color="grey">
                     {checkboxConfig[sectionKey].title}
                   </Text>
                   <View px={3} height={100} variant="shadow">
@@ -158,7 +158,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
                               <IconComponent focused={focused} />
                               <Text
                                 mt={icon ? 2 : undefined}
-                                variant="semiBold"
+                                variant="semiBoldLarge"
                                 color={focused ? 'white' : 'secondary'}
                                 align="center"
                                 numberOfLines={2}
@@ -176,7 +176,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
             })}
           </>
           <View variant="borderBottom" height={180}>
-            <Text m={3} variant="semiBold" color="grey">Desired Cost</Text>
+            <Text m={3} variant="semiBoldLarge" color="grey">Desired Cost</Text>
             <View px={3}>
               <FormField
                 keyboardType="number-pad"
@@ -188,7 +188,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
             </View>
           </View>
           <View variant="borderBottom">
-            <Text m={3} variant="semiBold" color="grey">Area(s) of Pain</Text>
+            <Text m={3} variant="semiBoldLarge" color="grey">Area(s) of Pain</Text>
             <View row wrap alignStart px={4}>
               {qualificationOptions.map((item) => (
                 <View key={item} row alignCenter py={3} width="50%">
@@ -196,7 +196,7 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
                     checked={filters.ailments.includes(item)}
                     onChange={(checked) => onChangeAilment(item, checked)}
                   />
-                  <Text ml={2} variant="semiBold" size={1} color="semiGrey">
+                  <Text ml={2} variant="semiBoldLarge" size={1} color="semiGrey">
                     {item}
                   </Text>
                 </View>

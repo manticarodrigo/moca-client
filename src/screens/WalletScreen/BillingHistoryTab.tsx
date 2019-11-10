@@ -63,7 +63,7 @@ const BillingHistoryTab = () => {
             </Text>
           </View>
           <View flex={1} column justifyEnd px={3} variant="borderRight">
-            <Text ml={2} variant="semiBold">{session.therapist}</Text>
+            <Text ml={2} variant="semiBoldLarge">{session.therapist}</Text>
             <View flex={1} my={2} row wrap>
               <View row alignCenter m={1}>
                 <ClockIcon />

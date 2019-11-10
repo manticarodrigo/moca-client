@@ -97,7 +97,7 @@ const AppointmentCard = ({
           <View row flex={1}>
             <View column flex={1} mt={(isTherapist && upcoming) && -5}>
               <Text
-                variant="semiBold"
+                variant="semiBoldLarge"
                 color={!upcoming && isTherapist ? 'secondary' : 'grey'}
               >
                 {time}

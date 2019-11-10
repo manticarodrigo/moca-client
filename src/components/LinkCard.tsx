@@ -62,7 +62,7 @@ const LinkCard = ({ type, status, children, onPress }: LinkCardProps) => {
         <View row flex={1}>
           <View column mr={3} width={48}>{icon}</View>
           <View column flex={1}>
-            <Text variant="semiBold" color={titleColor} mb={2}>{title}</Text>
+            <Text variant="semiBoldLarge" color={titleColor} mb={2}>{title}</Text>
             {children}
           </View>
         </View>

@@ -158,7 +158,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           justifyCenter
           height={50}
         >
-          <Text variant="semiBold" color="dark">Add New Card</Text>
+          <Text variant="semiBoldLarge" color="dark">Add New Card</Text>
         </View>
         <View
           variant="borderBottom"

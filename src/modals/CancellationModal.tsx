@@ -82,7 +82,7 @@ const CancellationModal = ({ visible, onToggle }) => {
                   />
                 </View>
                 <View justifyCenter flex={1} px={3}>
-                  <Text numberOfLines={2} variant="semiBold" color="dark">
+                  <Text numberOfLines={2} variant="semiBoldLarge" color="dark">
                     {reason.title}
                   </Text>
                 </View>

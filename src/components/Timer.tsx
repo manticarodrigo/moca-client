@@ -99,7 +99,7 @@ const Timer = ({ focused, isTherapist, appointment, onEnd }) => {
           </Text>
           <View row py={2}>
             <Text
-              variant="semiBold"
+              variant="semiBoldLarge"
               color={didTimeStart ? 'white' : 'semiGreyAlt'}
               size={9}
             >

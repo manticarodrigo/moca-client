@@ -53,7 +53,7 @@ const AppointmentRequestCard = ({ message, otherUser, onPressAnswer }: Props) =>
           {' '}
           {isTherapist ? 'for' : 'from'}
           {' '}
-          <Text variant="semiBold" color="dark">
+          <Text variant="semiBoldLarge" color="dark">
             {`${otherUser.firstName} ${otherUser.lastName}`}
           </Text>
         </Text>

@@ -41,14 +41,14 @@ const Preview = ({ index = undefined, uri = undefined, count = undefined }) => (
     )}
 
     {!uri && count && (
-      <Text variant="semiBold" color="white">{`+${count}`}</Text>
+      <Text variant="semiBoldLarge" color="white">{`+${count}`}</Text>
     )}
   </View>
 );
 
 const LabelWrapper = ({ label, onPress, children }) => (
   <View flex={1} row justifyBetween alignCenter onPress={onPress}>
-    <Text variant="semiBold" color="dark">{label}</Text>
+    <Text variant="semiBoldLarge" color="dark">{label}</Text>
     {children}
   </View>
 );

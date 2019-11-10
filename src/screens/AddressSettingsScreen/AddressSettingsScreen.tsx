@@ -73,7 +73,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               >
                 <View row flex={1} p={3}>
                   <View>
-                    <Text variant="semiBold" size={2}>
+                    <Text variant="semiBoldLarge" size={2}>
                       {item.name}
                     </Text>
                     <View row alignCenter mt={3}>
@@ -112,7 +112,7 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
               onPress={handleNewAddressPress}
             >
               <View ml={3}><AddIcon /></View>
-              <Text variant="semiBold" size={2}>Add new Address</Text>
+              <Text variant="semiBoldLarge" size={2}>Add new Address</Text>
               <View mr={3}><ArrowRightIcon /></View>
             </View>
           )}

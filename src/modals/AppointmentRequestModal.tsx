@@ -128,7 +128,7 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
       <View alignCenter pb={6}>
         <View row>
           <View alignCenter justifyCenter flex={1} pb={3} variant="borderBottom">
-            <Text variant="semiBold">
+            <Text variant="semiBoldLarge">
               Create Appointment
             </Text>
           </View>

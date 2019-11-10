@@ -143,7 +143,7 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
         }}
         renderMonthTitle={(monthString) => (
           <View alignCenter>
-            <Text mb={2} variant="semiBold" color="white">{monthString}</Text>
+            <Text mb={2} variant="semiBoldLarge" color="white">{monthString}</Text>
             <Text variant="regularSmall" color="secondaryLighter">{`$${monthTotal}`}</Text>
           </View>
         )}

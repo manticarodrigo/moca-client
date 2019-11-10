@@ -191,7 +191,7 @@ type TitleProp = { user?: UserSnippet }
 const Title = ({ user }: TitleProp) => (
   <View row flex={1} alignCenter>
     <Image rounded size={48} uri={user.image || undefined} />
-    <Text variant="semiBold" ml={3}>
+    <Text variant="semiBoldLarge" ml={3}>
       {user.firstName}
       {' '}
       {user.lastName}

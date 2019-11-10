@@ -55,7 +55,7 @@ const CalendarDay = ({ date, marking, state, onPress }) => {
     >
       <View style={dotStyle} />
       <Text
-        variant="semiBold"
+        variant="semiBoldLarge"
         color={today ? 'white' : 'greyishBrown'}
       >
         {date.day}

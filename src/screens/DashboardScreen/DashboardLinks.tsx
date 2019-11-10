@@ -133,7 +133,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
         <LinkCard type="history" onPress={onPressLink('HistoryScreen')}>
           <Text>
             <Text variant="regularSmall" color="grey">Last: </Text>
-            <Text variant="semiBold" size={1} color="grey">
+            <Text variant="semiBoldLarge" size={1} color="grey">
               {lastAppointmentStr}
             </Text>
           </Text>

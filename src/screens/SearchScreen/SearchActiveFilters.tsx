@@ -43,7 +43,7 @@ const SearchActiveFilters = ({ filters }) => {
             <View alignCenter key={title} p={3} width={90}>
               <Icon />
               <Text
-                variant="semiBold"
+                variant="semiBoldLarge"
                 size={0}
                 align="center"
                 pt={2}
@@ -57,7 +57,7 @@ const SearchActiveFilters = ({ filters }) => {
       </View>
       {ailments && !!ailments.length && (
         <View row py={3} px={4} variant="borderTop">
-          <Text variant="semiBold" size={0} color="secondaryLight">A. of Pain</Text>
+          <Text variant="semiBoldLarge" size={0} color="secondaryLight">A. of Pain</Text>
           <View row wrap px={4}>
             {ailments.map((item) => (
               <View key={item} row alignCenter pr={2}>

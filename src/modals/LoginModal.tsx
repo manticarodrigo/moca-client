@@ -79,7 +79,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
         <View alignCenter>
           <View row>
             <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
-              <Text variant="semiBold">
+              <Text variant="semiBoldLarge">
                 Welcome Back
               </Text>
             </View>

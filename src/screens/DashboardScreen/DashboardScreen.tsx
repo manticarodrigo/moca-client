@@ -116,7 +116,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
         {isActivated && isTherapist && (
           <View row justifyCenter alignCenter p={4} pt={3}>
-            <Text variant="semiBold" color="white">Appointments</Text>
+            <Text variant="semiBoldLarge" color="white">Appointments</Text>
           </View>
         )}
 

@@ -76,7 +76,7 @@ const AppointmentHeader = ({
         </View>
         <View pl={3} flex={1}>
           <View row justifyBetween>
-            <Text variant={upcoming ? 'semiBold' : 'title'} numberOfLines={2}>
+            <Text variant={upcoming ? 'semiBoldLarge' : 'title'} numberOfLines={2}>
               {name}
             </Text>
             <View row>

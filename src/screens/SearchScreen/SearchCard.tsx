@@ -39,7 +39,7 @@ const SearchCard = ({
       <View flex={1} px={3}>
         <View row justifyBetween>
           <View>
-            <Text variant="semiBold">
+            <Text variant="semiBoldLarge">
               {firstName}
               {' '}
               {lastName}

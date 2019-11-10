@@ -13,6 +13,7 @@ export const bold: Props = { size: 3, weight: '900', color: 'primary' };
 export const lightSmallest: Props = { ...light, size: 0 };
 export const regularSmall: Props = { ...regular, size: 1 };
 export const regularDark: Props = { ...regular, color: 'dark' };
+export const semiBoldLarge: Props = { ...semiBold, size: 3 };
 export const title: Props = { ...semiBold, size: 4 };
 export const titleLarge: Props = { ...title, size: 5 };
 export const link: Props = { ...semiBold, decoration: 'underline' };

@@ -9,7 +9,7 @@ const DashboardAlert = () => (
   <View alignCenter justifyCenter py={4}>
     <BigEnvelopeIcon />
     <View justifyCenter pt={4}>
-      <Text variant="semiBold" color="white">You’re almost there!</Text>
+      <Text variant="semiBoldLarge" color="white">You’re almost there!</Text>
     </View>
     <View justifyCenter>
       <Text
