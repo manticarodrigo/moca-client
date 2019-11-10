@@ -1,7 +1,9 @@
 
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, ActivityIndicator } from 'react-native';
 import { PreviousArrowIcon, NextArrowIcon } from '@src/components/icons';
+
+import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -18,8 +20,12 @@ const Paginator = ({ title, subtitle, loading, onPressPrev, onPressNext }) => (
     </TouchableOpacity>
 
     <View alignCenter>
-      <Text mb={2} variant="semiBoldLarge" color="white">{title}</Text>
-      <Text variant="regularSmall" color="secondaryLighter">{subtitle}</Text>
+      <Text mb={1} variant="semiBoldLarge" color="white">{title}</Text>
+      {loading ? (
+        <ActivityIndicator style={{ marginTop: 1 }} color={Colors.secondaryLighter} />
+      ) : (
+        <Text mt={1} variant="regularSmall" color="secondaryLighter">{subtitle}</Text>
+      )}
     </View>
 
     <TouchableOpacity
@@ -32,4 +38,4 @@ const Paginator = ({ title, subtitle, loading, onPressPrev, onPressNext }) => (
   </View>
 );
 
-export default Paginator;
+export default React.memo(Paginator);

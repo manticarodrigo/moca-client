@@ -1,15 +1,20 @@
 diff --git a/node_modules/@types/react-native-calendars/index.d.ts b/node_modules/@types/react-native-calendars/index.d.ts
-index 4075af6..78de8bb 100644
+index 4075af6..05a1bcc 100644
 --- a/node_modules/@types/react-native-calendars/index.d.ts
 +++ b/node_modules/@types/react-native-calendars/index.d.ts
-@@ -275,6 +275,11 @@ export interface CalendarBaseProps {
+@@ -275,6 +275,16 @@ export interface CalendarBaseProps {
       */
      renderArrow?: (direction: 'left' | 'right') => React.ReactNode;
  
 +    /**
-+     *  Replace default month title with custom one (recevied 'monthString')
++     *   Replace default header with custom one (receives 'onPressLeft', 'onPressRight', 'monthString', and 'indicator')
 +     */
-+    renderMonthTitle?: (monthString: string) => React.ReactNode;
++    renderHeader?: (
++        onPressLeft: () => void,
++        onPressRight: () => void,
++        monthString: string,
++        indicator: JSX.Element,
++    ) => React.ReactNode;
 +
      /**
       *  Show week numbers to the left. Default = false

@@ -19,10 +19,11 @@ import useStore from '@src/hooks/useStore';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
-import { PreviousArrowIcon, NextArrowIcon } from '@src/components/icons';
+import { PreviousArrowIcon, NextArrowIcon, ArrowRightIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Paginator from '@src/components/Paginator';
 
 import ScheduleMonthDay from './ScheduleMonthDay';
 
@@ -37,12 +38,14 @@ type Props = Pick<NavigationStackScreenProps, 'navigation'> & {
   isFocused: boolean;
   selectedDate: Date;
   onChangeDate: (date: Date) => void;
+  onSetAway: () => void;
 }
 
-const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) => {
+const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway }: Props) => {
   const { store } = useStore();
 
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+  const [loading, setLoading] = useState(false);
 
   const { startDate, endDate } = useMemo(() => {
     const start = startOfMonth(selectedDate);
@@ -59,6 +62,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
       const startKey = format(startDate, 'yyyy-MM-dd');
 
       if (markedDates[startKey]) return;
+
+      setLoading(true);
 
       try {
         const query = { start: startDate.toISOString(), end: endDate.toISOString() };
@@ -85,8 +90,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
         });
 
         setMarkedDates((prev) => ({ ...prev, ...monthMap }));
-      } catch (e) {
-        // console.log(e);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -130,6 +135,7 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
   return (
     <View flex={1} justifyCenter alignCenter bgColor="lightGrey">
       <RNCalendar
+        displayLoadingIndicator={loading}
         current={selectedDate}
         markedDates={markedDates}
         minDate={subYears(new Date(), 1)}
@@ -143,10 +149,19 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) 
               return null;
           }
         }}
-        renderMonthTitle={(monthString) => (
-          <View alignCenter>
-            <Text mb={2} variant="semiBoldLarge" color="white">{monthString}</Text>
-            <Text variant="regularSmall" color="secondaryLighter">{`$${monthTotal}`}</Text>
+        renderHeader={(onPressLeft, onPressRight, monthString, indicator) => (
+          <View>
+            <Paginator
+              loading={!!indicator}
+              title={monthString}
+              subtitle={`$${monthTotal}`}
+              onPressPrev={onPressLeft}
+              onPressNext={onPressRight}
+            />
+            <View row justifyCenter alignCenter py={2} bgColor="secondary" onPress={onSetAway}>
+              <Text mr={2} variant="semiBold" color="white">Set Away Time</Text>
+              <ArrowRightIcon tint="white" size={0.75} />
+            </View>
           </View>
         )}
         dayComponent={ScheduleMonthDay}

@@ -7,13 +7,8 @@ import useStore from '@src/hooks/useStore';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 import { setAwayDates } from '@src/store/actions/UserAction';
 
-import { Spacing } from '@src/styles';
-
-import { ScheduleTabIcon } from '@src/components/icons';
-
 import SetAwayModal from '@src/modals/SetAwayModal';
 
-import View from '@src/components/View';
 import SegmentedControl from '@src/components/SegmentedControl';
 
 import ScheduleWeek from './ScheduleWeek';
@@ -32,7 +27,7 @@ const tabOptions = [{ value: 'week', label: 'Week' }, { value: 'month', label: '
 const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { dispatch } = useStore();
 
-  const [activeTab, setActiveTab] = useState('week');
+  const [activeTab, setActiveTab] = useState('month');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isAwayModalVisible, setIsAwayModalVisible] = useState(false);
 
@@ -59,6 +54,7 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
     isFocused,
     selectedDate,
     onChangeDate: setSelectedDate,
+    onSetAway: onToggleAwayModal,
   };
 
   return (
@@ -75,18 +71,8 @@ const ScheduleScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
   );
 };
 
-ScheduleScreen.navigationOptions = ({ navigation }) => {
-  const { params = {} } = navigation.state;
-
-  return {
-    title: 'Calendar',
-    headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
-    headerRight: (
-      <View alignCenter onPress={params.onToggleAwayModal}>
-        <ScheduleTabIcon />
-      </View>
-    ),
-  };
+ScheduleScreen.navigationOptions = {
+  title: 'Calendar',
 };
 
 export default withNavigationFocus(ScheduleScreen);

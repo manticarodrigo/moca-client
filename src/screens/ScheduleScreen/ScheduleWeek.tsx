@@ -9,7 +9,10 @@ import useStore from '@src/hooks/useStore';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
+import { ArrowRightIcon } from '@src/components/icons';
+
 import View from '@src/components/View';
+import Text from '@src/components/Text';
 import Paginator from '@src/components/Paginator';
 
 import ScheduleWeekRow from './ScheduleWeekRow';
@@ -25,13 +28,14 @@ type Props = Pick<NavigationStackScreenProps, 'navigation'> & {
   isFocused: boolean;
   selectedDate: Date;
   onChangeDate: (date: Date) => void;
+  onSetAway: () => void;
 }
 
-const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate }: Props) => {
+const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway }: Props) => {
   const { store } = useStore();
 
   const [itemMap, setItemMap] = useState<ItemMap>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { items, startDate, endDate, weekString, totalEarnings } = useMemo(() => {
     const start = startOfWeek(selectedDate);
@@ -76,7 +80,7 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate }: Pro
 
       if (itemMap[currentWeekTime]) return;
 
-      setIsLoading(true);
+      setLoading(true);
 
       try {
         const query = { start: startDate.toISOString(), end: endDate.toISOString() };
@@ -107,7 +111,7 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate }: Pro
       } catch (e) {
         // console.log(e);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -135,29 +139,35 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate }: Pro
   const keyExtractor = (item: ListItem) => item.timestamp.toString();
 
   const onPressPrev = () => {
-    if (isLoading) return;
+    if (loading) return;
 
     onChangeDate(subDays(startDate, 7));
   };
 
   const onPressNext = () => {
-    if (isLoading) return;
+    if (loading) return;
 
     onChangeDate(addDays(startDate, 7));
   };
 
   return (
     <>
-      <Paginator
-        title={weekString}
-        subtitle={`$${totalEarnings}`}
-        loading={isLoading}
-        onPressPrev={onPressPrev}
-        onPressNext={onPressNext}
-      />
+      <View>
+        <Paginator
+          title={weekString}
+          subtitle={`$${totalEarnings}`}
+          loading={loading}
+          onPressPrev={onPressPrev}
+          onPressNext={onPressNext}
+        />
+        <View row justifyCenter alignCenter py={2} bgColor="secondary" onPress={onSetAway}>
+          <Text mr={2} variant="semiBold" color="white">Set Away Time</Text>
+          <ArrowRightIcon tint="white" size={0.75} />
+        </View>
+      </View>
       <View flex={1} bgColor="semiGreyLighter">
         <FlatList
-          refreshing={isLoading}
+          refreshing={loading}
           data={items}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
