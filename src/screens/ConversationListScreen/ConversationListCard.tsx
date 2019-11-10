@@ -35,7 +35,7 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
       <View row p={1}>
         <Image rounded size={60} uri={image} />
         <View pl={3}>
-          <Text variant="semiBoldLarge" size={2} mb={2}>{name}</Text>
+          <Text variant="semiBoldLarge" mb={2}>{name}</Text>
           <Text variant="regularSmall" color="grey">{time}</Text>
         </View>
       </View>

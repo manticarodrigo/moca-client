@@ -23,7 +23,10 @@ import { getImage } from '@src/utlities/imagePicker';
 
 import { Views, Colors } from '@src/styles';
 
+import ProfileModal from '@src/modals/ProfileModal';
 import AppointmentRequestModal from '@src/modals/AppointmentRequestModal';
+
+import { InfoIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -42,7 +45,8 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
   const [otherUser, setOtherUser] = useState<UserSnippet>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
-  const [appointmentModalVisible, setAppointmentModalVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
+  const [appointmentRequestVisible, setAppointmentRequestVisible] = useState(false);
 
   const sections = useDateSections<Message>(
     messages,
@@ -58,6 +62,8 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
   const { imageViewer, onPressImage } = useImageViewer(imageUrls);
 
+  const onToggleProfile = () => setProfileVisible(!profileVisible);
+
   useEffect(() => {
     const { params = {} } = navigation.state;
 
@@ -66,6 +72,8 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
     }
 
     setOtherUser(params.user);
+
+    navigation.setParams({ onToggleProfile });
   }, []);
 
   useEffect(() => {
@@ -79,6 +87,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
     if (updated) setMessages(updated);
   }, [otherUser, store.conversations.map]);
 
+  const onToggleAppointmentRequest = () => setAppointmentRequestVisible(!appointmentRequestVisible);
 
   const onChangeText = (text: string) => setInputText(text);
 
@@ -112,13 +121,11 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
     }
   };
 
-  const onToggleAppointmentModal = () => setAppointmentModalVisible(!appointmentModalVisible);
-
   const onSubmitAppointment = async (data) => {
     try {
       await dispatch(sendAppointmentRequest(otherUser.id, data));
 
-      setAppointmentModalVisible(false);
+      setAppointmentRequestVisible(false);
     } catch (e) {
       // console.log(e);
     }
@@ -137,12 +144,19 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
     <>
       {imageViewer}
 
+      <ProfileModal
+        userId={profileVisible && otherUser.id}
+        visible={profileVisible}
+        onMessage={onToggleProfile}
+        onClose={onToggleProfile}
+      />
+
       <StatusBar barStyle="dark-content" />
 
       <AppointmentRequestModal
-        visible={appointmentModalVisible}
+        visible={appointmentRequestVisible}
         onSubmit={onSubmitAppointment}
-        onClose={onToggleAppointmentModal}
+        onClose={onToggleAppointmentRequest}
       />
 
       <View safeArea column flex={1} bgColor="white">
@@ -171,7 +185,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
           ListHeaderComponent={(
             <ConversationActions
               onPressInjury={scrollToStart}
-              onPressAppointment={onToggleAppointmentModal}
+              onPressAppointment={onToggleAppointmentRequest}
             />
           )}
         />
@@ -186,10 +200,13 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
   );
 };
 
-type TitleProp = { user?: UserSnippet }
+type Params = {
+  user?: UserSnippet;
+  onToggleProfile?: () => void;
+}
 
-const Title = ({ user }: TitleProp) => (
-  <View row flex={1} alignCenter>
+const Title = ({ user, onToggleProfile }: Params) => (
+  <View row flex={1} alignCenter onPress={onToggleProfile}>
     <Image rounded size={48} uri={user.image || undefined} />
     <Text variant="semiBoldLarge" ml={3}>
       {user.firstName}
@@ -199,8 +216,17 @@ const Title = ({ user }: TitleProp) => (
   </View>
 );
 
+const Right = ({ onToggleProfile }: Params) => (
+  <View py={3} px={4} onPress={onToggleProfile}>
+    <InfoIcon />
+  </View>
+);
+
+const TitleMemo = React.memo(Title);
+
 ConversationScreen.navigationOptions = ({ navigation: { state } }) => ({
-  headerTitle: <Title {...state.params} />,
+  headerTitle: <TitleMemo {...state.params} />,
+  headerRight: <Right {...state.params} />,
   headerStyle: {
     ...Views.borderBottom,
     backgroundColor: Colors.white,
