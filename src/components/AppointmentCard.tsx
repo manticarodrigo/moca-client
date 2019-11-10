@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { format } from 'date-fns';
+import { format, differenceInHours } from 'date-fns';
 
 import { openMapMarker } from '@src/utlities/maps';
 
@@ -33,7 +33,7 @@ const AppointmentCard = ({
   onPressBtn,
   onMessageUser,
 }: AppointmentCardProps) => {
-  const { startTime, address, otherParty } = appointment;
+  const { startTime, endTime, address, otherParty } = appointment;
 
   const { store } = useStore();
 
@@ -64,6 +64,19 @@ const AppointmentCard = ({
   }, [upcoming, past]);
 
   const hasButton = canCancel || canEditNotes || canEditReview;
+
+  const shouldShowButton = useMemo(() => {
+    if (!isTherapist) return true;
+
+    const endDate = new Date(endTime);
+    const hoursSinceEnd = differenceInHours(new Date(), endDate);
+
+    if (hoursSinceEnd <= 48) {
+      return true;
+    }
+
+    return false;
+  }, [isTherapist, endTime]);
 
   const handlePress = () => onPress(appointment);
 
@@ -121,7 +134,7 @@ const AppointmentCard = ({
           )}
         </View>
 
-        {hasButton && (
+        {hasButton && shouldShowButton && (
           <Button
             mt={3}
             variant="secondary"

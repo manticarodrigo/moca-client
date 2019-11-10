@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { StatusBar, FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { format, addMinutes, differenceInMinutes } from 'date-fns';
+import { format, differenceInHours } from 'date-fns';
 
 import { ScheduleSectionIcon, NoConversationsIcon } from '@src/components/icons';
 
@@ -62,10 +62,17 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
             keyExtractor={({ id }) => id.toString()}
             renderItem={({ item }) => {
               const { otherParty, startTime, endTime, price } = item;
+              const startDate = new Date(startTime);
+              const endDate = new Date(endTime);
 
-              const duration = differenceInMinutes(new Date(endTime), new Date(startTime));
-              const startFormatted = format(new Date(startTime), 'hh:mm aaaa');
-              const endFormatted = format(addMinutes(new Date(startTime), duration), 'hh:mm aaaa');
+              const startFormatted = format(startDate, 'hh:mm aaaa');
+              const endFormatted = format(endDate, 'hh:mm aaaa');
+              const hoursSinceEnd = differenceInHours(new Date(), endDate);
+
+              let notesTimeLeft = 48;
+              if (hoursSinceEnd > 0) {
+                notesTimeLeft = Math.max(48 - hoursSinceEnd, 0);
+              }
 
               return (
                 <SwipeRow disabled={false} onPress={() => null}>
@@ -92,7 +99,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                       </View>
                     </View>
                     <View>
-                      <Tag icon="report" type="borderLight" placeholder="10h" />
+                      <Tag icon="report" type="borderLight" placeholder={`${notesTimeLeft}h`} />
                       <Tag mt={2} icon="dollar" type="fill" placeholder={price} />
                     </View>
                   </View>
