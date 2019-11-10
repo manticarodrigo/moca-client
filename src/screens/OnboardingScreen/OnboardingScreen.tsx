@@ -58,7 +58,7 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocuse
     } else if (store.user.addresses.length === 0) {
       navigation.navigate('AddressScreen', { title: 'Address' });
     } else {
-      navigation.navigate('DashboardScreen');
+      navigation.navigate('ScheduleScreen');
     }
   }, [store.user]);
 

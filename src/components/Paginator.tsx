@@ -18,8 +18,8 @@ const Paginator = ({ title, subtitle, loading, onPressPrev, onPressNext }) => (
     </TouchableOpacity>
 
     <View alignCenter>
-      <Text variant="semiBold" color="white">{title}</Text>
-      <Text variant="regularSmall" color="semiGreyLighter">{subtitle}</Text>
+      <Text mb={2} variant="semiBold" color="white">{title}</Text>
+      <Text variant="regularSmall" color="secondaryLighter">{subtitle}</Text>
     </View>
 
     <TouchableOpacity

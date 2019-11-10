@@ -17,7 +17,7 @@ type Props = {
 
 const SegmentedControl = ({ light, options, selected, onChange }: Props) => (
   <View bgColor={light ? 'white' : 'primary'} alignCenter>
-    <View row justifyCenter p={4}>
+    <View row justifyCenter py={3} px={4}>
       {options.map(({ value, label }, index) => (
         <View
           key={value}

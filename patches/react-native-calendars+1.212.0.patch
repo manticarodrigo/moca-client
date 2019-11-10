@@ -1,15 +1,76 @@
-diff --git a/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js b/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js
-index aa31f4e..8aac256 100644
---- a/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js
-+++ b/node_modules/react-native-calendars/src/agenda/reservation-list/reservation.js
-@@ -64,9 +64,7 @@ class ReservationListItem extends Component {
-     return (
-       <View style={this.styles.container}>
-         {this.renderDate(date, reservation)}
--        <View style={{flex:1}}>
--          {content}
--        </View>
-+        {content}
-       </View>
-     );
+diff --git a/node_modules/react-native-calendars/src/calendar/header/index.js b/node_modules/react-native-calendars/src/calendar/header/index.js
+index 0d7be61..37f0e70 100644
+--- a/node_modules/react-native-calendars/src/calendar/header/index.js
++++ b/node_modules/react-native-calendars/src/calendar/header/index.js
+@@ -19,6 +19,7 @@ class CalendarHeader extends Component {
+     showIndicator: PropTypes.bool,
+     firstDay: PropTypes.number,
+     renderArrow: PropTypes.func,
++    renderMonthTitle: PropTypes.func,
+     hideDayNames: PropTypes.bool,
+     weekNumbers: PropTypes.bool,
+     onPressArrowLeft: PropTypes.func,
+@@ -65,6 +66,9 @@ class CalendarHeader extends Component {
+     if (nextProps.monthFormat !== this.props.monthFormat) {
+       return true;
+     }
++    if (nextProps.renderMonthTitle !== this.props.renderMonthTitle) {
++      return true;
++    }
+     return false;
    }
+ 
+@@ -128,16 +132,26 @@ class CalendarHeader extends Component {
+       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
+     }
+ 
++    const monthString = this.props.month.toString(this.props.monthFormat);
++
++    let title = (
++      <View style={{ flexDirection: 'row' }}>
++        <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
++          {this.props.month.toString(this.props.monthFormat)}
++        </Text>
++        {indicator}
++      </View>
++    );
++
++    if (this.props.renderMonthTitle) {
++      title = this.props.renderMonthTitle(monthString);
++    }
++
+     return (
+       <View style={this.props.style}>
+         <View style={this.style.header}>
+           {leftArrow}
+-          <View style={{ flexDirection: 'row' }}>
+-            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
+-              {this.props.month.toString(this.props.monthFormat)}
+-            </Text>
+-            {indicator}
+-          </View>
++          {title}
+           {rightArrow}
+         </View>
+         {
+diff --git a/node_modules/react-native-calendars/src/calendar/index.js b/node_modules/react-native-calendars/src/calendar/index.js
+index fd3a39c..ce531fa 100644
+--- a/node_modules/react-native-calendars/src/calendar/index.js
++++ b/node_modules/react-native-calendars/src/calendar/index.js
+@@ -60,6 +60,8 @@ class Calendar extends Component {
+     onVisibleMonthsChange: PropTypes.func,
+     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
+     renderArrow: PropTypes.func,
++    /** Replace default month title with custom one (receives 'monthString') */
++    renderMonthTitle: PropTypes.func,
+     /** Provide custom day rendering component */
+     dayComponent: PropTypes.any,
+     /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
+@@ -267,6 +269,7 @@ class Calendar extends Component {
+           showIndicator={indicator}
+           firstDay={this.props.firstDay}
+           renderArrow={this.props.renderArrow}
++          renderMonthTitle={this.props.renderMonthTitle}
+           monthFormat={this.props.monthFormat}
+           hideDayNames={this.props.hideDayNames}
+           weekNumbers={this.props.showWeekNumbers}

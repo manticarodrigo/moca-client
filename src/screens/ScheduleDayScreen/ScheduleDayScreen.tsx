@@ -3,7 +3,7 @@ import { StatusBar, FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { format, addMinutes, differenceInMinutes } from 'date-fns';
 
-import { ScheduleSectionIcon } from '@src/components/icons';
+import { ScheduleSectionIcon, NoConversationsIcon } from '@src/components/icons';
 
 import CancellationModal from '@src/modals/CancellationModal';
 
@@ -22,20 +22,22 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const scheduleItem: ListItem = navigation.getParam('scheduleItem', {});
 
+  const { appointments = [] } = scheduleItem;
+
   useEffect(() => {
     const dateObj = new Date(scheduleItem.timestamp);
 
     const dayOfMonth = format(dateObj, 'dd');
     const monthAndYear = format(dateObj, 'MMM yyyy');
     const dayOfWeek = format(dateObj, 'cccc');
-    const total = scheduleItem.appointments.reduce((acc, { price }) => acc + price, 0);
+    const total = appointments.reduce((acc, { price }) => acc + price, 0);
 
     navigation.setParams({ total, dayOfMonth, monthAndYear, dayOfWeek });
   }, []);
 
-  const sortedData = useMemo(() => scheduleItem.appointments.sort(
+  const sortedData = useMemo(() => appointments.sort(
     (a, b) => new Date(a.startTime).getTime() - new Date(b.endTime).getTime(),
-  ), [scheduleItem.appointments]);
+  ), [appointments]);
 
   return (
     <>
@@ -47,49 +49,58 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
       />
 
       <View safeArea flex={1} width="100%">
-        <FlatList
-          data={sortedData}
-          keyExtractor={({ id }) => id.toString()}
-          renderItem={({ item }) => {
-            const { otherParty, startTime, endTime, price } = item;
+        {!appointments.length ? (
+          <View flex={1} justifyCenter alignCenter>
+            <NoConversationsIcon />
+            <Text variant="title" color="semiGrey" align="center" pt={4}>
+              You have not created any appointments for this date.
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={sortedData}
+            keyExtractor={({ id }) => id.toString()}
+            renderItem={({ item }) => {
+              const { otherParty, startTime, endTime, price } = item;
 
-            const duration = differenceInMinutes(new Date(endTime), new Date(startTime));
-            const startFormatted = format(new Date(startTime), 'hh:mm aaaa');
-            const endFormatted = format(addMinutes(new Date(startTime), duration), 'hh:mm aaaa');
+              const duration = differenceInMinutes(new Date(endTime), new Date(startTime));
+              const startFormatted = format(new Date(startTime), 'hh:mm aaaa');
+              const endFormatted = format(addMinutes(new Date(startTime), duration), 'hh:mm aaaa');
 
-            return (
-              <SwipeRow disabled={false} onPress={() => null}>
-                <BinRow onPress={() => setCancelModalVisible(true)} />
-                <View
-                  row
-                  justifyBetween
-                  alignCenter
-                  p={3}
-                  variant="borderBottom"
-                  bgColor="white"
-                >
-                  <View row>
-                    <ScheduleSectionIcon />
-                    <View justifyBetween ml={2}>
-                      <Text variant="regularSmall" color="secondary">{startFormatted}</Text>
-                      <Text variant="regularSmall" color="secondary">{endFormatted}</Text>
+              return (
+                <SwipeRow disabled={false} onPress={() => null}>
+                  <BinRow onPress={() => setCancelModalVisible(true)} />
+                  <View
+                    row
+                    justifyBetween
+                    alignCenter
+                    p={3}
+                    variant="borderBottom"
+                    bgColor="white"
+                  >
+                    <View row>
+                      <ScheduleSectionIcon />
+                      <View justifyBetween ml={2}>
+                        <Text variant="regularSmall" color="secondary">{startFormatted}</Text>
+                        <Text variant="regularSmall" color="secondary">{endFormatted}</Text>
+                      </View>
+                      <View row alignCenter ml={2}>
+                        <Image rounded size={36} uri={otherParty.image} />
+                        <Text ml={2} variant="semiBold" color="dark">
+                          {`${otherParty.firstName} ${otherParty.lastName}`}
+                        </Text>
+                      </View>
                     </View>
-                    <View row alignCenter ml={2}>
-                      <Image rounded size={36} uri={otherParty.image} />
-                      <Text ml={2} variant="semiBold" color="dark">
-                        {`${otherParty.firstName} ${otherParty.lastName}`}
-                      </Text>
+                    <View>
+                      <Tag icon="report" type="borderLight" placeholder="10h" />
+                      <Tag mt={2} icon="dollar" type="fill" placeholder={price} />
                     </View>
                   </View>
-                  <View>
-                    <Tag icon="report" type="borderLight" placeholder="10h" />
-                    <Tag mt={2} icon="dollar" type="fill" placeholder={price} />
-                  </View>
-                </View>
-              </SwipeRow>
-            );
-          }}
-        />
+                </SwipeRow>
+              );
+            }}
+          />
+        )}
       </View>
     </>
   );
