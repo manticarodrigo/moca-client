@@ -2,7 +2,9 @@ import React, { useMemo, useEffect } from 'react';
 
 import { Animated } from 'react-native';
 
-import { CheckIcon } from '@src/components/icons';
+import { CheckIcon, ErrorIcon } from '@src/components/icons';
+
+import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -51,7 +53,11 @@ const Toast = ({ centered, error, seconds = 2, onClose, children }: ToastProps) 
         width="100%"
       >
         <View py={3} px={4}>
-          <CheckIcon />
+          {error ? (
+            <ErrorIcon tint={Colors.white} />
+          ) : (
+            <CheckIcon />
+          )}
         </View>
         <View flex={1} alignCenter={centered} py={4} width="100%">
           <Text variant="semiBoldLarge" color="white" px={2} numberOfLines={3}>{children}</Text>

@@ -10,12 +10,13 @@ import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
 import useProfileFields from '@src/hooks/useProfileFields';
 
-import View from '@src/components/View';
-
 import QualificationsModal from '@src/modals/QualificationsModal';
 import ReviewsModal from '@src/modals/ReviewsModal';
 import InputModal, { Props as InputModalProps } from '@src/modals/InputModal';
 import InjuryModal from '@src/modals/InjuryModal';
+
+import View from '@src/components/View';
+import Toast from '@src/components/Toast';
 
 import ProfilePriceTableCard, { PriceModal } from './ProfilePriceTableCard';
 import ProfileListCard from './ProfileListCard';
@@ -27,7 +28,6 @@ type Props = {
 
 const initialModalState = {
   prices: false,
-  input: false,
   preferredAilments: false,
   reviewCount: false,
   injury: false,
@@ -40,15 +40,25 @@ type UniqueInputModalProps = Omit<InputModalProps, 'visible' | 'onClose'>;
 const ProfileList = ({ user, readonly }: Props) => {
   const { store, dispatch } = useStore();
   const navigation = useNavigation();
+  const [modalState, setModalState] = useState<ModalState>(initialModalState);
+  const [priceModalProps, setPriceModalProps] = useState();
+  const [inputModal, setInputModal] = useState<keyof UserState>();
+  const [activeToast, setActiveToast] = useState<'success' | 'error'>();
 
   const profile = user || store.user;
 
   const isTherapistProfile = profile.type === 'PT';
 
-  const [modalState, setModalState] = useState<ModalState>(initialModalState);
-
-  const [priceModalProps, setPriceModalProps] = useState();
-  const [inputModal, setInputModal] = useState<keyof UserState>();
+  const submitUserUpdate = async (update: Partial<UserState>) => {
+    try {
+      await dispatch(updateUser(update));
+      setActiveToast('success');
+      return Promise.resolve();
+    } catch (error) {
+      setActiveToast('error');
+      return Promise.reject();
+    }
+  };
 
   const onOpenModal = (key: keyof ModalState) => setModalState(
     (prev) => ({ ...prev, [key]: true }),
@@ -58,52 +68,30 @@ const ProfileList = ({ user, readonly }: Props) => {
     (prev) => ({ ...prev, [key]: false }),
   );
 
-  const onChangeGender = async (value?: string) => {
-    const gender = value === 'M' ? 'M' : 'F';
+  const onChangeGender = (value?: string) => submitUserUpdate(
+    { gender: value === 'M' ? 'M' : 'F' },
+  );
 
-    try {
-      await dispatch(updateUser({ gender }));
-    } catch (error) {
-      // console.log(error);
-    }
-  };
-
-  const onChangeStatus = async (value?: boolean) => {
-    const status = value ? 'A' : 'B';
-
-    try {
-      await dispatch(updateUser({ status }));
-    } catch (error) {
-      // console.log(error);
-    }
-  };
-
+  const onChangeStatus = (value?: boolean) => submitUserUpdate(
+    { status: value ? 'A' : 'B' },
+  );
 
   const onSubmitPriceModal = async (sessionType: Price['sessionType'], price: number) => {
     await dispatch(addPrice(sessionType, price));
-
     setPriceModalProps(null);
   };
 
-  const onSubmitInputModal = (key: keyof UserState) => async (value: string) => {
-    try {
-      await dispatch(updateUser({ [key]: value }));
-
-      setInputModal(undefined);
-    } catch (error) {
-      // console.log(error);
-    }
-  };
-
   const onSubmitInjury = async (values) => {
-    try {
-      await dispatch(updateUser({ injury: values }));
-
-      onCloseModal('injury')();
-    } catch (error) {
-      // console.log(error);
-    }
+    await submitUserUpdate({ injury: values });
+    onCloseModal('injury')();
   };
+
+  const onSubmitInputModal = (key: keyof UserState) => async (value: string) => {
+    await submitUserUpdate({ [key]: value });
+    setInputModal(undefined);
+  };
+
+  const onCloseInputModal = () => setInputModal(undefined);
 
   const onPressField = (key: keyof UserState) => (value?: string | boolean) => {
     switch (key) {
@@ -126,15 +114,11 @@ const ProfileList = ({ user, readonly }: Props) => {
         return undefined;
 
       // custom modals
-      case 'injury':
-      case 'preferredAilments':
-      case 'reviewCount':
+      case 'injury': case 'preferredAilments': case 'reviewCount':
         return onOpenModal(key);
 
       // input modal
-      case 'operationRadius':
-      case 'bio':
-      case 'licenseNumber':
+      case 'operationRadius': case 'bio': case 'licenseNumber':
         return setInputModal(key);
 
       // datepicker
@@ -183,7 +167,7 @@ const ProfileList = ({ user, readonly }: Props) => {
       default:
         return undefined;
     }
-  }, [profile, inputModal]);
+  }, [inputModal, profile]);
 
   return (
     <>
@@ -206,8 +190,8 @@ const ProfileList = ({ user, readonly }: Props) => {
               <InputModal
                 {...inputModalProps}
                 buttonActionText
-                visible={!!inputModalProps}
-                onClose={() => setInputModal(undefined)}
+                visible={!!inputModal}
+                onClose={onCloseInputModal}
               />
               <QualificationsModal
                 visible={modalState.preferredAilments}
@@ -225,6 +209,12 @@ const ProfileList = ({ user, readonly }: Props) => {
           onSubmit={onSubmitInjury}
           onClose={onCloseModal('injury')}
         />
+      )}
+
+      {!!activeToast && (
+        <Toast error={activeToast === 'error'} onClose={() => setActiveToast(undefined)}>
+          {activeToast === 'success' ? 'Update successful.' : 'Update failed.'}
+        </Toast>
       )}
 
       <View scroll bgColor="lightGrey">
