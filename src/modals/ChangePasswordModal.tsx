@@ -20,18 +20,16 @@ const ChangePasswordModal = ({
   sumbitEditPassword,
 }: Props) => {
   const {
-    formFields,
-    setFieldRef,
+    fieldValues,
     isFormValid,
-    onChangeField,
-    onFocusNext,
+    getFieldProps,
   } = useFormFields<{ currentPassword: string; newPassword: string }>({
     currentPassword: '',
     newPassword: '',
   });
 
   const handleButtonPress = () => {
-    sumbitEditPassword(formFields.newPassword);
+    sumbitEditPassword(fieldValues.newPassword);
   };
 
   return (
@@ -52,25 +50,21 @@ const ChangePasswordModal = ({
         </View>
         <View alignCenter mt={4} mx={5}>
           <FormField
+            {...getFieldProps('currentPassword')}
             required
             icon="password"
             placeholder="Current password"
-            value={formFields.currentPassword}
             secureTextEntry
             returnKeyType="next"
-            onChangeText={onChangeField('currentPassword')}
-            onSubmitEditing={onFocusNext('newPassword')}
           />
           <FormField
+            {...getFieldProps('newPassword')}
             required
-            ref={setFieldRef('newPassword')}
             icon="password"
             placeholder="New password"
-            value={formFields.newPassword}
             validation="password"
             secureTextEntry
             returnKeyType="done"
-            onChangeText={onChangeField('newPassword')}
           />
           <View row mt={5}>
             <View flex={1}>

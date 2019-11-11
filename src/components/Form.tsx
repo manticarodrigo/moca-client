@@ -35,15 +35,15 @@ const Form = <State extends { [key: string]: string }> ({
     ), [fieldConfig],
   );
 
-  const { formFields, setFormFields, getFieldProps } = useFormFields<State>(initialState);
+  const { fieldValues, setFieldValues, isFormValid, getFieldProps } = useFormFields<State>(initialState);
 
   useEffect(() => {
-    setFormFields(initialState as State);
+    setFieldValues(initialState as State);
   }, [initialState]);
 
   const onAddImage = (uri: string) => setLocalImages((prev) => [...prev, uri]);
 
-  const onPressSubmit = () => onSubmit({ ...formFields, images: localImages });
+  const onPressSubmit = () => isFormValid && onSubmit({ ...fieldValues, images: localImages });
 
   return (
     <>
@@ -71,7 +71,11 @@ const Form = <State extends { [key: string]: string }> ({
       </View>
 
       <View width={WINDOW_WIDTH} p={4} variant="borderTop">
-        <Button variant="primary" onPress={onPressSubmit}>
+        <Button
+          variant={!isFormValid ? 'primaryDisabled' : 'primary'}
+          disabled={!isFormValid}
+          onPress={onPressSubmit}
+        >
           {submitText}
         </Button>
       </View>

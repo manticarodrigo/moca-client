@@ -80,7 +80,7 @@ const updateUser = (partialState: UserState) => async (
   return data;
 };
 
-export type AddAddressForm = Omit<Address, 'location'> & {
+export type AddAddressForm = Omit<Address, 'id' | 'location'> & {
   coordinates?: [number, number];
 }
 

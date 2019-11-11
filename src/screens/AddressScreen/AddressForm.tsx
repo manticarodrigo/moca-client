@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -23,43 +23,57 @@ type Props = {
   onSubmit: (address: AddAddressForm) => void;
 }
 
+const parseStringValues = (fields: Partial<AddAddressForm>) => {
+  const { primary, coordinates, ...strings } = fields;
+
+  return { primary, coordinates, strings };
+};
+
 const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Props) => {
   const { store } = useStore();
+  const [primary, setPrimary] = useState(!!isRegistering);
+  const [coordinates, setCoordinates] = useState<[number, number]>([0, 0]);
 
   const isRegisteringTherapist = store.registration.type === 'PT';
 
   const {
-    formFields,
+    fieldValues,
+    updateFieldValues,
     isFormValid,
-    setFieldRef,
-    updateFormFields,
-    onChangeField,
-    onFocusNext,
-  } = useFormFields<AddAddressForm>({
+    getFieldProps,
+  } = useFormFields<Omit<AddAddressForm, 'primary' | 'coordinates'>>({
     name: '',
     street: '',
     apartment: '',
     city: '',
     state: '',
     zipCode: '',
-    primary: !!isRegistering,
-    coordinates: [0, 0],
   });
 
-  useEffect(() => {
-    if (existingFields) {
-      updateFormFields(existingFields);
+  const updateFields = (fields: Partial<AddAddressForm>) => {
+    const parsed = parseStringValues(fields);
+    updateFieldValues(parsed.strings);
+    setCoordinates(parsed.coordinates);
+
+    if (parsed.primary) {
+      setPrimary(parsed.primary);
     }
-  }, [existingFields]);
+  };
 
   const handleSubmit = () => {
     // TODO: validate reverse geocode
     if (isFormValid) {
-      onSubmit(formFields);
+      onSubmit({ ...fieldValues, primary, coordinates });
     } else {
       // alert invalid
     }
   };
+
+  useEffect(() => {
+    if (existingFields) {
+      updateFields(existingFields);
+    }
+  }, [existingFields]);
 
   return (
     <View safeArea alignCenter pt={3}>
@@ -82,60 +96,44 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               {!isRegistering && 'You can edit and add additional addresses for treatment.'}
             </Text>
           </View>
-          <PlacesSearch onSelect={updateFormFields} />
+          <PlacesSearch onSelect={updateFields} />
           <View alignCenter mt={4} mb={3}>
             <FormField
+              {...getFieldProps('name')}
               required
               placeholder="Name"
-              value={formFields.name}
               returnKeyType="next"
-              onChangeText={onChangeField('name')}
-              onSubmitEditing={onFocusNext('street')}
             />
             <FormField
+              {...getFieldProps('street')}
               required
-              ref={setFieldRef('street')}
               placeholder="Street"
-              value={formFields.street}
               returnKeyType="next"
-              onChangeText={onChangeField('street')}
-              onSubmitEditing={onFocusNext('apartment')}
             />
             <FormField
-              ref={setFieldRef('apartment')}
+              {...getFieldProps('apartment')}
               placeholder="Apartment Number"
-              value={formFields.apartment}
               returnKeyType="next"
-              onChangeText={onChangeField('apartment')}
-              onSubmitEditing={onFocusNext('city')}
             />
             <FormField
+              {...getFieldProps('city')}
               required
-              ref={setFieldRef('city')}
               placeholder="City"
-              value={formFields.city}
               returnKeyType="done"
-              onChangeText={onChangeField('city')}
-              onSubmitEditing={onFocusNext('state')}
             />
             <FormField
+              {...getFieldProps('state')}
               required
-              ref={setFieldRef('state')}
               placeholder="State"
-              value={formFields.state}
               maxLength={2}
-              onChangeText={onChangeField('state')}
-              onSubmitEditing={onFocusNext('zipCode')}
             />
             <FormField
+              {...getFieldProps('zipCode')}
               required
-              ref={setFieldRef('zipCode')}
               placeholder="Zip Code"
-              value={formFields.zipCode}
               validation="zip"
               maxLength={5}
               selectTextOnFocus={false}
-              onChangeText={onChangeField('zipCode')}
             />
           </View>
           {!isRegistering && (
@@ -143,8 +141,8 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
               <View flex={1} row justifyEnd alignCenter>
                 <Text variant="regularDark" pr={2}>Set as primary?</Text>
                 <Checkbox
-                  checked={formFields.primary}
-                  onChange={onChangeField('primary')}
+                  checked={primary}
+                  onChange={setPrimary}
                 />
               </View>
             </View>

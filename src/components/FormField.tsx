@@ -8,12 +8,7 @@ import {
   TextInput as RNInput,
 } from 'react-native';
 
-import {
-  getEmailError,
-  getPasswordError,
-  getZipCodeError,
-  getNumberError,
-} from '@src/utlities/validations';
+import { getValidationError } from '@src/utlities/validations';
 
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
@@ -28,6 +23,7 @@ export type Props = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
   value: string;
+  error?: string;
   required?: boolean;
   validation?: 'email' | 'password' | 'zip' | 'number';
   spacing?: SpacingProps;
@@ -40,6 +36,7 @@ const FormField = ({
   placeholder,
   icon,
   value,
+  error,
   multiline,
   required,
   validation,
@@ -54,45 +51,26 @@ const FormField = ({
 
   const focusedOrFilled = focused || value !== '';
 
-  const animatedIsFocused = useMemo(
-    () => new Animated.Value(focusedOrFilled ? 1 : 0), [value],
+  const validationError = useMemo(
+    () => getValidationError(value, validation, required), [value, validation, required],
   );
-
-  useEffect(() => {
-    Animated.timing(animatedIsFocused, {
-      toValue: focusedOrFilled ? 1 : 0,
-      duration: 200,
-    }).start();
-  }, [animatedIsFocused, focusedOrFilled, value]);
-
-  const validationError = useMemo(() => {
-    switch (validation) {
-      case 'email':
-        return getEmailError(value);
-      case 'password':
-        return getPasswordError(value);
-      case 'zip':
-        return getZipCodeError(value);
-      case 'number':
-        return getNumberError(value);
-      default:
-        break;
-    }
-
-    if (required && !value) {
-      return 'This field is required.';
-    }
-
-    return undefined;
-  }, [required, validation, value]);
 
   const shouldShowError = useMemo(() => {
     if (validation === 'password') {
-      return (focusedOrFilled || blurred) && validationError;
+      return (focusedOrFilled || blurred) && (error || validationError);
     }
 
-    return blurred && validationError;
-  }, [validation, blurred, focusedOrFilled, validationError]);
+    return (blurred && (error || validationError));
+  }, [validation, blurred, validationError, error, focusedOrFilled]);
+
+  const animatedValue = useMemo(() => new Animated.Value(0), []);
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: focusedOrFilled ? 1 : 0,
+      duration: 200,
+    }).start();
+  }, [animatedValue, focusedOrFilled, value]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -121,15 +99,15 @@ const FormField = ({
 
   const placeholderStyle = {
     position: 'absolute',
-    left: animatedIsFocused.interpolate({
+    left: animatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: [20, 14],
     }),
-    top: animatedIsFocused.interpolate({
+    top: animatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: [22, 8],
     }),
-    fontSize: animatedIsFocused.interpolate({
+    fontSize: animatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: [16, 14],
     }),
@@ -162,15 +140,9 @@ const FormField = ({
     setBlurred(true);
   };
 
-  const handleChangeText = (text: string) => onChangeText(text, validationError);
-
-  useEffect(() => {
-    if (validation || required) {
-      // effect to update useFormFields hook errors when error changes
-      // TODO: find a way to update hook only once
-      onChangeText(value, validationError);
-    }
-  }, [validationError]);
+  const handleChangeText = (text: string) => {
+    onChangeText(text, getValidationError(text, validation, required));
+  };
 
   return (
     <>
@@ -199,8 +171,8 @@ const FormField = ({
         </Wrapper>
       </Wrapper>
       {shouldShowError && (
-        <Text variant="regular" size={1} color="error" mt={2}>
-          {validationError}
+        <Text mt={2} variant="regular" size={1} color="error" align="center">
+          {error || validationError}
         </Text>
       )}
     </>

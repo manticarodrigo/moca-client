@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 import { Animated } from 'react-native';
 
@@ -15,9 +15,9 @@ type ToastProps = {
   children: string;
 }
 
-const animatedValue = new Animated.Value(0);
-
 const Toast = ({ centered, error, seconds = 2, onClose, children }: ToastProps) => {
+  const animatedValue = useMemo(() => new Animated.Value(0), []);
+
   const onHide = () => {
     Animated.timing(animatedValue, {
       delay: (seconds * 1000) / 2,

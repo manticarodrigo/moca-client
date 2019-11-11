@@ -24,7 +24,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
   const { address } = navigation.state.params || {};
 
   const {
-    formFields,
+    fieldValues,
     isAnyFieldEmpty,
     isFormValid,
     onChangeField,
@@ -60,7 +60,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
             <FormField
               icon="email"
               placeholder="Email address"
-              value={formFields.email}
+              value={fieldValues.email}
               validation="email"
               returnKeyType="done"
               keyboardType="email-address"

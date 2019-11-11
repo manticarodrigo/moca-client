@@ -28,12 +28,10 @@ const LoginModal = ({ visible, onClose }: Props) => {
   const [error, setError] = useState('');
 
   const {
-    formFields,
-    setFieldRef,
+    fieldValues,
     isAnyFieldEmpty,
     isFormValid,
-    onChangeField,
-    onFocusNext,
+    getFieldProps,
   } = useFormFields<Pick<User, 'email' | 'password'>>({
     email: '',
     password: '',
@@ -46,7 +44,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
   const onPressSubmit = async () => {
     if (isFormValid) {
       try {
-        await dispatch(loginUser(formFields.email, formFields.password));
+        await dispatch(loginUser(fieldValues.email, fieldValues.password));
       } catch ({ response }) {
         const { nonFieldErrors } = response.data;
 
@@ -93,25 +91,21 @@ const LoginModal = ({ visible, onClose }: Props) => {
           </View>
           <View alignCenter mt={4} mx={5}>
             <FormField
+              {...getFieldProps('email')}
               required
               icon="email"
               placeholder="Email address"
-              value={formFields.email}
               validation="email"
               returnKeyType="next"
               keyboardType="email-address"
-              onChangeText={onChangeField('email')}
-              onSubmitEditing={onFocusNext('password')}
             />
             <FormField
+              {...getFieldProps('password')}
               required
-              ref={setFieldRef('password')}
               icon="password"
               secureTextEntry
               placeholder="Password"
-              value={formFields.password}
               returnKeyType="done"
-              onChangeText={onChangeField('password')}
             />
             <View row mt={3}>
               <View flex={1} alignEnd>

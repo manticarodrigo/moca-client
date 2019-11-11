@@ -19,23 +19,27 @@ type Props = {
   onClose: () => void;
 };
 
+type FormFields = Pick<User, 'firstName' | 'lastName' | 'email'>;
+
 const EditInformationModal = ({ visible, onClose }: Props) => {
   const { store, dispatch } = useStore();
 
   const {
-    formFields,
-    setFieldRef,
+    fieldValues,
     isEveryFieldEmpty,
     isFormValid,
-    onChangeField,
-    onFocusNext,
-  } = useFormFields<User>(store.user);
+    getFieldProps,
+  } = useFormFields<FormFields>({
+    firstName: store.user.firstName,
+    lastName: store.user.lastName,
+    email: store.user.email,
+  });
 
   const isButtonDisabled = isEveryFieldEmpty || !isFormValid;
 
   const onPressSubmit = async () => {
     if (isFormValid) {
-      const { email, firstName, lastName } = formFields;
+      const { email, firstName, lastName } = fieldValues;
 
       const updated = {
         ...(firstName !== store.user.firstName ? { firstName } : null),
@@ -72,29 +76,25 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
         </View>
         <View alignCenter mt={4} mx={5}>
           <FormField
+            {...getFieldProps('firstName')}
+            required
             placeholder="First name"
-            value={formFields.firstName}
             returnKeyType="next"
-            onChangeText={onChangeField('firstName')}
-            onSubmitEditing={onFocusNext('lastName')}
           />
           <FormField
-            ref={setFieldRef('lastName')}
+            {...getFieldProps('lastName')}
+            required
             placeholder="Last name"
-            value={formFields.lastName}
             returnKeyType="next"
-            onChangeText={onChangeField('lastName')}
-            onSubmitEditing={onFocusNext('email')}
           />
           <FormField
-            ref={setFieldRef('email')}
+            {...getFieldProps('email')}
+            required
             icon="email"
             placeholder="Email address"
-            value={formFields.email}
             validation="email"
             returnKeyType="done"
             keyboardType="email-address"
-            onChangeText={onChangeField('email')}
           />
           <View row mt={5}>
             <View flex={1}>

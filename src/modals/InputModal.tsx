@@ -55,7 +55,7 @@ const InputModal = (
   }: Props,
 ) => {
   const {
-    formFields,
+    fieldValues,
     isAnyFieldEmpty,
     isFormValid,
     onChangeField,
@@ -87,7 +87,7 @@ const InputModal = (
   const handleSubmit = () => {
     if (isFormValid) {
       onChangeField('value')('');
-      onSubmit(formFields.value);
+      onSubmit(fieldValues.value);
     }
   };
 
@@ -112,7 +112,7 @@ const InputModal = (
         </View>
         <InputWrapper alignCenter={!multiline} p={!multiline ? 4 : undefined}>
           <FormField
-            value={formFields.value}
+            value={fieldValues.value}
             multiline={multiline}
             validation={validation}
             returnKeyType="done"

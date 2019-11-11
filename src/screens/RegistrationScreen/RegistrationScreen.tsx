@@ -6,7 +6,6 @@ import { User } from '@src/services/openapi/api';
 import useStore from '@src/hooks/useStore';
 import useFormFields from '@src/hooks/useFormFields';
 
-import { updateRegistration } from '@src/store/actions/RegistrationAction';
 import { registerUser } from '@src/store/actions/UserAction';
 
 import InfoModal from '@src/modals/InfoModal';
@@ -15,25 +14,26 @@ import { ToS } from '@src/content';
 
 import { Colors, Views } from '@src/styles';
 
-import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import View from '@src/components/View';
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
 
 import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
 
+type FormFields = Pick<User, 'firstName' | 'lastName' | 'email' | 'password'>;
+
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
   const {
-    formFields,
-    setFieldRef,
+    fieldValues,
+    setFieldErrors,
     isAnyFieldEmpty,
     isFormValid,
-    onChangeField,
-    onFocusNext,
-  } = useFormFields<User>({
+    getFieldProps,
+  } = useFormFields<FormFields>({
     firstName: '',
     lastName: '',
     email: '',
@@ -50,9 +50,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     : isAnyFieldEmpty || !isFormValid;
 
   const onPressSubmit = async () => {
-    const { email, password, firstName, lastName } = formFields;
-
-    dispatch(updateRegistration({ ...formFields }));
+    const { email, password, firstName, lastName } = fieldValues;
 
     if (isFormValid) {
       const { type } = store.registration;
@@ -65,8 +63,16 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         } else {
           navigation.push('QualificationsScreen');
         }
-      } catch (error) {
-        // console.log(error);
+      } catch ({ response }) {
+        const { user } = response.data;
+
+        const errors: Partial<FormFields> = {};
+        if (Array.isArray(user.email) && user.email.length) {
+          const [emailError] = user.email;
+          errors.email = emailError;
+        }
+
+        setFieldErrors(errors);
       }
     }
   };
@@ -133,40 +139,34 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           )}
           <View p={3}>
             <FormField
+              {...getFieldProps('firstName')}
+              required
               placeholder="First Name"
-              value={formFields.firstName}
               returnKeyType="next"
-              onChangeText={onChangeField('firstName')}
-              onSubmitEditing={onFocusNext('lastName')}
             />
             <FormField
-              ref={setFieldRef('lastName')}
+              {...getFieldProps('lastName')}
+              required
               placeholder="Last Name"
-              value={formFields.lastName}
               returnKeyType="next"
-              onChangeText={onChangeField('lastName')}
-              onSubmitEditing={onFocusNext('email')}
             />
             <FormField
-              ref={setFieldRef('email')}
+              {...getFieldProps('email')}
+              required
               icon="email"
               placeholder="Email address"
-              value={formFields.email}
               validation="email"
               returnKeyType="next"
               keyboardType="email-address"
-              onChangeText={onChangeField('email')}
-              onSubmitEditing={onFocusNext('password')}
             />
             <FormField
-              ref={setFieldRef('password')}
+              {...getFieldProps('password')}
+              required
               icon="password"
               placeholder="Password"
-              value={formFields.password}
               validation="password"
               secureTextEntry
               returnKeyType="done"
-              onChangeText={onChangeField('password')}
             />
           </View>
           <View row p={3}>
