@@ -33,15 +33,16 @@ const AppStateHandler = ({ navigatorRef, children }) => {
 
       const navigation = navigatorRef.current as NavigationContainerComponent;
 
-      apiInstance.interceptors.response.use(undefined, ({ response }) => {
-        // if response is unauthorized
-        if (response.status === 401) {
+      apiInstance.interceptors.response.use((response) => response, (error) => {
+        if (error.response.status === 401) {
           dispatch(logoutUser());
 
           navigation.dispatch(
             NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
           );
         }
+
+        return Promise.reject(error);
       });
     };
 

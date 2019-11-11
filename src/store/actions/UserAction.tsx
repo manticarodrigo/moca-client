@@ -37,8 +37,6 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
 
   // @ts-ignore
   dispatch({ type: 'REGISTER_USER_SUCCESS', payload: data });
-
-  return data;
 };
 
 const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {

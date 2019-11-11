@@ -25,7 +25,7 @@ type Props = {
 
 const LoginModal = ({ visible, onClose }: Props) => {
   const { dispatch } = useStore();
-  const [hasError, setHasError] = useState();
+  const [error, setError] = useState('');
 
   const {
     formFields,
@@ -47,9 +47,12 @@ const LoginModal = ({ visible, onClose }: Props) => {
     if (isFormValid) {
       try {
         await dispatch(loginUser(formFields.email, formFields.password));
-      } catch {
-        setHasError(true);
-        setTimeout(() => setHasError(false), 1000);
+      } catch ({ response }) {
+        const { nonFieldErrors } = response.data;
+
+        if (nonFieldErrors && nonFieldErrors.length) {
+          setError(nonFieldErrors[0]);
+        }
       }
     }
   };
@@ -81,20 +84,16 @@ const LoginModal = ({ visible, onClose }: Props) => {
         onToggle={onClose}
       >
         <View alignCenter>
-          <View row>
-            <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
+          <View row bgColor="white">
+            <View variant="borderBottom" flex={1} py={4} alignCenter justifyCenter>
               <Text variant="semiBoldLarge">
                 Welcome Back
               </Text>
             </View>
           </View>
-          {hasError && (
-            <Toast>
-              Woops
-            </Toast>
-          )}
           <View alignCenter mt={4} mx={5}>
             <FormField
+              required
               icon="email"
               placeholder="Email address"
               value={formFields.email}
@@ -105,6 +104,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
               onSubmitEditing={onFocusNext('password')}
             />
             <FormField
+              required
               ref={setFieldRef('password')}
               icon="password"
               secureTextEntry
@@ -137,6 +137,11 @@ const LoginModal = ({ visible, onClose }: Props) => {
             </View>
           </View>
         </View>
+        {!!error && (
+          <Toast error onClose={() => setError('')}>
+            {error}
+          </Toast>
+        )}
       </Modal>
     </>
   );
