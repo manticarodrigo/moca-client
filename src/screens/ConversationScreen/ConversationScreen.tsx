@@ -6,8 +6,9 @@ import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'reac
 import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
 import { Message } from '@src/store/reducers/ConversationReducer';
 
-import { getConversation, sendMessage } from '@src/store/actions/ConversationAction';
+import api from '@src/services/api';
 
+import { getConversation, sendMessage } from '@src/store/actions/ConversationAction';
 import { answerAppointmentRequest } from '@src/store/actions/AppointmentAction';
 
 import useStore from '@src/hooks/useStore';
@@ -44,6 +45,8 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
   const [profileVisible, setProfileVisible] = useState(false);
   const [appointmentRequestVisible, setAppointmentRequestVisible] = useState(false);
 
+  const isTherapist = store.user.type === 'PT';
+
   const sections = useDateSections<Message>(
     messages,
     (message) => message.createdAt.toString(),
@@ -67,13 +70,33 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
       return;
     }
 
+    if (!params.user.firstName) {
+      const getOtherUser = async () => {
+        const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead;
+        const { data } = await method(params.user.id);
+        const user = data as UserSnippet;
+
+        setOtherUser({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          image: user.image,
+        });
+      };
+      getOtherUser();
+    }
+
     setOtherUser(params.user);
 
     navigation.setParams({ onToggleProfile });
   }, []);
 
   useEffect(() => {
-    if (otherUser && isFocused) dispatch(getConversation(otherUser.id));
+    if (otherUser && isFocused) {
+      dispatch(getConversation(otherUser.id));
+
+      navigation.setParams({ user: otherUser });
+    }
   }, [isFocused, otherUser, dispatch]);
 
   useEffect(() => {
@@ -139,7 +162,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
       <StatusBar barStyle="dark-content" />
 
-      {store.user.type === 'PT' && (
+      {isTherapist && (
         <AppointmentRequestModal
           patient={otherUser}
           visible={appointmentRequestVisible}

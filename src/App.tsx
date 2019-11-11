@@ -32,13 +32,23 @@ const AppStateHandler = ({ navigatorRef, children }) => {
         dispatch(updateUserState({ ...local, storageReady: true }));
       }
 
-      const navigation = navigatorRef.current as NavigationContainerComponent;
+      const navigator = navigatorRef.current as NavigationContainerComponent;
+
+
+      // TODO: implement this for push notification
+      // setTimeout(() => {
+      //   const user = { id: 3 };
+
+      //   navigator.dispatch(
+      //     NavigationActions.navigate({ routeName: 'ConversationScreen', params: { user } }),
+      //   );
+      // }, 1000);
 
       apiInstance.interceptors.response.use((response) => response, (error) => {
         if (error.response.status === 401) {
           dispatch(logoutUser());
 
-          navigation.dispatch(
+          navigator.dispatch(
             NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
           );
 
