@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 
 import { Animated } from 'react-native';
 
-import { CheckIcon, ErrorIcon } from '@src/components/icons';
+import { CalendarIcon, CheckIcon, ErrorIcon } from '@src/components/icons';
 
 import { Colors } from '@src/styles';
 
@@ -11,13 +11,14 @@ import Text from '@src/components/Text';
 
 type ToastProps = {
   centered?: boolean;
+  schedule?: boolean;
   error?: boolean;
   seconds?: number;
   onClose: () => void;
   children: string;
 }
 
-const Toast = ({ centered, error, seconds = 2, onClose, children }: ToastProps) => {
+const Toast = ({ centered, schedule, error, seconds = 2, onClose, children }: ToastProps) => {
   const animatedValue = useMemo(() => new Animated.Value(0), []);
 
   const onHide = () => {
@@ -34,6 +35,16 @@ const Toast = ({ centered, error, seconds = 2, onClose, children }: ToastProps) 
       duration: (seconds * 1000) / 4,
     }).start(onHide);
   }, []);
+
+  let icon = <CheckIcon />;
+
+  if (error) {
+    icon = <ErrorIcon tint={Colors.white} />;
+  }
+
+  if (schedule) {
+    icon = <CalendarIcon />;
+  }
 
   return (
     <Animated.View
@@ -53,11 +64,7 @@ const Toast = ({ centered, error, seconds = 2, onClose, children }: ToastProps) 
         width="100%"
       >
         <View py={3} px={4}>
-          {error ? (
-            <ErrorIcon tint={Colors.white} />
-          ) : (
-            <CheckIcon />
-          )}
+          {icon}
         </View>
         <View flex={1} alignCenter={centered} py={4} width="100%">
           <Text variant="semiBoldLarge" color="white" px={2} numberOfLines={3}>{children}</Text>

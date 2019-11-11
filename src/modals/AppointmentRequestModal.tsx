@@ -5,10 +5,12 @@ import { Picker } from 'react-native';
 import { format, parseISO, addMinutes } from 'date-fns';
 
 import { PriceSessionTypeEnum } from '@src/services/openapi';
-import { AppointmentRequest } from '@src/store/actions/ConversationAction';
+import { UserState } from '@src/store/reducers/UserReducer';
+import { sendAppointmentRequest } from '@src/store/actions/ConversationAction';
+
+import useStore from '@src/hooks/useStore';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
-
 import { Colors } from '@src/styles';
 
 import CalendarList from '@src/components/CalendarList';
@@ -16,10 +18,16 @@ import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
+import Toast from '@src/components/Toast';
+
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
 
 type Props = {
   visible: boolean;
-  onSubmit: (data: AppointmentRequest) => void;
+  patient: UserState;
   onClose: () => void;
 };
 
@@ -76,10 +84,12 @@ const getMarkedDate = (date) => {
   return dateMap;
 };
 
-const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
+const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
+  const { dispatch } = useStore();
   const [selectedDuration, setSelectedDuration] = useState(45);
   const [selectedTime, setSelectedTime] = useState('12:00');
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const [toastState, setToastState] = useState<ToastState>();
 
   const markedDates = useMemo(() => {
     let dateMap = {};
@@ -92,6 +102,27 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
   }, [selectedDate]);
 
   const isButtonDisabled = !selectedDuration || !selectedTime || !selectedDate;
+
+  const submitAppointment = async (data) => {
+    try {
+      await dispatch(sendAppointmentRequest(patient.id, data));
+      setToastState({
+        type: 'success',
+        message: 'This appointment has been added to your calendar',
+      });
+      setTimeout(onClose, 2000);
+    } catch (e) {
+      const { nonFieldErrors } = e.response.data;
+
+      let message = 'There was an issue adding the appointment';
+
+      if (nonFieldErrors && nonFieldErrors.length) {
+        const [errorMessage] = nonFieldErrors;
+        message = errorMessage;
+      }
+      setToastState({ type: 'error', message });
+    }
+  };
 
   const onDayPress = ({ dateString }) => setSelectedDate(dateString);
 
@@ -116,7 +147,7 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
       sessionType: durationType[selectedDuration],
     };
 
-    onSubmit(data);
+    submitAppointment(data);
   };
 
   return (
@@ -172,6 +203,17 @@ const AppointmentRequestModal = ({ visible, onSubmit, onClose }: Props) => {
           </Button>
         </View>
       </View>
+
+      {!!toastState && (
+        <Toast
+          schedule={toastState.type === 'success'}
+          error={toastState.type === 'error'}
+          onClose={() => setToastState(undefined)}
+        >
+          {toastState.message}
+        </Toast>
+      )}
+
     </Modal>
   );
 };

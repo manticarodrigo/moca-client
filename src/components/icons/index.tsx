@@ -105,3 +105,5 @@ export { default as PreviousArrowIcon } from './PreviousArrowIcon';
 export { default as NextArrowIcon } from './NextArrowIcon';
 
 export { default as TimerBackgroundIcon } from './TimerBackgroundIcon';
+
+export { default as CalendarIcon } from './CalendarIcon';

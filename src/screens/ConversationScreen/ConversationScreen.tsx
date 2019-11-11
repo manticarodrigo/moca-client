@@ -6,11 +6,7 @@ import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'reac
 import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
 import { Message } from '@src/store/reducers/ConversationReducer';
 
-import {
-  getConversation,
-  sendMessage,
-  sendAppointmentRequest,
-} from '@src/store/actions/ConversationAction';
+import { getConversation, sendMessage } from '@src/store/actions/ConversationAction';
 
 import { answerAppointmentRequest } from '@src/store/actions/AppointmentAction';
 
@@ -121,16 +117,6 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
     }
   };
 
-  const onSubmitAppointment = async (data) => {
-    try {
-      await dispatch(sendAppointmentRequest(otherUser.id, data));
-
-      setAppointmentRequestVisible(false);
-    } catch (e) {
-      // console.log(e);
-    }
-  };
-
   const onAnswerAppointment = async (id, status) => {
     try {
       await dispatch(answerAppointmentRequest(id, status));
@@ -153,11 +139,13 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
       <StatusBar barStyle="dark-content" />
 
-      <AppointmentRequestModal
-        visible={appointmentRequestVisible}
-        onSubmit={onSubmitAppointment}
-        onClose={onToggleAppointmentRequest}
-      />
+      {store.user.type === 'PT' && (
+        <AppointmentRequestModal
+          patient={otherUser}
+          visible={appointmentRequestVisible}
+          onClose={onToggleAppointmentRequest}
+        />
+      )}
 
       <View safeArea column flex={1} bgColor="white">
         <ConversationSectionList
