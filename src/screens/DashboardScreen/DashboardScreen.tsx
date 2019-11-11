@@ -48,7 +48,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        await dispatch(getUpcomingAppointments());
+        dispatch(getUpcomingAppointments());
         dispatch(getLastAppointment());
       } catch (e) {
         // console.log(e);
