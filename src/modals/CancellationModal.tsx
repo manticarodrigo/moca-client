@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { ArrowDown, ArrowUp } from '@src/components/icons';
 
-import { Checkbox } from '@src/components/Checkbox';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
+import Checkbox from '@src/components/Checkbox';
 import Button from '@src/components/Button';
 import Modal from '@src/components/Modal';
 

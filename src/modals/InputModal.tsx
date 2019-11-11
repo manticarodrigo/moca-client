@@ -64,7 +64,7 @@ const InputModal = (
   useEffect(() => {
     if (existingValue) {
       onChangeField('value')(existingValue.toString());
-    } else {
+    } else if (visible) {
       onChangeField('value')('');
     }
   }, [existingValue]);
@@ -79,14 +79,8 @@ const InputModal = (
     return buttonText;
   }, [existingValue, buttonText, buttonActionText]);
 
-  const handleClose = () => {
-    onChangeField('value')('');
-    onClose();
-  };
-
   const handleSubmit = () => {
     if (isFormValid) {
-      onChangeField('value')('');
       onSubmit(fieldValues.value);
     }
   };
@@ -98,7 +92,7 @@ const InputModal = (
       avoidKeyboard
       marginTop={50}
       isVisible={visible}
-      onToggle={handleClose}
+      onToggle={onClose}
     >
       <View alignCenter>
         <View

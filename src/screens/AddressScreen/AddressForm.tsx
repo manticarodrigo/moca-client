@@ -9,12 +9,12 @@ import { AddAddressForm } from '@src/store/actions/UserAction';
 
 import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import View from '@src/components/View';
-import Button from '@src/components/Button';
 import Text from '@src/components/Text';
 import PlacesSearch from '@src/components/PlacesSearch';
 import FormField from '@src/components/FormField';
+import Checkbox from '@src/components/Checkbox';
+import Button from '@src/components/Button';
 
-import { Checkbox } from '@src/components/Checkbox';
 
 type Props = {
   existingFields?: Partial<AddAddressForm>;

@@ -23,7 +23,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
 import FormField from '@src/components/FormField';
-import { Checkbox } from '@src/components/Checkbox';
+import Checkbox from '@src/components/Checkbox';
 
 export const checkboxConfig = {
   sortBy: {
