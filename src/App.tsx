@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Alert, StatusBar } from 'react-native';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
-import { StatusBar } from 'react-native';
 import { registerRootComponent } from 'expo';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -20,10 +20,11 @@ import { Typography } from '@src/styles';
 
 const AppStateHandler = ({ navigatorRef, children }) => {
   const { store, dispatch } = useStore();
+  const showedAlert = useRef(false);
 
   useEffect(() => {
     const onMount = async () => {
-      // storage.storeUser('');
+      showedAlert.current = false;
 
       if (!store.user.token) {
         const local = await storage.retrieveUser() || {};
@@ -40,6 +41,11 @@ const AppStateHandler = ({ navigatorRef, children }) => {
           navigation.dispatch(
             NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
           );
+
+          if (!showedAlert.current) {
+            Alert.alert('Session ended', 'You have been logged out.\n\nTo log back login, please use the link below the registration button.');
+            showedAlert.current = true;
+          }
         }
 
         return Promise.reject(error);
