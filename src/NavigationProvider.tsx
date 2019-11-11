@@ -64,13 +64,16 @@ const AppStack = createSwitchNavigator(
 
       DashboardTab: createStackNavigator({
         DashboardScreen,
-        SearchScreen,
         HistoryScreen,
       }, defaultNavConfig),
 
       ScheduleTab: createStackNavigator({
         ScheduleScreen,
         ScheduleDayScreen,
+      }, defaultNavConfig),
+
+      SearchTab: createStackNavigator({
+        SearchScreen,
       }, defaultNavConfig),
 
       ConversationTab: createStackNavigator({

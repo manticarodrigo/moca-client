@@ -1,10 +1,25 @@
+// bottom tabbar
+export { default as DashboardTabIcon } from './DashboardTabIcon';
+export { default as ScheduleTabIcon } from './ScheduleTabIcon';
+export { default as SearchTabIcon } from './SearchTabIcon';
+export { default as ConversationTabIcon } from './ConversationTabIcon';
+export { default as ProfileTabIcon } from './ProfileTabIcon';
+
+// form field icons
+export { default as ErrorIcon } from './ErrorIcon';
+export { default as EmailIcon } from './EmailIcon';
+export { default as EyeIcon } from './EyeIcon';
+
+// credit card icons
+export { default as AmexIcon } from './AmexIcon';
+export { default as MaestroIcon } from './MaestroIcon';
+export { default as MasterCardIcon } from './MasterCardIcon';
+export { default as VisaIcon } from './VisaIcon';
+
 export { default as AfternoonIcon } from './AfternoonIcon';
 export { default as AppointmentIcon } from './AppointmentIcon';
 export { default as ArrowRightIcon } from './ArrowRightIcon';
 export { default as BackButtonIcon } from './BackButtonIcon';
-export { default as DashboardTabIcon } from './DashboardTabIcon';
-export { default as ScheduleTabIcon } from './ScheduleTabIcon';
-export { default as ConversationTabIcon } from './ConversationTabIcon';
 export { default as Badge2Icon } from './Badge2Icon';
 export { default as BioIcon } from './BioIcon';
 export { default as BothGendersIcon } from './BothGendersIcon';
@@ -35,7 +50,6 @@ export { default as PatientIcon } from './PatientIcon';
 export { default as PersonIcon } from './PersonIcon';
 export { default as PinIcon } from './PinIcon';
 export { default as PriceRateIcon } from './PriceRateIcon';
-export { default as ProfileTabIcon } from './ProfileTabIcon';
 export { default as QualificationIcon } from './QualificationIcon';
 export { default as RadiusLocationIcon } from './RadiusLocationIcon';
 export { default as RateIcon } from './RateIcon';
@@ -51,16 +65,6 @@ export { default as StatusIcon } from './StatusIcon';
 export { default as SwitchIcon } from './SwitchIcon';
 export { default as TherapistIcon } from './TherapistIcon';
 export { default as AddCardIcon } from './AddCardIcon';
-
-// FormField icons
-export { default as ErrorIcon } from './ErrorIcon';
-export { default as EmailIcon } from './EmailIcon';
-export { default as EyeIcon } from './EyeIcon';
-
-export { default as AmexIcon } from './AmexIcon';
-export { default as MaestroIcon } from './MaestroIcon';
-export { default as MasterCardIcon } from './MasterCardIcon';
-export { default as VisaIcon } from './VisaIcon';
 export { default as CheckedIcon } from './CheckedIcon';
 export { default as TickEmptyIcon } from './TickEmptyIcon';
 export { default as TickFilledIcon } from './TickFilledIcon';
@@ -92,18 +96,13 @@ export { default as ArrowUp } from './ArrowUp';
 export { default as ConsentIcon } from './ConsentIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as CheckIcon } from './CheckIcon';
-
 export { default as SmallCheckIcon } from './SmallCheckIcon';
 export { default as BigClockIcon } from './BigClockIcon';
 export { default as MaxPriceIcon } from './MaxPriceIcon';
-
 export { default as NoConversationsIcon } from './NoConversationsIcon';
 export { default as ScheduleIcon } from './ScheduleIcon';
 export { default as BookmarkBadgeIcon } from './BookmarkBadgeIcon';
-
 export { default as PreviousArrowIcon } from './PreviousArrowIcon';
 export { default as NextArrowIcon } from './NextArrowIcon';
-
 export { default as TimerBackgroundIcon } from './TimerBackgroundIcon';
-
 export { default as CalendarIcon } from './CalendarIcon';

@@ -13,8 +13,6 @@ import {
   updateAppointment,
 } from '@src/store/actions/AppointmentAction';
 
-import { SearchIcon } from '@src/components/icons';
-
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import LogoBackground from '@src/components/LogoBackground';
@@ -61,8 +59,6 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
       fetchAppointments();
     }
   }, [isFocused]);
-
-  const onPressSearch = () => navigation.push('SearchScreen');
 
   const onPressAppointment = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
@@ -121,13 +117,8 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
         )}
 
         {!isTherapist && (
-          <View row justifyBetween alignCenter p={4} pt={5}>
+          <View row alignCenter p={4} pt={5}>
             <Text variant="title" color="white">{`Hi, ${store.user.firstName}`}</Text>
-            <View p={2} variant="rounded" bgColor="secondary" onPress={onPressSearch}>
-              <View p={1}>
-                <SearchIcon tint="#fff" />
-              </View>
-            </View>
           </View>
         )}
 
