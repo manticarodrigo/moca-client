@@ -118,6 +118,10 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
     if (isFocused && store.user.token) {
       getWeekAppointments();
     }
+
+    if (!isFocused) {
+      setItemMap({});
+    }
   }, [isFocused, selectedDate]);
 
   const renderItem: ListRenderItem<ListItem> = ({ item, index }) => {

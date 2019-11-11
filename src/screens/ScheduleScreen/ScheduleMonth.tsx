@@ -98,6 +98,10 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
     if (isFocused && store.user.token) {
       getAppointments();
     }
+
+    if (!isFocused) {
+      setMarkedDates({});
+    }
   }, [isFocused, selectedDate]);
 
   const onChangeMonth = (date) => onChangeDate(new Date(date.timestamp));
