@@ -56,11 +56,13 @@ const FormField = ({
   );
 
   const shouldShowError = useMemo(() => {
+    if (error) return true;
+
     if (validation === 'password') {
-      return (focusedOrFilled || blurred) && (error || validationError);
+      return (focusedOrFilled || blurred) && validationError;
     }
 
-    return (blurred && (error || validationError));
+    return (blurred && validationError);
   }, [validation, blurred, validationError, error, focusedOrFilled]);
 
   const animatedValue = useMemo(() => new Animated.Value(0), []);
@@ -171,7 +173,7 @@ const FormField = ({
         </Wrapper>
       </Wrapper>
       {shouldShowError && (
-        <Text mt={2} variant="regular" size={1} color="error" align="center">
+        <Text mt={2} variant="regular" size={1} color="error" align="center" numberOfLines={3}>
           {error || validationError}
         </Text>
       )}

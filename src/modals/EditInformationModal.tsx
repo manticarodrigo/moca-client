@@ -26,6 +26,7 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
 
   const {
     fieldValues,
+    setFieldErrors,
     isEveryFieldEmpty,
     isFormValid,
     getFieldProps,
@@ -51,8 +52,16 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
         await dispatch(updateUser(updated));
 
         onClose();
-      } catch (error) {
-        // console.log(error);
+      } catch ({ response }) {
+        const { user } = response.data;
+
+        const errors: Partial<FormFields> = {};
+        if (Array.isArray(user.email) && user.email.length) {
+          const [emailError] = user.email;
+          errors.email = emailError;
+        }
+
+        setFieldErrors(errors);
       }
     }
   };
