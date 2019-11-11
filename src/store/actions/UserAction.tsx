@@ -5,7 +5,7 @@ import api from '@src/services/api';
 import { StoreState } from '@src/StoreProvider';
 import { UserState, Price } from '@src/store/reducers/UserReducer';
 
-import { User, Address, Payment } from '@src/services/openapi';
+import { User, Address, Payment, Leave } from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'LOGOUT_USER' }
@@ -17,6 +17,7 @@ export type UserAction =
   | { type: 'UPDATE_USER_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'ADD_PRICE_SUCCESS'; payload: Price }
   | { type: 'ADD_PAYMENT_SUCCESS'; payload: Payment }
+  | { type: 'ADD_AWAY_SUCCESS'; payload: Leave }
 
 const logoutUser = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({ type: 'LOGOUT_USER' });
@@ -97,7 +98,7 @@ const addUserAddress = (
 };
 
 const updateUserAddress = (
-  { coordinates, ...address }: AddAddressForm,
+  { coordinates, ...address }: AddAddressForm & { id: number },
 ) => async (dispatch: Dispatch<UserAction>) => {
   const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
 
@@ -126,12 +127,13 @@ const addPayment = (info: Payment) => async (dispatch: Dispatch<UserAction>) => 
   dispatch({ type: 'ADD_PAYMENT_SUCCESS', payload: data });
 };
 
-const setAwayDates = (startDate: string, endDate: string) => async (
-  dispatch: Dispatch<UserAction>,
-  store: StoreState,
-) => {
-  // const body = { data: { startDate, endDate } };
-  // to be added
+const setAwayDates = (
+  startDate: string,
+  endDate: string,
+) => async (dispatch: Dispatch<UserAction>) => {
+  const { data } = await api.user.userTherapistAwayCreate({ startDate, endDate });
+
+  dispatch({ type: 'ADD_AWAY_SUCCESS', payload: data });
 };
 
 

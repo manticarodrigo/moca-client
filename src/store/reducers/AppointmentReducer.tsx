@@ -4,14 +4,9 @@ import { Address } from '@src/store/reducers/ConversationReducer';
 
 import { Appointment as BadAppointment } from '@src/services/openapi';
 
-export type Appointment = Omit<BadAppointment, 'otherParty' | 'startTime' | 'address'> & {
+export type Appointment = Omit<BadAppointment, 'startTime' | 'address'> & {
   startTime: string;
-  otherParty: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    image: string;
-  };
+  endTime: string;
   address: Address;
 }
 

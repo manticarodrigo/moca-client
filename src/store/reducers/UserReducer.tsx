@@ -11,6 +11,7 @@ import {
   Payment as BadPayment,
   Price as BadPrice,
   UserSnippet,
+  ProfileInfo,
 } from '@src/services/openapi';
 import { BrandType } from '@src/services/stripe';
 
@@ -44,6 +45,7 @@ export type Review = {
 }
 
 export type UserState = &
+  ProfileInfo &
   UserSnippet &
   Omit<User, 'type' | 'email' | 'gender' | 'payments'> &
   Omit<Patient, 'user'> &
@@ -95,6 +97,9 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       break;
     case 'ADD_PAYMENT_SUCCESS':
       newState = appendItem('payments', state, action.payload);
+      break;
+    case 'ADD_AWAY_SUCCESS':
+      newState = appendItem('awayDays', state, action.payload);
       break;
     default:
       break;

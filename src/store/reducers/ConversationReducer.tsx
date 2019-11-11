@@ -8,17 +8,12 @@ export type Address = Omit<BadAddress, 'location'> & {
   };
 }
 
+type MessageContent = Omit<
+  BadMessage['content'], 'appointmentRequest'
+> & BadMessage['content']['appointmentRequest'];
+
 export type Message = Omit<BadMessage, 'image' | 'content'> & {
-  content: {
-    id?: number;
-    text?: string;
-    startTime?: string;
-    endTime?: string;
-    price?: number;
-    status?: 'pending' | 'accepted' | 'rejected' | 'cancelled';
-    image?: string;
-    address?: Address;
-  };
+  content: MessageContent;
 }
 
 export type Conversation = {
