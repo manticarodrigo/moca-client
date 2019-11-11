@@ -162,10 +162,10 @@ const FormField = ({
     setBlurred(true);
   };
 
-  const handleChangeText = (text: string) => onChangeText(text);
+  const handleChangeText = (text: string) => onChangeText(text, validationError);
 
   useEffect(() => {
-    if (validation) {
+    if (validation || required) {
       // effect to update useFormFields hook errors when error changes
       // TODO: find a way to update hook only once
       onChangeText(value, validationError);
