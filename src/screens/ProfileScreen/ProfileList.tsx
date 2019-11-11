@@ -54,9 +54,9 @@ const ProfileList = ({ user, readonly }: Props) => {
       await dispatch(updateUser(update));
       setActiveToast('success');
       return Promise.resolve();
-    } catch (error) {
+    } catch {
       setActiveToast('error');
-      return Promise.reject();
+      return Promise.resolve();
     }
   };
 
@@ -77,8 +77,14 @@ const ProfileList = ({ user, readonly }: Props) => {
   );
 
   const onSubmitPriceModal = async (sessionType: Price['sessionType'], price: number) => {
-    await dispatch(addPrice(sessionType, price));
-    setPriceModalProps(null);
+    try {
+      await dispatch(addPrice(sessionType, price));
+      setActiveToast('success');
+    } catch {
+      setActiveToast('error');
+    } finally {
+      setPriceModalProps(null);
+    }
   };
 
   const onSubmitInjury = async (values) => {
