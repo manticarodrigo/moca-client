@@ -57,9 +57,12 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (isExistingAddress) {
-      dispatch(updateUserAddress(formFields));
-
-      navigation.goBack();
+      try {
+        await dispatch(updateUserAddress(formFields));
+        navigation.goBack();
+      } catch (e) {
+        // console.log(e);
+      }
     }
 
     if (isAdditionalAddress) {

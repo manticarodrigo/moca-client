@@ -88,7 +88,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
                 {store.user.firstName}
               </Text>
             </View>
-            <Text variant="regular" mt={1}>
+            <Text variant="regular" align="center" mt={1}>
               {isRegistering && (
                 (isRegisteringTherapist && 'Please enter your address of operation below.')
                 || 'What is your preferred address for treatment?'
@@ -139,7 +139,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           {!isRegistering && (
             <View row py={4} variant="borderTop">
               <View flex={1} row justifyEnd alignCenter>
-                <Text variant="regularDark" pr={2}>Set as primary?</Text>
+                <Text variant="regularDark" pr={2}>Set to active?</Text>
                 <Checkbox
                   checked={primary}
                   onChange={setPrimary}

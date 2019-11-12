@@ -39,12 +39,12 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
     }
   };
 
-  const handleAddressPress = (userAddress: Address, index: number) => {
+  const handleAddressPress = ({ location, ...address }: Address, index: number) => {
     if (!isOpen) {
       navigation.navigate('AddressScreen', {
         isExistingAddress: true,
         isOnlyAddress: store.user.addresses.length === 1,
-        userAddress,
+        userAddress: { ...address, coordinates: location.coordinates },
         handleDelete: () => handleDeletePress(index) });
     } else {
       setIsOpen(false);

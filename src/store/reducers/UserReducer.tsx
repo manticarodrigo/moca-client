@@ -72,6 +72,12 @@ function updateItem(key: keyof UserState, state, payload) {
     return state;
   }
 
+  if (key === 'addresses' && payload.primary) {
+    state[key].forEach((address) => {
+      address.primary = false;
+    });
+  }
+
   state[key][index] = payload;
   state[key] = [...state[key]];
 
