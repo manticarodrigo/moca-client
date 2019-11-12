@@ -18,6 +18,7 @@ import NotificationBadge from './NotificationBadge';
 
 type AppointmentCardProps = {
   appointment?: Appointment;
+  current?: boolean;
   upcoming?: boolean;
   past?: boolean;
   onPress?: (appointment: Appointment) => void;
@@ -27,6 +28,7 @@ type AppointmentCardProps = {
 
 const AppointmentCard = ({
   appointment,
+  current,
   upcoming,
   past,
   onPress,
@@ -101,9 +103,10 @@ const AppointmentCard = ({
     >
       <AppointmentHeader
         showInfo
+        current={current}
         upcoming={upcoming}
-        isTherapist={isTherapist}
         appointment={appointment}
+        isTherapist={isTherapist}
         onMessageUser={onMessageUser}
       >
         <View row justifyBetween py={isTherapist && !upcoming && 2}>

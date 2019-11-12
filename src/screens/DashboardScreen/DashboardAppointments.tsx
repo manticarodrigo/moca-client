@@ -53,6 +53,7 @@ const DashboardAppointments = ({
         <View justifyCenter mb={3}>
           <Text mb={2} variant="semiBoldLarge" color="white">Current</Text>
           <AppointmentCard
+            current
             appointment={current}
             onPress={onPressAppointment}
             onPressBtn={onPressAppointment}

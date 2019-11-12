@@ -15,6 +15,7 @@ import Rating from './Rating';
 
 type Props = {
   minimal?: boolean;
+  current?: boolean;
   upcoming?: boolean;
   showInfo?: boolean;
   isTherapist: boolean;
@@ -25,6 +26,7 @@ type Props = {
 
 const AppointmentHeader = ({
   minimal,
+  current,
   upcoming,
   showInfo,
   isTherapist,
@@ -34,7 +36,7 @@ const AppointmentHeader = ({
 }: Props) => {
   const [profileVisible, setProfileVisible] = useState(false);
 
-  const { price = '', review, startTime, endTime, otherParty } = appointment || {};
+  const { price = '', review, startTime, endTime, otherParty, therapistRating } = appointment || {};
   const { id, firstName = '', lastName = '', image } = otherParty || {};
   const { rating } = review || {};
 
@@ -94,7 +96,12 @@ const AppointmentHeader = ({
               justifyBetween={!isTherapist}
               py={1}
             >
-              {!isTherapist && <Rating mt={-3} rating={rating} />}
+              {!isTherapist && (
+                <Rating
+                  mt={-3}
+                  rating={(current || upcoming) ? parseInt(therapistRating, 10) : rating}
+                />
+              )}
               <Text variant="titleLarge">
                 {`$${price}`}
               </Text>
