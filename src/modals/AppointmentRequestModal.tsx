@@ -4,8 +4,10 @@ import React, { useState, useMemo } from 'react';
 import { Picker } from 'react-native';
 import { format, parseISO, addMinutes } from 'date-fns';
 
-import { PriceSessionTypeEnum } from '@src/services/openapi';
+import { getDateForString } from '@src/utlities/dates';
+
 import { UserState } from '@src/store/reducers/UserReducer';
+import { PriceSessionTypeEnum } from '@src/services/openapi';
 import { sendAppointmentRequest } from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
@@ -127,18 +129,7 @@ const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
   const onDayPress = ({ dateString }) => setSelectedDate(dateString);
 
   const onPressSubmit = () => {
-    const [year, month, date] = selectedDate.split('-');
-    const [hours, minutes] = selectedTime.split(':');
-
-    // create a date reflecting the value of date and the environment's timezone offset.
-    const localStartDate = new Date(
-      parseInt(year),
-      parseInt(month) - 1,
-      parseInt(date),
-      parseInt(hours),
-      parseInt(minutes),
-    );
-
+    const localStartDate = getDateForString(selectedDate, selectedTime);
     const localEndDate = addMinutes(localStartDate, selectedDuration);
 
     const data = {

@@ -2,7 +2,7 @@
 import { AppointmentAction } from '@src/store/actions/AppointmentAction';
 import { Address } from '@src/store/reducers/ConversationReducer';
 
-import { Appointment as BadAppointment } from '@src/services/openapi';
+import { Appointment as BadAppointment, AppointmentStatusEnum } from '@src/services/openapi';
 
 export type Appointment = Omit<BadAppointment, 'startTime' | 'address'> & {
   startTime: string;
@@ -28,6 +28,16 @@ function updateItem(key: keyof AppointmentState, state, payload) {
   return state;
 }
 
+function cancelAppointment(state: AppointmentState, id: Appointment['id']) {
+  const existing = state.upcoming.find((a) => a.id === id);
+
+  if (existing) {
+    existing.status = AppointmentStatusEnum.Cancelled;
+  }
+
+  return state;
+}
+
 const reducer = (state: AppointmentState, action: AppointmentAction): AppointmentState => {
   switch (action.type) {
     case 'GET_UPCOMING_APPOINTMENTS_SUCCESS':
@@ -38,6 +48,8 @@ const reducer = (state: AppointmentState, action: AppointmentAction): Appointmen
       return { ...state, past: action.payload };
     case 'UPDATE_APPOINTMENT_SUCCESS':
       return updateItem('past', state, action.payload);
+    case 'CANCEL_APPOINTMENT_SUCCESS':
+      return cancelAppointment(state, action.payload);
     default:
       return state;
   }

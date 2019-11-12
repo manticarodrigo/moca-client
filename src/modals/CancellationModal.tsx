@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 
+import { AppointmentCancellationTypeEnum } from '@src/services/openapi';
+import { cancelAppointment } from '@src/store/actions/AppointmentAction';
+
+import useStore from '@src/hooks/useStore';
+
 import { ArrowDown, ArrowUp } from '@src/components/icons';
 
+import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Checkbox from '@src/components/Checkbox';
 import Button from '@src/components/Button';
-import Modal from '@src/components/Modal';
+import Toast from '@src/components/Toast';
 
 const cancellationReasons = {
   standard: {
@@ -27,32 +33,46 @@ const cancellationReasons = {
   },
 };
 
-type CancellactionType = keyof typeof cancellationReasons;
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
 
-const CancellationModal = ({ visible, onToggle }) => {
-  const [opened, setOpened] = useState<{ [key in CancellactionType]: boolean }>({
+const CancellationModal = ({ visible, appointmentId, onToggle, onSubmit }) => {
+  const { store, dispatch } = useStore();
+  const [opened, setOpened] = useState<{ [key in AppointmentCancellationTypeEnum]: boolean }>({
     standard: false,
-    rescheduling: false,
+    reschedule: false,
     weather: false,
     emergency: false,
   });
+  const [checked, setChecked] = useState<AppointmentCancellationTypeEnum>();
+  const [toastState, setToastState] = useState<ToastState>();
 
-  const [checked, setChecked] = useState<CancellactionType>();
+  const isTherapist = store.user.type === 'PT';
 
 
   const onPressAccordion = (key) => setOpened({ ...opened, [key]: !opened[key] });
 
   const onClickCheckbox = (key) => setChecked(key !== checked ? key : undefined);
 
-  const onSubmit = () => {
-    // cancel api
+  const onPressSubmit = async () => {
+    try {
+      await dispatch(cancelAppointment(appointmentId, checked));
+
+      setToastState({ type: 'success', message: 'Appointment cancelled successfully.' });
+      setTimeout(onSubmit, 2000);
+    } catch (e) {
+      const { detail } = e.response.data;
+      setToastState({ type: 'error', message: detail || 'Failed to cancel Appointment.' });
+    }
   };
 
   return (
     <Modal
+      propagateSwipe
       isVisible={visible}
       onToggle={onToggle}
-      propagateSwipe
     >
       <View
         alignCenter
@@ -86,12 +106,13 @@ const CancellationModal = ({ visible, onToggle }) => {
                     {reason.title}
                   </Text>
                 </View>
-                <View justifyCenter>
-                  {opened[key] ? <ArrowUp /> : <ArrowDown />}
-                </View>
-
+                {!isTherapist && (
+                  <View justifyCenter>
+                    {opened[key] ? <ArrowUp /> : <ArrowDown />}
+                  </View>
+                )}
               </View>
-              {opened[key] && (
+              {!isTherapist && opened[key] && (
                 <Text variant="light" color="dark" mt={2}>{reason.details}</Text>
               )}
             </View>
@@ -99,14 +120,20 @@ const CancellationModal = ({ visible, onToggle }) => {
         </View>
         <View py={4} pb={6}>
           <Button
-            variant={checked ? 'primary' : 'primaryDisabled'}
-            disabled={!!checked}
-            onPress={onSubmit}
+            variant={!checked ? 'primaryDisabled' : 'primary'}
+            disabled={!checked}
+            onPress={onPressSubmit}
           >
             Continue
           </Button>
         </View>
       </View>
+
+      {!!toastState && (
+        <Toast error={toastState.type === 'error'} onClose={() => setToastState(undefined)}>
+          {toastState.message}
+        </Toast>
+      )}
     </Modal>
   );
 };

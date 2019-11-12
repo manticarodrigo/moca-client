@@ -8,21 +8,14 @@ import api from '@src/services/api';
 import useStore from '@src/hooks/useStore';
 import useAwayMap from '@src/hooks/useAwayMap';
 
-import { Appointment } from '@src/store/reducers/AppointmentReducer';
-
 import { ArrowRightIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Paginator from '@src/components/Paginator';
 
+import { ListItem } from './ScheduleScreen';
 import ScheduleWeekRow from './ScheduleWeekRow';
-
-export type ListItem = {
-  key: string; // see usage of: const keyFormat
-  appointments: Appointment[];
-  awayDays?: number[];
-}
 
 type ItemMap = { [date: string]: ListItem }
 
@@ -62,13 +55,13 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
       const currentWeekDays = eachDayOfInterval({ start, end });
 
       currentWeekDays.forEach((day) => {
-        const key = format(day, keyFormat);
+        const dateString = format(day, keyFormat);
 
-        const { appointments } = itemMap[key];
-        const awayDays = awayMap[key];
+        const { appointments } = itemMap[dateString];
+        const awayDays = awayMap[dateString];
 
-        earnings += itemMap[key].appointments.reduce((acc, { price }) => acc + price, 0);
-        currentItems.push({ key, appointments, awayDays });
+        earnings += itemMap[dateString].appointments.reduce((acc, { price }) => acc + price, 0);
+        currentItems.push({ dateString, appointments, awayDays });
       });
     }
 
@@ -98,19 +91,19 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
         const weekMap: { [date: string]: ListItem } = {};
 
         currentWeekDays.forEach((day) => {
-          const key = format(day, keyFormat);
+          const dateString = format(day, keyFormat);
 
-          weekMap[key] = { key, appointments: [] };
+          weekMap[dateString] = { dateString, appointments: [] };
         });
 
         data.forEach((appointment) => {
           const start = new Date(appointment.startTime);
           start.setHours(0, 0, 0, 0);
 
-          const key = format(start, keyFormat);
+          const dateString = format(start, keyFormat);
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
-          weekMap[key].appointments.push(appointment);
+          weekMap[dateString].appointments.push(appointment);
         });
 
         setItemMap((prev) => ({ ...prev, ...weekMap }));
@@ -142,14 +135,14 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
 
   const onPressSetAway = () => onSetAway({ visible: true });
 
-  const keyExtractor = (item: ListItem) => item.key;
+  const keyExtractor = (item: ListItem) => item.dateString;
 
   const renderItem: ListRenderItem<ListItem> = ({ item, index }) => {
     const isFirst = index === 0;
     const isLast = index === items.length - 1;
 
     const handlePress = () => {
-      if (item.awayDays.length) {
+      if (item.awayDays && item.awayDays.length) {
         const [leaveId] = item.awayDays;
 
         return onSetAway({ visible: true, leaveId });

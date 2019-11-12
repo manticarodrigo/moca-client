@@ -5,6 +5,7 @@ import { subHours } from 'date-fns';
 import api from '@src/services/api';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
+import { AppointmentCancellation } from '@src/services/openapi';
 
 export type AppointmentAction =
   | { type: 'ANSWER_APPOINTMENT_REQUEST_SUCCESS' }
@@ -12,6 +13,7 @@ export type AppointmentAction =
   | { type: 'GET_LAST_APPOINTMENT_SUCCESS'; payload: Appointment[] }
   | { type: 'GET_PAST_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'UPDATE_APPOINTMENT_SUCCESS'; payload: Appointment }
+  | { type: 'CANCEL_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
 
 const answerAppointmentRequest = (
   id: string,
@@ -64,10 +66,20 @@ const updateAppointment = (
   dispatch({ type: 'UPDATE_APPOINTMENT_SUCCESS', payload: data });
 };
 
+const cancelAppointment = (
+  appointmentId: Appointment['id'],
+  type: AppointmentCancellation['type'],
+) => async (dispatch: Dispatch<AppointmentAction>) => {
+  await api.appointment.appointmentCancelCreate(appointmentId.toString(), { type });
+
+  dispatch({ type: 'CANCEL_APPOINTMENT_SUCCESS', payload: appointmentId });
+};
+
 export {
   answerAppointmentRequest,
   getUpcomingAppointments,
   getLastAppointment,
   getPastAppointments,
   updateAppointment,
+  cancelAppointment,
 };

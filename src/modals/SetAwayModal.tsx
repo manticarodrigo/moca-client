@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 
+import { getDateForString } from '@src/utlities/dates';
+
 import api from '@src/services/api';
 
 import {
@@ -14,13 +16,14 @@ import useStore from '@src/hooks/useStore';
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 import { Colors } from '@src/styles';
 
+import { BinIconRed } from '@src/components/icons';
+
 import CalendarList from '@src/components/CalendarList';
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import Toast from '@src/components/Toast';
-import { BinIconRed } from '@src/components/icons';
 
 
 type Props = {
@@ -119,12 +122,6 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
     }
 
     setLeavePeriodState({ startDate: start, endDate: end });
-  };
-
-  const getDateForString = (str: string) => {
-    const [year, month, day] = str.split('-');
-
-    return new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
   };
 
   const onDeleteLeavePeriod = async () => {

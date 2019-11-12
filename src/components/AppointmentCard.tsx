@@ -3,6 +3,8 @@ import { format, differenceInHours } from 'date-fns';
 
 import { openMapMarker } from '@src/utlities/maps';
 
+import { AppointmentStatusEnum } from '@src/services/openapi';
+
 import useStore from '@src/hooks/useStore';
 
 import { UserState } from '@src/store/reducers/UserReducer';
@@ -35,11 +37,12 @@ const AppointmentCard = ({
   onPressBtn,
   onMessageUser,
 }: AppointmentCardProps) => {
-  const { startTime, endTime, address, otherParty } = appointment;
+  const { status, startTime, endTime, address, otherParty } = appointment;
 
   const { store } = useStore();
 
   const isTherapist = store.user.type === 'PT';
+  const isCancelled = status === AppointmentStatusEnum.Cancelled;
 
   const {
     canCancel,
@@ -65,7 +68,7 @@ const AppointmentCard = ({
     return 'borderCard';
   }, [upcoming, past]);
 
-  const hasButton = canCancel || canEditNotes || canEditReview;
+  const hasButton = !isCancelled && (canCancel || canEditNotes || canEditReview);
 
   const shouldShowButton = useMemo(() => {
     if (!isTherapist) return true;
@@ -112,6 +115,11 @@ const AppointmentCard = ({
         <View row justifyBetween py={isTherapist && !upcoming && 2}>
           <View row flex={1}>
             <View column flex={1} mt={(isTherapist && upcoming) && -5}>
+              {isCancelled && (
+                <Text variant="semiBold" color="error">
+                  Cancelled
+                </Text>
+              )}
               <Text
                 variant="semiBoldLarge"
                 color={!upcoming && isTherapist ? 'secondary' : 'grey'}

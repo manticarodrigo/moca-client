@@ -49,9 +49,9 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
     >
       <View bgColor="lightGrey">
         <View bgColor="white">
-          <View alignEnd mr={3}>
+          {/* <View alignEnd mr={3}>
             <BookmarkIcon />
-          </View>
+          </View> */}
           {profile && (
             <>
               <View row p={4} bgColor="white" variant="borderBottom">

@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
 import { format, isToday, isAfter, differenceInMinutes } from 'date-fns';
 
+import { getDateForString } from '@src/utlities/dates';
+
 import { Views, Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import { ListItem } from './ScheduleWeek';
+import { ListItem } from './ScheduleScreen';
 
 type Props = {
   item: ListItem;
@@ -19,11 +21,10 @@ type Props = {
 const nowDate = new Date();
 
 const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
-  const { key, appointments, awayDays = [] } = item;
+  const { dateString, appointments, awayDays = [] } = item;
 
   const { isDateToday, day, month, year, dayOfWeek } = useMemo(() => {
-    const [yyyy, MM, dd] = key.split('-');
-    const date = new Date(parseInt(yyyy, 10), parseInt(MM, 10) - 1, parseInt(dd, 10));
+    const date = getDateForString(dateString);
 
     return {
       isDateToday: isToday(date),
@@ -32,7 +33,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
       year: format(date, 'yyyy'),
       dayOfWeek: format(date, 'cccc'),
     };
-  }, [key]);
+  }, [dateString]);
 
   const { total, completed, completedDocs, totalDocs, totalTime, earnings } = useMemo(() => {
     const data = {
@@ -84,7 +85,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
     return { viewVariant: 'card', color: 'secondary' };
   }, [awayDays, total, isDateToday]);
 
-  if (!key) return null;
+  if (!dateString) return null;
 
   return (
     <View

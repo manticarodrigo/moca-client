@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
+
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import SetAwayModal from '@src/modals/SetAwayModal';
 
@@ -11,6 +13,12 @@ import ScheduleMonth from './ScheduleMonth';
 
 type Props = NavigationStackScreenProps & { isFocused: boolean }
 type Tab = 'week' | 'month';
+
+export type ListItem = {
+  dateString: string;
+  appointments: Appointment[];
+  awayDays?: number[];
+}
 
 const tabOptions = [{ value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }];
 

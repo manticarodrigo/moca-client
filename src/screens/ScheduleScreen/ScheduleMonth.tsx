@@ -28,6 +28,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Paginator from '@src/components/Paginator';
 
+import { ListItem } from './ScheduleScreen';
 import ScheduleMonthDay from './ScheduleMonthDay';
 
 type MarkedDates = {
@@ -63,18 +64,20 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
   }, [selectedDate]);
 
   useEffect(() => {
-    const newState: MarkedDates = { ...markedDates };
+    if (isFocused) {
+      const newState: MarkedDates = { ...markedDates };
 
-    Object.keys(markedDates).forEach((key) => {
-      delete newState[key].awayDays;
-    });
+      Object.keys(markedDates).forEach((key) => {
+        delete newState[key].awayDays;
+      });
 
-    Object.entries(awayMap).forEach(([key, awayDays]) => {
-      newState[key] = { ...newState[key], awayDays };
-    });
+      Object.entries(awayMap).forEach(([key, awayDays]) => {
+        newState[key] = { ...newState[key], awayDays };
+      });
 
-    setMarkedDates(newState);
-  }, [awayMap]);
+      setMarkedDates(newState);
+    }
+  }, [isFocused, awayMap]);
 
   useEffect(() => {
     const getAppointments = async () => {
@@ -123,12 +126,12 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
     }
   }, [isFocused, selectedDate]);
 
-  const onChangeMonth = (date) => onChangeDate(new Date(date.timestamp));
+  const onChangeMonth = (date) => onChangeDate(new Date(date.dateString));
 
   const onPressSetAway = () => onSetAway({ visible: true });
 
   const onPressDay = (day) => {
-    onChangeDate(new Date(day.timestamp));
+    onChangeDate(new Date(day.dateString));
 
     const existing = markedDates[day.dateString] || {};
 
@@ -138,9 +141,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
       return onSetAway({ visible: true, leaveId });
     }
 
-    const scheduleItem = {
-      // month is an index
-      timestamp: new Date(day.year, day.month - 1, day.day).toISOString(),
+    const scheduleItem: ListItem = {
+      dateString: day.dateString,
       appointments: existing.appointments,
     };
 

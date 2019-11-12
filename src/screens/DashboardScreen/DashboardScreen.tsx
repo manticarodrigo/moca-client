@@ -104,7 +104,9 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
       <CancellationModal
         visible={modalState.cancellation}
+        appointmentId={selectedAppointment && selectedAppointment.id}
         onToggle={onCloseModals}
+        onSubmit={onCloseModals}
       />
 
       <View safeArea flex={1} bgColor="primary">

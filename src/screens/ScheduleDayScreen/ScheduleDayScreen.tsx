@@ -3,6 +3,8 @@ import { StatusBar, FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { format, differenceInHours } from 'date-fns';
 
+import { getDateForString } from '@src/utlities/dates';
+
 import { ScheduleSectionIcon, NoConversationsIcon } from '@src/components/icons';
 
 import CancellationModal from '@src/modals/CancellationModal';
@@ -15,21 +17,21 @@ import Image from '@src/components/Image';
 import Tag from '@src/components/Tag';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
-import { ListItem } from '@src/screens/ScheduleScreen/ScheduleWeek';
+import { ListItem } from '@src/screens/ScheduleScreen/ScheduleScreen';
 
 const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const [cancelModalVisible, setCancelModalVisible] = useState(false);
+  const [cancelId, setCancelId] = useState();
 
   const scheduleItem: ListItem = navigation.getParam('scheduleItem', {});
 
   const { appointments = [] } = scheduleItem;
 
   useEffect(() => {
-    const dateObj = new Date(scheduleItem.timestamp);
+    const date = getDateForString(scheduleItem.dateString);
 
-    const dayOfMonth = format(dateObj, 'dd');
-    const monthAndYear = format(dateObj, 'MMM yyyy');
-    const dayOfWeek = format(dateObj, 'cccc');
+    const dayOfMonth = format(date, 'dd');
+    const monthAndYear = format(date, 'MMM yyyy');
+    const dayOfWeek = format(date, 'cccc');
     const total = appointments.reduce((acc, { price }) => acc + price, 0);
 
     navigation.setParams({ total, dayOfMonth, monthAndYear, dayOfWeek });
@@ -39,13 +41,17 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
     (a, b) => new Date(a.startTime).getTime() - new Date(b.endTime).getTime(),
   ), [appointments]);
 
+  const onCloseCancelModal = () => setCancelId(undefined);
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
 
       <CancellationModal
-        visible={cancelModalVisible}
-        onToggle={() => setCancelModalVisible(false)}
+        visible={!!cancelId}
+        appointmentId={cancelId}
+        onToggle={onCloseCancelModal}
+        onSubmit={onCloseCancelModal}
       />
 
       <View safeArea flex={1} width="100%">
@@ -76,7 +82,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
               return (
                 <SwipeRow disabled={false} onPress={() => null}>
-                  <BinRow onPress={() => setCancelModalVisible(true)} />
+                  <BinRow onPress={() => setCancelId(true)} />
                   <View
                     row
                     justifyBetween
