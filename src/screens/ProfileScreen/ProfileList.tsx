@@ -4,7 +4,7 @@ import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
 
 import { UserState, Price } from '@src/store/reducers/UserReducer';
 
-import { updateUser, addPrice } from '@src/store/actions/UserAction';
+import { updateUser, addPrice, updatePrice } from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
 import useNavigation from '@src/hooks/useNavigation';
@@ -78,8 +78,14 @@ const ProfileList = ({ user, readonly }: Props) => {
 
   const onSubmitPriceModal = async (sessionType: Price['sessionType'], price: number) => {
     try {
-      await dispatch(addPrice(sessionType, price));
-      setActiveToast('success');
+      const existing = store.user.prices.find((p) => p.sessionType === sessionType);
+
+      if (existing) {
+        await dispatch(updatePrice(existing.id, { sessionType, price }));
+      } else {
+        await dispatch(addPrice(sessionType, price));
+      }
+      await setActiveToast('success');
     } catch {
       setActiveToast('error');
     } finally {

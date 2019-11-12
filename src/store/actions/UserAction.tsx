@@ -12,10 +12,12 @@ export type UserAction =
   | { type: 'UPDATE_LOCAL_USER_STATE'; payload: Partial<UserState> }
   | { type: 'REGISTER_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'LOGIN_USER_SUCCESS'; payload: Partial<UserState> }
+  | { type: 'FETCH_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'ADD_USER_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'UPDATE_USER_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'ADD_PRICE_SUCCESS'; payload: Price }
+  | { type: 'UPDATE_PRICE_SUCCESS'; payload: Price }
   | { type: 'ADD_PAYMENT_SUCCESS'; payload: Payment }
   | { type: 'ADD_LEAVE_PERIOD_SUCCESS'; payload: Leave }
   | { type: 'UPDATE_LEAVE_PERIOD_SUCCESS'; payload: Leave }
@@ -46,6 +48,17 @@ const loginUser = (email: string, password: string) => async (dispatch: Dispatch
   const { data } = await api.auth.authenticateLoginCreate({ email, password });
 
   dispatch({ type: 'LOGIN_USER_SUCCESS', payload: data });
+};
+
+const fetchUser = () => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
+  const method = store.user.type === 'PT'
+    ? api.user.userTherapistRead_24
+    : api.user.userPatientRead;
+
+  const { data } = await method(store.user.id.toString());
+
+  // @ts-ignore
+  dispatch({ type: 'FETCH_USER_SUCCESS', payload: data });
 };
 
 
@@ -115,12 +128,17 @@ const addPrice = (
   sessionType: Price['sessionType'],
   price: number,
 ) => async (dispatch: Dispatch<UserAction>) => {
-  const body = { sessionType, price };
-
   // @ts-ignore
-  const { data } = await api.user.userTherapistPricesCreate(body);
+  const { data } = await api.user.userTherapistPricesCreate({ sessionType, price });
 
   dispatch({ type: 'ADD_PRICE_SUCCESS', payload: data });
+};
+
+const updatePrice = (id: Price['id'], price: Price) => async (dispatch: Dispatch<UserAction>) => {
+  // @ts-ignore
+  const { data } = await api.user.userTherapistPricesUpdate(id.toString(), price);
+
+  dispatch({ type: 'UPDATE_PRICE_SUCCESS', payload: data });
 };
 
 const addPayment = (info: Payment) => async (dispatch: Dispatch<UserAction>) => {
@@ -158,10 +176,12 @@ export {
   updateUserState,
   registerUser,
   loginUser,
+  fetchUser,
   updateUser,
   addUserAddress,
   updateUserAddress,
   addPrice,
+  updatePrice,
   addPayment,
   addLeavePeriod,
   updateLeavePeriod,

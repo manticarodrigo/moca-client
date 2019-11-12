@@ -1,11 +1,14 @@
-import React from 'react';
-import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import React, { useEffect } from 'react';
+import { withNavigationFocus } from 'react-navigation';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
+
+import { fetchUser } from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
 
-import { CogIcon } from '@src/components/icons';
-
 import { Colors } from '@src/styles';
+
+import { CogIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import LogoBackground from '@src/components/LogoBackground';
@@ -15,12 +18,20 @@ import Rating from '@src/components/Rating';
 
 import ProfileList from './ProfileList';
 
-const ProfileScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { store } = useStore();
+type Props = NavigationStackScreenProps & { isFocused: boolean }
+
+const ProfileScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
+  const { store, dispatch } = useStore();
 
   const isTherapist = store.user.type === 'PT';
 
   const onPressSettings = () => navigation.navigate('ProfileSettingsScreen');
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(fetchUser());
+    }
+  }, [isFocused]);
 
   return (
     <View safeArea flex={1} bgColor="primary">
@@ -56,4 +67,4 @@ ProfileScreen.navigationOptions = ({ navigationOptions }) => ({
   },
 });
 
-export default ProfileScreen;
+export default withNavigationFocus(ProfileScreen);

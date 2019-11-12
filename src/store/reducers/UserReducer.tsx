@@ -35,6 +35,7 @@ export type Payment = Omit<BadPayment, 'type' | 'paymentInfo'> & {
 }
 
 export type Price = Omit<BadPrice, 'sessionType'> & {
+  id?: number;
   sessionType: 'thirty' | 'fourtyfive' | 'sixty' | 'evaluation';
 }
 
@@ -89,6 +90,7 @@ const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'UPDATE_LOCAL_USER_STATE':
     case 'LOGIN_USER_SUCCESS':
+    case 'FETCH_USER_SUCCESS':
     case 'UPDATE_USER_SUCCESS':
     case 'REGISTER_USER_SUCCESS':
       newState = { ...state, ...action.payload };
@@ -100,6 +102,9 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       newState = updateItem('addresses', state, action.payload);
       break;
     case 'ADD_PRICE_SUCCESS':
+      newState = appendItem('prices', state, action.payload);
+      break;
+    case 'UPDATE_PRICE_SUCCESS':
       newState = updateItem('prices', state, action.payload);
       break;
     case 'ADD_PAYMENT_SUCCESS':

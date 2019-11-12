@@ -67,7 +67,7 @@ const InputModal = (
     } else if (visible) {
       onChangeField('value')('');
     }
-  }, [existingValue]);
+  }, [visible, existingValue]);
 
   const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
 

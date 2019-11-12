@@ -97,7 +97,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
             onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}
           >
             <Text variant="title" size={5} color="secondary">
-              {`$${evaluationTariff.price}` || status}
+              {evaluationTariff.price ? `$${evaluationTariff.price}` : status}
             </Text>
           </View>
         </View>
