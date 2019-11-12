@@ -29,9 +29,9 @@ const LoginModal = ({ visible, onClose }: Props) => {
 
   const {
     fieldValues,
+    fieldProps,
     isAnyFieldEmpty,
     isFormValid,
-    getFieldProps,
   } = useFormFields<Pick<User, 'email' | 'password'>>({
     email: '',
     password: '',
@@ -91,7 +91,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
           </View>
           <View alignCenter mt={4} mx={5}>
             <FormField
-              {...getFieldProps('email')}
+              {...fieldProps.email}
               required
               icon="email"
               placeholder="Email address"
@@ -100,7 +100,7 @@ const LoginModal = ({ visible, onClose }: Props) => {
               keyboardType="email-address"
             />
             <FormField
-              {...getFieldProps('password')}
+              {...fieldProps.password}
               required
               icon="password"
               secureTextEntry

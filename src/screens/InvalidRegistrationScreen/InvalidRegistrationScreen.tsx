@@ -27,7 +27,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
     fieldValues,
     isAnyFieldEmpty,
     isFormValid,
-    onChangeField,
+    onChangeValue,
   } = useFormFields<{ email: string }>({ email: '' });
 
   const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
@@ -64,7 +64,7 @@ const InvalidRegistrationScreen: NavigationStackScreenComponent = ({ navigation 
               validation="email"
               returnKeyType="done"
               keyboardType="email-address"
-              onChangeText={onChangeField('email')}
+              onChangeText={onChangeValue('email')}
             />
           </View>
           <View row py={3}>

@@ -61,7 +61,17 @@ export type UserState = &
   storageReady?: boolean;
 }
 
+function setPrimaryAddress(key: keyof UserState, state, payload) {
+  if (key === 'addresses' && payload.primary) {
+    state[key].forEach((address) => {
+      address.primary = false;
+    });
+  }
+}
+
 function appendItem(key: keyof UserState, state, payload) {
+  setPrimaryAddress(key, state, payload);
+
   return { ...state, [key]: [...state[key], payload] };
 }
 
@@ -72,11 +82,7 @@ function updateItem(key: keyof UserState, state, payload) {
     return state;
   }
 
-  if (key === 'addresses' && payload.primary) {
-    state[key].forEach((address) => {
-      address.primary = false;
-    });
-  }
+  setPrimaryAddress(key, state, payload);
 
   state[key][index] = payload;
   state[key] = [...state[key]];
@@ -101,11 +107,14 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'REGISTER_USER_SUCCESS':
       newState = { ...state, ...action.payload };
       break;
-    case 'ADD_USER_ADDRESS_SUCCESS':
+    case 'ADD_ADDRESS_SUCCESS':
       newState = appendItem('addresses', state, action.payload);
       break;
-    case 'UPDATE_USER_ADDRESS_SUCCESS':
+    case 'UPDATE_ADDRESS_SUCCESS':
       newState = updateItem('addresses', state, action.payload);
+      break;
+    case 'DELETE_ADDRESS_SUCCESS':
+      newState = deleteItem('addresses', state, action.payload);
       break;
     case 'ADD_PRICE_SUCCESS':
       newState = appendItem('prices', state, action.payload);

@@ -38,9 +38,10 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
 
   const {
     fieldValues,
+    fieldProps,
     updateFieldValues,
     isFormValid,
-    getFieldProps,
+    isEveryFieldEmpty,
   } = useFormFields<Omit<AddAddressForm, 'primary' | 'coordinates'>>({
     name: '',
     street: '',
@@ -64,8 +65,6 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     // TODO: validate reverse geocode
     if (isFormValid) {
       onSubmit({ ...fieldValues, primary, coordinates });
-    } else {
-      // alert invalid
     }
   };
 
@@ -99,36 +98,36 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           <PlacesSearch onSelect={updateFields} />
           <View alignCenter mt={4} mb={3}>
             <FormField
-              {...getFieldProps('name')}
+              {...fieldProps.name}
               required
               placeholder="Name"
               returnKeyType="next"
             />
             <FormField
-              {...getFieldProps('street')}
+              {...fieldProps.street}
               required
               placeholder="Street"
               returnKeyType="next"
             />
             <FormField
-              {...getFieldProps('apartment')}
+              {...fieldProps.apartment}
               placeholder="Apartment Number"
               returnKeyType="next"
             />
             <FormField
-              {...getFieldProps('city')}
+              {...fieldProps.city}
               required
               placeholder="City"
               returnKeyType="done"
             />
             <FormField
-              {...getFieldProps('state')}
+              {...fieldProps.state}
               required
               placeholder="State"
               maxLength={2}
             />
             <FormField
-              {...getFieldProps('zipCode')}
+              {...fieldProps.zipCode}
               required
               placeholder="Zip Code"
               validation="zip"
@@ -139,7 +138,7 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           {!isRegistering && (
             <View row py={4} variant="borderTop">
               <View flex={1} row justifyEnd alignCenter>
-                <Text variant="regularDark" pr={2}>Set to active?</Text>
+                <Text variant="regularDark" pr={2}>Set active?</Text>
                 <Checkbox
                   checked={primary}
                   onChange={setPrimary}
@@ -150,8 +149,8 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           <View row py={4}>
             <View flex={1}>
               <Button
-                variant={!isFormValid ? 'primaryDisabled' : 'primary'}
-                disabled={!isFormValid}
+                variant={!isFormValid || isEveryFieldEmpty ? 'primaryDisabled' : 'primary'}
+                disabled={!isFormValid || isEveryFieldEmpty}
                 onPress={handleSubmit}
               >
                 {submitText}

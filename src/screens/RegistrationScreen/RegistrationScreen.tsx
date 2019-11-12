@@ -29,10 +29,10 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const {
     fieldValues,
+    fieldProps,
     setFieldErrors,
     isAnyFieldEmpty,
     isFormValid,
-    getFieldProps,
   } = useFormFields<FormFields>({
     firstName: '',
     lastName: '',
@@ -139,19 +139,19 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           )}
           <View p={3}>
             <FormField
-              {...getFieldProps('firstName')}
+              {...fieldProps.firstName}
               required
               placeholder="First Name"
               returnKeyType="next"
             />
             <FormField
-              {...getFieldProps('lastName')}
+              {...fieldProps.lastName}
               required
               placeholder="Last Name"
               returnKeyType="next"
             />
             <FormField
-              {...getFieldProps('email')}
+              {...fieldProps.email}
               required
               icon="email"
               placeholder="Email address"
@@ -160,7 +160,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               keyboardType="email-address"
             />
             <FormField
-              {...getFieldProps('password')}
+              {...fieldProps.password}
               required
               icon="password"
               placeholder="Password"

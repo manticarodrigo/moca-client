@@ -14,8 +14,9 @@ export type UserAction =
   | { type: 'LOGIN_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'FETCH_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Partial<UserState> }
-  | { type: 'ADD_USER_ADDRESS_SUCCESS'; payload: Address }
-  | { type: 'UPDATE_USER_ADDRESS_SUCCESS'; payload: Address }
+  | { type: 'ADD_ADDRESS_SUCCESS'; payload: Address }
+  | { type: 'UPDATE_ADDRESS_SUCCESS'; payload: Address }
+  | { type: 'DELETE_ADDRESS_SUCCESS'; payload: Address['id'] }
   | { type: 'ADD_PRICE_SUCCESS'; payload: Price }
   | { type: 'UPDATE_PRICE_SUCCESS'; payload: Price }
   | { type: 'ADD_PAYMENT_SUCCESS'; payload: Payment }
@@ -100,26 +101,34 @@ export type AddAddressForm = Omit<Address, 'id' | 'location'> & {
   coordinates?: [number, number];
 }
 
-const addUserAddress = (
+const addAddress = (
   { coordinates, ...address }: AddAddressForm,
 ) => async (dispatch: Dispatch<UserAction>) => {
   const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
 
   const { data } = await api.address.addressCreate(body);
 
-  dispatch({ type: 'ADD_USER_ADDRESS_SUCCESS', payload: data });
+  dispatch({ type: 'ADD_ADDRESS_SUCCESS', payload: data });
 
   return data;
 };
 
-const updateUserAddress = (
+const updateAddress = (
   { coordinates, ...address }: AddAddressForm & { id: number },
 ) => async (dispatch: Dispatch<UserAction>) => {
   const body = { ...address, location: JSON.stringify({ type: 'Point', coordinates }) };
 
   const { data } = await api.address.addressPartialUpdate(address.id.toString(), body);
 
-  dispatch({ type: 'UPDATE_USER_ADDRESS_SUCCESS', payload: data });
+  dispatch({ type: 'UPDATE_ADDRESS_SUCCESS', payload: data });
+
+  return data;
+};
+
+const deleteAddress = (addressId: Address['id']) => async (dispatch: Dispatch<UserAction>) => {
+  const { data } = await api.address.addressDelete(addressId.toString());
+
+  dispatch({ type: 'DELETE_ADDRESS_SUCCESS', payload: addressId });
 
   return data;
 };
@@ -178,8 +187,9 @@ export {
   loginUser,
   fetchUser,
   updateUser,
-  addUserAddress,
-  updateUserAddress,
+  addAddress,
+  updateAddress,
+  deleteAddress,
   addPrice,
   updatePrice,
   addPayment,

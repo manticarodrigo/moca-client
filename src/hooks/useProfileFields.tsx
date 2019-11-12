@@ -115,7 +115,7 @@ const useProfileFields = (
         icon: RadiusLocationIcon,
         field: 'addresses',
         title: 'Address',
-        subtitle: primaryAddress.street || (!readonly ? 'Add primary address' : 'N/A'),
+        subtitle: primaryAddress.street || (!readonly ? 'Set active address' : 'N/A'),
         onPress: !readonly ? onPressField('addresses') : undefined,
       },
       ...(isTherapist ? therapistFirstRows : []),

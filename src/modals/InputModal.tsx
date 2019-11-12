@@ -58,14 +58,14 @@ const InputModal = (
     fieldValues,
     isAnyFieldEmpty,
     isFormValid,
-    onChangeField,
+    onChangeValue,
   } = useFormFields<{ value: string }>({ value: '' });
 
   useEffect(() => {
     if (existingValue) {
-      onChangeField('value')(existingValue.toString());
+      onChangeValue('value')(existingValue.toString());
     } else if (visible) {
-      onChangeField('value')('');
+      onChangeValue('value')('');
     }
   }, [visible, existingValue]);
 
@@ -111,7 +111,7 @@ const InputModal = (
             validation={validation}
             returnKeyType="done"
             secureTextEntry={password}
-            onChangeText={onChangeField('value')}
+            onChangeText={onChangeValue('value')}
             {...inputProps}
           />
           <View row>

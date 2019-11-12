@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
-import { addUserAddress, updateUserAddress, AddAddressForm } from '@src/store/actions/UserAction';
+import { addAddress, updateAddress, AddAddressForm } from '@src/store/actions/UserAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -46,10 +46,10 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
   }, []);
 
-  const onSubmit = async (formFields: AddAddressForm) => {
+  const onSubmit = async (formFields: AddAddressForm & { id: number }) => {
     if (isRegistering) {
       try {
-        await dispatch(addUserAddress(formFields));
+        await dispatch(addAddress(formFields));
         navigation.navigate('DashboardScreen');
       } catch (e) {
         // console.log(e);
@@ -58,7 +58,7 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     if (isExistingAddress) {
       try {
-        await dispatch(updateUserAddress(formFields));
+        await dispatch(updateAddress(formFields));
         navigation.goBack();
       } catch (e) {
         // console.log(e);
@@ -67,7 +67,7 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     if (isAdditionalAddress) {
       try {
-        await dispatch(addUserAddress(formFields));
+        await dispatch(addAddress(formFields));
         navigation.goBack();
       } catch (e) {
         // console.log(e);

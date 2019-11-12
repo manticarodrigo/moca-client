@@ -26,10 +26,10 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
 
   const {
     fieldValues,
+    fieldProps,
     setFieldErrors,
     isEveryFieldEmpty,
     isFormValid,
-    getFieldProps,
   } = useFormFields<FormFields>({
     firstName: store.user.firstName,
     lastName: store.user.lastName,
@@ -85,19 +85,19 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
         </View>
         <View alignCenter mt={4} mx={5}>
           <FormField
-            {...getFieldProps('firstName')}
+            {...fieldProps.firstName}
             required
             placeholder="First name"
             returnKeyType="next"
           />
           <FormField
-            {...getFieldProps('lastName')}
+            {...fieldProps.lastName}
             required
             placeholder="Last name"
             returnKeyType="next"
           />
           <FormField
-            {...getFieldProps('email')}
+            {...fieldProps.email}
             required
             icon="email"
             placeholder="Email address"

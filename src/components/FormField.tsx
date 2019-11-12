@@ -26,10 +26,12 @@ export type Props = TextInputProps & {
   error?: string;
   required?: boolean;
   validation?: 'email' | 'password' | 'zip' | 'number';
+  didBlur?: boolean;
   spacing?: SpacingProps;
   width?: number | string;
   height?: number | string;
   onChangeText?: (text: string, error?: string) => void;
+  onChangeError?: (error?: string) => void;
 }
 
 const FormField = ({
@@ -40,10 +42,12 @@ const FormField = ({
   multiline,
   required,
   validation,
+  didBlur,
   spacing,
   width,
   height,
   onChangeText,
+  onChangeError,
   ...textInputProps
 }: Props, ref: React.Ref<RNInput>) => {
   const [focused, setFocused] = useState();
@@ -145,6 +149,19 @@ const FormField = ({
   const handleChangeText = (text: string) => {
     onChangeText(text, getValidationError(text, validation, required));
   };
+
+
+  useEffect(() => {
+    if (didBlur) {
+      setBlurred(true);
+    }
+  }, [didBlur]);
+
+  useEffect(() => {
+    if (blurred) {
+      onChangeError(getValidationError(value, validation, required));
+    }
+  }, [blurred, validationError]);
 
   return (
     <>

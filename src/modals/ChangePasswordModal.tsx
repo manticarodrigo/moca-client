@@ -21,8 +21,8 @@ const ChangePasswordModal = ({
 }: Props) => {
   const {
     fieldValues,
+    fieldProps,
     isFormValid,
-    getFieldProps,
   } = useFormFields<{ currentPassword: string; newPassword: string }>({
     currentPassword: '',
     newPassword: '',
@@ -50,7 +50,7 @@ const ChangePasswordModal = ({
         </View>
         <View alignCenter mt={4} mx={5}>
           <FormField
-            {...getFieldProps('currentPassword')}
+            {...fieldProps.currentPassword}
             required
             icon="password"
             placeholder="Current password"
@@ -58,7 +58,7 @@ const ChangePasswordModal = ({
             returnKeyType="next"
           />
           <FormField
-            {...getFieldProps('newPassword')}
+            {...fieldProps.newPassword}
             required
             icon="password"
             placeholder="New password"

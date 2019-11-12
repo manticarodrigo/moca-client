@@ -5,7 +5,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { Address } from '@src/services/openapi';
 
 import useStore from '@src/hooks/useStore';
-import { updateUser } from '@src/store/actions/UserAction';
+import { deleteAddress } from '@src/store/actions/UserAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -21,31 +21,40 @@ import Text from '@src/components/Text';
 import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
+import Toast from '@src/components/Toast';
+
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
 
 const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const { store, dispatch } = useStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const [toastState, setToastState] = useState<ToastState>();
 
   const handleNewAddressPress = () => {
     navigation.navigate('AddressScreen', { isAdditionalAddress: true, title: 'New Address' });
   };
 
-  const handleDeletePress = (index: number) => {
-    if (store.user.addresses.length > 1) {
-      const updated = [...store.user.addresses];
-      updated.splice(index, 1);
-
-      dispatch(updateUser({ addresses: updated }));
+  const handleDeletePress = (addressId: Address['id']) => async () => {
+    try {
+      await dispatch(deleteAddress(addressId));
+      setToastState({ type: 'success', message: 'Address deleted successfully.' });
+    } catch (e) {
+      const { detail } = e.response.data;
+      setToastState({ type: 'error', message: detail || 'Failed to delete Address.' });
     }
   };
 
-  const handleAddressPress = ({ location, ...address }: Address, index: number) => {
+  const handleAddressPress = ({ location, ...address }: Address) => () => {
     if (!isOpen) {
       navigation.navigate('AddressScreen', {
         isExistingAddress: true,
         isOnlyAddress: store.user.addresses.length === 1,
         userAddress: { ...address, coordinates: location.coordinates },
-        handleDelete: () => handleDeletePress(index) });
+        handleDelete: handleDeletePress(address.id),
+      });
     } else {
       setIsOpen(false);
     }
@@ -59,12 +68,12 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
         <FlatList
           data={store.user.addresses}
           keyExtractor={(item) => item.id.toString() || item.street}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <SwipeRow
               disabled={store.user.addresses.length === 1}
-              onPress={() => handleAddressPress(item, index)}
+              onPress={handleAddressPress(item)}
             >
-              <BinRow onPress={() => handleDeletePress(index)} />
+              <BinRow onPress={handleDeletePress(item.id)} />
               <View
                 row
                 width="100%"
@@ -117,6 +126,12 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
             </View>
           )}
         />
+
+        {!!toastState && (
+          <Toast error={toastState.type === 'error'} onClose={() => setToastState(undefined)}>
+            {toastState.message}
+          </Toast>
+        )}
       </View>
     </>
   );

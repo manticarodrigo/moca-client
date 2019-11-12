@@ -35,7 +35,12 @@ const Form = <State extends { [key: string]: string }> ({
     ), [fieldConfig],
   );
 
-  const { fieldValues, setFieldValues, isFormValid, getFieldProps } = useFormFields<State>(initialState);
+  const {
+    fieldValues,
+    fieldProps,
+    setFieldValues,
+    isFormValid,
+  } = useFormFields<State>(initialState);
 
   useEffect(() => {
     setFieldValues(initialState as State);
@@ -55,7 +60,7 @@ const Form = <State extends { [key: string]: string }> ({
                 <FormField
                   key={key}
                   {...config}
-                  {...getFieldProps(key as keyof State)}
+                  {...fieldProps[key]}
                 />
               ))}
             </>
