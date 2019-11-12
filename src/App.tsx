@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Alert, StatusBar } from 'react-native';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import { registerRootComponent } from 'expo';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -22,6 +22,33 @@ const AppStateHandler = ({ navigatorRef, children }) => {
   const { store, dispatch } = useStore();
   const showedAlert = useRef(false);
 
+  const navigator = navigatorRef.current;
+
+  const isAuthenticated = useMemo(() => !!(store.user.id && store.user.token), [store.user]);
+
+  const navigate = (routeName, params = undefined) => navigator.dispatch(
+    NavigationActions.navigate({ routeName, params }),
+  );
+
+  useEffect(() => {
+    const onAuthNavigate = () => {
+      if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
+        navigate('QualificationsScreen');
+      } else if (store.user.addresses.length === 0) {
+        navigate('AddressScreen', { title: 'Address' });
+      } else {
+        navigate('DashboardScreen');
+      }
+    };
+
+    const checkAuth = async () => {
+      if (!isAuthenticated) return;
+      onAuthNavigate();
+    };
+
+    setTimeout(checkAuth);
+  }, [isAuthenticated, store.user.storageReady]);
+
   useEffect(() => {
     const onMount = async () => {
       showedAlert.current = false;
@@ -31,9 +58,6 @@ const AppStateHandler = ({ navigatorRef, children }) => {
 
         dispatch(updateUserState({ ...local, storageReady: true }));
       }
-
-      const navigator = navigatorRef.current as NavigationContainerComponent;
-
 
       // TODO: implement this for push notification
       // setTimeout(() => {
@@ -48,9 +72,7 @@ const AppStateHandler = ({ navigatorRef, children }) => {
         if (error.response.status === 401) {
           dispatch(logoutUser());
 
-          navigator.dispatch(
-            NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
-          );
+          navigate('OnboardingScreen');
 
           if (!showedAlert.current) {
             Alert.alert('Session ended', 'You have been logged out.\n\nTo log back login, please use the link below the registration button.');

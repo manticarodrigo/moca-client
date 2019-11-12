@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
@@ -43,44 +42,20 @@ type Props = NavigationStackScreenProps & {
   isFocused: boolean;
 }
 
-const OnboardingScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
+const OnboardingScreen: NavigationStackScreenComponent = ({ navigation }: Props) => {
   const { store } = useStore();
   const [isReady, setIsReady] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-  const isAuthenticated = useMemo(() => !!(store.user.id && store.user.token), [store.user]);
-
-  const onAuthNavigate = useCallback(() => {
-    if (!isFocused) return;
-
-    if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
-      navigation.navigate('QualificationsScreen');
-    } else if (store.user.addresses.length === 0) {
-      navigation.navigate('AddressScreen', { title: 'Address' });
-    } else {
-      navigation.navigate('DashboardScreen');
-    }
-  }, [store.user]);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!isAuthenticated) {
-        if (store.user.storageReady) return setIsReady(true);
-
-        return null;
-      }
-
-      onAuthNavigate();
-
-      return null;
-    };
-
-    setTimeout(checkAuth);
-  }, [isAuthenticated, onAuthNavigate, store.user.storageReady]);
-
   const onPressSignup = () => navigation.push('SelectionScreen');
 
   const onToggleLoginModal = () => setLoginModalVisible(!loginModalVisible);
+
+  useEffect(() => {
+    if (!store.user.token && store.user.storageReady) {
+      setIsReady(true);
+    }
+  }, [store.user]);
 
   return (
     <>
@@ -139,4 +114,4 @@ OnboardingScreen.navigationOptions = {
   header: null,
 };
 
-export default withNavigationFocus(OnboardingScreen);
+export default OnboardingScreen;
