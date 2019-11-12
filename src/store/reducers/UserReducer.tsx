@@ -77,6 +77,12 @@ function updateItem(key: keyof UserState, state, payload) {
   return state;
 }
 
+function deleteItem(key: keyof UserState, state, payload: number) {
+  state[key] = state[key].filter((val) => val.id !== payload);
+
+  return state;
+}
+
 const reducer = (state: UserState, action: UserAction): UserState => {
   let newState = state;
 
@@ -104,6 +110,9 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       break;
     case 'UPDATE_LEAVE_PERIOD_SUCCESS':
       newState = updateItem('awayDays', state, action.payload);
+      break;
+    case 'DELETE_LEAVE_PERIOD_SUCCESS':
+      newState = deleteItem('awayDays', state, action.payload);
       break;
     default:
       break;

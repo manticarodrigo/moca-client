@@ -19,6 +19,7 @@ export type UserAction =
   | { type: 'ADD_PAYMENT_SUCCESS'; payload: Payment }
   | { type: 'ADD_LEAVE_PERIOD_SUCCESS'; payload: Leave }
   | { type: 'UPDATE_LEAVE_PERIOD_SUCCESS'; payload: Leave }
+  | { type: 'DELETE_LEAVE_PERIOD_SUCCESS'; payload: Leave['id'] }
 
 const logoutUser = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({ type: 'LOGOUT_USER' });
@@ -138,14 +139,19 @@ const addLeavePeriod = (
 };
 
 const updateLeavePeriod = (
-  leaveId: string,
+  leaveId: Leave['id'],
   leave: Leave,
 ) => async (dispatch: Dispatch<UserAction>) => {
-  const { data } = await api.user.userTherapistAwayPartialUpdate(leaveId, leave);
+  const { data } = await api.user.userTherapistAwayPartialUpdate(leaveId.toString(), leave);
 
   dispatch({ type: 'UPDATE_LEAVE_PERIOD_SUCCESS', payload: data });
 };
 
+const deleteLeavePeriod = (leaveId: Leave['id']) => async (dispatch: Dispatch<UserAction>) => {
+  await api.user.userTherapistAwayDelete(leaveId.toString());
+
+  dispatch({ type: 'DELETE_LEAVE_PERIOD_SUCCESS', payload: leaveId });
+};
 
 export {
   logoutUser,
@@ -159,4 +165,5 @@ export {
   addPayment,
   addLeavePeriod,
   updateLeavePeriod,
+  deleteLeavePeriod,
 };

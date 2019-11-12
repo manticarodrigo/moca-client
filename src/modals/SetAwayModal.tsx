@@ -3,7 +3,11 @@ import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 
 import api from '@src/services/api';
 
-import { addLeavePeriod, updateLeavePeriod } from '@src/store/actions/UserAction';
+import {
+  addLeavePeriod,
+  updateLeavePeriod,
+  deleteLeavePeriod,
+} from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
 
@@ -16,6 +20,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import Toast from '@src/components/Toast';
+import { BinIconRed } from '@src/components/icons';
 
 
 type Props = {
@@ -29,9 +34,11 @@ type ToastState = {
   message: string;
 }
 
+const initialState = { startDate: '', endDate: '' };
+
 const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
   const { dispatch } = useStore();
-  const [{ startDate, endDate }, setLeavePeriodState] = useState({ startDate: '', endDate: '' });
+  const [{ startDate, endDate }, setLeavePeriodState] = useState(initialState);
   const [toastState, setToastState] = useState<ToastState>();
 
   useEffect(() => {
@@ -42,10 +49,14 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
       setLeavePeriodState({ startDate: start, endDate: end });
     };
 
-    if (leaveId) {
+    if (visible && leaveId) {
       fetchAwayDays();
     }
-  }, [leaveId]);
+
+    if (!visible) {
+      setLeavePeriodState(initialState);
+    }
+  }, [visible, leaveId]);
 
   const markedDates = useMemo(() => {
     let daysInRange = 0;
@@ -116,6 +127,16 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
     return new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
   };
 
+  const onDeleteLeavePeriod = async () => {
+    try {
+      await dispatch(deleteLeavePeriod(leaveId));
+      setToastState({ type: 'success', message: 'Away time has been successfully removed.' });
+      setTimeout(onClose, 2000);
+    } catch {
+      setToastState({ type: 'error', message: 'There was an issue deleting your away time.' });
+    }
+  };
+
   const onPressSubmit = async () => {
     const start = getDateForString(startDate);
     start.setHours(0, 0, 0, 0);
@@ -128,7 +149,7 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
       if (!leaveId) {
         await dispatch(addLeavePeriod(leave.startDate, leave.endDate));
       } else {
-        await dispatch(updateLeavePeriod(leaveId.toString(), leave));
+        await dispatch(updateLeavePeriod(leaveId, leave));
       }
 
       setToastState({
@@ -153,13 +174,16 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
     <Modal propagateSwipe isVisible={visible} onToggle={onClose}>
 
       <View alignCenter pb={6}>
-
-        <View row>
-          <View variant="borderBottom" flex={1} pb={3} alignCenter justifyCenter>
+        <View row justifyBetween={!!leaveId} variant="borderBottom">
+          {!!leaveId && <View p={4} px={5} />}
+          <View flex={1} p={4} alignCenter justifyCenter>
             <Text variant="semiBoldLarge">
               Add Away Days
             </Text>
           </View>
+          {!!leaveId && (
+            <View p={4} alignCenter onPress={onDeleteLeavePeriod}><BinIconRed /></View>
+          )}
         </View>
 
         <View alignCenter row variant="borderBottom">
