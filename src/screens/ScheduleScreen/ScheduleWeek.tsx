@@ -20,6 +20,7 @@ import ScheduleWeekRow from './ScheduleWeekRow';
 export type ListItem = {
   timestamp: number;
   appointments: Appointment[];
+  awayDays?: number[];
 }
 
 type ItemMap = { [date: string]: ListItem }
@@ -28,7 +29,7 @@ type Props = Pick<NavigationStackScreenProps, 'navigation'> & {
   isFocused: boolean;
   selectedDate: Date;
   onChangeDate: (date: Date) => void;
-  onSetAway: () => void;
+  onSetAway: (props) => void;
 }
 
 const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway }: Props) => {
@@ -36,6 +37,28 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
 
   const [itemMap, setItemMap] = useState<ItemMap>({});
   const [loading, setLoading] = useState(false);
+
+  const awayMap = useMemo(() => {
+    const map = {};
+    if (store.user.awayDays && Array.isArray(store.user.awayDays)) {
+      store.user.awayDays.forEach((leave) => {
+        const start = new Date(leave.startDate);
+        const end = new Date(leave.endDate);
+        const range = eachDayOfInterval({ start, end });
+
+        range.forEach((day) => {
+          const timestamp = day.getTime();
+
+          if (map[timestamp]) {
+            map[timestamp].push(leave.id);
+          } else {
+            map[timestamp] = [leave.id];
+          }
+        });
+      });
+    }
+    return map;
+  }, [store.user.awayDays]);
 
   const { items, startDate, endDate, weekString, totalEarnings } = useMemo(() => {
     const start = startOfWeek(selectedDate);
@@ -59,9 +82,10 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
       currentWeekDays.forEach((day) => {
         const timestamp = day.getTime();
         const { appointments } = itemMap[timestamp];
+        const awayDays = awayMap[timestamp];
 
         earnings += itemMap[timestamp].appointments.reduce((acc, { price }) => acc + price, 0);
-        currentItems.push({ timestamp, appointments });
+        currentItems.push({ timestamp, appointments, awayDays });
       });
     }
 
@@ -72,7 +96,7 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
       weekString: `${startDayStr}-${endDayStr} ${endMonthStr}`,
       totalEarnings: earnings,
     };
-  }, [selectedDate, itemMap]);
+  }, [selectedDate, itemMap, awayMap]);
 
   useEffect(() => {
     const getWeekAppointments = async () => {
@@ -108,8 +132,6 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
         });
 
         setItemMap((prev) => ({ ...prev, ...weekMap }));
-      } catch (e) {
-        // console.log(e);
       } finally {
         setLoading(false);
       }
@@ -128,7 +150,15 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
     const isFirst = index === 0;
     const isLast = index === items.length - 1;
 
-    const handlePress = () => navigation.push('ScheduleDayScreen', { scheduleItem: item });
+    const handlePress = () => {
+      if (item.awayDays.length) {
+        const [leaveId] = item.awayDays;
+
+        return onSetAway({ visible: true, leaveId });
+      }
+
+      return navigation.push('ScheduleDayScreen', { scheduleItem: item });
+    };
 
     return (
       <ScheduleWeekRow
@@ -154,20 +184,20 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
     onChangeDate(addDays(startDate, 7));
   };
 
+  const onPressSetAway = () => onSetAway({ visible: true });
+
   return (
     <>
-      <View>
-        <Paginator
-          title={weekString}
-          subtitle={`$${totalEarnings}`}
-          loading={loading}
-          onPressPrev={onPressPrev}
-          onPressNext={onPressNext}
-        />
-        <View row justifyCenter alignCenter py={2} bgColor="secondary" onPress={onSetAway}>
-          <Text mr={2} variant="semiBold" color="white">Set Away Time</Text>
-          <ArrowRightIcon tint="white" size={0.75} />
-        </View>
+      <Paginator
+        title={weekString}
+        subtitle={`$${totalEarnings}`}
+        loading={loading}
+        onPressPrev={onPressPrev}
+        onPressNext={onPressNext}
+      />
+      <View row justifyCenter alignCenter py={2} bgColor="secondary" onPress={onPressSetAway}>
+        <Text mr={2} variant="semiBold" color="white">Add Away Days</Text>
+        <ArrowRightIcon tint="white" size={0.75} />
       </View>
       <View flex={1} bgColor="semiGreyLighter">
         <FlatList

@@ -72,6 +72,7 @@ function updateItem(key: keyof UserState, state, payload) {
   }
 
   state[key][index] = payload;
+  state[key] = [...state[key]];
 
   return state;
 }
@@ -98,8 +99,11 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'ADD_PAYMENT_SUCCESS':
       newState = appendItem('payments', state, action.payload);
       break;
-    case 'ADD_AWAY_SUCCESS':
+    case 'ADD_LEAVE_PERIOD_SUCCESS':
       newState = appendItem('awayDays', state, action.payload);
+      break;
+    case 'UPDATE_LEAVE_PERIOD_SUCCESS':
+      newState = updateItem('awayDays', state, action.payload);
       break;
     default:
       break;

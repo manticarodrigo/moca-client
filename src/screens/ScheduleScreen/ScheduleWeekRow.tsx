@@ -7,7 +7,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Tag from '@src/components/Tag';
 
-import { ListItem } from './ScheduleScreen';
+import { ListItem } from './ScheduleWeek';
 
 type Props = {
   item: ListItem;
@@ -19,7 +19,7 @@ type Props = {
 const nowDate = new Date();
 
 const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
-  const { timestamp, appointments } = item;
+  const { timestamp, appointments, awayDays = [] } = item;
 
   const { isDateToday, day, month, year, dayOfWeek } = useMemo(() => {
     const dateObj = new Date(timestamp);
@@ -68,6 +68,10 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
   }
 
   const { viewVariant, color }: Variants = useMemo(() => {
+    if (awayDays.length) {
+      return { viewVariant: 'roundedBorderSemiGrey', color: 'semiGrey' };
+    }
+
     if (total === 0) {
       return { viewVariant: 'borderCardDisabled', color: 'semiGrey' };
     }
@@ -77,7 +81,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
     }
 
     return { viewVariant: 'card', color: 'secondary' };
-  }, [total, isDateToday]);
+  }, [awayDays, total, isDateToday]);
 
   if (!timestamp) return null;
 
@@ -89,7 +93,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
       mx={3}
       mb={isLast ? 3 : 0}
       variant={viewVariant}
-      onPress={total !== 0 ? onPressDate : undefined}
+      onPress={(total !== 0 || awayDays.length) ? onPressDate : undefined}
     >
       <View>
         <View row alignCenter>
@@ -102,6 +106,12 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
 
         <Text variant="regularSmall" color={color}>{dayOfWeek}</Text>
       </View>
+
+      {!!awayDays.length && (
+        <View px={4} justifyCenter alignCenter>
+          <Tag icon="clock" type="fill" placeholder="Away" />
+        </View>
+      )}
 
       <View column flex={1}>
         <View row flex={1} justifyEnd mb={2}>

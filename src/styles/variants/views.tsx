@@ -9,6 +9,26 @@ const rounded: ViewStyle = {
   ...Borders.primary,
 };
 
+const card: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  ...Borders.primary,
+  backgroundColor: Colors.white,
+};
+
+const cardRight: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  borderTopRightRadius: Spacing.spaceSize[2],
+  borderBottomRightRadius: Spacing.spaceSize[2],
+  backgroundColor: Colors.white,
+};
+
+const cardLeft: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  borderTopLeftRadius: Spacing.spaceSize[2],
+  borderBottomLeftRadius: Spacing.spaceSize[2],
+  backgroundColor: Colors.white,
+};
+
 const shadow: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
@@ -124,6 +144,14 @@ const roundedBorderGrey: ViewStyle = {
   ...shadow,
 };
 
+
+const roundedBorderSemiGrey = {
+  ...card,
+  borderWidth: 1,
+  borderColor: Colors.semiGrey,
+  backgroundColor: Colors.whiteTranslucent,
+};
+
 const roundedBorderLeft: ViewStyle = {
   borderTopLeftRadius: 5,
   borderBottomLeftRadius: 5,
@@ -180,26 +208,6 @@ const modal: ViewStyle = {
   borderTopRightRadius: 30,
   overflow: 'hidden',
   flex: 1,
-  backgroundColor: Colors.white,
-};
-
-const card: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...Borders.primary,
-  backgroundColor: Colors.white,
-};
-
-const cardRight: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  borderTopRightRadius: Spacing.spaceSize[2],
-  borderBottomRightRadius: Spacing.spaceSize[2],
-  backgroundColor: Colors.white,
-};
-
-const cardLeft: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  borderTopLeftRadius: Spacing.spaceSize[2],
-  borderBottomLeftRadius: Spacing.spaceSize[2],
   backgroundColor: Colors.white,
 };
 
@@ -276,6 +284,9 @@ const notificationBadgeLarge: ViewStyle = {
 
 export {
   rounded,
+  card,
+  cardRight,
+  cardLeft,
   shadow,
   progressBar,
   progressBarIndicator,
@@ -289,9 +300,6 @@ export {
   modal,
   therapistView,
   therapistViewPressed,
-  card,
-  cardRight,
-  cardLeft,
   curveBorder,
   curveBorderBottom,
   borderCard,
@@ -302,6 +310,7 @@ export {
   bottomBounceFill,
   roundedBorder,
   roundedBorderGrey,
+  roundedBorderSemiGrey,
   roundedBorderLeft,
   roundedBorderRight,
   patientViewPressed,

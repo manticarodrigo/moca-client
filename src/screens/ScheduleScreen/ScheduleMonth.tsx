@@ -38,7 +38,7 @@ type Props = Pick<NavigationStackScreenProps, 'navigation'> & {
   isFocused: boolean;
   selectedDate: Date;
   onChangeDate: (date: Date) => void;
-  onSetAway: () => void;
+  onSetAway: (props) => void;
 }
 
 const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway }: Props) => {
@@ -106,6 +106,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
 
   const onChangeMonth = (date) => onChangeDate(new Date(date.timestamp));
 
+  const onPressSetAway = () => onSetAway({ visible: true });
+
   const onPressDay = (day) => {
     onChangeDate(new Date(day.timestamp));
 
@@ -154,7 +156,7 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
           }
         }}
         renderHeader={(onPressLeft, onPressRight, monthString, indicator) => (
-          <View>
+          <>
             <Paginator
               loading={!!indicator}
               title={monthString}
@@ -162,11 +164,11 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
               onPressPrev={onPressLeft}
               onPressNext={onPressRight}
             />
-            <View row justifyCenter alignCenter py={2} bgColor="secondary" onPress={onSetAway}>
-              <Text mr={2} variant="semiBold" color="white">Set Away Time</Text>
+            <View row justifyCenter alignCenter py={2} bgColor="secondary" onPress={onPressSetAway}>
+              <Text mr={2} variant="semiBold" color="white">Add Away Days</Text>
               <ArrowRightIcon tint="white" size={0.75} />
             </View>
-          </View>
+          </>
         )}
         dayComponent={ScheduleMonthDay}
         onMonthChange={onChangeMonth}
