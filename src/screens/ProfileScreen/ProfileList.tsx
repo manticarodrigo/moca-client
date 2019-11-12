@@ -11,6 +11,7 @@ import useNavigation from '@src/hooks/useNavigation';
 import useProfileFields from '@src/hooks/useProfileFields';
 
 import QualificationsModal from '@src/modals/QualificationsModal';
+import DaysOffModal from '@src/modals/DaysOffModal';
 import ReviewsModal from '@src/modals/ReviewsModal';
 import InputModal, { Props as InputModalProps } from '@src/modals/InputModal';
 import InjuryModal from '@src/modals/InjuryModal';
@@ -28,8 +29,9 @@ type Props = {
 
 const initialModalState = {
   prices: false,
-  preferredAilments: false,
+  awayDays: false,
   reviewCount: false,
+  preferredAilments: false,
   injury: false,
 };
 
@@ -126,7 +128,7 @@ const ProfileList = ({ user, readonly }: Props) => {
         return undefined;
 
       // custom modals
-      case 'injury': case 'preferredAilments': case 'reviewCount':
+      case 'awayDays': case 'reviewCount': case 'injury': case 'preferredAilments':
         return onOpenModal(key);
 
       // input modal
@@ -185,6 +187,12 @@ const ProfileList = ({ user, readonly }: Props) => {
     <>
       {isTherapistProfile && (
         <>
+          <DaysOffModal
+            visible={modalState.awayDays}
+            therapist={profile}
+            onClose={onCloseModal('awayDays')}
+          />
+
           <ReviewsModal
             visible={modalState.reviewCount}
             therapist={profile}

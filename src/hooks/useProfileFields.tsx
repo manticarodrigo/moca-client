@@ -38,6 +38,7 @@ const useProfileFields = (
       certDate,
       preferredAilments = [],
       payments = [],
+      awayDays = [],
     } = profile || {};
 
     const injury = (profile && profile.injury) || { title: '', description: '', images: [] };
@@ -71,11 +72,18 @@ const useProfileFields = (
         onPress: !readonly ? onPressField('status') : undefined,
       },
       {
+        icon: StatusIcon,
+        field: 'awayDays',
+        title: 'Days Off',
+        subtitle: `${awayDays.length} scheduled periods`,
+        onPress: awayDays.length ? onPressField('awayDays') : undefined,
+      },
+      {
         icon: RateIcon,
         field: 'reviewCount',
         title: 'Reviews',
         subtitle: `${reviewCount.toString()} reviews`,
-        onPress: onPressField('reviewCount'),
+        onPress: reviewCount > 0 && onPressField('reviewCount'),
       },
     ];
 

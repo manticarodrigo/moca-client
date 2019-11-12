@@ -15,7 +15,7 @@ import Image from '@src/components/Image';
 import Tag from '@src/components/Tag';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
-import { ListItem } from '@src/screens/ScheduleScreen/ScheduleScreen';
+import { ListItem } from '@src/screens/ScheduleScreen/ScheduleWeek';
 
 const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
