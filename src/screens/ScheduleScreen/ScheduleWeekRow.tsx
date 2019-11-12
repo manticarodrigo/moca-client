@@ -19,19 +19,20 @@ type Props = {
 const nowDate = new Date();
 
 const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
-  const { timestamp, appointments, awayDays = [] } = item;
+  const { key, appointments, awayDays = [] } = item;
 
   const { isDateToday, day, month, year, dayOfWeek } = useMemo(() => {
-    const dateObj = new Date(timestamp);
+    const [yyyy, MM, dd] = key.split('-');
+    const date = new Date(parseInt(yyyy, 10), parseInt(MM, 10) - 1, parseInt(dd, 10));
 
     return {
-      isDateToday: isToday(dateObj),
-      day: format(dateObj, 'dd'),
-      month: format(dateObj, 'MMM'),
-      year: format(dateObj, 'yyyy'),
-      dayOfWeek: format(dateObj, 'cccc'),
+      isDateToday: isToday(date),
+      day: format(date, 'dd'),
+      month: format(date, 'MMM'),
+      year: format(date, 'yyyy'),
+      dayOfWeek: format(date, 'cccc'),
     };
-  }, [timestamp]);
+  }, [key]);
 
   const { total, completed, completedDocs, totalDocs, totalTime, earnings } = useMemo(() => {
     const data = {
@@ -83,7 +84,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
     return { viewVariant: 'card', color: 'secondary' };
   }, [awayDays, total, isDateToday]);
 
-  if (!timestamp) return null;
+  if (!key) return null;
 
   return (
     <View
@@ -109,7 +110,7 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
 
       {!!awayDays.length && (
         <View px={4} justifyCenter alignCenter>
-          <Tag icon="clock" type="fill" placeholder="Away" />
+          <Tag icon="clock" type="warning" placeholder="Away" />
         </View>
       )}
 

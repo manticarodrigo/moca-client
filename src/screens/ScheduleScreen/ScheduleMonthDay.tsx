@@ -22,7 +22,7 @@ const dotStyles: ViewStyle = {
   backgroundColor: Colors.secondary,
 };
 
-const CalendarDay = ({ date, marking, state, onPress }) => {
+const ScheduleMonthDay = ({ date, marking, state, onPress }) => {
   const disabled = state === 'disabled';
   const today = state === 'today';
 
@@ -46,6 +46,10 @@ const CalendarDay = ({ date, marking, state, onPress }) => {
     }
   }
 
+  if (marking.awayDays && marking.awayDays.length) {
+    dotStyle = { ...dotStyles, backgroundColor: Colors.warning };
+  }
+
   return (
     <View
       justifyCenter
@@ -67,4 +71,4 @@ const CalendarDay = ({ date, marking, state, onPress }) => {
   );
 };
 
-export default React.memo(CalendarDay);
+export default ScheduleMonthDay;

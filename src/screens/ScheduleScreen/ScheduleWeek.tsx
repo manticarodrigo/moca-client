@@ -6,6 +6,7 @@ import { format, addDays, subDays, startOfWeek, eachDayOfInterval } from 'date-f
 import api from '@src/services/api';
 
 import useStore from '@src/hooks/useStore';
+import useAwayMap from '@src/hooks/useAwayMap';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
@@ -18,7 +19,7 @@ import Paginator from '@src/components/Paginator';
 import ScheduleWeekRow from './ScheduleWeekRow';
 
 export type ListItem = {
-  timestamp: number;
+  key: string; // see usage of: const keyFormat
   appointments: Appointment[];
   awayDays?: number[];
 }
@@ -32,33 +33,14 @@ type Props = Pick<NavigationStackScreenProps, 'navigation'> & {
   onSetAway: (props) => void;
 }
 
+const keyFormat = 'yyyy-MM-dd';
+
 const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway }: Props) => {
   const { store } = useStore();
+  const awayMap = useAwayMap(store.user.awayDays);
 
   const [itemMap, setItemMap] = useState<ItemMap>({});
   const [loading, setLoading] = useState(false);
-
-  const awayMap = useMemo(() => {
-    const map = {};
-    if (store.user.awayDays && Array.isArray(store.user.awayDays)) {
-      store.user.awayDays.forEach((leave) => {
-        const start = new Date(leave.startDate);
-        const end = new Date(leave.endDate);
-        const range = eachDayOfInterval({ start, end });
-
-        range.forEach((day) => {
-          const timestamp = day.getTime();
-
-          if (map[timestamp]) {
-            map[timestamp].push(leave.id);
-          } else {
-            map[timestamp] = [leave.id];
-          }
-        });
-      });
-    }
-    return map;
-  }, [store.user.awayDays]);
 
   const { items, startDate, endDate, weekString, totalEarnings } = useMemo(() => {
     const start = startOfWeek(selectedDate);
@@ -73,19 +55,20 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
     let earnings = 0;
 
     const currentItems = [];
-    const currentWeekTime = start.getTime();
-    const existing = itemMap[currentWeekTime];
+    const weekKey = format(start, keyFormat);
+    const existing = itemMap[weekKey];
 
     if (existing) {
       const currentWeekDays = eachDayOfInterval({ start, end });
 
       currentWeekDays.forEach((day) => {
-        const timestamp = day.getTime();
-        const { appointments } = itemMap[timestamp];
-        const awayDays = awayMap[timestamp];
+        const key = format(day, keyFormat);
 
-        earnings += itemMap[timestamp].appointments.reduce((acc, { price }) => acc + price, 0);
-        currentItems.push({ timestamp, appointments, awayDays });
+        const { appointments } = itemMap[key];
+        const awayDays = awayMap[key];
+
+        earnings += itemMap[key].appointments.reduce((acc, { price }) => acc + price, 0);
+        currentItems.push({ key, appointments, awayDays });
       });
     }
 
@@ -100,9 +83,9 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
 
   useEffect(() => {
     const getWeekAppointments = async () => {
-      const currentWeekTime = startDate.getTime();
+      const weekKey = format(startDate, keyFormat);
 
-      if (itemMap[currentWeekTime]) return;
+      if (itemMap[weekKey]) return;
 
       setLoading(true);
 
@@ -115,20 +98,19 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
         const weekMap: { [date: string]: ListItem } = {};
 
         currentWeekDays.forEach((day) => {
-          const timestamp = day.getTime();
+          const key = format(day, keyFormat);
 
-          weekMap[timestamp] = { timestamp, appointments: [] };
+          weekMap[key] = { key, appointments: [] };
         });
 
         data.forEach((appointment) => {
           const start = new Date(appointment.startTime);
           start.setHours(0, 0, 0, 0);
 
-          const timestamp = start.getTime();
-
+          const key = format(start, keyFormat);
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
-          weekMap[timestamp].appointments.push(appointment);
+          weekMap[key].appointments.push(appointment);
         });
 
         setItemMap((prev) => ({ ...prev, ...weekMap }));
@@ -145,6 +127,22 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
       setItemMap({});
     }
   }, [isFocused, selectedDate]);
+
+  const onPressPrev = () => {
+    if (loading) return;
+
+    onChangeDate(subDays(startDate, 7));
+  };
+
+  const onPressNext = () => {
+    if (loading) return;
+
+    onChangeDate(addDays(startDate, 7));
+  };
+
+  const onPressSetAway = () => onSetAway({ visible: true });
+
+  const keyExtractor = (item: ListItem) => item.key;
 
   const renderItem: ListRenderItem<ListItem> = ({ item, index }) => {
     const isFirst = index === 0;
@@ -169,22 +167,6 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
       />
     );
   };
-
-  const keyExtractor = (item: ListItem) => item.timestamp.toString();
-
-  const onPressPrev = () => {
-    if (loading) return;
-
-    onChangeDate(subDays(startDate, 7));
-  };
-
-  const onPressNext = () => {
-    if (loading) return;
-
-    onChangeDate(addDays(startDate, 7));
-  };
-
-  const onPressSetAway = () => onSetAway({ visible: true });
 
   return (
     <>

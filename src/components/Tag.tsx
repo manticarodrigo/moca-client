@@ -11,7 +11,7 @@ import View from './View';
 type TagProps = SpacingProps & {
   placeholder: string | number;
   icon?: 'report' | 'appointment' | 'clock' | 'dollar';
-  type?: 'fill' | 'border' | 'borderLight';
+  type?: 'fill' | 'border' | 'borderLight' | 'warning';
   center?: boolean;
 }
 
@@ -20,6 +20,8 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: 
 
   const borderColor = useMemo(() => {
     switch (type) {
+      case 'warning':
+        return Colors.warning;
       case 'fill':
         return Colors.secondary;
       case 'borderLight':
@@ -31,6 +33,7 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: 
 
   const color = useMemo(() => {
     switch (type) {
+      case 'warning':
       case 'fill':
         return Colors.white;
       case 'borderLight':
@@ -76,7 +79,7 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: 
       justifyBetween={!center}
       alignCenter
       px={2}
-      bgColor={type === 'fill' ? 'secondary' : null}
+      bgColor={type === 'warning' ? 'warning' : (type === 'fill' && 'secondary') || undefined}
       style={styles.view}
     >
       {iconType}

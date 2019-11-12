@@ -11,13 +11,16 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 
-import { Colors, Typography } from '@src/styles';
 
 import api from '@src/services/api';
 
 import useStore from '@src/hooks/useStore';
+import useAwayMap from '@src/hooks/useAwayMap';
 
+import { Leave } from '@src/services/openapi';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
+
+import { Colors, Typography } from '@src/styles';
 
 import { PreviousArrowIcon, NextArrowIcon, ArrowRightIcon } from '@src/components/icons';
 
@@ -31,6 +34,7 @@ type MarkedDates = {
   [date: string]: DotMarking & {
     total?: number;
     appointments?: Appointment[];
+    awayDays?: Leave[];
   };
 }
 
@@ -43,6 +47,7 @@ type Props = Pick<NavigationStackScreenProps, 'navigation'> & {
 
 const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway }: Props) => {
   const { store } = useStore();
+  const awayMap = useAwayMap(store.user.awayDays);
 
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
   const [loading, setLoading] = useState(false);
@@ -58,22 +63,37 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
   }, [selectedDate]);
 
   useEffect(() => {
+    const newState: MarkedDates = { ...markedDates };
+
+    Object.keys(markedDates).forEach((key) => {
+      delete newState[key].awayDays;
+    });
+
+    Object.entries(awayMap).forEach(([key, awayDays]) => {
+      newState[key] = { ...newState[key], awayDays };
+    });
+
+    setMarkedDates(newState);
+  }, [awayMap]);
+
+  useEffect(() => {
     const getAppointments = async () => {
-      const startKey = format(startDate, 'yyyy-MM-dd');
-
-      if (markedDates[startKey]) return;
-
-      setLoading(true);
+      const monthMap: MarkedDates = {};
 
       try {
-        const query = { start: startDate.toISOString(), end: endDate.toISOString() };
+        const startKey = format(startDate, 'yyyy-MM-dd');
 
+        if (markedDates[startKey]) return;
+
+        setLoading(true);
+
+        const query = { start: startDate.toISOString(), end: endDate.toISOString() };
         const { data } = await api.appointment.appointmentList({ query });
 
-        const monthMap: MarkedDates = {};
 
         data.forEach((appointment) => {
-          const key = format(new Date(appointment.startTime), 'yyyy-MM-dd');
+          const date = new Date(appointment.startTime);
+          const key = format(new Date(date), 'yyyy-MM-dd');
 
           let total = appointment.price;
           let appointments = [appointment];
@@ -88,9 +108,8 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
           // @ts-ignore
           monthMap[key] = { total, appointments };
         });
-
-        setMarkedDates((prev) => ({ ...prev, ...monthMap }));
       } finally {
+        setMarkedDates((prev) => ({ ...prev, ...monthMap }));
         setLoading(false);
       }
     };
@@ -113,13 +132,19 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
 
     const existing = markedDates[day.dateString] || {};
 
+    if (existing.awayDays && existing.awayDays.length) {
+      const [leaveId] = existing.awayDays;
+
+      return onSetAway({ visible: true, leaveId });
+    }
+
     const scheduleItem = {
       // month is an index
       timestamp: new Date(day.year, day.month - 1, day.day).toISOString(),
       appointments: existing.appointments,
     };
 
-    navigation.push('ScheduleDayScreen', { scheduleItem });
+    return navigation.push('ScheduleDayScreen', { scheduleItem });
   };
 
   const monthTotal = useMemo(() => {
