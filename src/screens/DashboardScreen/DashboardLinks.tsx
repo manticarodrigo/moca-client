@@ -111,9 +111,9 @@ const DashboardLinks = ({ isActivated }: Props) => {
             {lastConversation ? (
               <>
                 <Text variant="regularSmall" color="dark">
-                  {lastConversation.user.firstName}
+                  {lastConversation.otherUser.firstName}
                   {' '}
-                  {lastConversation.user.lastName}
+                  {lastConversation.otherUser.lastName}
                 </Text>
                 <Text variant="light" numberOfLines={1}>
                   {lastConversation.lastMessage.content.text || 'Appointment Request'}

@@ -1,5 +1,10 @@
 import { ConversationAction } from '@src/store/actions/ConversationAction';
-import { UserSnippet, Message as BadMessage, Address as BadAddress } from '@src/services/openapi';
+
+import {
+  Conversation as BadConversation,
+  Message as BadMessage,
+  Address as BadAddress,
+} from '@src/services/openapi';
 
 export type Address = Omit<BadAddress, 'location'> & {
   location: {
@@ -16,8 +21,7 @@ export type Message = Omit<BadMessage, 'image' | 'content'> & {
   content: MessageContent;
 }
 
-export type Conversation = {
-  user: UserSnippet;
+export type Conversation = BadConversation & {
   lastMessage: Message;
 }
 

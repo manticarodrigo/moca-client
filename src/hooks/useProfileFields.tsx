@@ -124,7 +124,7 @@ const useProfileFields = (
         field: 'gender',
         title: 'Gender',
         subtitle: (readonly && (gender === 'M' ? 'Male' : 'Female')) || undefined,
-        existingValue: !readonly ? gender : undefined,
+        existingValue: !readonly ? gender || '' : undefined,
         onPress: !readonly ? onPressField('gender') : undefined,
       },
       ...(!isTherapist ? patientFirstRows : []),

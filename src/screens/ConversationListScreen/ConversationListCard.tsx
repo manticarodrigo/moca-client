@@ -13,15 +13,15 @@ type Props = {
 };
 
 const ConversationListCard = ({ conversation, onPress }: Props) => {
-  const handleCardPress = () => onPress(conversation.user);
+  const handleCardPress = () => onPress(conversation.otherUser);
 
   const { image, name, time, text } = useMemo(() => {
-    const { lastMessage, user } = conversation;
+    const { lastMessage, otherUser } = conversation;
     const { content, createdAt } = lastMessage;
 
     return {
-      image: user.image || undefined,
-      name: `${user.firstName} ${user.lastName}`,
+      image: otherUser.image || undefined,
+      name: `${otherUser.firstName} ${otherUser.lastName}`,
       time: format(new Date(createdAt), 'MM/dd/yyyy - h:mm a'),
       text: (
         content.text
