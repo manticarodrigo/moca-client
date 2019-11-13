@@ -41,7 +41,6 @@ const useDateSections = <Item extends object>
 
       // return list of sections sorted by descending date
       return Object.entries(sectionsMap)
-        // eslint-disable-next-line radix
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]))
         .map(([_, value]) => value);
     }, [items, getItemDate],

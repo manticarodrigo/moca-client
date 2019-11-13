@@ -101,7 +101,6 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
           start.setHours(0, 0, 0, 0);
 
           const dateString = format(start, keyFormat);
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
           weekMap[dateString].appointments.push(appointment);
         });

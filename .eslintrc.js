@@ -20,6 +20,8 @@ module.exports =  {
   ],
   rules:  {
     'max-len': ['warn' , { code: 100 }],
+    'radix': 'off',
+    'ban-ts-ignore': 'off,'
     'object-curly-newline': 'off',
     'no-confusing-arrow': 'off',
     'no-underscore-dangle': 'off',

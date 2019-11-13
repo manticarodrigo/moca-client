@@ -34,7 +34,6 @@ const DatePicker = ({ existingDate, placeholder, onChange }) => (
         height: 'auto',
       },
       dateText: smallRegularGrey,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       btnTextText: semiBoldSecondary,
     }}

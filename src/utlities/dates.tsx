@@ -1,5 +1,3 @@
-/* eslint-disable radix */
-
 export const getDateForString = (selectedDate: string, selectedTime = '00:00') => {
   const [year, month, date] = selectedDate.split('-');
   const [hours, minutes] = selectedTime.split(':');

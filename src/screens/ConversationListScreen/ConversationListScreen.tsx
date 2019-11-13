@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';

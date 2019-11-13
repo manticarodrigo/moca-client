@@ -1,4 +1,3 @@
-/* eslint-disable radix */
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useState, useMemo } from 'react';
 import { Picker } from 'react-native';
@@ -122,6 +121,7 @@ const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
         const [errorMessage] = nonFieldErrors;
         message = errorMessage;
       }
+
       setToastState({ type: 'error', message });
     }
   };

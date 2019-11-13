@@ -99,7 +99,7 @@ const AppointmentHeader = ({
               {!isTherapist && (
                 <Rating
                   mt={-3}
-                  rating={(current || upcoming) ? parseInt(therapistRating, 10) : rating}
+                  rating={(current || upcoming) ? parseInt(therapistRating) : rating}
                 />
               )}
               <Text variant="titleLarge">

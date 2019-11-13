@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Dispatch } from 'react';
 
 import { StoreState } from '@src/StoreProvider';

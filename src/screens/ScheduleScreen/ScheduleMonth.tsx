@@ -103,11 +103,9 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
 
           if (monthMap[key]) {
             total += monthMap[key].total;
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore
             appointments = [...monthMap[key].appointments, appointment];
           }
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
           monthMap[key] = { total, appointments };
         });
