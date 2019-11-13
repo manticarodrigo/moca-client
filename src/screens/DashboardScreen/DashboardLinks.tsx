@@ -69,6 +69,12 @@ const DashboardLinks = ({ isActivated }: Props) => {
     return `${otherParty.firstName} ${otherParty.lastName} / ${format(new Date(endTime), 'cccc')}`;
   }, [store.appointments]);
 
+  const unreadCountTotal = useMemo(
+    // @ts-ignore
+    () => store.conversations.list.reduce((acc, { unreadCount = 0 }) => acc + unreadCount, 0),
+    [store.conversations.list],
+  );
+
   const onPressLink = (screen: string) => () => navigation.navigate(screen);
 
   return (
@@ -118,7 +124,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
                 <Text variant="light" numberOfLines={1}>
                   {lastConversation.lastMessage.content.text || 'Appointment Request'}
                 </Text>
-                <NotificationBadge large />
+                <NotificationBadge count={unreadCountTotal} large />
               </>
             ) : (
               <Text variant="regularSmall" color="grey">

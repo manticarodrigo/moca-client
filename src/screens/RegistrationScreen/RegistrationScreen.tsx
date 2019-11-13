@@ -67,7 +67,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         const { user } = response.data;
 
         const errors: Partial<FormFields> = {};
-        if (Array.isArray(user.email) && user.email.length) {
+        if (user && Array.isArray(user.email) && user.email.length) {
           const [emailError] = user.email;
           errors.email = emailError;
         }

@@ -105,13 +105,12 @@ const ScheduleRow = ({ item, isFirst, isLast, onPressDate }: Props) => {
             <Text variant="lightSmallest" color={color}>{year}</Text>
           </View>
         </View>
-
         <Text variant="regularSmall" color={color}>{dayOfWeek}</Text>
       </View>
 
       {!!awayDays.length && (
-        <View px={4} justifyCenter alignCenter>
-          <Tag icon="clock" type="warning" placeholder="Away" />
+        <View justifyCenter alignCenter px={3} variant="shadow">
+          <Tag icon="clock" type="warning" placeholder="Off" />
         </View>
       )}
 

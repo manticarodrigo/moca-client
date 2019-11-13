@@ -6,6 +6,7 @@ import { Conversation } from '@src/store/reducers/ConversationReducer';
 import View from '@src/components/View';
 import Image from '@src/components/Image';
 import Text from '@src/components/Text';
+import NotificationBadge from '@src/components/NotificationBadge';
 
 type Props = {
   conversation: Conversation;
@@ -38,6 +39,7 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
           <Text variant="semiBoldLarge" mb={2}>{name}</Text>
           <Text variant="regularSmall" color="grey">{time}</Text>
         </View>
+        <NotificationBadge count={parseInt(conversation.unreadCount)} large />
       </View>
       <Text
         variant="light"

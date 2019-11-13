@@ -21,7 +21,6 @@ module.exports =  {
   rules:  {
     'max-len': ['warn' , { code: 100 }],
     'radix': 'off',
-    'ban-ts-ignore': 'off,'
     'object-curly-newline': 'off',
     'no-confusing-arrow': 'off',
     'no-underscore-dangle': 'off',
@@ -30,6 +29,7 @@ module.exports =  {
     'no-param-reassign-allow-reduce/no-reduce-identifiers': 2,
     'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
     'react/prop-types': 'off', // TODO: Find a way to autogenerate prop types from TypeScript definitions
     'react/jsx-filename-extension': [1, { 'extensions': ['.tsx', '.ts'] }],
     'react/jsx-props-no-spreading': 'off',

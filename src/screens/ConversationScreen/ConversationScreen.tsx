@@ -104,7 +104,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
     const updated = store.conversations.map[otherUser.id];
     if (updated) setMessages(updated);
-  }, [otherUser, store.conversations.map]);
+  }, [store.conversations.map]);
 
   const onToggleAppointmentRequest = () => setAppointmentRequestVisible(!appointmentRequestVisible);
 

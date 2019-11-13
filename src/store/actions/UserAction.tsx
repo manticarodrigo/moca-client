@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Dispatch } from 'react';
 
 import api from '@src/services/api';
+
+import { getDeviceToken } from '@src/utlities/deviceToken';
+
 import { StoreState } from '@src/StoreProvider';
 import { UserState, Price } from '@src/store/reducers/UserReducer';
 
@@ -34,19 +36,25 @@ const updateUserState = (state: Partial<UserState>) => async (dispatch: Dispatch
 
 const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
   const { email, password, firstName, lastName } = user;
+  const deviceToken = await getDeviceToken();
 
   const registerMethod = user.type === 'PA'
     ? api.user.userPatientCreate
     : api.user.userTherapistCreate;
 
-  const { data } = await registerMethod({ user: { email, password, firstName, lastName } });
+  const { data } = await registerMethod({
+    user: { email, password, firstName, lastName },
+    deviceToken,
+  });
 
   // @ts-ignore
   dispatch({ type: 'REGISTER_USER_SUCCESS', payload: data });
 };
 
 const loginUser = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
-  const { data } = await api.auth.authenticateLoginCreate({ email, password });
+  const deviceToken = await getDeviceToken();
+
+  const { data } = await api.auth.authenticateLoginCreate({ email, password, deviceToken });
 
   dispatch({ type: 'LOGIN_USER_SUCCESS', payload: data });
 };

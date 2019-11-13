@@ -49,7 +49,7 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: 
       borderRadius: Spacing.spaceSize[5],
       borderWidth: 1,
       borderColor,
-      width: 70,
+      width: type === 'warning' ? 'auto' : 70,
       height: 25,
     },
     text: {
