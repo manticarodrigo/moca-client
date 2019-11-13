@@ -34,6 +34,8 @@ const AppStateHandler = ({ navigatorRef, children }) => {
 
   useEffect(() => {
     const onAuthNavigate = () => {
+      dispatch(getConversations());
+
       if (store.user.type === 'PT' && !store.user.preferredAilments.length) {
         navigate('QualificationsScreen');
       } else if (store.user.addresses.length === 0) {
