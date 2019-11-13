@@ -109,13 +109,13 @@ const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
       await dispatch(sendAppointmentRequest(patient.id, data));
       setToastState({
         type: 'success',
-        message: 'This appointment has been added to your calendar',
+        message: 'The appointment request has been created successfully.',
       });
       setTimeout(onClose, 2000);
     } catch (e) {
       const { nonFieldErrors } = e.response.data;
 
-      let message = 'There was an issue adding the appointment';
+      let message = 'There was an issue adding the appointment request.';
 
       if (nonFieldErrors && nonFieldErrors.length) {
         const [errorMessage] = nonFieldErrors;

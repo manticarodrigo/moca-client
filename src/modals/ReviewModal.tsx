@@ -5,6 +5,10 @@ import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
+import useStore from '@src/hooks/useStore';
+
+import { updateAppointment } from '@src/store/actions/AppointmentAction';
+
 import { Views } from '@src/styles';
 
 import StarIcon from '@src/components/icons/StarIcon';
@@ -51,10 +55,10 @@ const maxRate = 5;
 type Props = {
   visible: boolean;
   appointment: Appointment;
-  onSubmit: (review: Appointment['review']) => void;
   onClose: () => void;
 }
-const ReviewModal = ({ visible, appointment, onSubmit, onClose }: Props) => {
+const ReviewModal = ({ visible, appointment, onClose }: Props) => {
+  const { dispatch } = useStore();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
@@ -73,10 +77,13 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }: Props) => {
 
   const onPressRating = (starsCount: number) => () => setRating(starsCount);
 
-  const handleSubmit = () => {
+  const onPressSubmit = async () => {
     if (rating) {
-      onSubmit({ rating, comment });
+      const review = { rating, comment };
+      await dispatch(updateAppointment(appointment.id, { review }));
     }
+
+    onClose();
   };
 
   return (
@@ -111,7 +118,7 @@ const ReviewModal = ({ visible, appointment, onSubmit, onClose }: Props) => {
           </View>
           <View row>
             <View flex={1}>
-              <Button disabled={!rating} onPress={handleSubmit}>
+              <Button onPress={onPressSubmit}>
                 {buttonText}
               </Button>
             </View>

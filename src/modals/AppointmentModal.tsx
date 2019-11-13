@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { AppointmentStatusEnum } from '@src/services/openapi';
+import { getUpcomingAppointments } from '@src/store/actions/AppointmentAction';
+
+import useStore from '@src/hooks/useStore';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -13,18 +18,37 @@ type Tab = 'timer' | 'notes';
 const tabOptions = [{ value: 'timer', label: 'Timer' }, { value: 'notes', label: 'Notes' }];
 
 const AppointmentModal = ({
-  past = false,
   visible,
   isTherapist,
   appointment,
-  onEndTimer = undefined,
-  onSubmitNotes,
   onClose,
 }) => {
-  const [activeTab, setActiveTab] = useState<Tab>(past ? 'notes' : 'timer');
+  const { dispatch } = useStore();
+  const inProgress = (appointment || {}).status === AppointmentStatusEnum.InProgress;
+  const completed = (appointment || {}).status === AppointmentStatusEnum.Completed;
+
+  const [activeTab, setActiveTab] = useState<Tab>('timer');
+
+
+  useEffect(() => {
+    if (completed && activeTab === 'timer') {
+      setActiveTab('notes');
+    }
+  }, [appointment]);
+
 
   const onChangeTab = (value: Tab) => {
     setActiveTab(value);
+  };
+
+  const onSubmitNotes = () => {
+    dispatch(getUpcomingAppointments());
+
+    if (completed) {
+      onClose();
+    } else {
+      setActiveTab('timer');
+    }
   };
 
   return (
@@ -32,12 +56,12 @@ const AppointmentModal = ({
       <View width={WINDOW_WIDTH} variant="borderBottom">
         <View row py={2} px={4}>
           <AppointmentHeader
-            minimal={isTherapist && !past}
+            minimal={inProgress}
             isTherapist={isTherapist}
             appointment={appointment}
           />
         </View>
-        {(isTherapist && !past) && (
+        {!!(isTherapist && inProgress) && (
           <SegmentedControl
             light
             selected={activeTab}
@@ -48,10 +72,10 @@ const AppointmentModal = ({
       </View>
       {activeTab === 'timer' && (
         <Timer
-          focused={visible}
+          focused={activeTab === 'timer'}
           isTherapist={isTherapist}
           appointment={appointment}
-          onEnd={onEndTimer}
+          onEnd={onClose}
         />
       )}
       {activeTab === 'notes' && (

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Dispatch } from 'react';
 import { subHours } from 'date-fns';
 
@@ -14,6 +13,10 @@ export type AppointmentAction =
   | { type: 'GET_PAST_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'UPDATE_APPOINTMENT_SUCCESS'; payload: Appointment }
   | { type: 'CANCEL_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
+  | { type: 'START_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
+  | { type: 'END_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
+
+type AppointmentDispatch = Dispatch<AppointmentAction>;
 
 const answerAppointmentRequest = (
   id: string,
@@ -24,7 +27,7 @@ const answerAppointmentRequest = (
   dispatch({ type: 'ANSWER_APPOINTMENT_REQUEST_SUCCESS' });
 };
 
-const getUpcomingAppointments = () => async (dispatch: Dispatch<AppointmentAction>) => {
+const getUpcomingAppointments = () => async (dispatch: AppointmentDispatch) => {
   const query = { start: subHours(new Date(), 1).toISOString(), limit: 3 };
 
   const { data } = await api.appointment.appointmentList({ query });
@@ -33,7 +36,7 @@ const getUpcomingAppointments = () => async (dispatch: Dispatch<AppointmentActio
   dispatch({ type: 'GET_UPCOMING_APPOINTMENTS_SUCCESS', payload: data });
 };
 
-const getLastAppointment = () => async (dispatch: Dispatch<AppointmentAction>) => {
+const getLastAppointment = () => async (dispatch: AppointmentDispatch) => {
   const query = { end: new Date().toISOString(), limit: -1 };
   const options = { query };
 
@@ -43,7 +46,7 @@ const getLastAppointment = () => async (dispatch: Dispatch<AppointmentAction>) =
   dispatch({ type: 'GET_LAST_APPOINTMENT_SUCCESS', payload: data });
 };
 
-const getPastAppointments = () => async (dispatch: Dispatch<AppointmentAction>) => {
+const getPastAppointments = () => async (dispatch: AppointmentDispatch) => {
   const query = { end: new Date().toISOString() };
 
   const { data } = await api.appointment.appointmentList({ query });
@@ -53,11 +56,11 @@ const getPastAppointments = () => async (dispatch: Dispatch<AppointmentAction>) 
 };
 
 const updateAppointment = (
-  appointmentId: string,
+  appointmentId: Appointment['id'],
   body: Pick<Appointment, 'review' | 'note'>,
-) => async (dispatch: Dispatch<AppointmentAction>) => {
+) => async (dispatch: AppointmentDispatch) => {
   // @ts-ignore
-  const { data } = await api.appointment.appointmentPartialUpdate(appointmentId, body);
+  const { data } = await api.appointment.appointmentPartialUpdate(appointmentId.toString(), body);
 
   // therapist/patient come back as ids so remove them
   delete data.therapist;
@@ -69,10 +72,22 @@ const updateAppointment = (
 const cancelAppointment = (
   appointmentId: Appointment['id'],
   type: AppointmentCancellation['type'],
-) => async (dispatch: Dispatch<AppointmentAction>) => {
+) => async (dispatch: AppointmentDispatch) => {
   await api.appointment.appointmentCancelCreate(appointmentId.toString(), { type });
 
   dispatch({ type: 'CANCEL_APPOINTMENT_SUCCESS', payload: appointmentId });
+};
+
+const startAppointment = (id: Appointment['id']) => async (dispatch: AppointmentDispatch) => {
+  await api.appointment.appointmentStartCreate(id.toString());
+
+  dispatch({ type: 'START_APPOINTMENT_SUCCESS', payload: id });
+};
+
+const endAppointment = (id: Appointment['id']) => async (dispatch: AppointmentDispatch) => {
+  await api.appointment.appointmentEndCreate(id.toString());
+
+  dispatch({ type: 'END_APPOINTMENT_SUCCESS', payload: id });
 };
 
 export {
@@ -82,4 +97,6 @@ export {
   getPastAppointments,
   updateAppointment,
   cancelAppointment,
+  startAppointment,
+  endAppointment,
 };

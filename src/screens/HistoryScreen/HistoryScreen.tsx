@@ -6,7 +6,7 @@ import { NavigationStackScreenProps, NavigationStackScreenComponent } from 'reac
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
 
-import { getPastAppointments, updateAppointment } from '@src/store/actions/AppointmentAction';
+import { getPastAppointments } from '@src/store/actions/AppointmentAction';
 
 import { UserState } from '@src/store/reducers/UserReducer';
 
@@ -51,34 +51,19 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
 
   const onCloseModal = () => setSelectedAppointment(undefined);
 
-  const onSubmitNote = async (note: Appointment['note']) => {
-    await dispatch(updateAppointment(selectedAppointment.id, { note }));
-
-    onCloseModal();
-  };
-
-  const onSubmitReview = async (review: Appointment['review']) => {
-    await dispatch(updateAppointment(selectedAppointment.id, { review }));
-
-    onCloseModal();
-  };
-
   return (
     <>
       {isTherapist ? (
         <AppointmentModal
-          past
           isTherapist
           appointment={selectedAppointment}
           visible={isTherapist && !!selectedAppointment}
-          onSubmitNotes={onSubmitNote}
           onClose={onCloseModal}
         />
       ) : (
         <ReviewModal
           appointment={selectedAppointment}
           visible={!isTherapist && !!selectedAppointment}
-          onSubmit={onSubmitReview}
           onClose={onCloseModal}
         />
       )}

@@ -16,7 +16,7 @@ export type AppointmentState = {
   past: Appointment[];
 };
 
-function updateItem(key: keyof AppointmentState, state, payload) {
+function updateUpcomingItem(key: keyof AppointmentState, state, payload) {
   const index = state[key].findIndex((val) => val.id === payload.id);
 
   if (index === -1) {
@@ -28,11 +28,15 @@ function updateItem(key: keyof AppointmentState, state, payload) {
   return state;
 }
 
-function cancelAppointment(state: AppointmentState, id: Appointment['id']) {
+function updateUpcomingItemStatus(
+  state: AppointmentState,
+  id: Appointment['id'],
+  status: Appointment['status'],
+) {
   const existing = state.upcoming.find((a) => a.id === id);
 
   if (existing) {
-    existing.status = AppointmentStatusEnum.Cancelled;
+    existing.status = status;
   }
 
   return state;
@@ -47,9 +51,13 @@ const reducer = (state: AppointmentState, action: AppointmentAction): Appointmen
     case 'GET_PAST_APPOINTMENTS_SUCCESS':
       return { ...state, past: action.payload };
     case 'UPDATE_APPOINTMENT_SUCCESS':
-      return updateItem('past', state, action.payload);
+      return updateUpcomingItem('past', state, action.payload);
     case 'CANCEL_APPOINTMENT_SUCCESS':
-      return cancelAppointment(state, action.payload);
+      return updateUpcomingItemStatus(state, action.payload, AppointmentStatusEnum.Cancelled);
+    case 'START_APPOINTMENT_SUCCESS':
+      return updateUpcomingItemStatus(state, action.payload, AppointmentStatusEnum.InProgress);
+    case 'END_APPOINTMENT_SUCCESS':
+      return updateUpcomingItemStatus(state, action.payload, AppointmentStatusEnum.Completed);
     default:
       return state;
   }

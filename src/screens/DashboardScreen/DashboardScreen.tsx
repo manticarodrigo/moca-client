@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
+import { isBefore, isAfter } from 'date-fns';
 
+import { AppointmentStatusEnum } from '@src/services/openapi';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 import { UserState } from '@src/store/reducers/UserReducer';
 
 import useStore from '@src/hooks/useStore';
 
-import {
-  getUpcomingAppointments,
-  getLastAppointment,
-  updateAppointment,
-} from '@src/store/actions/AppointmentAction';
+import { getUpcomingAppointments, getLastAppointment } from '@src/store/actions/AppointmentAction';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -19,6 +17,7 @@ import LogoBackground from '@src/components/LogoBackground';
 import AwayCard from '@src/components/AwayCard';
 
 import AppointmentModal from '@src/modals/AppointmentModal';
+import ReviewModal from '@src/modals/ReviewModal';
 import CancellationModal from '@src/modals/CancellationModal';
 
 import DashboardAlert from './DashboardAlert';
@@ -32,8 +31,7 @@ const isActivated = true;
 const isAway = false;
 
 type ModalState = {
-  timer?: boolean;
-  notes?: boolean;
+  appointment?: boolean;
   review?: boolean;
   cancellation?: boolean;
 };
@@ -44,6 +42,27 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
   const [modalState, setModalState] = useState<ModalState>({});
 
   const isTherapist = store.user.type === 'PT';
+
+  const { current, next } = useMemo(() => {
+    const appointments = store.appointments.upcoming;
+
+    if (!appointments.length || !isFocused) {
+      return { current: undefined, next: undefined };
+    }
+
+    const nowDate = new Date();
+
+    return {
+      current: appointments.find(
+        ({ startTime, endTime }) => (
+          isBefore(new Date(startTime), nowDate) && isAfter(new Date(endTime), nowDate)
+        ),
+      ),
+      next: appointments.find(
+        ({ startTime }) => isAfter(new Date(startTime), nowDate),
+      ),
+    };
+  }, [isFocused, store.appointments.upcoming]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -60,10 +79,47 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    if (!current || !isFocused) return;
+
+    const inProgress = current.status === AppointmentStatusEnum.InProgress;
+    const completed = current.status === AppointmentStatusEnum.Completed;
+
+    const handleAppointmentActions = async () => {
+      if (inProgress) {
+        setSelectedAppointment(current);
+
+        if (!modalState.appointment) {
+          setModalState({ appointment: true });
+        }
+      }
+
+      if (completed && !isTherapist) {
+        setSelectedAppointment(current);
+
+        if (modalState.appointment) {
+          setModalState({});
+        }
+
+        if (!modalState.review) {
+          setTimeout(() => {
+            setModalState({ review: true });
+          }, 1000);
+        }
+      }
+    };
+
+    handleAppointmentActions();
+  }, [current]);
+
   const onPressAppointment = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
 
-    return setModalState({ timer: true });
+    let state: ModalState = { appointment: true };
+    if (!isTherapist && appointment.status === AppointmentStatusEnum.Completed) {
+      state = { review: true };
+    }
+    return setModalState(state);
   };
 
   const onPressAppointmentAction = (appointment: Appointment) => {
@@ -79,28 +135,21 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
     navigation.navigate('ConversationScreen', { user });
   };
 
-  const onEndTimer = () => {
-    // TODO: end time early API
-    // check if notes are finished, if not, navigate to the tab
-    onCloseModals();
-  };
-
-  const onSubmitNote = async (note: Appointment['note']) => {
-    await dispatch(updateAppointment(selectedAppointment.id.toString(), { note }));
-
-    onCloseModals();
-  };
-
   return (
     <>
       <AppointmentModal
-        visible={modalState.timer}
+        visible={modalState.appointment}
         appointment={selectedAppointment}
         isTherapist={isTherapist}
         onClose={onCloseModals}
-        onEndTimer={onEndTimer}
-        onSubmitNotes={onSubmitNote}
       />
+      {!isTherapist && (
+        <ReviewModal
+          visible={modalState.review}
+          appointment={selectedAppointment}
+          onClose={onCloseModals}
+        />
+      )}
 
       <CancellationModal
         visible={modalState.cancellation}
@@ -137,7 +186,8 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
           )}
           {(!isTherapist || isActivated) && (
             <DashboardAppointments
-              appointments={store.appointments.upcoming}
+              current={current}
+              next={next}
               isTherapist={isTherapist}
               onPressAppointment={onPressAppointment}
               onPressAppointmentAction={onPressAppointmentAction}

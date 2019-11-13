@@ -158,7 +158,7 @@ const FormField = ({
   }, [didBlur]);
 
   useEffect(() => {
-    if (blurred) {
+    if (blurred && onChangeError) {
       onChangeError(getValidationError(value, validation, required));
     }
   }, [blurred, validationError]);

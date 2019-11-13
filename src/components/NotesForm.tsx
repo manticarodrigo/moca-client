@@ -1,15 +1,19 @@
 import React, { useMemo } from 'react';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
+import { updateAppointment } from '@src/store/actions/AppointmentAction';
+
+import useStore from '@src/hooks/useStore';
 
 import Form from './Form';
 
 type Props = {
   appointment: Appointment;
-  onSubmit: (values: Appointment['note']) => void;
+  onSubmit: () => void;
 }
 
 const NotesForm = ({ appointment, onSubmit }: Props) => {
+  const { dispatch } = useStore();
   const { note } = appointment || {};
 
   const fieldConfig = useMemo(() => {
@@ -30,12 +34,18 @@ const NotesForm = ({ appointment, onSubmit }: Props) => {
     };
   }, [note]);
 
+  const onPressSubmit = async (fields) => {
+    await dispatch(updateAppointment(appointment.id, { note: fields }));
+
+    onSubmit();
+  };
+
   return (
     <Form
       fieldConfig={fieldConfig}
       images={[]}
       submitText="Save Notes"
-      onSubmit={onSubmit}
+      onSubmit={onPressSubmit}
     />
   );
 };
