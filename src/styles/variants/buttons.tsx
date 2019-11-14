@@ -167,7 +167,7 @@ const secondaryBig: ButtonVariant = {
   text: {
     ...Typography.getStyles({ color: 'secondary', size: 3, weight: '700', align: 'center' }),
   },
-  underlayColor: Colors.white,
+  underlayColor: Colors.lightGrey,
 };
 
 export {

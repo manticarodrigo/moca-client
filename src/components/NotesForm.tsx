@@ -8,11 +8,12 @@ import useStore from '@src/hooks/useStore';
 import Form from './Form';
 
 type Props = {
+  visible: boolean;
   appointment: Appointment;
   onSubmit: () => void;
 }
 
-const NotesForm = ({ appointment, onSubmit }: Props) => {
+const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
   const { dispatch } = useStore();
   const { note } = appointment || {};
 
@@ -40,14 +41,14 @@ const NotesForm = ({ appointment, onSubmit }: Props) => {
     onSubmit();
   };
 
-  return (
+  return visible ? (
     <Form
       fieldConfig={fieldConfig}
       images={[]}
       submitText="Save Notes"
       onSubmit={onPressSubmit}
     />
-  );
+  ) : null;
 };
 
 export default NotesForm;

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 import useFormFields from '@src/hooks/useFormFields';
 
@@ -29,6 +29,8 @@ const Form = <State extends { [key: string]: string }> ({
 }: Props<State>) => {
   const [localImages, setLocalImages] = useState(images);
 
+  const mounted = useRef(true);
+
   const initialState = useMemo(
     () => Object.entries(fieldConfig).reduce(
       (a, [key, config]) => ({ ...a, [key]: config.value }), {},
@@ -43,6 +45,8 @@ const Form = <State extends { [key: string]: string }> ({
   } = useFormFields<State>(initialState);
 
   useEffect(() => {
+    if (!mounted.current) return;
+
     setFieldValues(initialState as State);
   }, [initialState]);
 

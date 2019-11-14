@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { AppointmentStatusEnum } from '@src/services/openapi';
 import { getUpcomingAppointments } from '@src/store/actions/AppointmentAction';
@@ -24,14 +24,17 @@ const AppointmentModal = ({
   onClose,
 }) => {
   const { dispatch } = useStore();
+  const [activeTab, setActiveTab] = useState<Tab>('timer');
+
+  const mounted = useRef(true);
+
   const inProgress = (appointment || {}).status === AppointmentStatusEnum.InProgress;
   const completed = (appointment || {}).status === AppointmentStatusEnum.Completed;
 
-  const [activeTab, setActiveTab] = useState<Tab>('timer');
-
-
   useEffect(() => {
     if (completed && activeTab === 'timer') {
+      if (!mounted.current) return;
+
       setActiveTab('notes');
     }
   }, [appointment]);
@@ -62,25 +65,25 @@ const AppointmentModal = ({
           />
         </View>
         {!!(isTherapist && inProgress) && (
-          <SegmentedControl
-            light
-            selected={activeTab}
-            options={tabOptions}
-            onChange={onChangeTab}
-          />
+          <View pb={3}>
+            <SegmentedControl
+              light
+              selected={activeTab}
+              options={tabOptions}
+              onChange={onChangeTab}
+            />
+          </View>
         )}
       </View>
-      {activeTab === 'timer' && (
-        <Timer
-          focused={activeTab === 'timer'}
-          isTherapist={isTherapist}
-          appointment={appointment}
-          onEnd={onClose}
-        />
-      )}
-      {activeTab === 'notes' && (
+      <Timer
+        visible={visible && activeTab === 'timer'}
+        appointment={appointment}
+        onEnd={onClose}
+      />
+      {isTherapist && (
         <>
           <NotesForm
+            visible={visible && activeTab === 'notes'}
             appointment={appointment}
             onSubmit={onSubmitNotes}
           />

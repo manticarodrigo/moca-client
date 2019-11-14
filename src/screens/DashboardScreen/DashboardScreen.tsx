@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { InteractionManager } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 import { isBefore, isAfter } from 'date-fns';
@@ -97,14 +98,17 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
       if (completed && !isTherapist) {
         setSelectedAppointment(current);
 
-        if (modalState.appointment) {
+        if (modalState.appointment && !modalState.review) {
           setModalState({});
+          InteractionManager.runAfterInteractions(() => {
+            setTimeout(() => {
+              setModalState({ review: true });
+            }, 1000);
+          });
         }
 
-        if (!modalState.review) {
-          setTimeout(() => {
-            setModalState({ review: true });
-          }, 1000);
+        if (!modalState.appointment && !modalState.review && !current.review) {
+          setModalState({ review: true });
         }
       }
     };
