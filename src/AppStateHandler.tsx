@@ -61,26 +61,39 @@ const AppStateHandler = ({ navigatorRef, children }) => {
     if (!remote) return;
     if (!navigator) return;
 
-    const { type, params } = data;
+    const { type, params = {} } = data;
 
-    const getChatListOrDetail = () => {
+    const getChatListOrDetail = (selected: boolean) => {
       const tabState = navigator.state.nav.routes.find((stack) => stack.routeName === 'TabStack');
       const chatTabState = tabState.routes.find((tab) => tab.routeName === 'ConversationTab');
       const chatScreenState = chatTabState.routes.find((tab) => tab.routeName === 'ConversationScreen');
 
-      const user = ((chatScreenState || {}).params || {}).user || {};
+      const currentChatUser = ((chatScreenState || {}).params || {}).user || {};
+      const pushParamUser = (params || {}).user || {};
 
-      if (user.id && user.id !== store.user.id) {
-        return dispatch(getConversation(user.id));
+      const isNotSelf = pushParamUser.id !== store.user.id;
+      const isFromCurrentChat = currentChatUser.id === pushParamUser.id && isNotSelf;
+
+      if (isFromCurrentChat) {
+        if (selected) {
+          navigate('ConversationScreen');
+        }
+
+        return dispatch(getConversation(currentChatUser.id));
       }
+
+      if (!isFromCurrentChat && selected) {
+        return navigate('ConversationScreen', params);
+      }
+
       return dispatch(getConversations());
     };
 
     const routeNotification = () => {
       switch (type) {
         case 'new_message':
-          if (origin === 'selected') navigate('ConversationScreen', params);
-          if (origin === 'received') getChatListOrDetail();
+          if (origin === 'selected') getChatListOrDetail(true);
+          if (origin === 'received') getChatListOrDetail(false);
           break;
         case 'start_appointment':
         case 'end_appointment':
