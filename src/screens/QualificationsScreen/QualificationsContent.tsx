@@ -80,7 +80,7 @@ const QualificationsContent = ({ navigation, modal, onClose }: Props) => {
         {modal && (
           <View alignCenter justifyCenter py={4} variant="borderBottom">
             <Text variant="semiBoldLarge">
-              Qualifications
+              Preferred Treatment Areas
             </Text>
           </View>
         )}

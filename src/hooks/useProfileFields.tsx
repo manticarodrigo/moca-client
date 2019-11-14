@@ -168,8 +168,8 @@ const useProfileFields = (
       {
         icon: QualificationIcon,
         field: 'preferredAilments',
-        title: 'Qualifications',
-        subtitle: preferredAilments.join(', ') || (!readonly ? 'Set Qualifications' : 'N/A'),
+        title: 'Preferred Treatment Areas',
+        subtitle: preferredAilments.join(', ') || (!readonly ? 'Set Treatment Aread' : 'N/A'),
         onPress: !readonly ? onPressField('preferredAilments') : undefined,
       },
     ];
