@@ -13,9 +13,16 @@ export type Address = Omit<BadAddress, 'location'> & {
   };
 }
 
+type AppointmentRequest = Omit<
+  BadMessage['content']['appointmentRequest'], 'startTime' | 'endTime'
+> & {
+  startTime: string;
+  endTime: string;
+}
+
 type MessageContent = Omit<
   BadMessage['content'], 'appointmentRequest'
-> & BadMessage['content']['appointmentRequest'];
+> & AppointmentRequest;
 
 export type Message = Omit<BadMessage, 'image' | 'content'> & {
   content: MessageContent;

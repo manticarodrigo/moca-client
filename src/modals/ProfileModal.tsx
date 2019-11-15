@@ -27,7 +27,7 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
     if (!userId) return;
 
     const fetchProfile = async () => {
-      const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_24;
+      const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_28;
 
       const { data } = await method(userId);
 

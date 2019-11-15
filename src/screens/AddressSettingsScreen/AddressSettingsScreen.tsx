@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, StatusBar } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
-import { Address } from '@src/services/openapi';
+import { Address } from '@src/store/reducers/ConversationReducer';
 
 import useStore from '@src/hooks/useStore';
 import { deleteAddress } from '@src/store/actions/UserAction';
@@ -137,14 +137,14 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   );
 };
 
-AddressSettingsScreen.navigationOptions = () => ({
+AddressSettingsScreen.navigationOptions = ({ navigationOptions }) => ({
   headerTitle: <HeaderTitle title="Address" />,
   headerBackImage: BackButton,
   headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
   headerStyle: {
+    ...navigationOptions.headerStyle as {},
     ...Views.borderBottom,
     backgroundColor: Colors.white,
-    height: 80,
   },
 });
 export default AddressSettingsScreen;

@@ -88,7 +88,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
         <View scroll>
           <View alignCenter py={4} bgColor="white">
             <View alignCenter justifyCenter p={4}>
-              <Image rounded size={120} />
+              <Image rounded size={120} uri={store.user.image} />
             </View>
             <View my={1} variant="borderBottom" width="90%" bgColor="white">
               <Text variant="light">Name</Text>

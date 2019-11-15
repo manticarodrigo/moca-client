@@ -3,6 +3,7 @@ import storage from '@src/services/storage';
 import { instance as apiInstance } from '@src/services/api';
 
 import { UserAction } from '@src/store/actions/UserAction';
+import { Address } from '@src/store/reducers/ConversationReducer';
 
 import {
   User,
@@ -48,7 +49,7 @@ export type Review = {
 export type UserState = &
   ProfileInfo &
   UserSnippet &
-  Omit<User, 'type' | 'email' | 'gender' | 'payments'> &
+  Omit<User, 'type' | 'email' | 'gender' | 'payments' | 'addresses'> &
   Omit<Patient, 'user'> &
   Omit<Therapist, 'user' | 'status' | 'prices'> & {
   token?: string;
@@ -56,6 +57,7 @@ export type UserState = &
   type?: 'PT' | 'PA';
   status?: 'A' | 'B';
   gender?: 'M' | 'F';
+  addresses?: Address[];
   prices?: Price[];
   payments?: Payment[];
   storageReady?: boolean;

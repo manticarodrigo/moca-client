@@ -4,7 +4,7 @@ import { Address } from '@src/store/reducers/ConversationReducer';
 
 import { Appointment as BadAppointment, AppointmentStatusEnum } from '@src/services/openapi';
 
-export type Appointment = Omit<BadAppointment, 'startTime' | 'address'> & {
+export type Appointment = Omit<BadAppointment, 'startTime' | 'endTime' | 'address'> & {
   startTime: string;
   endTime: string;
   address: Address;

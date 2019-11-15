@@ -19,6 +19,7 @@ type Props = TherapistSearch & {
 
 const SearchCard = ({
   id,
+  image,
   firstName,
   lastName,
   rating,
@@ -35,7 +36,7 @@ const SearchCard = ({
 
   return (
     <View row my={2} p={4} bgColor="white" onPress={handlePressCard}>
-      <Image rounded size={58} />
+      <Image rounded size={58} uri={image} />
       <View flex={1} px={3}>
         <View row justifyBetween>
           <View>

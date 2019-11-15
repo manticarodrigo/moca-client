@@ -61,7 +61,7 @@ const loginUser = (email: string, password: string) => async (dispatch: Dispatch
 
 const fetchUser = () => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
   const method = store.user.type === 'PT'
-    ? api.user.userTherapistRead_24
+    ? api.user.userTherapistRead_28
     : api.user.userPatientRead;
 
   const { data } = await method(store.user.id.toString());
@@ -168,6 +168,7 @@ const addLeavePeriod = (
   startDate: string,
   endDate: string,
 ) => async (dispatch: Dispatch<UserAction>) => {
+  // @ts-ignore
   const { data } = await api.user.userTherapistAwayCreate({ startDate, endDate });
 
   dispatch({ type: 'ADD_LEAVE_PERIOD_SUCCESS', payload: data });
