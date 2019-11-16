@@ -7,7 +7,7 @@ import { getDeviceToken } from '@src/utlities/deviceToken';
 import { StoreState } from '@src/StoreProvider';
 import { UserState, Price } from '@src/store/reducers/UserReducer';
 
-import { User, Address, Payment, Leave, Injury } from '@src/services/openapi';
+import { User, Address, Payment, Leave, Injury, UserImage } from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'LOGOUT_USER' }
@@ -16,6 +16,7 @@ export type UserAction =
   | { type: 'LOGIN_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'FETCH_USER_SUCCESS'; payload: Partial<UserState> }
   | { type: 'UPDATE_USER_SUCCESS'; payload: Partial<UserState> }
+  | { type: 'UPDATE_USER_IMAGE_SUCCESS'; payload: UserImage }
   | { type: 'ADD_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'UPDATE_ADDRESS_SUCCESS'; payload: Address }
   | { type: 'DELETE_ADDRESS_SUCCESS'; payload: Address['id'] }
@@ -64,7 +65,7 @@ const loginUser = (email: string, password: string) => async (dispatch: Dispatch
 
 const fetchUser = () => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
   const method = store.user.type === 'PT'
-    ? api.user.userTherapistRead_30
+    ? api.user.userTherapistRead_29
     : api.user.userPatientRead;
 
   const { data } = await method(store.user.id.toString());
@@ -106,6 +107,18 @@ const updateUser = (partialState: UserState) => async (
   dispatch({ type: 'UPDATE_USER_SUCCESS', payload: data as UserState });
 
   return data;
+};
+
+const updateUserImage = (uri: string) => async (
+  dispatch: Dispatch<UserAction>,
+  store: StoreState,
+) => {
+  const name = `user-${store.user.id}-time-${new Date().getTime()}.jpg`;
+  const file = { uri, type: 'image/jpg', name };
+
+  const response = await api.user.userImageUpdate(store.user.id, file);
+
+  dispatch({ type: 'UPDATE_USER_IMAGE_SUCCESS', payload: response.data });
 };
 
 export type AddAddressForm = Omit<Address, 'id' | 'location'> & {
@@ -204,7 +217,7 @@ const addInjury = (
   data.append('description', description);
 
   images.forEach((uri) => {
-    const name = `user-${store.user.id}-injury-${title}-time-${new Date().getTime()}`;
+    const name = `user-${store.user.id}-injury-${title}-time-${new Date().getTime()}.jpg`;
     const file = { uri, type: 'image/jpg', name };
     // @ts-ignore
     data.append('images', file);
@@ -233,7 +246,7 @@ const updateInjury = (
   data.append('description', description);
 
   images.forEach((uri) => {
-    const name = `user-${store.user.id}-injury-${title}-time-${new Date().getTime()}`;
+    const name = `user-${store.user.id}-injury-${title}-time-${new Date().getTime()}.jpg`;
     const file = { uri, type: 'image/jpg', name };
     // @ts-ignore
     data.append('images', file);
@@ -262,6 +275,7 @@ export {
   loginUser,
   fetchUser,
   updateUser,
+  updateUserImage,
   addAddress,
   updateAddress,
   deleteAddress,

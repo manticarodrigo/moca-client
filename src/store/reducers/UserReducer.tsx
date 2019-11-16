@@ -105,6 +105,7 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'LOGIN_USER_SUCCESS':
     case 'FETCH_USER_SUCCESS':
     case 'UPDATE_USER_SUCCESS':
+    case 'UPDATE_USER_IMAGE_SUCCESS':
     case 'REGISTER_USER_SUCCESS':
       newState = { ...state, ...action.payload };
       break;

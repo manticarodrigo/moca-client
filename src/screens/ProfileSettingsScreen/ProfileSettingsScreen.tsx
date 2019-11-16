@@ -3,9 +3,11 @@ import { StatusBar } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
+import { getImage } from '@src/utlities/imagePicker';
+
 import EditInformationModal from '@src/modals/EditInformationModal';
 import ChangePasswordModal from '@src/modals/ChangePasswordModal';
-import { updateUser, logoutUser } from '@src/store/actions/UserAction';
+import { updateUser, updateUserImage, logoutUser } from '@src/store/actions/UserAction';
 
 
 import View from '@src/components/View';
@@ -77,6 +79,14 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
     />
   );
 
+  const onPressImage = () => {
+    getImage((response) => {
+      if (response.cancelled !== false) return;
+
+      dispatch(updateUserImage(response.uri));
+    });
+  };
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -87,7 +97,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
         <View scroll>
           <View alignCenter py={4} bgColor="white">
-            <View alignCenter justifyCenter p={4}>
+            <View alignCenter justifyCenter p={4} onPress={onPressImage}>
               <Image rounded size={120} uri={store.user.image} />
             </View>
             <View my={1} variant="borderBottom" width="90%" bgColor="white">
