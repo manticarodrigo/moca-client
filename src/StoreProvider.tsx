@@ -66,6 +66,7 @@ export const initialState: StoreState = {
     payments: [],
     preferredAilments: [],
     awayDays: [],
+    injuries: [],
   },
   registration: {
     address: {},
@@ -95,7 +96,7 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
     return initialState;
   }
 
-  // console.log(action.type, newState);
+  // console.log(action.type);
 
   return newState;
 };

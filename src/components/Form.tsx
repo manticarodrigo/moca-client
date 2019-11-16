@@ -14,20 +14,27 @@ type FieldConfig = {
   [key: string]: FormFieldProps;
 }
 
+type Image = {
+  id?: number;
+  image?: string;
+}
+
 export type Props<State> = {
+  visible: boolean;
   fieldConfig: FieldConfig;
-  images: string[];
+  images: Image[];
   submitText: string;
   onSubmit: (formFields: State) => void;
 }
 
 const Form = <State extends { [key: string]: string }> ({
+  visible,
   fieldConfig,
   images = [],
   submitText,
   onSubmit,
 }: Props<State>) => {
-  const [localImages, setLocalImages] = useState(images);
+  const [localImages, setLocalImages] = useState([]);
 
   const mounted = useRef(true);
 
@@ -50,7 +57,13 @@ const Form = <State extends { [key: string]: string }> ({
     setFieldValues(initialState as State);
   }, [initialState]);
 
-  const onAddImage = (uri: string) => setLocalImages((prev) => [...prev, uri]);
+  useEffect(() => {
+    setLocalImages(visible ? images : []);
+  }, [visible, images]);
+
+  const onAddImage = (uri: string) => {
+    setLocalImages((prev) => [...prev, { image: uri }]);
+  };
 
   const onPressSubmit = () => isFormValid && onSubmit({ ...fieldValues, images: localImages });
 
@@ -71,7 +84,7 @@ const Form = <State extends { [key: string]: string }> ({
             <View row pt={5} px={3} pb={2}>
               <ImageSelector
                 label="Add Images"
-                images={images}
+                images={images.concat(localImages)}
                 onAdd={onAddImage}
               />
             </View>

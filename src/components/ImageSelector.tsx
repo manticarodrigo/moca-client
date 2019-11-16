@@ -10,6 +10,7 @@ import { Colors } from '@src/styles';
 import View from './View';
 import Image from './Image';
 import Text from './Text';
+import { AddIcon } from './icons';
 
 const styles = StyleSheet.create({
   roundView: {
@@ -53,13 +54,19 @@ const LabelWrapper = ({ label, onPress, children }) => (
   </View>
 );
 
+export type ImageObject = {
+  id?: number;
+  image?: string;
+}
+
 type Props = {
-  images: string[];
+  images: ImageObject[];
+  disableViewer?: boolean;
   label?: string;
   onAdd?: (uri: string) => void;
 }
 
-const ImageSelector = ({ label, images = [], onAdd }: Props) => {
+const ImageSelector = ({ images = [], disableViewer, label, onAdd }: Props) => {
   const { spliced, moreCount } = useMemo(() => ({
     spliced: images.slice(0, 3),
     moreCount: images.length > 3 && images.length - 3,
@@ -72,16 +79,22 @@ const ImageSelector = ({ label, images = [], onAdd }: Props) => {
   return (
     <>
       {imageViewer}
-      <Wrapper label={label} onPress={onOpenViewer}>
+      <Wrapper label={label} onPress={!disableViewer ? onOpenViewer : undefined}>
         <View row>
-          {Array.from({ length: 3 }).map((_, index) => {
+          {Array.from({ length: Math.min(3, Math.max(1, images.length)) }).map((_, index) => {
             const isMore = moreCount && index === spliced.length - 1;
-            const uri = images[index];
+            const uri = images && images[index] ? images[index].image : undefined;
             const key = `${uri}-${index}`;
 
             if (isMore) {
               return (
                 <Preview key={key} count={moreCount} />
+              );
+            }
+
+            if (onAdd && !images.length) {
+              return (
+                <AddIcon key={key} />
               );
             }
 

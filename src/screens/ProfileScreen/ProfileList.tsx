@@ -14,7 +14,7 @@ import QualificationsModal from '@src/modals/QualificationsModal';
 import DaysOffModal from '@src/modals/DaysOffModal';
 import ReviewsModal from '@src/modals/ReviewsModal';
 import InputModal, { Props as InputModalProps } from '@src/modals/InputModal';
-import InjuryModal from '@src/modals/InjuryModal';
+import InjuriesModal from '@src/modals/InjuriesModal';
 
 import View from '@src/components/View';
 import Toast from '@src/components/Toast';
@@ -32,7 +32,7 @@ const initialModalState = {
   awayDays: false,
   reviewCount: false,
   preferredAilments: false,
-  injury: false,
+  injuries: false,
 };
 
 type ModalState = typeof initialModalState;
@@ -51,7 +51,7 @@ const ProfileList = ({ user, readonly }: Props) => {
 
   const isTherapistProfile = profile.type === 'PT';
 
-  const submitUserUpdate = async (update: Partial<UserState>) => {
+  const submitUserUpdate = async (update: UserState) => {
     try {
       await dispatch(updateUser(update));
       setActiveToast('success');
@@ -95,11 +95,6 @@ const ProfileList = ({ user, readonly }: Props) => {
     }
   };
 
-  const onSubmitInjury = async (values) => {
-    await submitUserUpdate({ injury: values });
-    onCloseModal('injury')();
-  };
-
   const onSubmitInputModal = (key: keyof UserState) => async (value: string) => {
     await submitUserUpdate({ [key]: value });
     setInputModal(undefined);
@@ -128,8 +123,12 @@ const ProfileList = ({ user, readonly }: Props) => {
         return undefined;
 
       // custom modals
-      case 'awayDays': case 'reviewCount': case 'injury': case 'preferredAilments':
+      case 'awayDays': case 'reviewCount': case 'preferredAilments':
         return onOpenModal(key);
+
+      case 'injuries':
+        if (readonly) return onOpenModal(key);
+        return navigation.navigate('InjuriesScreen');
 
       // input modal
       case 'operationRadius': case 'bio': case 'licenseNumber':
@@ -222,12 +221,11 @@ const ProfileList = ({ user, readonly }: Props) => {
         </>
       )}
 
-      {!isTherapistProfile && !readonly && (
-        <InjuryModal
-          visible={modalState.injury}
+      {!isTherapistProfile && readonly && (
+        <InjuriesModal
+          visible={modalState.injuries}
           patient={profile}
-          onSubmit={onSubmitInjury}
-          onClose={onCloseModal('injury')}
+          onClose={onCloseModal('injuries')}
         />
       )}
 

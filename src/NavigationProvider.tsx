@@ -11,7 +11,13 @@ import TabBar from '@src/components/TabBar';
 import TabBarIcon from '@src/components/TabBarIcon';
 
 import OnboardingScreen from '@src/screens/OnboardingScreen';
+import SelectionScreen from '@src/screens/SelectionScreen';
+import RegistrationScreen from '@src/screens/RegistrationScreen';
+import InvalidRegistrationScreen from '@src/screens/InvalidRegistrationScreen';
+import AddressScreen from '@src/screens/AddressScreen';
+import QualificationsScreen from '@src/screens/QualificationsScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
+import HistoryScreen from '@src/screens/HistoryScreen';
 import SearchScreen from '@src/screens/SearchScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ScheduleDayScreen from '@src/screens/ScheduleDayScreen';
@@ -19,14 +25,9 @@ import ConversationListScreen from '@src/screens/ConversationListScreen';
 import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
-import SelectionScreen from '@src/screens/SelectionScreen';
-import InvalidRegistrationScreen from '@src/screens/InvalidRegistrationScreen';
-import RegistrationScreen from '@src/screens/RegistrationScreen';
-import AddressScreen from '@src/screens/AddressScreen';
-import QualificationsScreen from '@src/screens/QualificationsScreen';
 import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
+import InjuriesScreen from '@src/screens/InjuriesScreen';
 import WalletScreen from '@src/screens/WalletScreen';
-import HistoryScreen from '@src/screens/HistoryScreen';
 
 const defaultNavConfig = {
   cardShadowEnabled: false,
@@ -65,6 +66,8 @@ const AppStack = createSwitchNavigator(
       DashboardTab: createStackNavigator({
         DashboardScreen,
         HistoryScreen,
+        InjuriesScreen,
+        WalletScreen,
       }, defaultNavConfig),
 
       ScheduleTab: createStackNavigator({
@@ -86,6 +89,7 @@ const AppStack = createSwitchNavigator(
         ProfileSettingsScreen,
         AddressSettingsScreen,
         AddressScreen,
+        InjuriesScreen,
         WalletScreen,
       }, defaultNavConfig),
 

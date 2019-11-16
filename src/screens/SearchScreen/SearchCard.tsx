@@ -41,9 +41,7 @@ const SearchCard = ({
         <View row justifyBetween>
           <View>
             <Text variant="semiBoldLarge">
-              {firstName}
-              {' '}
-              {lastName}
+              {`${firstName} ${lastName}`}
             </Text>
             <Rating rating={rating} />
           </View>

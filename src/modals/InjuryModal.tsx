@@ -2,9 +2,11 @@ import React from 'react';
 
 import FormModal from './FormModal';
 
-const InjuryModal = ({ visible, patient, onSubmit, onClose }) => {
-  const { firstName, injury } = patient || {};
-  const { title = '', description = '', images } = injury || {};
+const InjuryModal = ({ visible, injury, patient, onSubmit, onClose }) => {
+  const { id, title = '', description = '', images } = injury || {};
+  const { firstName } = patient || {};
+
+  const handleSubmit = (fields) => onSubmit({ id, ...fields });
 
   return (
     <FormModal
@@ -21,7 +23,7 @@ const InjuryModal = ({ visible, patient, onSubmit, onClose }) => {
       images={images}
       title={firstName ? `${firstName}'s Injury` : undefined}
       submitText="Save Injury"
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       onClose={onClose}
     />
   );

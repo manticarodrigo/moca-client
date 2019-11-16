@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StatusBar } from 'react-native';
+import { FlatList } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import { Address } from '@src/store/reducers/ConversationReducer';
@@ -7,18 +7,10 @@ import { Address } from '@src/store/reducers/ConversationReducer';
 import useStore from '@src/hooks/useStore';
 import { deleteAddress } from '@src/store/actions/UserAction';
 
-import { Views, Spacing, Colors } from '@src/styles';
-
-import {
-  ArrowRightIcon,
-  PinGreyIcon,
-  AddIcon,
-  BuildingIcon,
-} from '@src/components/icons';
+import { ArrowRightIcon, PinGreyIcon, AddIcon, BuildingIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
-import HeaderTitle from '@src/components/HeaderTitle';
 import BackButton from '@src/components/BackButton';
 import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 import Toast from '@src/components/Toast';
@@ -62,8 +54,6 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-
       <View safeArea flex={1}>
         <FlatList
           data={store.user.addresses}
@@ -137,14 +127,9 @@ const AddressSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   );
 };
 
-AddressSettingsScreen.navigationOptions = ({ navigationOptions }) => ({
-  headerTitle: <HeaderTitle title="Address" />,
+AddressSettingsScreen.navigationOptions = {
+  title: 'Addresses',
   headerBackImage: BackButton,
-  headerLeftContainerStyle: { ...Spacing.getStyles({ pt: 2, pl: 3 }) },
-  headerStyle: {
-    ...navigationOptions.headerStyle as {},
-    ...Views.borderBottom,
-    backgroundColor: Colors.white,
-  },
-});
+};
+
 export default AddressSettingsScreen;

@@ -6,7 +6,7 @@ import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 import useStore from '@src/hooks/useStore';
 
-import { BookmarkIcon } from '@src/components/icons';
+// import { BookmarkIcon } from '@src/components/icons';
 
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
@@ -27,7 +27,7 @@ const ProfileModal = ({ userId, visible, onMessage, onClose }) => {
     if (!userId) return;
 
     const fetchProfile = async () => {
-      const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_28;
+      const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_30;
 
       const { data } = await method(userId);
 

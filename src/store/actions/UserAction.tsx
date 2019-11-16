@@ -7,7 +7,7 @@ import { getDeviceToken } from '@src/utlities/deviceToken';
 import { StoreState } from '@src/StoreProvider';
 import { UserState, Price } from '@src/store/reducers/UserReducer';
 
-import { User, Address, Payment, Leave } from '@src/services/openapi';
+import { User, Address, Payment, Leave, Injury } from '@src/services/openapi';
 
 export type UserAction =
   | { type: 'LOGOUT_USER' }
@@ -25,6 +25,9 @@ export type UserAction =
   | { type: 'ADD_LEAVE_PERIOD_SUCCESS'; payload: Leave }
   | { type: 'UPDATE_LEAVE_PERIOD_SUCCESS'; payload: Leave }
   | { type: 'DELETE_LEAVE_PERIOD_SUCCESS'; payload: Leave['id'] }
+  | { type: 'ADD_INJURY_SUCCESS'; payload: Injury }
+  | { type: 'UPDATE_INJURY_SUCCESS'; payload: Injury }
+  | { type: 'DELETE_INJURY_SUCCESS'; payload: Injury['id'] }
 
 const logoutUser = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({ type: 'LOGOUT_USER' });
@@ -61,7 +64,7 @@ const loginUser = (email: string, password: string) => async (dispatch: Dispatch
 
 const fetchUser = () => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
   const method = store.user.type === 'PT'
-    ? api.user.userTherapistRead_28
+    ? api.user.userTherapistRead_30
     : api.user.userPatientRead;
 
   const { data } = await method(store.user.id.toString());
@@ -189,6 +192,69 @@ const deleteLeavePeriod = (leaveId: Leave['id']) => async (dispatch: Dispatch<Us
   dispatch({ type: 'DELETE_LEAVE_PERIOD_SUCCESS', payload: leaveId });
 };
 
+const addInjury = (
+  title: string,
+  description: string,
+  images?: string[],
+) => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
+  // eslint-disable-next-line no-undef
+  const data = new FormData();
+
+  data.append('title', title);
+  data.append('description', description);
+
+  images.forEach((uri) => {
+    const name = `user-${store.user.id}-injury-${title}-time-${new Date().getTime()}`;
+    const file = { uri, type: 'image/jpg', name };
+    // @ts-ignore
+    data.append('images', file);
+  });
+
+  const response = await api.instance.request({
+    method: 'post',
+    url: `${api.basePath}/user/patient/injury/`,
+    data,
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+
+  dispatch({ type: 'ADD_INJURY_SUCCESS', payload: response.data });
+};
+
+const updateInjury = (
+  injuryId: Injury['id'],
+  title: string,
+  description: string,
+  images?: File[],
+) => async (dispatch: Dispatch<UserAction>, store: StoreState) => {
+  // eslint-disable-next-line no-undef
+  const data = new FormData();
+
+  data.append('title', title);
+  data.append('description', description);
+
+  images.forEach((uri) => {
+    const name = `user-${store.user.id}-injury-${title}-time-${new Date().getTime()}`;
+    const file = { uri, type: 'image/jpg', name };
+    // @ts-ignore
+    data.append('images', file);
+  });
+
+  const response = await api.instance.request({
+    method: 'patch',
+    url: `${api.basePath}/user/patient/injury/${injuryId}/`,
+    data,
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+
+  dispatch({ type: 'UPDATE_INJURY_SUCCESS', payload: response.data });
+};
+
+const deleteInjury = (injuryId: Injury['id']) => async (dispatch: Dispatch<UserAction>) => {
+  await api.user.userPatientInjuryDelete(injuryId.toString());
+
+  dispatch({ type: 'DELETE_INJURY_SUCCESS', payload: injuryId });
+};
+
 export {
   logoutUser,
   updateUserState,
@@ -205,4 +271,7 @@ export {
   addLeavePeriod,
   updateLeavePeriod,
   deleteLeavePeriod,
+  addInjury,
+  updateInjury,
+  deleteInjury,
 };

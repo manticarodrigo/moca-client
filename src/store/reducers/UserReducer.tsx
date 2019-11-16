@@ -1,6 +1,6 @@
 import storage from '@src/services/storage';
 
-import { instance as apiInstance } from '@src/services/api';
+import api from '@src/services/api';
 
 import { UserAction } from '@src/store/actions/UserAction';
 import { Address } from '@src/store/reducers/ConversationReducer';
@@ -87,15 +87,14 @@ function updateItem(key: keyof UserState, state, payload) {
   setPrimaryAddress(key, state, payload);
 
   state[key][index] = payload;
-  state[key] = [...state[key]];
 
-  return state;
+  return { ...state };
 }
 
 function deleteItem(key: keyof UserState, state, payload: number) {
   state[key] = state[key].filter((val) => val.id !== payload);
 
-  return state;
+  return { ...state };
 }
 
 const reducer = (state: UserState, action: UserAction): UserState => {
@@ -136,6 +135,15 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'DELETE_LEAVE_PERIOD_SUCCESS':
       newState = deleteItem('awayDays', state, action.payload);
       break;
+    case 'ADD_INJURY_SUCCESS':
+      newState = appendItem('injuries', state, action.payload);
+      break;
+    case 'UPDATE_INJURY_SUCCESS':
+      newState = updateItem('injuries', state, action.payload);
+      break;
+    case 'DELETE_INJURY_SUCCESS':
+      newState = deleteItem('injuries', state, action.payload);
+      break;
     default:
       break;
   }
@@ -146,7 +154,7 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     storage.storeUser(newState);
   }
 
-  apiInstance.defaults.headers.common.Authorization = newState.token && `Token ${newState.token}`;
+  api.instance.defaults.headers.common.Authorization = newState.token && `Token ${newState.token}`;
 
   return newState;
 };

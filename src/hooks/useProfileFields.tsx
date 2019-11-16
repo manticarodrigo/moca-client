@@ -39,10 +39,8 @@ const useProfileFields = (
       preferredAilments = [],
       payments = [],
       awayDays = [],
+      injuries = [],
     } = profile || {};
-
-    const injury = (profile && profile.injury) || { title: '', description: '', images: [] };
-
 
     const paymentsSubtitle = payments.length ? (
       (payments[0].paymentInfo.last4
@@ -74,15 +72,15 @@ const useProfileFields = (
       {
         icon: StatusIcon,
         field: 'awayDays',
-        title: 'Days Off',
-        subtitle: `${awayDays.length} scheduled periods`,
+        title: 'Away Days',
+        subtitle: `${awayDays.length} scheduled period(s)`,
         onPress: awayDays.length ? onPressField('awayDays') : undefined,
       },
       {
         icon: RateIcon,
         field: 'reviewCount',
         title: 'Reviews',
-        subtitle: `${reviewCount.toString()} reviews`,
+        subtitle: `${reviewCount.toString()} review(s)`,
         onPress: reviewCount > 0 && onPressField('reviewCount'),
       },
     ];
@@ -91,6 +89,8 @@ const useProfileFields = (
     therapistFirstRows = readonly
       ? therapistFirstRows.filter(({ field }) => {
         switch (field) {
+          case 'operationRadius':
+            return false;
           case 'status':
             return false;
           default:
@@ -102,11 +102,12 @@ const useProfileFields = (
     const patientFirstRows: ProfileSection['rows'] = [
       {
         icon: SmallInjuryIcon,
-        field: 'injury',
-        title: 'Injury',
-        subtitle: injury.title || (!readonly ? 'Add Injury' : 'N/A'),
-        existingValue: injury.images,
-        onPress: !readonly ? onPressField('injury') : undefined,
+        field: 'injuries',
+        title: 'My Injuries',
+        subtitle: injuries.length
+          ? `${injuries.length} injuries`
+          : (!readonly && 'Add Injuries') || 'N/A',
+        onPress: onPressField('injuries'),
       },
     ];
 

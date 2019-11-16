@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Notifications } from 'expo';
 
-import { instance as apiInstance } from '@src/services/api';
+import api from '@src/services/api';
 
 import storage from '@src/services/storage';
 
@@ -95,6 +95,7 @@ const AppStateHandler = ({ navigatorRef, children }) => {
           if (origin === 'selected') getChatListOrDetail(true);
           if (origin === 'received') getChatListOrDetail(false);
           break;
+        case 'current_appointment':
         case 'start_appointment':
         case 'end_appointment':
           dispatch(getUpcomingAppointments());
@@ -129,7 +130,7 @@ const AppStateHandler = ({ navigatorRef, children }) => {
       }
 
 
-      apiInstance.interceptors.response.use((response) => response, (error) => {
+      api.instance.interceptors.response.use((response) => response, (error) => {
         if (error.response.status === 401) {
           dispatch(logoutUser());
 

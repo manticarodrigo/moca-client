@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useState, useMemo, useEffect } from 'react';
 import { FlatList } from 'react-native';
-import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import { withNavigationFocus } from 'react-navigation';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { getSearchResults } from '@src/store/actions/SearchAction';
@@ -17,7 +18,9 @@ import SearchActiveFilters from './SearchActiveFilters';
 import SearchCard from './SearchCard';
 import SearchFilterModal, { FilterState } from './SearchFilterModal';
 
-const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
+type Props = NavigationStackScreenProps & { isFocused: boolean }
+
+const SearchScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
   const [searchText, setSearchText] = useState('');
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -63,8 +66,10 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
       params.review_count = true;
     }
 
-    dispatch(getSearchResults(params));
-  }, [filters]);
+    if (isFocused) {
+      dispatch(getSearchResults(params));
+    }
+  }, [isFocused, filters]);
 
   const onPressTherapist = (id: number) => setSelectedId(id);
 
@@ -150,4 +155,4 @@ SearchScreen.navigationOptions = {
   headerTitle: 'Search',
 };
 
-export default SearchScreen;
+export default withNavigationFocus(SearchScreen);

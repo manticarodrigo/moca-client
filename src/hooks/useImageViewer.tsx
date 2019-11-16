@@ -29,9 +29,22 @@ const styles = StyleSheet.create({
 
 const initialState = { open: false, index: 0 };
 
-const useImageViewer = <URIs extends string[]>(uris: URIs, onAdd?: (uri: string) => void) => {
+type Image = {
+  id?: number;
+  image?: string;
+}
+
+const useImageViewer = <Images extends Image[]>(
+  images: Images,
+  onAdd?: (uri: string) => void,
+) => {
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(true);
+
+  const uris = useMemo(() => images
+    .filter(({ image }) => image)
+    .map(({ image }) => image),
+  [images]);
 
   const onShow = () => setTimeout(() => setLoading(false));
 

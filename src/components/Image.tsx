@@ -35,7 +35,9 @@ const Image = ({
     },
   }), [style, rounded, size, width, height]);
 
-  return <RNImage style={styles.image} source={uri ? { uri } : file} />;
+  return (
+    <RNImage style={styles.image} source={uri ? { uri } : file} defaultSource={file} />
+  );
 };
 
 export default Image;

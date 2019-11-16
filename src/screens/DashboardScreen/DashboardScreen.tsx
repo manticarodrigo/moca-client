@@ -47,7 +47,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
   const { current, next } = useMemo(() => {
     const appointments = store.appointments.upcoming;
 
-    if (!appointments.length || !isFocused) {
+    if (!appointments.length) {
       return { current: undefined, next: undefined };
     }
 

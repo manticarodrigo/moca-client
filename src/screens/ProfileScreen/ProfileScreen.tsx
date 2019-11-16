@@ -6,8 +6,6 @@ import { fetchUser } from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
 
-import { Colors } from '@src/styles';
-
 import { CogIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
@@ -59,12 +57,8 @@ const ProfileScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
   );
 };
 
-ProfileScreen.navigationOptions = ({ navigationOptions }) => ({
+ProfileScreen.navigationOptions = {
   header: null,
-  headerStyle: {
-    ...navigationOptions.headerStyle as {},
-    backgroundColor: Colors.white,
-  },
-});
+};
 
 export default withNavigationFocus(ProfileScreen);

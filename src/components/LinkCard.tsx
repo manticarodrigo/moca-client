@@ -16,7 +16,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
-  type: 'wallet' | 'messages' | 'history' | 'injury' | 'contact';
+  type: 'wallet' | 'messages' | 'history' | 'injuries' | 'contact';
   status?: 'success' | 'error';
   children: JSX.Element;
   onPress: () => void;
@@ -31,8 +31,8 @@ const LinkCard = ({ type, status, children, onPress }: LinkCardProps) => {
         return { icon: <MessagesIcon />, title: 'Messages' };
       case 'history':
         return { icon: <HistoryIcon />, title: 'History' };
-      case 'injury':
-        return { icon: <InjuryIcon />, title: 'Injury' };
+      case 'injuries':
+        return { icon: <InjuryIcon />, title: 'My Injuries' };
       case 'contact':
         return {
           icon: <ContactIcon tint={status === 'success' ? Colors.success : Colors.error} />,

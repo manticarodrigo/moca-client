@@ -98,9 +98,9 @@ const DashboardLinks = ({ isActivated }: Props) => {
       )}
 
       {!isTherapist && (
-        <LinkCard type="injury" onPress={onPressLink('ProfileScreen')}>
+        <LinkCard type="injuries" onPress={onPressLink('InjuriesScreen')}>
           <Text variant="regularSmall" color="grey">
-            {store.user.injury ? store.user.injury.title : 'Set my injury'}
+            {store.user.injuries.length ? `${store.user.injuries.length} injuries` : 'Set injuries'}
           </Text>
         </LinkCard>
       )}

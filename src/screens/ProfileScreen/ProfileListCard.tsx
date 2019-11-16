@@ -8,7 +8,6 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Toggle from '@src/components/Toggle';
 import RadioButtons from '@src/components/RadioButtons';
-import ImageSelector from '@src/components/ImageSelector';
 import DatePicker from '@src/components/DatePicker';
 
 type RowBase = {
@@ -52,18 +51,6 @@ const Row = ({ field, readonly, column, last, title, subtitle, existingValue, on
               existingValue={existingValue}
               onChange={onPress}
             />
-          );
-        }
-        return null;
-      case 'injury':
-        if (typeof existingValue === 'object') {
-          return (
-            <View row alignCenter>
-              <ImageSelector images={existingValue} />
-              {!readonly && (
-                <View pl={3}><ArrowRightIcon /></View>
-              )}
-            </View>
           );
         }
         return null;

@@ -12,10 +12,11 @@ import {
 } from '@src/services/openapi';
 
 const basePath = undefined; // 'http://18.188.88.172:8000/api';
-
-export const instance = axios.create();
+const instance = axios.create();
 
 export default {
+  basePath,
+  instance,
   auth: AuthenticateApiFactory({}, basePath, instance),
   user: UserApiFactory({}, basePath, instance),
   address: AddressApiFactory({}, basePath, instance),
