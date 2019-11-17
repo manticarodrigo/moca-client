@@ -17,7 +17,7 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
   const { dispatch } = useStore();
   const { note } = appointment || {};
 
-  const fieldConfig = useMemo(() => {
+  const { initialState, props } = useMemo(() => {
     const {
       subjective = '',
       objective = '',
@@ -27,11 +27,14 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
     } = note || {};
 
     return {
-      subjective: { multiline: true, value: subjective, placeholder: 'Subjective' },
-      objective: { multiline: true, value: objective, placeholder: 'Objective' },
-      treatment: { multiline: true, value: treatment, placeholder: 'Treatment' },
-      assessment: { multiline: true, value: assessment, placeholder: 'Assessment' },
-      diagnosis: { multiline: true, value: diagnosis, placeholder: 'Diagnosis' },
+      initialState: { subjective, objective, treatment, assessment, diagnosis },
+      props: {
+        subjective: { multiline: true, placeholder: 'Subjective' },
+        objective: { multiline: true, placeholder: 'Objective' },
+        treatment: { multiline: true, placeholder: 'Treatment' },
+        assessment: { multiline: true, placeholder: 'Assessment' },
+        diagnosis: { multiline: true, placeholder: 'Diagnosis' },
+      },
     };
   }, [note]);
 
@@ -43,7 +46,9 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
 
   return visible ? (
     <Form
-      fieldConfig={fieldConfig}
+      visible={visible}
+      initialState={initialState}
+      props={props}
       images={[]}
       submitText="Save Notes"
       onSubmit={onPressSubmit}

@@ -55,6 +55,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
     <>
       {isTherapist ? (
         <AppointmentModal
+          past
           isTherapist
           appointment={selectedAppointment}
           visible={isTherapist && !!selectedAppointment}

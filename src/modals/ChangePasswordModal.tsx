@@ -23,10 +23,16 @@ const ChangePasswordModal = ({
     fieldValues,
     fieldProps,
     isFormValid,
-  } = useFormFields<{ currentPassword: string; newPassword: string }>({
-    currentPassword: '',
-    newPassword: '',
-  });
+  } = useFormFields<{ currentPassword: string; newPassword: string }>(
+    {
+      currentPassword: '',
+      newPassword: '',
+    },
+    {
+      currentPassword: { required: true },
+      newPassword: { required: true, validation: 'password' },
+    },
+  );
 
   const handleButtonPress = () => {
     sumbitEditPassword(fieldValues.newPassword);
@@ -51,7 +57,6 @@ const ChangePasswordModal = ({
         <View alignCenter mt={4} mx={5}>
           <FormField
             {...fieldProps.currentPassword}
-            required
             icon="password"
             placeholder="Current password"
             secureTextEntry
@@ -59,10 +64,8 @@ const ChangePasswordModal = ({
           />
           <FormField
             {...fieldProps.newPassword}
-            required
             icon="password"
             placeholder="New password"
-            validation="password"
             secureTextEntry
             returnKeyType="done"
           />

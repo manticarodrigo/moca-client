@@ -30,15 +30,23 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const {
     fieldValues,
     fieldProps,
-    setFieldErrors,
+    updateFieldErrors,
     isAnyFieldEmpty,
     isFormValid,
-  } = useFormFields<FormFields>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  });
+  } = useFormFields<FormFields>(
+    {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    },
+    {
+      firstName: { required: true },
+      lastName: { required: true },
+      email: { required: true, validation: 'email' },
+      password: { required: true, validation: 'password' },
+    },
+  );
 
   const isPatient = store.registration.type === 'PA';
 
@@ -72,7 +80,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           errors.email = emailError;
         }
 
-        setFieldErrors(errors);
+        updateFieldErrors(errors);
       }
     }
   };
@@ -140,31 +148,25 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
           <View p={3}>
             <FormField
               {...fieldProps.firstName}
-              required
               placeholder="First Name"
               returnKeyType="next"
             />
             <FormField
               {...fieldProps.lastName}
-              required
               placeholder="Last Name"
               returnKeyType="next"
             />
             <FormField
               {...fieldProps.email}
-              required
               icon="email"
               placeholder="Email address"
-              validation="email"
               returnKeyType="next"
               keyboardType="email-address"
             />
             <FormField
               {...fieldProps.password}
-              required
               icon="password"
               placeholder="Password"
-              validation="password"
               secureTextEntry
               returnKeyType="done"
             />

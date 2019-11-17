@@ -27,14 +27,21 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
   const {
     fieldValues,
     fieldProps,
-    setFieldErrors,
+    updateFieldErrors,
     isEveryFieldEmpty,
     isFormValid,
-  } = useFormFields<FormFields>({
-    firstName: store.user.firstName,
-    lastName: store.user.lastName,
-    email: store.user.email,
-  });
+  } = useFormFields<FormFields>(
+    {
+      firstName: store.user.firstName,
+      lastName: store.user.lastName,
+      email: store.user.email,
+    },
+    {
+      firstName: { required: true },
+      lastName: { required: true },
+      email: { required: true, validation: 'email' },
+    },
+  );
 
   const isButtonDisabled = isEveryFieldEmpty || !isFormValid;
 
@@ -61,7 +68,7 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
           errors.email = emailError;
         }
 
-        setFieldErrors(errors);
+        updateFieldErrors(errors);
       }
     }
   };
@@ -86,22 +93,18 @@ const EditInformationModal = ({ visible, onClose }: Props) => {
         <View alignCenter mt={4} mx={5}>
           <FormField
             {...fieldProps.firstName}
-            required
             placeholder="First name"
             returnKeyType="next"
           />
           <FormField
             {...fieldProps.lastName}
-            required
             placeholder="Last name"
             returnKeyType="next"
           />
           <FormField
             {...fieldProps.email}
-            required
             icon="email"
             placeholder="Email address"
-            validation="email"
             returnKeyType="done"
             keyboardType="email-address"
           />

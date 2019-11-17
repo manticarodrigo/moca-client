@@ -1,12 +1,14 @@
 import React from 'react';
 
+import { FieldDict } from '@src/hooks/useFormFields';
+
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
 import Form, { Props as FormProps } from '@src/components/Form';
 
-type Props<State> = FormProps<State> & {
+type Props<State extends FieldDict> = FormProps<State> & {
   visible: boolean;
   header?: JSX.Element;
   title?: string;
@@ -38,7 +40,7 @@ const FormModal = <State extends { [key: string]: string }> ({
         </View>
       )}
 
-      <Form {...formProps} />
+      <Form visible={visible} {...formProps} />
 
     </View>
 

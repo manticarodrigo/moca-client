@@ -23,7 +23,13 @@ type Props = {
   onSubmit: (address: AddAddressForm) => void;
 }
 
-const parseStringValues = (fields: Partial<AddAddressForm>) => {
+type Parsed = {
+  primary?: boolean;
+  coordinates?: [number, number];
+  strings: Partial<Omit<AddAddressForm, 'primary' | 'coordinates'>>;
+}
+
+const parseStringValues = (fields: Partial<AddAddressForm>): Parsed => {
   const { primary, coordinates, ...strings } = fields;
 
   return { primary, coordinates, strings };
@@ -42,14 +48,23 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
     updateFieldValues,
     isFormValid,
     isEveryFieldEmpty,
-  } = useFormFields<Omit<AddAddressForm, 'primary' | 'coordinates'>>({
-    name: '',
-    street: '',
-    apartment: '',
-    city: '',
-    state: '',
-    zipCode: '',
-  });
+  } = useFormFields<Omit<AddAddressForm, 'primary' | 'coordinates'>>(
+    {
+      name: '',
+      street: '',
+      apartment: '',
+      city: '',
+      state: '',
+      zipCode: '',
+    },
+    {
+      name: { required: true },
+      street: { required: true },
+      city: { required: true },
+      state: { required: true },
+      zipCode: { required: true, validation: 'zip' },
+    },
+  );
 
   const updateFields = (fields: Partial<AddAddressForm>) => {
     const parsed = parseStringValues(fields);
@@ -99,13 +114,11 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
           <View alignCenter mt={4} mb={3}>
             <FormField
               {...fieldProps.name}
-              required
               placeholder="Name"
               returnKeyType="next"
             />
             <FormField
               {...fieldProps.street}
-              required
               placeholder="Street"
               returnKeyType="next"
             />
@@ -116,21 +129,17 @@ const AddressForm = ({ existingFields, isRegistering, submitText, onSubmit }: Pr
             />
             <FormField
               {...fieldProps.city}
-              required
               placeholder="City"
               returnKeyType="done"
             />
             <FormField
               {...fieldProps.state}
-              required
               placeholder="State"
               maxLength={2}
             />
             <FormField
               {...fieldProps.zipCode}
-              required
               placeholder="Zip Code"
-              validation="zip"
               maxLength={5}
               selectTextOnFocus={false}
             />

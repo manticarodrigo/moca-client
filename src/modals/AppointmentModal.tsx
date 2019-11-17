@@ -18,6 +18,7 @@ type Tab = 'timer' | 'notes';
 const tabOptions = [{ value: 'timer', label: 'Timer' }, { value: 'notes', label: 'Notes' }];
 
 const AppointmentModal = ({
+  past = false,
   visible,
   isTherapist,
   appointment,
@@ -29,7 +30,7 @@ const AppointmentModal = ({
   const mounted = useRef(true);
 
   const inProgress = (appointment || {}).status === AppointmentStatusEnum.InProgress;
-  const completed = (appointment || {}).status === AppointmentStatusEnum.Completed;
+  const completed = (appointment || {}).status === AppointmentStatusEnum.Completed || !!past;
 
   useEffect(() => {
     if (completed && activeTab === 'timer') {

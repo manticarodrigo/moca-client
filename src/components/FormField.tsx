@@ -8,8 +8,6 @@ import {
   TextInput as RNInput,
 } from 'react-native';
 
-import { getValidationError } from '@src/utlities/validations';
-
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
 import { Spacing, SpacingProps, Colors, Texts, Typography } from '@src/styles';
@@ -22,16 +20,13 @@ import Text from './Text';
 export type Props = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
-  value: string;
+  value?: string;
   error?: string;
-  required?: boolean;
-  validation?: 'email' | 'password' | 'zip' | 'number';
   didBlur?: boolean;
   spacing?: SpacingProps;
   width?: number | string;
   height?: number | string;
-  onChangeText?: (text: string, error?: string) => void;
-  onChangeError?: (error?: string) => void;
+  onChangeText?: (text: string) => void;
 }
 
 const FormField = ({
@@ -40,14 +35,11 @@ const FormField = ({
   value,
   error,
   multiline,
-  required,
-  validation,
   didBlur,
   spacing,
   width,
   height,
   onChangeText,
-  onChangeError,
   ...textInputProps
 }: Props, ref: React.Ref<RNInput>) => {
   const [focused, setFocused] = useState();
@@ -55,19 +47,11 @@ const FormField = ({
 
   const focusedOrFilled = focused || value !== '';
 
-  const validationError = useMemo(
-    () => getValidationError(value, validation, required), [value, validation, required],
-  );
-
-  const shouldShowError = useMemo(() => {
-    if (error) return true;
-
-    if (validation === 'password') {
-      return (focusedOrFilled || blurred) && validationError;
-    }
-
-    return (blurred && validationError);
-  }, [validation, blurred, validationError, error, focusedOrFilled]);
+  const shouldShowError = useMemo(() => (focusedOrFilled || blurred) && !!error, [
+    blurred,
+    error,
+    focusedOrFilled,
+  ]);
 
   const animatedValue = useMemo(() => new Animated.Value(0), []);
 
@@ -146,22 +130,12 @@ const FormField = ({
     setBlurred(true);
   };
 
-  const handleChangeText = (text: string) => {
-    onChangeText(text, getValidationError(text, validation, required));
-  };
-
 
   useEffect(() => {
     if (didBlur) {
       setBlurred(true);
     }
   }, [didBlur]);
-
-  useEffect(() => {
-    if (blurred && onChangeError) {
-      onChangeError(getValidationError(value, validation, required));
-    }
-  }, [blurred, validationError]);
 
   return (
     <>
@@ -180,7 +154,7 @@ const FormField = ({
               scrollEnabled={false}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              onChangeText={handleChangeText}
+              onChangeText={onChangeText}
               {...textInputProps}
             />
             <View style={{ position: 'absolute', top: 20, right: 20 }}>
@@ -191,7 +165,7 @@ const FormField = ({
       </Wrapper>
       {shouldShowError && (
         <Text mt={2} variant="regular" size={1} color="error" align="center" numberOfLines={3}>
-          {error || validationError}
+          {error}
         </Text>
       )}
     </>

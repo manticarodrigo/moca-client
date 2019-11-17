@@ -1,23 +1,46 @@
 import { useState, useMemo, useRef } from 'react';
-
 import { TextInput } from 'react-native';
 
-type Errors<Fields> = { [key in keyof Fields]?: string };
+import { getValidationError } from '@src/utlities/validations';
 
-type FormState<Fields> = {
-  fieldValues: Fields;
-  fieldErrors: Errors<Fields>;
+export type FieldDict = { [key: string]: string }
+
+type Keys<Fields extends FieldDict> = keyof Fields
+type Values<Fields extends FieldDict> = Fields
+type Errors<Fields extends FieldDict> = Partial<Fields>
+
+type ConfigMap = {
+  required?: boolean;
+  validation?: 'email' | 'password' | 'zip' | 'number';
 }
 
-const useFormFields = <Fields extends { [key: string]: string }> (initialState) => {
-  const fieldRefs = useRef<{ [key in keyof Fields]?: TextInput }>({});
+export type Config<Fields extends FieldDict> = { [key in keyof Fields]?: ConfigMap }
+
+const useFormFields = <Fields extends FieldDict> (
+  initialState: Fields,
+  fieldConfig?: Config<Fields>,
+) => {
+  const fieldRefs = useRef<{ [key in Keys<Fields>]?: TextInput }>({});
 
   const [didBlur, setDidBlur] = useState(false);
 
-  const [{ fieldValues, fieldErrors }, setFormState] = useState<FormState<Fields>>({
-    fieldValues: initialState,
-    fieldErrors: {},
-  });
+  const [fieldValues, setFieldValues] = useState<Values<Fields>>(initialState);
+  const [externalErrors, setExternalErrors] = useState<Errors<Fields>>({});
+
+  const validationErrors: Errors<Fields> = useMemo(() => {
+    const errors = {};
+    Object.entries(fieldValues).forEach(([key, value]) => {
+      const config = fieldConfig ? fieldConfig[key] || {} : {};
+      const { validation, required } = config;
+      errors[key] = getValidationError(value, validation, required);
+    });
+    return errors;
+  }, [fieldValues, fieldConfig]);
+
+  const fieldErrors = useMemo(() => ({
+    ...validationErrors,
+    ...externalErrors,
+  }), [validationErrors, externalErrors]);
 
   const { isAnyFieldEmpty, isEveryFieldEmpty, isFormValid } = useMemo(() => ({
     isAnyFieldEmpty: Object.values(fieldValues).some((v) => !v),
@@ -25,39 +48,14 @@ const useFormFields = <Fields extends { [key: string]: string }> (initialState) 
     isFormValid: Object.values(fieldErrors).every((v) => !v),
   }), [fieldValues, fieldErrors]);
 
-  const setFieldRef = (key: keyof Fields) => (ref) => {
-    fieldRefs.current[key] = ref;
-  };
 
-  const setFieldValues = (values: Fields) => setFormState(
-    (prev) => ({ fieldValues: values, fieldErrors: prev.fieldErrors }),
-  );
+  const onChangeValue = (key: Keys<Fields>) => (value: string) => {
+    setFieldValues((prev) => ({ ...prev, [key]: value }));
 
-  const setFieldErrors = (errors: Errors<Fields>) => {
-    setFormState(
-      (prev) => ({ fieldValues: prev.fieldValues, fieldErrors: errors }),
-    );
-
-    setDidBlur(true);
-  };
-
-  const updateFieldValues = (values: Partial<Fields>) => {
-    setFormState(
-      (prev) => ({ ...prev, fieldValues: { ...prev.fieldValues, ...values } }),
-    );
-
-    setDidBlur(true);
-  };
-
-  const onChangeValue = (key: keyof Fields) => (value: string, error?: string) => {
-    setFormState((prev) => ({
-      fieldValues: { ...prev.fieldValues, [key]: value },
-      fieldErrors: { ...prev.fieldErrors, [key]: error },
-    }));
-  };
-
-  const onChangeError = (key: keyof Fields) => (error?: string) => {
-    setFormState((prev) => ({ ...prev, fieldErrors: { ...prev.fieldErrors, [key]: error } }));
+    if (externalErrors[key]) {
+      delete externalErrors[key];
+      setExternalErrors(externalErrors);
+    }
   };
 
   const onFocusNext = (key: keyof Fields) => () => {
@@ -66,13 +64,22 @@ const useFormFields = <Fields extends { [key: string]: string }> (initialState) 
     fieldRefs.current[key].focus();
   };
 
+  const updateFieldErrors = (errors: Errors<Fields>) => {
+    setExternalErrors(errors);
+    setDidBlur(true);
+  };
+
+  const updateFieldValues = (values: FieldDict) => {
+    setFieldValues((prev) => ({ ...prev, ...values }));
+    setDidBlur(true);
+  };
+
   type FieldProps = {
     ref: React.Ref<TextInput>;
     value: string;
     error?: string;
     didBlur?: boolean;
-    onChangeText: (text?: string, error?: string) => void;
-    onChangeError: (error?: string) => void;
+    onChangeText: (text?: string) => void;
     onSubmitEditing: (e) => void;
   }
 
@@ -90,35 +97,29 @@ const useFormFields = <Fields extends { [key: string]: string }> (initialState) 
       }
 
       acc[key] = {
-        ref: setFieldRef(key),
+        ref: (ref) => { fieldRefs.current[key] = ref; },
         value: fieldValues[key],
         error: fieldErrors[key],
         didBlur,
         onChangeText: onChangeValue(key),
-        onChangeError: onChangeError(key),
         onSubmitEditing,
       };
 
       return acc;
-    }, {} as { [key in keyof Fields]: FieldProps });
+    }, {} as { [key in Keys<Fields>]: FieldProps });
 
     return propMap;
   }, [initialState, fieldValues, fieldErrors, didBlur]);
 
   return {
-    fieldRefs,
     fieldValues,
     fieldProps,
-    setFieldRef,
-    setFieldValues,
-    setFieldErrors,
     updateFieldValues,
+    updateFieldErrors,
     isAnyFieldEmpty,
     isEveryFieldEmpty,
     isFormValid,
     onChangeValue,
-    onChangeError,
-    onFocusNext,
   };
 };
 

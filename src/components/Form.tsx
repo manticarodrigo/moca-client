@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import useFormFields from '@src/hooks/useFormFields';
+import useFormFields, { FieldDict, Config as FieldConfig } from '@src/hooks/useFormFields';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -10,62 +10,51 @@ import FormField, { Props as FormFieldProps } from '@src/components/FormField';
 import Button from '@src/components/Button';
 import ImageSelector from '@src/components/ImageSelector';
 
-type FieldConfig = {
-  [key: string]: FormFieldProps;
-}
+type FieldProps = { [key: string]: FormFieldProps }
+type Image = { id?: number; image?: string }
 
-type Image = {
-  id?: number;
-  image?: string;
-}
-
-export type Props<State> = {
+export type Props<State extends FieldDict> = {
   visible: boolean;
-  fieldConfig: FieldConfig;
+  initialState: State;
+  props: FieldProps;
+  config?: FieldConfig<State>;
   images: Image[];
   submitText: string;
   onSubmit: (formFields: State) => void;
 }
 
-const Form = <State extends { [key: string]: string }> ({
+const Form = <State extends FieldDict> ({
   visible,
-  fieldConfig,
-  images = [],
+  initialState,
+  config,
+  props,
+  images,
   submitText,
   onSubmit,
 }: Props<State>) => {
   const [localImages, setLocalImages] = useState([]);
 
-  const mounted = useRef(true);
-
-  const initialState = useMemo(
-    () => Object.entries(fieldConfig).reduce(
-      (a, [key, config]) => ({ ...a, [key]: config.value }), {},
-    ), [fieldConfig],
-  );
-
   const {
     fieldValues,
     fieldProps,
-    setFieldValues,
     isFormValid,
-  } = useFormFields<State>(initialState);
+    isEveryFieldEmpty,
+  } = useFormFields<State>(initialState, config);
+
+  const isValid = isFormValid && (!isEveryFieldEmpty || !!(images && images.length));
 
   useEffect(() => {
-    if (!mounted.current) return;
-
-    setFieldValues(initialState as State);
-  }, [initialState]);
-
-  useEffect(() => {
-    setLocalImages(visible ? images : []);
+    setLocalImages(visible ? (images || []) : []);
   }, [visible, images]);
 
   const onAddImage = (uri: string) => {
     setLocalImages((prev) => [...prev, { image: uri }]);
   };
 
-  const onPressSubmit = () => isFormValid && onSubmit({ ...fieldValues, images: localImages });
+  const onPressSubmit = () => isValid && onSubmit({
+    ...fieldValues,
+    images: localImages,
+  });
 
   return (
     <>
@@ -73,10 +62,10 @@ const Form = <State extends { [key: string]: string }> ({
         <KeyboardAwareScrollView contentContainerStyle={{ width: WINDOW_WIDTH }} extraHeight={0}>
           <View my={3} p={4} width="100%" bgColor="white">
             <>
-              {Object.entries(fieldConfig).map(([key, config]) => (
+              {Object.keys(initialState).map((key) => (
                 <FormField
                   key={key}
-                  {...config}
+                  {...props[key]}
                   {...fieldProps[key]}
                 />
               ))}
@@ -84,7 +73,7 @@ const Form = <State extends { [key: string]: string }> ({
             <View row pt={5} px={3} pb={2}>
               <ImageSelector
                 label="Add Images"
-                images={images.concat(localImages)}
+                images={(images || []).concat(localImages)}
                 onAdd={onAddImage}
               />
             </View>
@@ -94,8 +83,8 @@ const Form = <State extends { [key: string]: string }> ({
 
       <View width={WINDOW_WIDTH} p={4} variant="borderTop">
         <Button
-          variant={!isFormValid ? 'primaryDisabled' : 'primary'}
-          disabled={!isFormValid}
+          variant={!isValid ? 'primaryDisabled' : 'primary'}
+          disabled={!isValid}
           onPress={onPressSubmit}
         >
           {submitText}

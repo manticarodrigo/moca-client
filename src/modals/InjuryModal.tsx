@@ -11,14 +11,11 @@ const InjuryModal = ({ visible, injury, patient, onSubmit, onClose }) => {
   return (
     <FormModal
       visible={visible}
-      fieldConfig={{
-        title: { required: true, value: title, placeholder: 'Title' },
-        description: {
-          required: true,
-          multiline: true,
-          value: description,
-          placeholder: 'Description',
-        },
+      initialState={{ title, description }}
+      config={{ title: { required: true }, description: { required: true } }}
+      props={{
+        title: { placeholder: 'Title' },
+        description: { multiline: true, placeholder: 'Description' },
       }}
       images={images}
       title={firstName ? `${firstName}'s Injury` : undefined}
