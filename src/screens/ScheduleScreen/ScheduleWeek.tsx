@@ -142,9 +142,9 @@ const ScheduleWeek = ({ navigation, isFocused, selectedDate, onChangeDate, onSet
 
     const handlePress = () => {
       if (item.awayDays && item.awayDays.length) {
-        const [leaveId] = item.awayDays;
+        const [periodId] = item.awayDays;
 
-        return onSetAway({ visible: true, leaveId });
+        return onSetAway({ visible: true, periodId });
       }
 
       return navigation.push('ScheduleDayScreen', { scheduleItem: item });

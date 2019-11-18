@@ -26,6 +26,7 @@ import ConversationScreen from '@src/screens/ConversationScreen';
 import ProfileScreen from '@src/screens/ProfileScreen';
 import ProfileSettingsScreen from '@src/screens/ProfileSettingsScreen';
 import AddressSettingsScreen from '@src/screens/AddressSettingsScreen';
+import CertificationsScreen from '@src/screens/CertificationsScreen';
 import InjuriesScreen from '@src/screens/InjuriesScreen';
 import WalletScreen from '@src/screens/WalletScreen';
 
@@ -89,6 +90,7 @@ const AppStack = createSwitchNavigator(
         ProfileSettingsScreen,
         AddressSettingsScreen,
         AddressScreen,
+        CertificationsScreen,
         InjuriesScreen,
         WalletScreen,
       }, defaultNavConfig),

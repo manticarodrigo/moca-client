@@ -14,6 +14,7 @@ import {
   UserSnippet,
   ProfileInfo,
 } from '@src/services/openapi';
+
 import { BrandType } from '@src/services/stripe';
 
 export type Card = {
@@ -127,14 +128,23 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'ADD_PAYMENT_SUCCESS':
       newState = appendItem('payments', state, action.payload);
       break;
-    case 'ADD_LEAVE_PERIOD_SUCCESS':
+    case 'ADD_AWAY_PERIOD_SUCCESS':
       newState = appendItem('awayDays', state, action.payload);
       break;
-    case 'UPDATE_LEAVE_PERIOD_SUCCESS':
+    case 'UPDATE_AWAY_PERIOD_SUCCESS':
       newState = updateItem('awayDays', state, action.payload);
       break;
-    case 'DELETE_LEAVE_PERIOD_SUCCESS':
+    case 'DELETE_AWAY_PERIOD_SUCCESS':
       newState = deleteItem('awayDays', state, action.payload);
+      break;
+    case 'ADD_CERTIFICATION_SUCCESS':
+      newState = appendItem('certifications', state, action.payload);
+      break;
+    case 'UPDATE_CERTIFICATION_SUCCESS':
+      newState = updateItem('certifications', state, action.payload);
+      break;
+    case 'DELETE_CERTIFICATION_SUCCESS':
+      newState = deleteItem('certifications', state, action.payload);
       break;
     case 'ADD_INJURY_SUCCESS':
       newState = appendItem('injuries', state, action.payload);

@@ -10,13 +10,16 @@ import Text from '@src/components/Text';
 import InfoList from '@src/components/InfoList';
 
 type Props = {
-  patient: UserState;
   visible: boolean;
+  profile: UserState;
+  type: 'certifications' | 'injuries';
+  singularTitle: string;
+  pluralTitle: string;
   readonly?: boolean;
   onClose: () => void;
 };
 
-const InjuriesModal = ({ patient, visible, onClose }: Props) => (
+const InjuriesModal = ({ visible, profile, type, singularTitle, pluralTitle, onClose }: Props) => (
   <Modal
     propagateSwipe
     isVisible={visible}
@@ -26,12 +29,12 @@ const InjuriesModal = ({ patient, visible, onClose }: Props) => (
       <View row>
         <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
           <Text variant="semiBoldLarge">
-            {`${patient.firstName}'s Injuries`}
+            {`${profile.firstName}'s ${pluralTitle}`}
           </Text>
         </View>
       </View>
 
-      <InfoList readonly title="Injury" items={patient.injuries} />
+      <InfoList readonly title={singularTitle} items={profile[type]} />
 
       <View py={4} />
     </View>

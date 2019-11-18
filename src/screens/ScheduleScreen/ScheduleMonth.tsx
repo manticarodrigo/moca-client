@@ -17,7 +17,7 @@ import api from '@src/services/api';
 import useStore from '@src/hooks/useStore';
 import useAwayMap from '@src/hooks/useAwayMap';
 
-import { Leave } from '@src/services/openapi';
+import { AwayPeriod } from '@src/services/openapi';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import { Colors, Typography } from '@src/styles';
@@ -35,7 +35,7 @@ type MarkedDates = {
   [date: string]: DotMarking & {
     total?: number;
     appointments?: Appointment[];
-    awayDays?: Leave[];
+    awayDays?: AwayPeriod[];
   };
 }
 
@@ -134,9 +134,9 @@ const Calendar = ({ navigation, isFocused, selectedDate, onChangeDate, onSetAway
     const existing = markedDates[day.dateString] || {};
 
     if (existing.awayDays && existing.awayDays.length) {
-      const [leaveId] = existing.awayDays;
+      const [periodId] = existing.awayDays;
 
-      return onSetAway({ visible: true, leaveId });
+      return onSetAway({ visible: true, periodId });
     }
 
     const scheduleItem: ListItem = {

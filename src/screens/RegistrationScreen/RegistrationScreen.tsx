@@ -8,7 +8,7 @@ import useFormFields from '@src/hooks/useFormFields';
 
 import { registerUser } from '@src/store/actions/UserAction';
 
-import InfoModal from '@src/modals/InfoModal';
+import ContentModal from '@src/modals/ContentModal';
 
 import { ToS } from '@src/content';
 
@@ -98,13 +98,13 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
 
-      <InfoModal
+      <ContentModal
         visible={modalVisible === 'ToS'}
         title="Terms of Service"
         json={ToS}
         onClose={onCloseModal}
       />
-      <InfoModal
+      <ContentModal
         visible={modalVisible === 'Privacy'}
         title="Privacy Policy"
         json={ToS}

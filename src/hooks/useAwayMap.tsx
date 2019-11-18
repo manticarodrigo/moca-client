@@ -1,25 +1,25 @@
 import { useMemo } from 'react';
 import { format, eachDayOfInterval } from 'date-fns';
 
-import { Leave } from '@src/services/openapi';
+import { AwayPeriod } from '@src/services/openapi';
 
-type AwayMap = { [key: string]: Leave[] }
+type AwayMap = { [key: string]: AwayPeriod[] }
 
-const useAwayMap = (awayDays: Leave[]): AwayMap => useMemo(() => {
+const useAwayMap = (awayDays: AwayPeriod[]): AwayMap => useMemo(() => {
   const map = {};
   if (awayDays && Array.isArray(awayDays)) {
-    awayDays.forEach((leave) => {
-      const start = new Date(leave.startDate);
-      const end = new Date(leave.endDate);
+    awayDays.forEach((period) => {
+      const start = new Date(period.startDate);
+      const end = new Date(period.endDate);
       const range = eachDayOfInterval({ start, end });
 
       range.forEach((day) => {
         const key = format(day, 'yyyy-MM-dd');
 
         if (map[key]) {
-          map[key].push(leave.id);
+          map[key].push(period.id);
         } else {
-          map[key] = [leave.id];
+          map[key] = [period.id];
         }
       });
     });

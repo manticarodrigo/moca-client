@@ -44,7 +44,8 @@ const Form = <State extends FieldDict> ({
   const isValid = isFormValid && (!isEveryFieldEmpty || !!(images && images.length));
 
   useEffect(() => {
-    setLocalImages(visible ? (images || []) : []);
+    if (visible) return;
+    setLocalImages([]);
   }, [visible, images]);
 
   const onAddImage = (uri: string) => {

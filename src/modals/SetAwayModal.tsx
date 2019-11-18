@@ -6,9 +6,9 @@ import { getDateForString } from '@src/utlities/dates';
 import api from '@src/services/api';
 
 import {
-  addLeavePeriod,
-  updateLeavePeriod,
-  deleteLeavePeriod,
+  addAwayPeriod,
+  updateAwayPeriod,
+  deleteAwayPeriod,
 } from '@src/store/actions/UserAction';
 
 import useStore from '@src/hooks/useStore';
@@ -28,7 +28,7 @@ import Toast from '@src/components/Toast';
 
 type Props = {
   visible: boolean;
-  leaveId?: number;
+  periodId?: number;
   onClose: () => void;
 };
 
@@ -39,27 +39,27 @@ type ToastState = {
 
 const initialState = { startDate: '', endDate: '' };
 
-const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
+const SetAwayModal = ({ visible, periodId, onClose }: Props) => {
   const { dispatch } = useStore();
-  const [{ startDate, endDate }, setLeavePeriodState] = useState(initialState);
+  const [{ startDate, endDate }, setAwayPeriodState] = useState(initialState);
   const [toastState, setToastState] = useState<ToastState>();
 
   useEffect(() => {
     const fetchAwayDays = async () => {
-      const { data } = await api.user.userTherapistAwayRead(leaveId.toString());
+      const { data } = await api.user.userTherapistAwayRead(periodId.toString());
       const start = format(new Date(data.startDate), 'yyyy-MM-dd');
       const end = format(new Date(data.endDate), 'yyyy-MM-dd');
-      setLeavePeriodState({ startDate: start, endDate: end });
+      setAwayPeriodState({ startDate: start, endDate: end });
     };
 
-    if (visible && leaveId) {
+    if (visible && periodId) {
       fetchAwayDays();
     }
 
     if (!visible) {
-      setLeavePeriodState(initialState);
+      setAwayPeriodState(initialState);
     }
-  }, [visible, leaveId]);
+  }, [visible, periodId]);
 
   const markedDates = useMemo(() => {
     let daysInRange = 0;
@@ -121,12 +121,12 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
       end = '';
     }
 
-    setLeavePeriodState({ startDate: start, endDate: end });
+    setAwayPeriodState({ startDate: start, endDate: end });
   };
 
-  const onDeleteLeavePeriod = async () => {
+  const onDeleteAwayPeriod = async () => {
     try {
-      await dispatch(deleteLeavePeriod(leaveId));
+      await dispatch(deleteAwayPeriod(periodId));
       setToastState({ type: 'success', message: 'Away time has been successfully removed.' });
       setTimeout(onClose, 2000);
     } catch {
@@ -141,23 +141,23 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
     end.setHours(23, 59, 59, 999);
 
     try {
-      const leave = { startDate: start.toISOString(), endDate: end.toISOString() };
+      const period = { startDate: start.toISOString(), endDate: end.toISOString() };
 
-      if (!leaveId) {
-        await dispatch(addLeavePeriod(leave.startDate, leave.endDate));
+      if (!periodId) {
+        await dispatch(addAwayPeriod(period.startDate, period.endDate));
       } else {
-        await dispatch(updateLeavePeriod(leaveId, leave));
+        await dispatch(updateAwayPeriod(periodId, period));
       }
 
       setToastState({
         type: 'success',
-        message: `Away time has been ${leaveId ? 'updated in your' : 'added to your'} calendar.`,
+        message: `Away time has been ${periodId ? 'updated in your' : 'added to your'} calendar.`,
       });
       setTimeout(onClose, 2000);
     } catch ({ response }) {
       const { data } = response;
 
-      let message = `There was an issue ${leaveId ? 'updating' : 'adding'} your away time.`;
+      let message = `There was an issue ${periodId ? 'updating' : 'adding'} your away time.`;
 
       if (data.startDate || data.endDate) {
         const [errorMessage] = [...(data.startDate || []), ...(data.endDate || [])];
@@ -171,15 +171,15 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
     <Modal propagateSwipe isVisible={visible} onToggle={onClose}>
 
       <View alignCenter pb={6}>
-        <View row justifyBetween={!!leaveId} variant="borderBottom">
-          {!!leaveId && <View p={4} px={5} />}
+        <View row justifyBetween={!!periodId} variant="borderBottom">
+          {!!periodId && <View p={4} px={5} />}
           <View flex={1} p={4} alignCenter justifyCenter>
             <Text variant="semiBoldLarge">
               Add Away Days
             </Text>
           </View>
-          {!!leaveId && (
-            <View p={4} alignCenter onPress={onDeleteLeavePeriod}><BinIconRed /></View>
+          {!!periodId && (
+            <View p={4} alignCenter onPress={onDeleteAwayPeriod}><BinIconRed /></View>
           )}
         </View>
 
@@ -219,7 +219,7 @@ const SetAwayModal = ({ visible, leaveId, onClose }: Props) => {
             variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
             onPress={onPressSubmit}
           >
-            {leaveId ? 'Update Days Off' : 'Submit Days Off'}
+            {periodId ? 'Update Days Off' : 'Submit Days Off'}
           </Button>
         </View>
 

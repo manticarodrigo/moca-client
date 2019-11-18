@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
-import { Injury } from '@src/services/openapi';
-import { addInjury, updateInjury, deleteInjury } from '@src/store/actions/UserAction';
+import { Certification } from '@src/services/openapi';
+import {
+  addCertification,
+  updateCertification,
+  deleteCertification,
+} from '@src/store/actions/UserAction';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -21,19 +25,21 @@ type ToastState = {
 
 type ModalState = {
   visible?: boolean;
-  injury?: Injury;
+  certification?: Certification;
 }
 
-const InjuriesScreen: NavigationStackScreenComponent = () => {
+const CertificationsScreen: NavigationStackScreenComponent = () => {
   const { store, dispatch } = useStore();
   const [toastState, setToastState] = useState<ToastState>();
   const [modalState, setModalState] = useState<ModalState>({});
 
-  const onPressItem = (injury: Injury) => setModalState({ visible: true, injury });
+  const onPressItem = (certification: Certification) => (
+    setModalState({ visible: true, certification })
+  );
 
-  const onPressDelete = async (id: Injury['id']) => {
+  const onPressDelete = async (id: Certification['id']) => {
     try {
-      await dispatch(deleteInjury(id));
+      await dispatch(deleteCertification(id));
       setToastState({ type: 'success', message: 'Delete successful.' });
     } catch {
       setToastState({ type: 'error', message: 'Delete failed.' });
@@ -44,14 +50,14 @@ const InjuriesScreen: NavigationStackScreenComponent = () => {
 
   const onCloseModal = () => setModalState({});
 
-  const onSubmitInjury = async ({ id, title, description, images }) => {
+  const onSubmit = async ({ id, title, description, images }) => {
     const imageUrls = images.map(({ image }) => image);
 
     try {
       if (id) {
-        await dispatch(updateInjury(id, title, description, imageUrls));
+        await dispatch(updateCertification(id, title, description, imageUrls));
       } else {
-        await dispatch(addInjury(title, description, imageUrls));
+        await dispatch(addCertification(title, description, imageUrls));
       }
       setToastState({ type: 'success', message: `${id ? 'Update' : 'Submission'} succeeded.` });
     } catch {
@@ -67,8 +73,8 @@ const InjuriesScreen: NavigationStackScreenComponent = () => {
   return (
     <View safeArea flex={1} width={WINDOW_WIDTH}>
       <InfoList
-        title="Injury"
-        items={store.user.injuries}
+        title="Certification"
+        items={store.user.certifications}
         onPress={onPressItem}
         onAdd={onPressAdd}
         onDelete={onPressDelete}
@@ -82,18 +88,18 @@ const InjuriesScreen: NavigationStackScreenComponent = () => {
 
       <InfoModal
         visible={modalState.visible}
-        item={modalState.injury}
+        item={modalState.certification}
         profile={store.user}
-        singularTitle="Injury"
-        onSubmit={onSubmitInjury}
+        singularTitle="Certification"
+        onSubmit={onSubmit}
         onClose={onCloseModal}
       />
     </View>
   );
 };
 
-InjuriesScreen.navigationOptions = {
-  title: 'My Injuries',
+CertificationsScreen.navigationOptions = {
+  title: 'My Certifications',
 };
 
-export default InjuriesScreen;
+export default CertificationsScreen;

@@ -36,6 +36,7 @@ const useProfileFields = (
       bio,
       licenseNumber,
       certDate,
+      certifications = [],
       preferredAilments = [],
       payments = [],
       awayDays = [],
@@ -170,8 +171,17 @@ const useProfileFields = (
         icon: QualificationIcon,
         field: 'preferredAilments',
         title: 'Preferred Treatment Areas',
-        subtitle: preferredAilments.join(', ') || (!readonly ? 'Set Treatment Aread' : 'N/A'),
+        subtitle: preferredAilments.join(', ') || (!readonly ? 'Set Treatment Areas' : 'N/A'),
         onPress: !readonly ? onPressField('preferredAilments') : undefined,
+      },
+      {
+        icon: QualificationIcon,
+        field: 'certifications',
+        title: 'Certifications',
+        subtitle: certifications.length
+          ? `${certifications.length} certification(s)`
+          : (!readonly && 'Add Certifications') || 'N/A',
+        onPress: onPressField('certifications'),
       },
     ];
 

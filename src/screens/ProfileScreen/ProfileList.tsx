@@ -14,7 +14,7 @@ import QualificationsModal from '@src/modals/QualificationsModal';
 import DaysOffModal from '@src/modals/DaysOffModal';
 import ReviewsModal from '@src/modals/ReviewsModal';
 import InputModal, { Props as InputModalProps } from '@src/modals/InputModal';
-import InjuriesModal from '@src/modals/InjuriesModal';
+import InfoListModal from '@src/modals/InfoListModal';
 
 import View from '@src/components/View';
 import Toast from '@src/components/Toast';
@@ -31,6 +31,7 @@ const initialModalState = {
   prices: false,
   awayDays: false,
   reviewCount: false,
+  certifications: false,
   preferredAilments: false,
   injuries: false,
 };
@@ -130,6 +131,10 @@ const ProfileList = ({ user, readonly }: Props) => {
         if (readonly) return onOpenModal(key);
         return navigation.navigate('InjuriesScreen');
 
+      case 'certifications':
+        if (readonly) return onOpenModal(key);
+        return navigation.navigate('CertificationsScreen');
+
       // input modal
       case 'operationRadius': case 'bio': case 'licenseNumber':
         return setInputModal(key);
@@ -221,10 +226,24 @@ const ProfileList = ({ user, readonly }: Props) => {
         </>
       )}
 
+      {isTherapistProfile && readonly && (
+        <InfoListModal
+          visible={modalState.certifications}
+          profile={profile}
+          type="certifications"
+          singularTitle="Certification"
+          pluralTitle="Certifications"
+          onClose={onCloseModal('certifications')}
+        />
+      )}
+
       {!isTherapistProfile && readonly && (
-        <InjuriesModal
+        <InfoListModal
           visible={modalState.injuries}
-          patient={profile}
+          profile={profile}
+          type="injuries"
+          singularTitle="Injury"
+          pluralTitle="Injuries"
           onClose={onCloseModal('injuries')}
         />
       )}
