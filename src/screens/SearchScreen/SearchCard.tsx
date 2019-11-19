@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { TherapistSearch } from '@src/store/reducers/SearchReducer';
+import { PriceSessionTypeEnum } from '@src/services/openapi';
 
 import { ClockIcon } from '@src/components/icons';
 
@@ -10,7 +11,7 @@ import Text from '@src/components/Text';
 import Rating from '@src/components/Rating';
 import Button from '@src/components/Button';
 
-const sessions = { thirty: '30', fourtyfive: '45', sixty: '60' };
+const sessions = { evaluation: 'Eval', thirty: '30', fourtyfive: '45', sixty: '60' };
 
 type Props = TherapistSearch & {
   onPressTherapist: (userId: number) => void;
@@ -31,7 +32,28 @@ const SearchCard = ({
   const handlePressCard = () => onPressTherapist(id);
   const handlePressMessage = () => onMessageTherapist({ id, firstName, lastName });
 
-  const sessionTypes = prices.map(({ sessionType }) => sessions[sessionType]).join('/');
+  const sessionTypes = useMemo(() => {
+    const types = [];
+    const evaluation = prices.find(
+      ({ sessionType }) => sessionType === PriceSessionTypeEnum.Evaluation,
+    );
+    const thirty = prices.find(
+      ({ sessionType }) => sessionType === PriceSessionTypeEnum.Thirty,
+    );
+    const fourtyfive = prices.find(
+      ({ sessionType }) => sessionType === PriceSessionTypeEnum.Fourtyfive,
+    );
+    const sixty = prices.find(
+      ({ sessionType }) => sessionType === PriceSessionTypeEnum.Sixty,
+    );
+
+    if (evaluation) types.push(sessions.evaluation);
+    if (thirty) types.push(sessions.thirty);
+    if (fourtyfive) types.push(sessions.fourtyfive);
+    if (sixty) types.push(sessions.sixty);
+
+    return types.join(' | ');
+  }, [prices]);
   const avgPrice = prices.reduce((total, { price }) => total + price, 0) / prices.length;
 
   return (
@@ -51,7 +73,7 @@ const SearchCard = ({
               <Text ml={2} variant="regular">{sessionTypes || 'N/A'}</Text>
             </View>
             <Text mt={2} variant="title">
-              {prices.length ? `~$${avgPrice}` : 'N/A'}
+              {prices.length ? `${prices.length > 1 ? '~' : ''}$${avgPrice}` : 'N/A'}
             </Text>
           </View>
         </View>
