@@ -282,6 +282,16 @@ const notificationBadgeLarge: ViewStyle = {
   borderColor: Colors.errorLighter,
 };
 
+const deleteBadge: ViewStyle = {
+  ...notificationBadge,
+  top: -10,
+  right: 0,
+  width: 30,
+  height: 30,
+  borderRadius: 15,
+  borderWidth: 2,
+};
+
 export {
   rounded,
   card,
@@ -317,6 +327,7 @@ export {
   patientView,
   notificationBadge,
   notificationBadgeLarge,
+  deleteBadge,
   star,
   starFirst,
   starLast,

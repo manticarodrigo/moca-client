@@ -25,7 +25,7 @@ function updateUpcomingItem(key: keyof AppointmentState, state, payload) {
 
   state[key][index] = { ...state[key][index], ...payload };
 
-  return state;
+  return { ...state };
 }
 
 function updateUpcomingItemStatus(
@@ -39,7 +39,35 @@ function updateUpcomingItemStatus(
     existing.status = status;
   }
 
-  return state;
+  return { ...state };
+}
+
+function updateAppointmentNote(
+  state: AppointmentState,
+  id: Appointment['id'],
+  note: Appointment['note'],
+) {
+  const upcoming = state.upcoming.find((a) => a.id === id);
+  const past = state.past.find((a) => a.id === id);
+
+  if (upcoming) { upcoming.note = note; }
+  if (past) { past.note = note; }
+
+  return { ...state };
+}
+
+function deleteAppointmentNoteImage(
+  state: AppointmentState,
+  appointmentId: number,
+  imageId: number,
+) {
+  const upcoming = state.upcoming.find((a) => a.id === appointmentId);
+  const past = state.past.find((a) => a.id === appointmentId);
+
+  if (upcoming) { upcoming.note.images = upcoming.note.images.filter(({ id }) => id !== imageId); }
+  if (past) { past.note.images = past.note.images.filter(({ id }) => id !== imageId); }
+
+  return { ...state };
 }
 
 const reducer = (state: AppointmentState, action: AppointmentAction): AppointmentState => {
@@ -52,6 +80,10 @@ const reducer = (state: AppointmentState, action: AppointmentAction): Appointmen
       return { ...state, past: action.payload };
     case 'UPDATE_APPOINTMENT_SUCCESS':
       return updateUpcomingItem('past', state, action.payload);
+    case 'UPDATE_APPOINTMENT_NOTE_SUCCESS':
+      return updateAppointmentNote(state, action.payload.id, action.payload.note);
+    case 'DELETE_APPOINTMENT_NOTE_IMAGE_SUCCESS':
+      return deleteAppointmentNoteImage(state, action.payload.appointmentId, action.payload.imageId);
     case 'CANCEL_APPOINTMENT_SUCCESS':
       return updateUpcomingItemStatus(state, action.payload, AppointmentStatusEnum.Cancelled);
     case 'START_APPOINTMENT_SUCCESS':

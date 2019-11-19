@@ -1,11 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
-import { updateAppointment } from '@src/store/actions/AppointmentAction';
+import {
+  updateAppointmentNote,
+  deleteAppointmentNoteImage,
+} from '@src/store/actions/AppointmentAction';
 
 import useStore from '@src/hooks/useStore';
 
 import Form from './Form';
+import Toast from './Toast';
 
 type Props = {
   visible: boolean;
@@ -13,9 +17,17 @@ type Props = {
   onSubmit: () => void;
 }
 
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
+
 const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
   const { dispatch } = useStore();
   const { note } = appointment || {};
+  const { images } = note || {};
+
+  const [toastState, setToastState] = useState<ToastState>();
 
   const { initialState, props } = useMemo(() => {
     const {
@@ -38,21 +50,46 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
     };
   }, [note]);
 
-  const onPressSubmit = async (fields) => {
-    await dispatch(updateAppointment(appointment.id, { note: fields }));
+  const onPressDeleteImage = async (id: number) => {
+    try {
+      await dispatch(deleteAppointmentNoteImage(appointment.id, id));
 
-    onSubmit();
+      setToastState({ type: 'success', message: 'Image deletion successfully.' });
+    } catch (e) {
+      const { detail } = e.response.data;
+      setToastState({ type: 'error', message: detail || 'Failed to delete image.' });
+    }
+  };
+
+  const onPressSubmit = async (fields) => {
+    try {
+      await dispatch(updateAppointmentNote(appointment.id, fields));
+
+      setToastState({ type: 'success', message: 'Appointment note updated successfully.' });
+      setTimeout(onSubmit, 2000);
+    } catch (e) {
+      const { detail } = e.response.data;
+      setToastState({ type: 'error', message: detail || 'Failed to update Appointment note.' });
+    }
   };
 
   return visible ? (
-    <Form
-      visible={visible}
-      initialState={initialState}
-      props={props}
-      images={[]}
-      submitText="Save Notes"
-      onSubmit={onPressSubmit}
-    />
+    <>
+      <Form
+        visible={visible}
+        initialState={initialState}
+        props={props}
+        images={images}
+        submitText="Save Notes"
+        onSubmit={onPressSubmit}
+        onDeleteImage={onPressDeleteImage}
+      />
+      {!!toastState && (
+        <Toast error={toastState.type === 'error'} onClose={() => setToastState(undefined)}>
+          {toastState.message}
+        </Toast>
+      )}
+    </>
   ) : null;
 };
 

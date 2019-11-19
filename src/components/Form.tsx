@@ -21,6 +21,7 @@ export type Props<State extends FieldDict> = {
   images: Image[];
   submitText: string;
   onSubmit: (formFields: State) => void;
+  onDeleteImage?: (id: number) => void;
 }
 
 const Form = <State extends FieldDict> ({
@@ -31,6 +32,7 @@ const Form = <State extends FieldDict> ({
   images,
   submitText,
   onSubmit,
+  onDeleteImage,
 }: Props<State>) => {
   const [localImages, setLocalImages] = useState([]);
 
@@ -57,6 +59,16 @@ const Form = <State extends FieldDict> ({
     images: localImages,
   });
 
+  const onPressDelete = (index: number) => {
+    if (index < images.length) {
+      onDeleteImage(images[index].id);
+    } else if (index - images.length < localImages.length) {
+      localImages.splice(index - images.length, 1);
+
+      setLocalImages([...localImages]);
+    }
+  };
+
   return (
     <>
       <View flex={1} bgColor="lightGrey">
@@ -76,6 +88,7 @@ const Form = <State extends FieldDict> ({
                 label="Add Images"
                 images={(images || []).concat(localImages)}
                 onAdd={onAddImage}
+                onDelete={onPressDelete}
               />
             </View>
           </View>

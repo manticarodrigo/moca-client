@@ -37,14 +37,12 @@ type Image = {
 const useImageViewer = <Images extends Image[]>(
   images: Images,
   onAdd?: (uri: string) => void,
+  onDelete?: (index: number) => void,
 ) => {
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(true);
 
-  const uris = useMemo(() => images
-    .filter(({ image }) => image)
-    .map(({ image }) => image),
-  [images]);
+  const uris = useMemo(() => images.map(({ image }) => image), [images]);
 
   const onShow = () => setTimeout(() => setLoading(false));
 
@@ -71,6 +69,8 @@ const useImageViewer = <Images extends Image[]>(
       }
     });
   };
+
+  const onPressDelete = (index: number) => () => onDelete(index);
 
   const onOpenViewer = async () => {
     setLoading(true);
@@ -161,24 +161,32 @@ const useImageViewer = <Images extends Image[]>(
               )}
               <>
                 {uris.map((uri, index) => (
-                  <View
-                    key={`${uri}-${index}`}
-                    style={{
-                      ...styles.roundView,
-                      ...styles.border,
-                      marginRight: 10,
-                      borderColor: index === state.index ? Colors.secondaryLight : Colors.white,
-                    }}
-                    justifyCenter
-                    alignCenter
-                    bgColor="lightGrey"
-                    onPress={() => setState((prev) => ({ ...prev, index }))}
-                  >
-                    <Image
-                      size={70}
-                      uri={uri}
-                      style={{ ...styles.border }}
-                    />
+                  <View key={`${uri}-${index}`}>
+                    <View
+                      style={{
+                        ...styles.roundView,
+                        ...styles.border,
+                        marginRight: 10,
+                        borderColor: index === state.index ? Colors.secondaryLight : Colors.white,
+                      }}
+                      justifyCenter
+                      alignCenter
+                      bgColor="lightGrey"
+                      onPress={() => setState((prev) => ({ ...prev, index }))}
+                    >
+                      <Image
+                        size={70}
+                        uri={uri}
+                        style={{ ...styles.border }}
+                      />
+                    </View>
+                    {!!onDelete && (
+                      <View variant="deleteBadge" onPress={onPressDelete(index)}>
+                        <Text variant="semiBoldLarge" size={0} color="white">
+                          ×
+                        </Text>
+                      </View>
+                    )}
                   </View>
                 ))}
               </>

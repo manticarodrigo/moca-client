@@ -4,7 +4,7 @@ import { subHours } from 'date-fns';
 import api from '@src/services/api';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
-import { AppointmentCancellation } from '@src/services/openapi';
+import { AppointmentCancellation, Note } from '@src/services/openapi';
 
 export type AppointmentAction =
   | { type: 'ANSWER_APPOINTMENT_REQUEST_SUCCESS' }
@@ -12,6 +12,8 @@ export type AppointmentAction =
   | { type: 'GET_LAST_APPOINTMENT_SUCCESS'; payload: Appointment[] }
   | { type: 'GET_PAST_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'UPDATE_APPOINTMENT_SUCCESS'; payload: Appointment }
+  | { type: 'UPDATE_APPOINTMENT_NOTE_SUCCESS'; payload: { id: number; note: Appointment['note'] } }
+  | { type: 'DELETE_APPOINTMENT_NOTE_IMAGE_SUCCESS'; payload: { appointmentId: number; imageId: number } }
   | { type: 'CANCEL_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
   | { type: 'START_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
   | { type: 'END_APPOINTMENT_SUCCESS'; payload: Appointment['id'] }
@@ -57,7 +59,7 @@ const getPastAppointments = () => async (dispatch: AppointmentDispatch) => {
 
 const updateAppointment = (
   appointmentId: Appointment['id'],
-  body: Pick<Appointment, 'review' | 'note'>,
+  body: Pick<Appointment, 'review'>,
 ) => async (dispatch: AppointmentDispatch) => {
   // @ts-ignore
   const { data } = await api.appointment.appointmentPartialUpdate(appointmentId.toString(), body);
@@ -67,6 +69,54 @@ const updateAppointment = (
   delete data.patient;
 
   dispatch({ type: 'UPDATE_APPOINTMENT_SUCCESS', payload: data });
+};
+
+const updateAppointmentNote = (
+  appointmentId: number,
+  form: Note,
+) => async (dispatch: AppointmentDispatch) => {
+  // eslint-disable-next-line no-undef
+  const data = new FormData();
+
+  data.append('subjective', form.subjective);
+  data.append('description', form.objective);
+  data.append('treatment', form.treatment);
+  data.append('assessment', form.assessment);
+  data.append('diagnosis', form.diagnosis);
+
+  form.images.forEach(({ image }) => {
+    const name = `appointment-${appointmentId}-time-${new Date().getTime()}.jpg`;
+    const file = { uri: image, type: 'image/jpg', name };
+    // @ts-ignore
+    data.append('images', file);
+  });
+
+  const response = await api.instance.request({
+    method: 'patch',
+    url: `${api.basePath}/appointment/${appointmentId}/note/`,
+    data,
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+
+  dispatch({
+    type: 'UPDATE_APPOINTMENT_NOTE_SUCCESS',
+    payload: {
+      id: appointmentId,
+      note: response.data,
+    },
+  });
+};
+
+const deleteAppointmentNoteImage = (
+  appointmentId: Appointment['id'],
+  imageId: Appointment['note']['images'][0]['id'],
+) => async (dispatch: AppointmentDispatch) => {
+  await api.appointment.appointmentNoteImageDelete(
+    appointmentId.toString(),
+    imageId.toString(),
+  );
+
+  dispatch({ type: 'DELETE_APPOINTMENT_NOTE_IMAGE_SUCCESS', payload: { appointmentId, imageId } });
 };
 
 const cancelAppointment = (
@@ -96,6 +146,8 @@ export {
   getLastAppointment,
   getPastAppointments,
   updateAppointment,
+  updateAppointmentNote,
+  deleteAppointmentNoteImage,
   cancelAppointment,
   startAppointment,
   endAppointment,

@@ -64,15 +64,16 @@ type Props = {
   disableViewer?: boolean;
   label?: string;
   onAdd?: (uri: string) => void;
+  onDelete?: (id: number) => void;
 }
 
-const ImageSelector = ({ images = [], disableViewer, label, onAdd }: Props) => {
+const ImageSelector = ({ images = [], disableViewer, label, onAdd, onDelete }: Props) => {
   const { spliced, moreCount } = useMemo(() => ({
     spliced: images.slice(0, 3),
     moreCount: images.length > 3 && images.length - 3,
   }), [images]);
 
-  const { imageViewer, onOpenViewer } = useImageViewer(images, onAdd);
+  const { imageViewer, onOpenViewer } = useImageViewer(images, onAdd, onDelete);
 
   const Wrapper = label ? LabelWrapper : View;
 
