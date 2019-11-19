@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useState, useMemo } from 'react';
 import { Picker } from 'react-native';
-import { format, parseISO, addMinutes } from 'date-fns';
+import { format, parseISO, addMinutes, isToday } from 'date-fns';
 
 import { getDateForString } from '@src/utlities/dates';
 
 import { UserState } from '@src/store/reducers/UserReducer';
-import { PriceSessionTypeEnum } from '@src/services/openapi';
 import { sendAppointmentRequest } from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
@@ -33,12 +32,12 @@ type Props = {
 };
 
 
-const getTimes = () => {
+const getTimes = (initialHour = 0, initialQuarterHour = 0) => {
   const quarterHours = ['00', '15', '30', '45'];
   const times = [];
 
-  for (let i = 0; i < 24; i += 1) {
-    for (let j = 0; j < 4; j += 1) {
+  for (let i = initialHour; i < 24; i += 1) {
+    for (let j = i === initialHour ? initialQuarterHour : 0; j < 4; j += 1) {
       let label;
 
       if (i < 12) {
@@ -56,19 +55,12 @@ const getTimes = () => {
   return times;
 };
 
-const durationOptions = [
-  { label: '30min', value: 30 },
-  { label: '45min', value: 45 },
-  { label: '60min', value: 60 },
-];
-
-const durationType: { [key: number]: PriceSessionTypeEnum } = {
-  30: PriceSessionTypeEnum.Thirty,
-  45: PriceSessionTypeEnum.Fourtyfive,
-  60: PriceSessionTypeEnum.Sixty,
+const sessionDuration: { [key: string]: number } = {
+  evaluation: 60,
+  thirty: 30,
+  fourtyfive: 45,
+  sixty: 60,
 };
-
-const timeOptions = getTimes();
 
 const getMarkedDate = (date) => {
   const dateMap = {};
@@ -86,11 +78,21 @@ const getMarkedDate = (date) => {
 };
 
 const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
-  const { dispatch } = useStore();
-  const [selectedDuration, setSelectedDuration] = useState(45);
-  const [selectedTime, setSelectedTime] = useState('12:00');
+  const { store, dispatch } = useStore();
+
+  const durationOptions = useMemo(() => (
+    [
+      { label: 'Evaluation', value: 'evaluation' },
+      { label: '30min', value: 'thirty' },
+      { label: '45min', value: 'fourtyfive' },
+      { label: '60min', value: 'sixty' },
+    ].filter(
+      ({ value }) => store.user.prices.find(({ sessionType }) => value === sessionType),
+    )
+  ), [store.user.prices]);
+
+  const [selectedSession, setSelectedSession] = useState(durationOptions[0].value);
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-  const [toastState, setToastState] = useState<ToastState>();
 
   const markedDates = useMemo(() => {
     let dateMap = {};
@@ -102,7 +104,23 @@ const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
     return dateMap;
   }, [selectedDate]);
 
-  const isButtonDisabled = !selectedDuration || !selectedTime || !selectedDate;
+  const timeOptions = useMemo(() => {
+    let currentHour = 0;
+    let currentQuarterHour = 0;
+
+    if (isToday(getDateForString(selectedDate))) {
+      currentHour = new Date().getHours();
+      currentQuarterHour = new Date().getMinutes();
+      currentQuarterHour = Math.ceil(currentQuarterHour / 60) * 4;
+    }
+
+    return getTimes(currentHour, currentQuarterHour);
+  }, [selectedDate]);
+
+  const [selectedTime, setSelectedTime] = useState(timeOptions[0].value);
+  const [toastState, setToastState] = useState<ToastState>();
+
+  const isButtonDisabled = !selectedSession || !selectedTime || !selectedDate;
 
   const submitAppointment = async (data) => {
     try {
@@ -130,12 +148,12 @@ const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
 
   const onPressSubmit = () => {
     const localStartDate = getDateForString(selectedDate, selectedTime);
-    const localEndDate = addMinutes(localStartDate, selectedDuration);
+    const localEndDate = addMinutes(localStartDate, sessionDuration[selectedSession]);
 
     const data = {
       startTime: localStartDate.toISOString(),
       endTime: localEndDate.toISOString(),
-      sessionType: durationType[selectedDuration],
+      sessionType: selectedSession,
     };
 
     submitAppointment(data);
@@ -159,8 +177,8 @@ const AppointmentRequestModal = ({ visible, patient, onClose }: Props) => {
         <View row variant="borderBottom">
           <Picker
             style={{ height: 200, width: WINDOW_WIDTH / 2 }}
-            selectedValue={selectedDuration}
-            onValueChange={(value) => setSelectedDuration(value)}
+            selectedValue={selectedSession}
+            onValueChange={(value) => setSelectedSession(value)}
           >
             {durationOptions.map((option) => (
               <Picker.Item key={option.value} {...option} />
