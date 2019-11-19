@@ -7,7 +7,7 @@ import Text from '@src/components/Text';
 
 import { checkboxConfig } from './SearchFilterModal';
 
-const SearchActiveFilters = ({ filters }) => {
+const SearchActiveFilters = ({ filters, onPress }) => {
   const { maxPrice, ailments = [], ...rest } = filters;
 
   const active = useMemo(() => {
@@ -37,10 +37,10 @@ const SearchActiveFilters = ({ filters }) => {
 
   return (
     <View variant="shadow" bgColor="white">
-      <View scroll horizontal px={4}>
-        <View row alignCenter>
+      <View scroll horizontal>
+        <View row alignCenter onPress={onPress}>
           {active.map(({ Icon, title }) => (
-            <View alignCenter key={title} p={3} width={90}>
+            <View alignCenter key={title} py={3} px={2} width={100}>
               <Icon />
               <Text
                 variant="semiBoldLarge"
@@ -56,7 +56,7 @@ const SearchActiveFilters = ({ filters }) => {
         </View>
       </View>
       {ailments && !!ailments.length && (
-        <View row py={3} px={4} variant="borderTop">
+        <View row py={3} px={4} variant="borderTop" onPress={onPress}>
           <Text variant="semiBoldLarge" size={0} color="secondaryLight">A. of Pain</Text>
           <View row wrap px={4}>
             {ailments.map((item) => (

@@ -120,7 +120,7 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation, isFocused }:
             data={filteredResults}
             ListHeaderComponent={(
               <View>
-                <SearchActiveFilters filters={filters} />
+                <SearchActiveFilters filters={filters} onPress={onToggleFilters} />
                 <View alignCenter>
                   <Text pt={4} p={3} variant="light">
                     There are
