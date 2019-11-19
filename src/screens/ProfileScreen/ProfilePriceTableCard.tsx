@@ -55,8 +55,11 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
         <PriceRateIcon />
       </View>
       <View flex={1}>
-        <View row alignCenter py={3}>
+        <View py={3}>
           <Text variant="semiBoldLarge" color="dark">Price Rate</Text>
+          {!readonly && (prices.length < 2 || !evaluationTariff.price) && (
+            <Text variant="lightSmallest">Evaluation price and one duration price are required.</Text>
+          )}
         </View>
         <View row width="100%" justifyBetween variant="borderBottom">
           <View row width="100%" pr={3}>

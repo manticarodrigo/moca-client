@@ -28,7 +28,6 @@ import DashboardLinks from './DashboardLinks';
 type Props = NavigationStackScreenProps & { isFocused: boolean }
 
 // TODO: integrate with API
-const isActivated = true;
 const isAway = false;
 
 type ModalState = {
@@ -43,6 +42,7 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
   const [modalState, setModalState] = useState<ModalState>({});
 
   const isTherapist = store.user.type === 'PT';
+  const isActivated = !isTherapist || store.user.isVerified;
 
   const { current, next } = useMemo(() => {
     const appointments = store.appointments.upcoming;
