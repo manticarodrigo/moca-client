@@ -9,6 +9,7 @@ type ButtonProps = TouchableHighlightProps & SpacingProps & {
   width?: number | string;
   bgColor?: keyof typeof Colors;
   shadow?: boolean;
+  subtitle?: JSX.Element;
   children?: (string | JSX.Element) | (string | JSX.Element)[];
 };
 
@@ -18,6 +19,7 @@ const Button = ({
   width,
   bgColor,
   shadow,
+  subtitle,
   children,
   ...restProps
 }: ButtonProps) => {
@@ -49,6 +51,7 @@ const Button = ({
         <Text style={styles.text}>
           {children}
         </Text>
+        {subtitle}
       </>
     </TouchableHighlight>
   );

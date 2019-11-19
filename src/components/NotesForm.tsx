@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { differenceInHours } from 'date-fns';
 
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 import {
@@ -24,7 +25,7 @@ type ToastState = {
 
 const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
   const { dispatch } = useStore();
-  const { note } = appointment || {};
+  const { note, endTime } = appointment || {};
   const { images } = note || {};
 
   const [toastState, setToastState] = useState<ToastState>();
@@ -49,6 +50,18 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
       },
     };
   }, [note]);
+
+  const notesTimeLeft = useMemo(() => {
+    const endDate = new Date(endTime);
+    const hoursSinceEnd = differenceInHours(new Date(), endDate);
+
+    let _notesTimeLeft = 48;
+    if (hoursSinceEnd > 0) {
+      _notesTimeLeft = Math.max(48 - hoursSinceEnd, 0);
+    }
+
+    return _notesTimeLeft;
+  }, [endTime]);
 
   const onPressDeleteImage = async (id: number) => {
     try {
@@ -76,6 +89,7 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
   return visible ? (
     <>
       <Form
+        readonly={notesTimeLeft <= 0}
         visible={visible}
         initialState={initialState}
         props={props}

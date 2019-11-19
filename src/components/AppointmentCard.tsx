@@ -44,17 +44,31 @@ const AppointmentCard = ({
   const isTherapist = store.user.type === 'PT';
   const isCancelled = status === AppointmentStatusEnum.Cancelled;
 
+  const notesTimeLeft = useMemo(() => {
+    const endDate = new Date(endTime);
+    const hoursSinceEnd = differenceInHours(new Date(), endDate);
+
+    let _notesTimeLeft = 48;
+    if (hoursSinceEnd > 0) {
+      _notesTimeLeft = Math.max(48 - hoursSinceEnd, 0);
+    }
+
+    return _notesTimeLeft;
+  }, [endTime]);
+
   const {
     canCancel,
-    canEditNotes,
+    canEditNote,
+    canViewNote,
     canEditReview,
     time,
   } = useMemo(() => ({
     canCancel: !past && upcoming,
-    canEditNotes: past && isTherapist,
+    canEditNote: past && isTherapist && notesTimeLeft > 0,
+    canViewNote: past && isTherapist && notesTimeLeft <= 0,
     canEditReview: past && !isTherapist,
     time: format(new Date(startTime), `MM/dd${past ? '/yy' : ''} - hh:mm aaaa`),
-  }), [upcoming, past, isTherapist, startTime]);
+  }), [upcoming, past, isTherapist, startTime, notesTimeLeft]);
 
   const variant = useMemo(() => {
     if (upcoming) {
@@ -68,20 +82,7 @@ const AppointmentCard = ({
     return 'borderCard';
   }, [upcoming, past]);
 
-  const hasButton = !isCancelled && (canCancel || canEditNotes || canEditReview);
-
-  const shouldShowButton = useMemo(() => {
-    if (!isTherapist) return true;
-
-    const endDate = new Date(endTime);
-    const hoursSinceEnd = differenceInHours(new Date(), endDate);
-
-    if (hoursSinceEnd <= 48) {
-      return true;
-    }
-
-    return false;
-  }, [isTherapist, endTime]);
+  const hasButton = !isCancelled && (canCancel || canEditNote || canViewNote || canEditReview);
 
   const handlePress = () => onPress(appointment);
 
@@ -145,15 +146,19 @@ const AppointmentCard = ({
           )}
         </View>
 
-        {hasButton && shouldShowButton && (
+        {hasButton && (
           <Button
             mt={3}
             variant="secondary"
             bgColor={canCancel ? 'white' : null}
+            subtitle={canEditNote
+              ? <Text variant="lightSmallest" align="center">{`${notesTimeLeft}h left`}</Text>
+              : undefined}
             onPress={handlePressBtn}
           >
             {canCancel && 'Cancel Appointment'}
-            {canEditNotes && 'Edit Notes'}
+            {canEditNote && 'Edit Note'}
+            {canViewNote && 'View Note'}
             {canEditReview && 'Edit Review'}
           </Button>
         )}

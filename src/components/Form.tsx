@@ -15,6 +15,7 @@ type Image = { id?: number; image?: string }
 
 export type Props<State extends FieldDict> = {
   visible: boolean;
+  readonly?: boolean;
   initialState: State;
   props: FieldProps;
   config?: FieldConfig<State>;
@@ -26,6 +27,7 @@ export type Props<State extends FieldDict> = {
 
 const Form = <State extends FieldDict> ({
   visible,
+  readonly,
   initialState,
   config,
   props,
@@ -78,6 +80,7 @@ const Form = <State extends FieldDict> ({
               {Object.keys(initialState).map((key) => (
                 <FormField
                   key={key}
+                  readonly={readonly}
                   {...props[key]}
                   {...fieldProps[key]}
                 />
@@ -87,23 +90,25 @@ const Form = <State extends FieldDict> ({
               <ImageSelector
                 label="Add Images"
                 images={(images || []).concat(localImages)}
-                onAdd={onAddImage}
-                onDelete={onPressDelete}
+                onAdd={!readonly ? onAddImage : undefined}
+                onDelete={!readonly ? onPressDelete : undefined}
               />
             </View>
           </View>
         </KeyboardAwareScrollView>
       </View>
 
-      <View width={WINDOW_WIDTH} p={4} variant="borderTop">
-        <Button
-          variant={!isValid ? 'primaryDisabled' : 'primary'}
-          disabled={!isValid}
-          onPress={onPressSubmit}
-        >
-          {submitText}
-        </Button>
-      </View>
+      {!readonly && (
+        <View width={WINDOW_WIDTH} p={4} variant="borderTop">
+          <Button
+            variant={!isValid ? 'primaryDisabled' : 'primary'}
+            disabled={!isValid}
+            onPress={onPressSubmit}
+          >
+            {submitText}
+          </Button>
+        </View>
+      )}
     </>
   );
 };

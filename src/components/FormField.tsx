@@ -22,6 +22,7 @@ export type Props = TextInputProps & {
   icon?: 'email' | 'password' | 'dollar';
   value?: string;
   error?: string;
+  readonly?: boolean;
   didBlur?: boolean;
   spacing?: SpacingProps;
   width?: number | string;
@@ -34,6 +35,7 @@ const FormField = ({
   icon,
   value,
   error,
+  readonly,
   multiline,
   didBlur,
   spacing,
@@ -141,7 +143,7 @@ const FormField = ({
     <>
       <Wrapper row>
         <Wrapper flex={1}>
-          <View style={styles.view}>
+          <View style={styles.view} pointerEvents={readonly ? 'none' : undefined}>
             <Animated.Text style={placeholderStyle}>
               {placeholder}
             </Animated.Text>
@@ -150,6 +152,7 @@ const FormField = ({
               style={styles.text}
               value={value}
               multiline={multiline}
+              editable={!readonly}
               returnKeyType={multiline ? 'default' : undefined}
               scrollEnabled={false}
               onFocus={handleFocus}
