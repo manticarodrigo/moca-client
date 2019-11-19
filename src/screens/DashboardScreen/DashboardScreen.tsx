@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { InteractionManager } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
-import { isBefore, isAfter } from 'date-fns';
+import { isBefore, isAfter, subMinutes } from 'date-fns';
 
 import { AppointmentStatusEnum } from '@src/services/openapi';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
@@ -53,14 +53,17 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
     const nowDate = new Date();
 
+    const startOffset = 15;
+
     return {
       current: appointments.find(
         ({ startTime, endTime }) => (
-          isBefore(new Date(startTime), nowDate) && isAfter(new Date(endTime), nowDate)
+          isBefore(subMinutes(new Date(startTime), startOffset), nowDate)
+          && isAfter(new Date(endTime), nowDate)
         ),
       ),
       next: appointments.find(
-        ({ startTime }) => isAfter(new Date(startTime), nowDate),
+        ({ startTime }) => isAfter(subMinutes(new Date(startTime), startOffset), nowDate),
       ),
     };
   }, [isFocused, store.appointments.upcoming]);
