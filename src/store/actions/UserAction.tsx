@@ -40,7 +40,11 @@ export type UserAction =
   | { type: 'UPDATE_INJURY_SUCCESS'; payload: Injury }
   | { type: 'DELETE_INJURY_SUCCESS'; payload: Injury['id'] }
 
-const logoutUser = () => async (dispatch: Dispatch<UserAction>) => {
+const logoutUser = (isExpired?: boolean) => async (dispatch: Dispatch<UserAction>) => {
+  if (!isExpired) {
+    await api.auth.authenticateLogoutCreate();
+  }
+
   dispatch({ type: 'LOGOUT_USER' });
 };
 

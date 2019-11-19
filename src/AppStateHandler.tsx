@@ -8,7 +8,7 @@ import api from '@src/services/api';
 import storage from '@src/services/storage';
 
 import useStore from '@src/hooks/useStore';
-import { logoutUser, updateUserState } from '@src/store/actions/UserAction';
+import { updateUserState, logoutUser } from '@src/store/actions/UserAction';
 import { getConversations, getConversation } from '@src/store/actions/ConversationAction';
 import { getUpcomingAppointments } from './store/actions/AppointmentAction';
 
@@ -16,14 +16,55 @@ const AppStateHandler = ({ navigatorRef, children }) => {
   const { store, dispatch } = useStore();
   const pushQueue = useRef([]);
   const showedAlert = useRef(false);
+  const throttling401s = useRef(false);
 
   const navigator = navigatorRef.current;
 
   const isAuthenticated = useMemo(() => !!(store.user.id && store.user.token), [store.user]);
 
-  const navigate = (routeName, params = undefined) => navigator.dispatch(
+  const navigate = (routeName, params = undefined) => navigator && navigator.dispatch(
     NavigationActions.navigate({ routeName, params }),
   );
+
+  const onAPIError = async (error) => {
+    if (error.response.status === 401 && !throttling401s.current) {
+      throttling401s.current = true;
+
+      dispatch(logoutUser(true));
+
+      navigatorRef.current.dispatch(
+        NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
+      );
+
+      Alert.alert(
+        'Session ended',
+        `You have been logged out.\n\n
+        To log back login, please use the link below the registration button.
+        `,
+      );
+
+      setTimeout(() => {
+        throttling401s.current = false;
+        showedAlert.current = true;
+      }, 2000);
+    }
+
+    return Promise.reject(error);
+  };
+
+  useEffect(() => {
+    const onMount = async () => {
+      if (!store.user.token) {
+        const local = await storage.retrieveUser() || {};
+
+        dispatch(updateUserState({ ...local, storageReady: true }));
+      }
+
+      api.instance.interceptors.response.use((response) => response, onAPIError.bind(this));
+    };
+
+    onMount();
+  }, []);
 
   useEffect(() => {
     const onAuthNavigate = () => {
@@ -118,36 +159,6 @@ const AppStateHandler = ({ navigatorRef, children }) => {
 
     routeNotification();
   });
-
-  useEffect(() => {
-    const onMount = async () => {
-      showedAlert.current = false;
-
-      if (!store.user.token) {
-        const local = await storage.retrieveUser() || {};
-
-        dispatch(updateUserState({ ...local, storageReady: true }));
-      }
-
-
-      api.instance.interceptors.response.use((response) => response, (error) => {
-        if (error.response.status === 401) {
-          dispatch(logoutUser());
-
-          navigate('OnboardingScreen');
-
-          if (!showedAlert.current) {
-            Alert.alert('Session ended', 'You have been logged out.\n\nTo log back login, please use the link below the registration button.');
-            showedAlert.current = true;
-          }
-        }
-
-        return Promise.reject(error);
-      });
-    };
-
-    onMount();
-  }, [store.user.token]);
 
   return children;
 };

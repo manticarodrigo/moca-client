@@ -62,8 +62,9 @@ export const initialState: StoreState = {
     gender: 'M',
     type: 'PA',
     addresses: [],
-    prices: [],
     payments: [],
+    prices: [],
+    certifications: [],
     preferredAilments: [],
     awayDays: [],
     injuries: [],
@@ -92,11 +93,11 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
     appointments: appointmentReducer(store.appointments, action as AppointmentAction),
   };
 
-  if (action.type === 'LOGOUT_USER') {
-    return initialState;
-  }
-
   // console.log(action.type);
+
+  if (action.type === 'LOGOUT_USER') {
+    return { ...initialState, user: { ...initialState.user, storageReady: true } };
+  }
 
   return newState;
 };

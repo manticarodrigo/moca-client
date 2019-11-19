@@ -61,12 +61,16 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   };
 
   const onPressLogout = async () => {
-    await dispatch(logoutUser());
+    try {
+      await dispatch(logoutUser());
 
-    navigation.dangerouslyGetParent().dangerouslyGetParent().dispatch({
-      type: NavigationActions.NAVIGATE,
-      routeName: 'OnboardingScreen',
-    });
+      navigation.dangerouslyGetParent().dangerouslyGetParent().dispatch({
+        type: NavigationActions.NAVIGATE,
+        routeName: 'OnboardingScreen',
+      });
+    } catch {
+      // TODO: show logout failure toast
+    }
   };
 
   const toggleEditInfoModal = () => setEditInfoModalVisible(!editInfoModalVisible);
