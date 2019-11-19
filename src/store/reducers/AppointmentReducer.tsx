@@ -13,6 +13,7 @@ export type Appointment = Omit<BadAppointment, 'startTime' | 'endTime' | 'addres
 export type AppointmentState = {
   upcoming: Appointment[];
   last: Appointment;
+  finished: Appointment[];
   past: Appointment[];
 };
 
@@ -76,6 +77,8 @@ const reducer = (state: AppointmentState, action: AppointmentAction): Appointmen
       return { ...state, upcoming: action.payload };
     case 'GET_LAST_APPOINTMENT_SUCCESS':
       return { ...state, last: action.payload.length ? action.payload[0] : undefined };
+    case 'GET_FINISHED_APPOINTMENTS_SUCCESS':
+      return { ...state, finished: action.payload };
     case 'GET_PAST_APPOINTMENTS_SUCCESS':
       return { ...state, past: action.payload };
     case 'UPDATE_APPOINTMENT_SUCCESS':

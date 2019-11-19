@@ -80,6 +80,7 @@ export const initialState: StoreState = {
   appointments: {
     upcoming: [],
     last: undefined,
+    finished: [],
     past: [],
   },
 };

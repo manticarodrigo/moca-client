@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenProps, NavigationStackScreenComponent } from 'react-navigation-stack';
@@ -6,7 +6,7 @@ import { NavigationStackScreenProps, NavigationStackScreenComponent } from 'reac
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
 
-import { getPastAppointments } from '@src/store/actions/AppointmentAction';
+import { getFinishedAppointments, getPastAppointments } from '@src/store/actions/AppointmentAction';
 
 import { UserState } from '@src/store/reducers/UserReducer';
 
@@ -37,6 +37,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
 
   useEffect(() => {
     if (isFocused) {
+      dispatch(getFinishedAppointments());
       dispatch(getPastAppointments());
     }
   }, [isFocused]);
@@ -51,6 +52,17 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
 
   const onCloseModal = () => setSelectedAppointment(undefined);
 
+
+  const composedSections = useMemo(() => {
+    const composed = [];
+    if (store.appointments.finished.length) {
+      composed.push({
+        title: 'Recently finished',
+        data: store.appointments.finished,
+      });
+    }
+    return composed.concat(sections);
+  }, [store.appointments.finished, sections]);
   return (
     <>
       {isTherapist ? (
@@ -71,7 +83,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
 
       <View safeArea flex={1} bgColor="lightGrey">
         <HistorySectionList
-          sections={sections}
+          sections={composedSections}
           renderItem={(({ item }) => (
             <AppointmentCard
               past

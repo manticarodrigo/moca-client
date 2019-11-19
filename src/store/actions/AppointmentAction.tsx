@@ -10,6 +10,7 @@ export type AppointmentAction =
   | { type: 'ANSWER_APPOINTMENT_REQUEST_SUCCESS' }
   | { type: 'GET_UPCOMING_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'GET_LAST_APPOINTMENT_SUCCESS'; payload: Appointment[] }
+  | { type: 'GET_FINISHED_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'GET_PAST_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'UPDATE_APPOINTMENT_SUCCESS'; payload: Appointment }
   | { type: 'UPDATE_APPOINTMENT_NOTE_SUCCESS'; payload: { id: number; note: Appointment['note'] } }
@@ -30,7 +31,11 @@ const answerAppointmentRequest = (
 };
 
 const getUpcomingAppointments = () => async (dispatch: AppointmentDispatch) => {
-  const query = { start: subHours(new Date(), 1).toISOString(), limit: 3 };
+  const query = {
+    start: subHours(new Date(), 1).toISOString(),
+    hideFinished: true,
+    limit: 3,
+  };
 
   const { data } = await api.appointment.appointmentList({ query });
 
@@ -48,10 +53,17 @@ const getLastAppointment = () => async (dispatch: AppointmentDispatch) => {
   dispatch({ type: 'GET_LAST_APPOINTMENT_SUCCESS', payload: data });
 };
 
-const getPastAppointments = () => async (dispatch: AppointmentDispatch) => {
-  const query = { end: new Date().toISOString() };
+const getFinishedAppointments = () => async (dispatch: AppointmentDispatch) => {
+  const start = subHours(new Date(), 1).toISOString();
+  const { data } = await api.appointment.appointmentList({ query: { start, onlyFinished: true } });
 
-  const { data } = await api.appointment.appointmentList({ query });
+  // @ts-ignore
+  dispatch({ type: 'GET_FINISHED_APPOINTMENTS_SUCCESS', payload: data });
+};
+
+const getPastAppointments = () => async (dispatch: AppointmentDispatch) => {
+  const end = new Date().toISOString();
+  const { data } = await api.appointment.appointmentList({ query: { end } });
 
   // @ts-ignore
   dispatch({ type: 'GET_PAST_APPOINTMENTS_SUCCESS', payload: data });
@@ -144,6 +156,7 @@ export {
   answerAppointmentRequest,
   getUpcomingAppointments,
   getLastAppointment,
+  getFinishedAppointments,
   getPastAppointments,
   updateAppointment,
   updateAppointmentNote,

@@ -36,7 +36,6 @@ const DashboardAppointments = ({
         <AppointmentCard
           current
           appointment={current}
-          onPress={onPressAppointment}
           onPressBtn={onPressAppointment}
           onMessageUser={onMessageUser}
         />

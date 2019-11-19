@@ -23,7 +23,6 @@ type AppointmentCardProps = {
   current?: boolean;
   upcoming?: boolean;
   past?: boolean;
-  onPress?: (appointment: Appointment) => void;
   onPressBtn?: (appointment: Appointment) => void;
   onMessageUser: (user: UserState) => void;
 };
@@ -33,7 +32,6 @@ const AppointmentCard = ({
   current,
   upcoming,
   past,
-  onPress,
   onPressBtn,
   onMessageUser,
 }: AppointmentCardProps) => {
@@ -43,6 +41,8 @@ const AppointmentCard = ({
 
   const isTherapist = store.user.type === 'PT';
   const isCancelled = status === AppointmentStatusEnum.Cancelled;
+  const notStarted = status === AppointmentStatusEnum.NotStarted;
+  const inProgress = status === AppointmentStatusEnum.InProgress;
 
   const notesTimeLeft = useMemo(() => {
     const endDate = new Date(endTime);
@@ -58,17 +58,23 @@ const AppointmentCard = ({
 
   const {
     canCancel,
+    canBegin,
+    canEnd,
+    canView,
     canEditNote,
     canViewNote,
     canEditReview,
     time,
   } = useMemo(() => ({
-    canCancel: !past && upcoming,
+    canCancel: upcoming,
+    canBegin: current && isTherapist && notStarted,
+    canEnd: current && isTherapist && inProgress,
+    canView: current && !isTherapist,
     canEditNote: past && isTherapist && notesTimeLeft > 0,
     canViewNote: past && isTherapist && notesTimeLeft <= 0,
     canEditReview: past && !isTherapist,
     time: format(new Date(startTime), `MM/dd${past ? '/yy' : ''} - hh:mm aaaa`),
-  }), [upcoming, past, isTherapist, startTime, notesTimeLeft]);
+  }), [upcoming, current, past, isTherapist, notStarted, inProgress, startTime, notesTimeLeft]);
 
   const variant = useMemo(() => {
     if (upcoming) {
@@ -82,9 +88,15 @@ const AppointmentCard = ({
     return 'borderCard';
   }, [upcoming, past]);
 
-  const hasButton = !isCancelled && (canCancel || canEditNote || canViewNote || canEditReview);
-
-  const handlePress = () => onPress(appointment);
+  const hasButton = !isCancelled && (
+    canCancel
+    || canBegin
+    || canEnd
+    || canView
+    || canEditNote
+    || canViewNote
+    || canEditReview
+  );
 
   const handlePressBtn = () => onPressBtn(appointment);
 
@@ -103,7 +115,6 @@ const AppointmentCard = ({
       variant={variant}
       p={past && 3}
       bgColor={upcoming ? 'whiteTranslucent' : 'white'}
-      onPress={onPress && handlePress}
     >
       <AppointmentHeader
         showInfo
@@ -156,7 +167,10 @@ const AppointmentCard = ({
               : undefined}
             onPress={handlePressBtn}
           >
-            {canCancel && 'Cancel Appointment'}
+            {canCancel && 'Cancel Session'}
+            {canBegin && 'Begin Session'}
+            {canEnd && 'End Session'}
+            {canView && 'View Timer'}
             {canEditNote && 'Edit Note'}
             {canViewNote && 'View Note'}
             {canEditReview && 'Edit Review'}
