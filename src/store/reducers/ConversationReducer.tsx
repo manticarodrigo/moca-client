@@ -24,7 +24,7 @@ type MessageContent = Omit<
   BadMessage['content'], 'appointmentRequest'
 > & AppointmentRequest;
 
-export type Message = Omit<BadMessage, 'image' | 'content'> & {
+export type Message = Omit<BadMessage, 'content'> & {
   content: MessageContent;
 }
 

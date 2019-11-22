@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const Preview = ({ index = undefined, uri = undefined, count = undefined }) => (
+const Preview = ({ index = 0, uri = undefined, count = undefined }) => (
   <View
-    style={{ ...styles.roundView, ...styles.border, marginLeft: -15 }}
+    style={{ ...styles.roundView, ...styles.border, marginLeft: index && -15 }}
     justifyCenter
     alignCenter
     bgColor={count ? 'secondaryLight' : 'lightGrey'}
@@ -37,7 +37,7 @@ const Preview = ({ index = undefined, uri = undefined, count = undefined }) => (
         rounded
         size={48}
         uri={uri}
-        style={{ ...styles.border, marginLeft: index && -15 }}
+        style={{ ...styles.border }}
       />
     )}
 
@@ -89,7 +89,7 @@ const ImageSelector = ({ images = [], disableViewer, label, onAdd, onDelete }: P
 
             if (isMore) {
               return (
-                <Preview key={key} count={moreCount} />
+                <Preview key={key} index={index} count={moreCount} />
               );
             }
 
@@ -100,7 +100,7 @@ const ImageSelector = ({ images = [], disableViewer, label, onAdd, onDelete }: P
             }
 
             return (
-              <Preview key={key} uri={uri} />
+              <Preview key={key} index={index} uri={uri} />
             );
           })}
         </View>

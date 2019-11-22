@@ -5,7 +5,7 @@ import { TypographyProps } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
-import Image from '@src/components/Image';
+import ImageSelector from '@src/components/ImageSelector';
 
 import { Message } from '@src/store/reducers/ConversationReducer';
 
@@ -20,19 +20,36 @@ const commonProps: TypographyProps = {
   align: 'right',
 };
 
-const MessageCard = ({ message, alignRight, onPressImage }: Props) => {
-  const { content: { text, image }, createdAt } = message;
+const MessageCard = ({ message, alignRight }: Props) => {
+  const { content: { title, text, images }, createdAt } = message;
 
   const { time } = useMemo(() => ({ time: format(new Date(createdAt), 'hh:mm') }), [createdAt]);
 
   return (
     <View variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
-      {image && (
-        <View mb={2} onPress={onPressImage}><Image width={200} height={200} uri={image} /></View>
-      )}
-      <Text color={alignRight ? 'white' : 'dark'} {...commonProps}>{text}</Text>
+      <View row>
+        <View>
+          {!!title && (
+            <Text
+              mb={2}
+              size={3}
+              color={alignRight ? 'secondaryLightest' : 'semiGrey'}
+              {...commonProps}
+            >
+              {title}
+            </Text>
+          )}
+          <Text size={3} color={alignRight ? 'white' : 'dark'} {...commonProps}>{text}</Text>
+        </View>
+        {!!(images && images.length) && (
+          <View pl={4}>
+            <ImageSelector images={images} />
+          </View>
+        )}
+      </View>
       <Text
         mt={2}
+        size={2}
         color={alignRight ? 'secondaryLighter' : 'semiGreyAlt'}
         {...commonProps}
       >

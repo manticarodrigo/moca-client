@@ -16,10 +16,19 @@ type Props = {
   singularTitle: string;
   pluralTitle: string;
   readonly?: boolean;
+  onPress?: (item) => void;
   onClose: () => void;
 };
 
-const InjuriesModal = ({ visible, profile, type, singularTitle, pluralTitle, onClose }: Props) => (
+const InjuriesModal = ({
+  visible,
+  profile,
+  type,
+  singularTitle,
+  pluralTitle,
+  onPress,
+  onClose,
+}: Props) => (
   <Modal
     propagateSwipe
     isVisible={visible}
@@ -34,7 +43,7 @@ const InjuriesModal = ({ visible, profile, type, singularTitle, pluralTitle, onC
         </View>
       </View>
 
-      <InfoList readonly title={singularTitle} items={profile[type]} />
+      <InfoList readonly title={singularTitle} items={profile[type]} onPress={onPress} />
 
       <View py={4} />
     </View>

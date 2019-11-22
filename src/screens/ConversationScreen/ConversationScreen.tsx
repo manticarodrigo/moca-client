@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar, SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
-import { MessageTypeEnum, UserSnippet } from '@src/services/openapi';
+import { UserSnippet } from '@src/services/openapi';
 import { Message } from '@src/store/reducers/ConversationReducer';
 
 import api from '@src/services/api';
@@ -14,20 +14,20 @@ import { answerAppointmentRequest } from '@src/store/actions/AppointmentAction';
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
 import useScrollToStart from '@src/hooks/useScrollToStart';
-import useImageViewer from '@src/hooks/useImageViewer';
-
-import { getImage } from '@src/utlities/imagePicker';
 
 import { Views, Colors } from '@src/styles';
 
 import ProfileModal from '@src/modals/ProfileModal';
+import MessageFormModal from '@src/modals/MessageFormModal';
 import AppointmentRequestModal from '@src/modals/AppointmentRequestModal';
+import InfoListModal from '@src/modals/InfoListModal';
 
 import { InfoIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Image from '@src/components/Image';
+import Toast from '@src/components/Toast';
 
 import ConversationMessage from './ConversationMessage';
 import ConversationActions from './ConversationActions';
@@ -37,13 +37,25 @@ const ConversationSectionList: SectionList<Message> = SectionList;
 
 type Props = NavigationStackScreenProps & { isFocused: boolean }
 
+type ModalState = {
+  profile?: boolean;
+  message?: boolean;
+  appointment?: boolean;
+  injury?: boolean;
+}
+
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
+
 const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
   const [otherUser, setOtherUser] = useState<UserSnippet>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
-  const [profileVisible, setProfileVisible] = useState(false);
-  const [appointmentRequestVisible, setAppointmentRequestVisible] = useState(false);
+  const [modalState, setModalState] = useState<ModalState>({});
+  const [toastState, setToastState] = useState<ToastState>();
 
   const isTherapist = store.user.type === 'PT';
 
@@ -54,14 +66,11 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
   const { setRef, scrollToStart } = useScrollToStart<Message>({ offset: 67 /* actions */ });
 
-  const imageUrls = useMemo(() => messages
-    .filter((m) => m.content.image)
-    .map((m) => m.content.image),
-  [messages]);
-
-  const { imageViewer, onPressImage } = useImageViewer(imageUrls);
-
-  const onToggleProfile = () => setProfileVisible(!profileVisible);
+  const onPressProfile = () => setModalState({ profile: true });
+  const onPressCamera = () => setModalState({ message: true });
+  const onPressAppointment = () => setModalState({ appointment: true });
+  const onPressInjury = () => setModalState({ injury: true });
+  const onCloseModals = () => setModalState({});
 
   useEffect(() => {
     const { params = {} } = navigation.state;
@@ -88,7 +97,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
     setOtherUser(params.user);
 
-    navigation.setParams({ onToggleProfile });
+    navigation.setParams({ onPressProfile });
   }, []);
 
   useEffect(() => {
@@ -106,38 +115,41 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
     if (updated) setMessages(updated);
   }, [store.conversations.map]);
 
-  const onToggleAppointmentRequest = () => setAppointmentRequestVisible(!appointmentRequestVisible);
-
   const onChangeText = (text: string) => setInputText(text);
-
-  const onPressCamera = async () => {
-    getImage((response) => {
-      if (response.cancelled === false) {
-        const message = {
-          type: MessageTypeEnum.Image,
-          content: { image: response.uri },
-          user: store.user.id,
-          createdAt: new Date(),
-        };
-
-        setMessages((prev) => ([...prev, message]));
-      }
-    });
-  };
 
   const onPressSend = async () => {
     const { params = {} } = navigation.state;
 
     if (inputText) {
       try {
-        await dispatch(sendMessage(params.user.id, inputText));
+        await dispatch(sendMessage(params.user.id, { text: inputText }));
 
         setInputText('');
         scrollToStart();
-      } catch (e) {
-        // console.log(e);
+      } catch {
+        setToastState({ type: 'error', message: 'There was an issue sending your message.' });
       }
     }
+  };
+
+  const onSubmitForm = async (fields) => {
+    const { params = {} } = navigation.state;
+
+    try {
+      await dispatch(sendMessage(params.user.id, fields));
+
+      setInputText('');
+      scrollToStart();
+      setToastState({ type: 'success', message: 'Successfully sent your message.' });
+    } catch {
+      setToastState({ type: 'error', message: 'There was an issue sending your message.' });
+    } finally {
+      onCloseModals();
+    }
+  };
+
+  const onSelectInjury = ({ title, description, images }) => {
+    onSubmitForm({ title, text: description, images });
   };
 
   const onAnswerAppointment = async (id, status) => {
@@ -151,22 +163,38 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
 
   return (
     <>
-      {imageViewer}
+      <StatusBar barStyle="dark-content" />
 
       <ProfileModal
-        userId={profileVisible && otherUser.id}
-        visible={profileVisible}
-        onMessage={onToggleProfile}
-        onClose={onToggleProfile}
+        userId={(otherUser || {}).id}
+        visible={modalState.profile}
+        onMessage={onCloseModals}
+        onClose={onCloseModals}
       />
 
-      <StatusBar barStyle="dark-content" />
+      <MessageFormModal
+        visible={modalState.message}
+        onSubmit={onSubmitForm}
+        onClose={onCloseModals}
+      />
 
       {isTherapist && (
         <AppointmentRequestModal
           patient={otherUser}
-          visible={appointmentRequestVisible}
-          onClose={onToggleAppointmentRequest}
+          visible={modalState.appointment}
+          onClose={onCloseModals}
+        />
+      )}
+
+      {!isTherapist && (
+        <InfoListModal
+          visible={modalState.injury}
+          profile={store.user}
+          type="injuries"
+          singularTitle="Injury"
+          pluralTitle="Injuries"
+          onPress={onSelectInjury}
+          onClose={onCloseModals}
         />
       )}
 
@@ -181,7 +209,7 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
               message={item}
               alignRight={item.user === store.user.id}
               otherUser={otherUser}
-              onPressImage={onPressImage}
+              onPressImage={() => null}
               onPressAnswer={onAnswerAppointment}
             />
           )}
@@ -195,8 +223,8 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
           keyExtractor={(item) => item.createdAt.toString()}
           ListHeaderComponent={(
             <ConversationActions
-              onPressInjury={scrollToStart}
-              onPressAppointment={onToggleAppointmentRequest}
+              onPressAppointment={onPressAppointment}
+              onPressInjury={onPressInjury}
             />
           )}
         />
@@ -207,17 +235,23 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
           onPressSend={onPressSend}
         />
       </View>
+
+      {!!toastState && (
+        <Toast error={toastState.type === 'error'} onClose={() => setToastState(undefined)}>
+          {toastState.message}
+        </Toast>
+      )}
     </>
   );
 };
 
 type Params = {
   user?: UserSnippet;
-  onToggleProfile?: () => void;
+  onPressProfile?: () => void;
 }
 
-const Title = ({ user, onToggleProfile }: Params) => (
-  <View row flex={1} alignCenter onPress={onToggleProfile}>
+const Title = ({ user, onPressProfile }: Params) => (
+  <View row flex={1} alignCenter onPress={onPressProfile}>
     <Image rounded size={48} uri={user.image || undefined} />
     <Text variant="semiBoldLarge" ml={3}>
       {user.firstName}
@@ -227,8 +261,8 @@ const Title = ({ user, onToggleProfile }: Params) => (
   </View>
 );
 
-const Right = ({ onToggleProfile }: Params) => (
-  <View py={3} px={4} onPress={onToggleProfile}>
+const Right = ({ onPressProfile }: Params) => (
+  <View py={3} px={4} onPress={onPressProfile}>
     <InfoIcon />
   </View>
 );

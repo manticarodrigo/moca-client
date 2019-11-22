@@ -33,6 +33,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
   const sections = useDateSections(
     store.appointments.past,
     ({ endTime }) => endTime as unknown as string,
+    true,
   );
 
   useEffect(() => {

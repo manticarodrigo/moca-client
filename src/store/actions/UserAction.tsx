@@ -127,8 +127,10 @@ const updateUserImage = (uri: string) => async (
   dispatch: Dispatch<UserAction>,
   store: StoreState,
 ) => {
-  const name = `user-${store.user.id}-time-${new Date().getTime()}.jpg`;
-  const file = { uri, type: 'image/jpg', name };
+  const uriParts = uri.split('.');
+  const fileType = uriParts[uriParts.length - 1];
+  const name = `user-${store.user.id}-time-${new Date().getTime()}.${fileType}`;
+  const file = { uri, type: fileType, name };
 
   const response = await api.user.userImageUpdate(store.user.id, file);
 
@@ -236,8 +238,10 @@ const sendFormData = (
   data.append('description', description);
 
   images.forEach((uri) => {
-    const name = `user-${userId}-${type}-${title}-time-${new Date().getTime()}.jpg`;
-    const file = { uri, type: 'image/jpg', name };
+    const uriParts = uri.split('.');
+    const fileType = uriParts[uriParts.length - 1];
+    const name = `user-${userId}-${type}-${title}-time-${new Date().getTime()}.${fileType}`;
+    const file = { uri, type: fileType, name };
     // @ts-ignore
     data.append('images', file);
   });

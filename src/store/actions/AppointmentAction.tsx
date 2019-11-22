@@ -97,8 +97,10 @@ const updateAppointmentNote = (
   data.append('diagnosis', form.diagnosis);
 
   form.images.forEach(({ image }) => {
-    const name = `appointment-${appointmentId}-time-${new Date().getTime()}.jpg`;
-    const file = { uri: image, type: 'image/jpg', name };
+    const uriParts = image.split('.');
+    const fileType = uriParts[uriParts.length - 1];
+    const name = `appointment-${appointmentId}-time-${new Date().getTime()}.${fileType}`;
+    const file = { uri: image, type: fileType, name };
     // @ts-ignore
     data.append('images', file);
   });

@@ -53,7 +53,7 @@ const InfoList = <T extends InfoItem>({
               pr={4}
               variant="borderBottom"
               bgColor="white"
-              onPress={!readonly ? handlePress(item) : undefined}
+              onPress={onPress ? handlePress(item) : undefined}
             >
               <View flex={1.25} justifyCenter>
                 <Text variant="semiBoldLarge" color="dark">{item.title}</Text>
