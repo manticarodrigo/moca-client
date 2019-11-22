@@ -18,15 +18,18 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
 
   const { image, name, time, text } = useMemo(() => {
     const { lastMessage, otherUser } = conversation;
-    const { content, createdAt } = lastMessage;
+    const { content, createdAt } = lastMessage || {};
+    const { startTime } = content || {};
 
     return {
       image: otherUser.image || undefined,
       name: `${otherUser.firstName} ${otherUser.lastName}`,
-      time: format(new Date(createdAt), 'MM/dd/yyyy - h:mm a'),
-      text: (
-        content.text
-        || `Appointment request: ${format(new Date(content.startTime), 'MM/dd - hh:mm aaaa')}`
+      time: createdAt && format(new Date(createdAt), 'MM/dd/yyyy - h:mm a'),
+      text: ((content || {}).text
+        || (
+          startTime
+          && `Appointment request: ${format(new Date(startTime), 'MM/dd - hh:mm aaaa')}`
+        )
       ),
     };
   }, [conversation]);

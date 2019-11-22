@@ -28,7 +28,8 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
 
   const sections = useDateSections(
     store.conversations.list,
-    ({ lastMessage }) => lastMessage.createdAt as unknown as string,
+    // @ts-ignore
+    ({ lastMessage }) => lastMessage ? lastMessage.createdAt : new Date().toISOString(),
   );
 
   useEffect(() => {

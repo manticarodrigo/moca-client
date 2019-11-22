@@ -1,5 +1,7 @@
 import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
@@ -52,6 +54,7 @@ const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
   ...Borders.primary,
   minWidth: 60,
+  maxWidth: WINDOW_WIDTH - (Spacing.spaceSize[3] * 2),
   height: 'auto',
 };
 

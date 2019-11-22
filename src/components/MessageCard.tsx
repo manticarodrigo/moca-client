@@ -28,7 +28,7 @@ const MessageCard = ({ message, alignRight }: Props) => {
   return (
     <View variant={alignRight ? 'msgBubbleRight' : 'msgBubbleLeft'}>
       <View row>
-        <View>
+        <View flex={-1}>
           {!!title && (
             <Text
               mb={2}
@@ -42,7 +42,7 @@ const MessageCard = ({ message, alignRight }: Props) => {
           <Text size={3} color={alignRight ? 'white' : 'dark'} {...commonProps}>{text}</Text>
         </View>
         {!!(images && images.length) && (
-          <View pl={4}>
+          <View pl={3}>
             <ImageSelector images={images} />
           </View>
         )}

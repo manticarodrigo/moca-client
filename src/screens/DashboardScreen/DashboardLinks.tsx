@@ -75,6 +75,13 @@ const DashboardLinks = ({ isActivated }: Props) => {
     [store.conversations.list],
   );
 
+  const lastMessageStr = useMemo(() => {
+    if (!lastConversation || !lastConversation.lastMessage) return undefined;
+    const { text } = lastConversation.lastMessage.content || {};
+
+    return text;
+  }, [lastConversation]);
+
   const onPressLink = (screen: string) => () => navigation.navigate(screen);
 
   return (
@@ -122,7 +129,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
                   {lastConversation.otherUser.lastName}
                 </Text>
                 <Text variant="light" numberOfLines={1}>
-                  {lastConversation.lastMessage.content.text || 'Appointment Request'}
+                  {lastMessageStr || 'Appointment Request'}
                 </Text>
                 <NotificationBadge count={unreadCountTotal} large />
               </>
