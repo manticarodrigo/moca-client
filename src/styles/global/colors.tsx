@@ -1,6 +1,7 @@
 export const transparent = 'transparent';
 export const white = '#fff';
 export const whiteTranslucent = 'rgba(255,255,255,0.92)';
+export const whiteHalfAlpha = 'rgba(255,255,255,0.5)';
 export const black = '#000';
 export const lightBlack = 'rgba(0,0,0,0.8)';
 export const blackTranslucent = 'rgba(0,0,0,0.2)';

@@ -106,7 +106,22 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
         <View scroll>
           <View alignCenter py={4} bgColor="white">
             <View alignCenter justifyCenter p={4} onPress={onPressImage}>
-              <Image rounded size={120} uri={store.user.image} />
+              <View variant="rounded" width={120} height={120}>
+                <Image rounded size={120} uri={store.user.image} />
+                <View justifyCenter alignCenter variant="absoluteFill" bgColor="whiteHalfAlpha">
+                  <Text
+                    style={{
+                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                      textShadowOffset: { width: -1, height: 1 },
+                      textShadowRadius: 10,
+                    }}
+                    variant="semiBold"
+                    color="white"
+                  >
+                    Edit Photo
+                  </Text>
+                </View>
+              </View>
             </View>
             <View my={1} variant="borderBottom" width="90%" bgColor="white">
               <Text variant="light">Name</Text>

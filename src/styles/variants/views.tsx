@@ -171,9 +171,7 @@ const roundedBorderRight: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
-const backdrop: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...Borders.secondary,
+const absoluteFill: ViewStyle = {
   ...StyleSheet.absoluteFillObject,
 };
 
@@ -309,7 +307,7 @@ export {
   borderTopAndRight,
   borderBottom,
   borderRight,
-  backdrop,
+  absoluteFill,
   modal,
   therapistView,
   therapistViewPressed,
