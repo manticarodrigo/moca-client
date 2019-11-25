@@ -110,10 +110,11 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
                 <Image rounded size={120} uri={store.user.image} />
                 <View justifyCenter alignCenter variant="absoluteFill" bgColor="whiteHalfAlpha">
                   <Text
+                    p={2}
                     style={{
                       textShadowColor: 'rgba(0, 0, 0, 0.75)',
-                      textShadowOffset: { width: -1, height: 1 },
-                      textShadowRadius: 10,
+                      textShadowOffset: { width: 1, height: 1 },
+                      textShadowRadius: 5,
                     }}
                     variant="semiBold"
                     color="white"
