@@ -58,7 +58,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
     const composed = [];
     if (store.appointments.finished.length) {
       composed.push({
-        title: 'Recently finished',
+        title: 'Recently Finished',
         data: store.appointments.finished,
       });
     }

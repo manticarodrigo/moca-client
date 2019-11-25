@@ -94,7 +94,7 @@ const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
           </View>
         </View>
         <View row justifyBetween alignCenter py={3} pr={5}>
-          <Text variant="regularSmall" color="grey">First time evaluation price</Text>
+          <Text variant="regularSmall" color="grey">First Time Evaluation Price</Text>
           <View
             alignEnd
             onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}

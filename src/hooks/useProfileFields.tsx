@@ -48,7 +48,7 @@ const useProfileFields = (
         && `**** **** **** **** ${payments[0].paymentInfo.last4}`
       )
       || payments[0].paymentInfo.routingNumber
-    ) : 'Set payment info';
+    ) : 'Set Payment Info';
 
     const primaryAddress = addresses.find(({ primary }) => primary) || { street: '' };
 
@@ -57,7 +57,7 @@ const useProfileFields = (
         icon: RadiusLocationIcon,
         field: 'operationRadius',
         title: 'Service Area',
-        subtitle: (operationRadius && `${operationRadius} miles`)
+        subtitle: (operationRadius && `${operationRadius} Miles`)
           || (!readonly ? 'Add Radius' : 'N/A'),
         existingValue: !readonly && `${operationRadius}`,
         onPress: !readonly ? onPressField('operationRadius') : undefined,
@@ -74,14 +74,14 @@ const useProfileFields = (
         icon: StatusIcon,
         field: 'awayDays',
         title: 'Away Days',
-        subtitle: `${awayDays.length} scheduled period(s)`,
+        subtitle: `${awayDays.length} Scheduled Period(s)`,
         onPress: awayDays.length ? onPressField('awayDays') : undefined,
       },
       {
         icon: RateIcon,
         field: 'reviewCount',
         title: 'Reviews',
-        subtitle: `${reviewCount.toString()} review(s)`,
+        subtitle: `${reviewCount.toString()} Review(s)`,
         onPress: reviewCount > 0 && onPressField('reviewCount'),
       },
     ];

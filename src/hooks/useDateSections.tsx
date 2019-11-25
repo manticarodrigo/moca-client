@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { SectionListData } from 'react-native';
 import { format, formatDistanceToNow, isToday } from 'date-fns';
 
+import { titleCase } from '@src/utlities/strings';
+
 type SectionMap<Item> = { [key: string]: SectionListData<Item> }
 
 const useDateSections = <Item extends object>
@@ -39,7 +41,7 @@ const useDateSections = <Item extends object>
         const section: SectionListData<Item> = {
           title: isToday(createdAt)
             ? 'Today'
-            : formatDistanceToNow(createdAt, { addSuffix: true }),
+            : titleCase(formatDistanceToNow(createdAt, { addSuffix: true })),
           data: newData,
         };
 

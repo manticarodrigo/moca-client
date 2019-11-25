@@ -28,7 +28,7 @@ const ConversationListCard = ({ conversation, onPress }: Props) => {
       text: ((content || {}).text
         || (
           startTime
-          && `Appointment request: ${format(new Date(startTime), 'MM/dd - hh:mm aaaa')}`
+          && `Appointment Request: ${format(new Date(startTime), 'MM/dd - hh:mm aaaa')}`
         )
       ),
     };
