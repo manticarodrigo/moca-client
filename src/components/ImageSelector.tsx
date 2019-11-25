@@ -70,7 +70,7 @@ type Props = {
 const ImageSelector = ({ images = [], disableViewer, label, onAdd, onDelete }: Props) => {
   const { spliced, moreCount } = useMemo(() => ({
     spliced: images.slice(0, 3),
-    moreCount: images.length > 3 && images.length - 3,
+    moreCount: images.length > 3 && images.length - 2,
   }), [images]);
 
   const { imageViewer, onOpenViewer } = useImageViewer(images, onAdd, onDelete);

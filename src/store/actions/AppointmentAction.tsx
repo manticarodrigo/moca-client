@@ -91,7 +91,7 @@ const updateAppointmentNote = (
   const data = new FormData();
 
   data.append('subjective', form.subjective);
-  data.append('description', form.objective);
+  data.append('objective', form.objective);
   data.append('treatment', form.treatment);
   data.append('assessment', form.assessment);
   data.append('diagnosis', form.diagnosis);

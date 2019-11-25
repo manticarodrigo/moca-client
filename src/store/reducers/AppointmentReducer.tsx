@@ -50,9 +50,11 @@ function updateAppointmentNote(
 ) {
   const upcoming = state.upcoming.find((a) => a.id === id);
   const past = state.past.find((a) => a.id === id);
+  const finished = state.finished.find((a) => a.id === id);
 
   if (upcoming) { upcoming.note = note; }
   if (past) { past.note = note; }
+  if (finished) { finished.note = note; }
 
   return { ...state };
 }
