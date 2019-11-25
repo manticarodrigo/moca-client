@@ -39,6 +39,7 @@ type ViewProps = SpacingProps & {
   alignStart?: boolean;
   alignCenter?: boolean;
   alignEnd?: boolean;
+  alignStretch?: boolean;
   absoluteFill?: boolean;
   width?: string | number;
   height?: string | number;
@@ -66,6 +67,7 @@ const View = ({
   alignStart,
   alignCenter,
   alignEnd,
+  alignStretch,
   absoluteFill,
   width,
   height,
@@ -104,7 +106,8 @@ const View = ({
     (alignStart && 'flex-start')
     || (alignCenter && 'center')
     || (alignEnd && 'flex-end')
-  ), [alignStart, alignCenter, alignEnd]);
+    || (alignStretch && 'stretch')
+  ), [alignStart, alignCenter, alignEnd, alignStretch]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {

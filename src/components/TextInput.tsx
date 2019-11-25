@@ -19,10 +19,12 @@ const variants: { [key: string]: TextStyle } = {
 
 type TextInputProps = RNTextInputProps & TypographyProps & SpacingProps & {
   variant?: keyof typeof variants;
+  width?: number | string;
 };
 
 const TextInput = ({
   variant,
+  width,
   ...restProps
 }: TextInputProps, ref: React.Ref<RNTextInput>) => {
   const [typography, typographyRest] = Typography.parseProps(restProps);
@@ -30,11 +32,12 @@ const TextInput = ({
 
   const styles = useMemo(() => StyleSheet.create({
     text: {
+      width,
       ...Spacing.getStyles(spacing),
       ...Typography.getStyles(typography),
       ...variants[variant],
     },
-  }), [variant, typography, spacing]);
+  }), [variant, typography, spacing, width]);
 
   return <RNTextInput ref={ref} style={styles.text} {...spacingRest} />;
 };

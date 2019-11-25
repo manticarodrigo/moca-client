@@ -3,12 +3,14 @@ import { ScrollView } from 'react-native';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
+import { AddLocationBigIcon } from '@src/components/icons';
+
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
 import PlacesSearch from '@src/components/PlacesSearch';
+import ContainedView from '@src/components/ContainedView';
 
-import AddLocationBigIcon from '@src/components/icons/AddLocationBigIcon';
 
 const AddressModal = ({ isVisible, onClose, onSubmit }) => {
   const scrollViewRef = useRef<ScrollView>();
@@ -29,21 +31,23 @@ const AddressModal = ({ isVisible, onClose, onSubmit }) => {
       isVisible={isVisible}
       onToggle={onClose}
     >
-      <ScrollView ref={scrollViewRef}>
-        <View alignCenter py={5}>
-          <AddLocationBigIcon />
-          <Text variant="title" mt={4}>Where are you located?</Text>
-          <Text variant="regular" mt={2}>
-            Enter your address to check MOCA&apos;s
-          </Text>
-          <Text variant="regular">
-            availability in your area.
-          </Text>
-        </View>
-        <View width={WINDOW_WIDTH} alignCenter py={4} px={3}>
-          <PlacesSearch onChangeText={onChangeText} onSelect={onSubmit} />
-        </View>
-      </ScrollView>
+      <ContainedView>
+        <ScrollView ref={scrollViewRef} style={{ width: WINDOW_WIDTH, maxWidth: '100%' }}>
+          <View alignCenter py={5}>
+            <AddLocationBigIcon />
+            <Text variant="title" mt={4}>Where are you located?</Text>
+            <Text variant="regular" mt={2}>
+              Enter your address to check MOCA&apos;s
+            </Text>
+            <Text variant="regular">
+              availability in your area.
+            </Text>
+          </View>
+          <View row width="100%" flex={1} py={4} px={3}>
+            <PlacesSearch onChangeText={onChangeText} onSelect={onSubmit} />
+          </View>
+        </ScrollView>
+      </ContainedView>
     </Modal>
   );
 };

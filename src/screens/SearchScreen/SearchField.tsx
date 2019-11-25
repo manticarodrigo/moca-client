@@ -19,6 +19,7 @@ const SearchField = ({ value, onChangeText, onToggleFilters }) => (
       >
         <View px={3}><SearchIcon /></View>
         <TextInput
+          width="100%"
           color="primary"
           weight="700"
           onChangeText={onChangeText}

@@ -63,13 +63,11 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   const onPressLogout = async () => {
     try {
       await dispatch(logoutUser());
-
+    } finally {
       navigation.dangerouslyGetParent().dangerouslyGetParent().dispatch({
         type: NavigationActions.NAVIGATE,
         routeName: 'OnboardingScreen',
       });
-    } catch {
-      // TODO: show logout failure toast
     }
   };
 

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 });
 
 const ContainedView = ({ children }) => (
-  <View justifyCenter alignCenter flex={1}>
+  <View justifyCenter flex={1}>
     <View flex={1} style={styles.containedView}>
       {children}
     </View>

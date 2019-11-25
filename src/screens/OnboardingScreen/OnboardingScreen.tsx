@@ -65,7 +65,7 @@ const OnboardingScreen: NavigationStackScreenComponent = ({ navigation }: Props)
 
       <View safeArea flex={1} alignCenter bgColor="white">
         <ContainedView>
-          <View flex={1} row justifyCenter width={WINDOW_WIDTH} p={4}>
+          <View flex={1} row justifyCenter p={4}>
             <Image width={175} height={110} file={Logo} />
           </View>
           {isReady && (

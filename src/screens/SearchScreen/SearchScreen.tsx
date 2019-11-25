@@ -105,14 +105,14 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation, isFocused }:
         onMessage={onMessageTherapist}
         onClose={() => setSelectedId(undefined)}
       />
+      <SearchFilterModal
+        isVisible={filtersVisible}
+        onClose={onSubmitFilters}
+      />
       <SearchField
         value={searchText}
         onChangeText={onSearchChange}
         onToggleFilters={onToggleFilters}
-      />
-      <SearchFilterModal
-        isVisible={filtersVisible}
-        onClose={onSubmitFilters}
       />
       <View safeArea flex={1} bgColor="lightGrey">
         <View flex={1}>
