@@ -45,15 +45,7 @@ const AppointmentModal = ({
     setActiveTab(value);
   };
 
-  const onSubmitNotes = () => {
-    dispatch(getUpcomingAppointments());
-
-    if (completed) {
-      onClose();
-    } else {
-      setActiveTab('timer');
-    }
-  };
+  const onSubmitNotes = () => dispatch(getUpcomingAppointments());
 
   return (
     <Modal isVisible={visible} onToggle={onClose}>
@@ -85,6 +77,7 @@ const AppointmentModal = ({
         <>
           <NotesForm
             visible={visible && activeTab === 'notes'}
+            autosave={inProgress}
             appointment={appointment}
             onSubmit={onSubmitNotes}
           />

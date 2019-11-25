@@ -14,8 +14,9 @@ import Toast from './Toast';
 
 type Props = {
   visible: boolean;
+  autosave?: boolean;
   appointment: Appointment;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }
 
 type ToastState = {
@@ -23,7 +24,7 @@ type ToastState = {
   message: string;
 }
 
-const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
+const NotesForm = ({ visible, autosave, appointment, onSubmit }: Props) => {
   const { dispatch } = useStore();
   const { note, endTime } = appointment || {};
   const { images } = note || {};
@@ -68,6 +69,7 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
       await dispatch(deleteAppointmentNoteImage(appointment.id, id));
 
       setToastState({ type: 'success', message: 'Image deletion successfully.' });
+      if (onSubmit) setTimeout(onSubmit, 2000);
     } catch (e) {
       const { detail } = e.response.data;
       setToastState({ type: 'error', message: detail || 'Failed to delete image.' });
@@ -79,18 +81,19 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
       await dispatch(updateAppointmentNote(appointment.id, fields));
 
       setToastState({ type: 'success', message: 'Appointment note updated successfully.' });
-      setTimeout(onSubmit, 2000);
+      if (onSubmit) setTimeout(onSubmit, 2000);
     } catch (e) {
       const { detail } = e.response.data;
-      setToastState({ type: 'error', message: detail || 'Failed to update Appointment note.' });
+      setToastState({ type: 'error', message: detail || 'Failed to update appointment note.' });
     }
   };
 
-  return visible ? (
+  return (
     <>
       <Form
-        readonly={notesTimeLeft <= 0}
         visible={visible}
+        readonly={notesTimeLeft <= 0}
+        autosave={autosave}
         initialState={initialState}
         props={props}
         images={images}
@@ -104,7 +107,7 @@ const NotesForm = ({ visible, appointment, onSubmit }: Props) => {
         </Toast>
       )}
     </>
-  ) : null;
+  );
 };
 
 export default NotesForm;

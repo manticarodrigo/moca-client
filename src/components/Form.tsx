@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import useFormFields, { FieldDict, Config as FieldConfig } from '@src/hooks/useFormFields';
+import useDebounce from '@src/hooks/useDebounce';
 
 import { WINDOW_WIDTH } from '@src/utlities/constants';
 
@@ -16,6 +17,7 @@ type Image = { id?: number; image?: string }
 export type Props<State extends FieldDict> = {
   visible: boolean;
   readonly?: boolean;
+  autosave?: boolean;
   initialState: State;
   props: FieldProps;
   config?: FieldConfig<State>;
@@ -28,6 +30,7 @@ export type Props<State extends FieldDict> = {
 const Form = <State extends FieldDict> ({
   visible,
   readonly,
+  autosave,
   initialState,
   config,
   props,
@@ -45,21 +48,20 @@ const Form = <State extends FieldDict> ({
     isEveryFieldEmpty,
   } = useFormFields<State>(initialState, config);
 
+  const debouncedValues = useDebounce(fieldValues, 500);
+
   const isValid = isFormValid && (!isEveryFieldEmpty || !!(images && images.length));
 
-  useEffect(() => {
-    if (visible) return;
-    setLocalImages([]);
-  }, [visible, images]);
+  const onAddImage = (uri: string) => setLocalImages((prev) => [...prev, { image: uri }]);
 
-  const onAddImage = (uri: string) => {
-    setLocalImages((prev) => [...prev, { image: uri }]);
+  const onPressSubmit = () => {
+    if (!isValid) return;
+
+    onSubmit({
+      ...fieldValues,
+      images: localImages,
+    });
   };
-
-  const onPressSubmit = () => isValid && onSubmit({
-    ...fieldValues,
-    images: localImages,
-  });
 
   const onPressDelete = (index: number) => {
     if (index < images.length) {
@@ -70,6 +72,22 @@ const Form = <State extends FieldDict> ({
       setLocalImages([...localImages]);
     }
   };
+
+  useEffect(() => {
+    setLocalImages([]);
+  }, [images]);
+
+  useEffect(() => {
+    if (!visible || !autosave) return;
+    onPressSubmit();
+  }, [debouncedValues]);
+
+  useEffect(() => {
+    if (!visible || !autosave || !localImages.length) return;
+    onPressSubmit();
+  }, [localImages]);
+
+  if (!visible) return null;
 
   return (
     <>
@@ -98,7 +116,7 @@ const Form = <State extends FieldDict> ({
         </KeyboardAwareScrollView>
       </View>
 
-      {!readonly && (
+      {(!readonly && !autosave) && (
         <View width={WINDOW_WIDTH} p={4} variant="borderTop">
           <Button
             variant={!isValid ? 'primaryDisabled' : 'primary'}
