@@ -8,6 +8,8 @@ import { getDateForString } from '@src/utlities/dates';
 import { ScheduleSectionIcon, NoConversationsIcon } from '@src/components/icons';
 
 import CancellationModal from '@src/modals/CancellationModal';
+import ProfileModal from '@src/modals/ProfileModal';
+import AppointmentModal from '@src/modals/AppointmentModal';
 
 import { Colors } from '@src/styles';
 
@@ -21,6 +23,8 @@ import { ListItem } from '@src/screens/ScheduleScreen/ScheduleScreen';
 
 const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [cancelId, setCancelId] = useState();
+  const [selectedProfile, setSelectedProfile] = useState();
+  const [selectedAppointment, setSelectedAppointment] = useState();
 
   const scheduleItem: ListItem = navigation.getParam('scheduleItem', {});
 
@@ -42,6 +46,14 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
   ), [appointments]);
 
   const onCloseCancelModal = () => setCancelId(undefined);
+  const onCloseProfileModal = () => setSelectedProfile(undefined);
+  const onCloseAppointmentModal = () => setSelectedAppointment(undefined);
+
+  const onMessageUser = (user) => {
+    setSelectedProfile(undefined);
+
+    navigation.navigate('ConversationScreen', { user });
+  };
 
   return (
     <>
@@ -52,6 +64,21 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
         appointmentId={cancelId}
         onToggle={onCloseCancelModal}
         onSubmit={onCloseCancelModal}
+      />
+
+      <ProfileModal
+        userId={selectedProfile && selectedProfile.id}
+        visible={!!selectedProfile}
+        onMessage={onMessageUser}
+        onClose={onCloseProfileModal}
+      />
+
+      <AppointmentModal
+        past
+        isTherapist
+        appointment={selectedAppointment}
+        visible={!!selectedAppointment}
+        onClose={onCloseAppointmentModal}
       />
 
       <View safeArea flex={1} width="100%">
@@ -67,7 +94,7 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
             data={sortedData}
             keyExtractor={({ id }) => id.toString()}
             renderItem={({ item }) => {
-              const { otherParty, startTime, endTime, price } = item;
+              const { id, otherParty, startTime, endTime, price } = item;
               const startDate = new Date(startTime);
               const endDate = new Date(endTime);
 
@@ -80,9 +107,13 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 notesTimeLeft = Math.max(48 - hoursSinceEnd, 0);
               }
 
+              const onPressCancel = () => setCancelId(id);
+              const onPressProfile = () => setSelectedProfile(otherParty);
+              const onPressNote = () => setSelectedAppointment(item);
+
               return (
-                <SwipeRow disabled={false} onPress={() => null}>
-                  <BinRow onPress={() => setCancelId(true)} />
+                <SwipeRow disabled={false}>
+                  <BinRow onPress={onPressCancel} />
                   <View
                     row
                     justifyBetween
@@ -97,15 +128,26 @@ const ScheduleDayScreen: NavigationStackScreenComponent = ({ navigation }) => {
                         <Text variant="regularSmall" color="secondary">{startFormatted}</Text>
                         <Text variant="regularSmall" color="secondary">{endFormatted}</Text>
                       </View>
-                      <View row alignCenter ml={2}>
+                      <View row alignCenter ml={2} onPress={onPressProfile}>
                         <Image rounded size={36} uri={otherParty.image} />
-                        <Text ml={2} variant="semiBoldLarge" color="dark">
-                          {`${otherParty.firstName} ${otherParty.lastName}`}
-                        </Text>
+                        <View>
+                          <Text ml={2} variant="semiBoldLarge" color="dark">
+                            {`${otherParty.firstName} ${otherParty.lastName}`}
+                          </Text>
+                          {hoursSinceEnd >= 0 && (
+                            <Text ml={2} mt={2} variant="link" onPress={onPressNote}>
+                              {hoursSinceEnd < 48 ? 'Edit Note' : 'View Note'}
+                            </Text>
+                          )}
+                        </View>
                       </View>
                     </View>
                     <View>
-                      <Tag icon="report" type="borderLight" placeholder={`${notesTimeLeft}h`} />
+                      <Tag
+                        icon="report"
+                        type={(hoursSinceEnd < 0 || hoursSinceEnd > 48) ? 'border' : 'borderLight'}
+                        placeholder={`${notesTimeLeft}h`}
+                      />
                       <Tag mt={2} icon="dollar" type="fill" placeholder={price} />
                     </View>
                   </View>
