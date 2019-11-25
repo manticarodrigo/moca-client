@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenProps, NavigationStackScreenComponent } from 'react-navigation-stack';
@@ -10,6 +10,8 @@ import { getFutureAppointments } from '@src/store/actions/AppointmentAction';
 import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import { UserState } from '@src/store/reducers/UserReducer';
+
+import CancellationModal from '@src/modals/CancellationModal';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -24,6 +26,7 @@ const UpcomingSectionList: SectionList<Appointment> = SectionList;
 
 const UpcomingScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment>();
 
   const sections = useDateSections(store.appointments.future, ({ endTime }) => endTime, true, true);
 
@@ -37,12 +40,20 @@ const UpcomingScreen: NavigationStackScreenComponent = ({ navigation, isFocused 
     navigation.navigate('ConversationScreen', { user });
   };
 
-  const onPressAppointmentBtn = (appointment: Appointment) => () => {
-    // cancel appointment
-  };
+  const onPressAppointmentBtn = (appointment: Appointment) => () => (
+    setSelectedAppointment(appointment)
+  );
+
+  const onCloseModal = () => setSelectedAppointment(undefined);
 
   return (
     <>
+      <CancellationModal
+        visible={!!selectedAppointment}
+        appointmentId={selectedAppointment && selectedAppointment.id}
+        onToggle={onCloseModal}
+        onSubmit={onCloseModal}
+      />
       <View safeArea flex={1} bgColor="lightGrey">
         <UpcomingSectionList
           sections={sections}
