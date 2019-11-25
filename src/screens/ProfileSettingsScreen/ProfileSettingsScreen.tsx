@@ -15,8 +15,9 @@ import Text from '@src/components/Text';
 import Image from '@src/components/Image';
 import Button from '@src/components/Button';
 import Card from '@src/components/Card';
+import BackButton from '@src/components/BackButton';
 
-import { BackButtonIcon, LogoutIcon } from '@src/components/icons';
+import { LogoutIcon } from '@src/components/icons';
 import { Views, Colors } from '@src/styles';
 
 import useStore from '@src/hooks/useStore';
@@ -162,15 +163,9 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   );
 };
 
-const SettingsBackButton = () => (
-  <View shadow={{ color: 'secondary', blur: 2, alpha: 0.16 }}>
-    <BackButtonIcon />
-  </View>
-);
-
 ProfileSettingsScreen.navigationOptions = ({ navigationOptions }) => ({
   headerTitle: 'Settings',
-  headerBackImage: SettingsBackButton,
+  headerBackImage: BackButton,
   headerStyle: {
     ...navigationOptions.headerStyle as {},
     ...Views.borderBottom,

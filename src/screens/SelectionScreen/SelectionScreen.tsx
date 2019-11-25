@@ -88,11 +88,11 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
             </View>
             <View row alignCenter flex={1} py={4} width="100%">
               <View
-                variant={isPatient ? 'patientViewPressed' : 'patientView'}
                 justifyBetween
                 alignCenter
                 flex={1}
                 mr={1}
+                variant={isPatient ? 'patientViewPressed' : 'patientView'}
                 bgColor={patientBgColor}
                 onPress={onPressType(UserTypeEnum.PA)}
               >
@@ -106,12 +106,12 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 </Text>
               </View>
               <View
-                variant={isTherapist ? 'therapistViewPressed' : 'therapistView'}
+                justifyBetween
                 alignCenter
                 flex={1}
-                justifyBetween
-                onPress={onPressType(UserTypeEnum.PT)}
+                variant={isTherapist ? 'therapistViewPressed' : 'therapistView'}
                 bgColor={therapistBgColor}
+                onPress={onPressType(UserTypeEnum.PT)}
               >
                 <TherapistIcon focused={isTherapist} />
                 <Text

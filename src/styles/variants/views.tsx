@@ -178,7 +178,7 @@ const backdrop: ViewStyle = {
 };
 
 const selectionScreenBorderImage: ViewStyle = {
-  ...Spacing.getStyles({ pt: 5, pb: 5 }),
+  ...Spacing.getStyles({ py: 5 }),
   borderWidth: 7,
   borderColor: Colors.transparent,
   height: 337,

@@ -6,6 +6,7 @@ import { Notifications } from 'expo';
 import api from '@src/services/api';
 
 import storage from '@src/services/storage';
+import { IS_IOS } from '@src/utlities/constants';
 
 import useStore from '@src/hooks/useStore';
 import { updateUserState, logoutUser } from '@src/store/actions/UserAction';
@@ -89,6 +90,8 @@ const AppStateHandler = ({ navigatorRef, children }) => {
 
 
   useEffect(() => {
+    if (!IS_IOS) return;
+
     const unreadCountTotal = store.conversations.list.reduce(
       // @ts-ignore
       (acc, { unreadCount = 0 }) => acc + unreadCount,

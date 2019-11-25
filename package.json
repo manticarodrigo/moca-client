@@ -33,7 +33,7 @@
     "react-native-modal": "^11.3.1",
     "react-native-reanimated": "~1.2.0",
     "react-native-screens": "~1.0.0-alpha.23",
-    "react-native-svg": "~9.9.2",
+    "react-native-svg": "9.5.1",
     "react-native-swipe-list-view": "^2.0.3",
     "react-native-swiper": "^1.5.14",
     "react-navigation": "^4.0.10",
@@ -63,6 +63,7 @@
     "eslint-plugin-react-native-a11y": "^1.2.0",
     "expo-keep-awake": "^7.0.0",
     "react-devtools": "^3.6.3",
+    "react-native-svg-transformer": "^0.14.2",
     "typescript": "^3.4.5"
   },
   "private": true
