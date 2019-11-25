@@ -43,6 +43,7 @@ const AppointmentCard = ({
   const isCancelled = status === AppointmentStatusEnum.Cancelled;
   const notStarted = status === AppointmentStatusEnum.NotStarted;
   const inProgress = status === AppointmentStatusEnum.InProgress;
+  const paymentFailed = status === AppointmentStatusEnum.PaymentFailed;
 
   const notesTimeLeft = useMemo(() => {
     const endDate = new Date(endTime);
@@ -130,6 +131,11 @@ const AppointmentCard = ({
               {isCancelled && (
                 <Text variant="semiBold" color="error">
                   Cancelled
+                </Text>
+              )}
+              {paymentFailed && (
+                <Text variant="semiBold" color="error">
+                  Payment Failed
                 </Text>
               )}
               <Text

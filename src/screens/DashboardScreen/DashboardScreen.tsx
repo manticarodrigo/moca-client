@@ -80,6 +80,8 @@ const DashboardScreen: NavigationStackScreenComponent = ({ navigation, isFocused
 
     if (isFocused) {
       fetchAppointments();
+    } else {
+      setModalState({});
     }
   }, [isFocused]);
 

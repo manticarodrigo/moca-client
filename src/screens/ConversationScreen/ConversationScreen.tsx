@@ -79,18 +79,22 @@ const ConversationScreen: NavigationStackScreenComponent = ({ navigation, isFocu
       return;
     }
 
-    if (!params.user.firstName) {
+    if (!params.user.firstName && params.user.id) {
       const getOtherUser = async () => {
-        const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead;
-        const { data } = await method(params.user.id);
-        const user = data as UserSnippet;
+        const method = isTherapist ? api.user.userPatientRead : api.user.userTherapistRead_28;
+        try {
+          const { data } = await method(params.user.id);
+          const user = data as UserSnippet;
 
-        setOtherUser({
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          image: user.image,
-        });
+          setOtherUser({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            image: user.image,
+          });
+        } catch {
+          // TODO: handle user not found
+        }
       };
       getOtherUser();
     }

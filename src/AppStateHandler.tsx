@@ -1,4 +1,5 @@
-import { useRef, useEffect, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/camelcase */
+import { useRef, useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Notifications } from 'expo';
@@ -9,14 +10,21 @@ import storage from '@src/services/storage';
 import { IS_IOS } from '@src/utlities/constants';
 
 import useStore from '@src/hooks/useStore';
+import useDebounce from '@src/hooks/useDebounce';
+
 import { updateUserState, logoutUser } from '@src/store/actions/UserAction';
 import { getConversations, getConversation } from '@src/store/actions/ConversationAction';
-import { getUpcomingAppointments } from './store/actions/AppointmentAction';
+import {
+  getUpcomingAppointments,
+  getFinishedAppointments,
+  getPastAppointments,
+} from '@src/store/actions/AppointmentAction';
 
 const AppStateHandler = ({ navigatorRef, children }) => {
   const { store, dispatch } = useStore();
-  const pushQueue = useRef([]);
-  const showedAlert = useRef(false);
+  const [pushQueue, setPushQueue] = useState([]);
+  const debouncedPushQueue = useDebounce(pushQueue, 500);
+
   const throttling401s = useRef(false);
 
   const navigator = navigatorRef.current;
@@ -46,7 +54,6 @@ const AppStateHandler = ({ navigatorRef, children }) => {
 
       setTimeout(() => {
         throttling401s.current = false;
-        showedAlert.current = true;
       }, 2000);
     }
 
@@ -101,67 +108,115 @@ const AppStateHandler = ({ navigatorRef, children }) => {
     Notifications.setBadgeNumberAsync(unreadCountTotal);
   }, [store.conversations.list]);
 
-  Notifications.addListener(({ origin, data, remote }) => {
-    if (!remote) return;
-    if (!navigator) return;
+  useEffect(() => {
+    Notifications.addListener((next) => setPushQueue((prev) => [...prev, next]));
+  }, []);
 
-    const { type, params = {} } = data;
+  useEffect(() => {
+    if (!navigator || debouncedPushQueue <= 0) return;
 
-    const getChatListOrDetail = (selected: boolean) => {
-      const tabState = navigator.state.nav.routes.find((stack) => stack.routeName === 'TabStack');
-      const chatTabState = tabState.routes.find((tab) => tab.routeName === 'ConversationTab');
-      const chatScreenState = chatTabState.routes.find((tab) => tab.routeName === 'ConversationScreen');
+    setPushQueue([]);
 
-      const currentChatUser = ((chatScreenState || {}).params || {}).user || {};
-      const pushParamUser = (params || {}).user || {};
+    const { index, routes } = navigator.state.nav;
+    const activeStack = routes[index];
+    const activeTab = activeStack.routes[activeStack.index];
+    const activeScreen = activeTab.routes[activeTab.index];
 
-      const isNotSelf = pushParamUser.id !== store.user.id;
-      const isFromCurrentChat = currentChatUser.id === pushParamUser.id && isNotSelf;
+    let activeChatId;
 
-      if (isFromCurrentChat) {
-        if (selected) {
-          navigate('ConversationScreen');
-        }
+    if (activeScreen.routeName === 'ConversationScreen') {
+      const { params = {} } = activeScreen;
+      activeChatId = params.user && params.user.id;
+    }
 
-        return dispatch(getConversation(currentChatUser.id));
-      }
-
-      if (!isFromCurrentChat && selected) {
-        return navigate('ConversationScreen', params);
-      }
-
-      return dispatch(getConversations());
+    const uniqueNotifications = {
+      current_chat: undefined,
+      other_chat: undefined,
+      current_appointment: undefined,
+      review_appointment: undefined,
+      failed_payment: undefined,
     };
 
-    const routeNotification = () => {
+    debouncedPushQueue.forEach((notification = {}) => {
+      const { type, params = {} } = notification.data;
+      const pushParamUser = params.user || {};
+
+      const isNotSelf = pushParamUser.id !== store.user.id;
+      const isFromCurrentChat = activeChatId === pushParamUser.id && isNotSelf;
+
+      switch (type) {
+        case 'new_message':
+          if (isFromCurrentChat) uniqueNotifications.current_chat = notification;
+          if (!isFromCurrentChat) uniqueNotifications.other_chat = notification;
+          break;
+        case 'upcoming_appointment':
+        case 'start_appointment':
+        case 'end_appointment':
+          uniqueNotifications.current_appointment = notification;
+          break;
+        case 'review_appointment':
+          uniqueNotifications.review_appointment = notification;
+          break;
+        case 'failed_payment':
+          uniqueNotifications.failed_payment = notification;
+          break;
+        default:
+          break;
+      }
+    });
+
+    const routeNotification = ({ origin, data, remote }) => {
+      if (!remote || !navigator) return;
+      const { type, params = {} } = data;
+      const pushParamUser = params.user || {};
+
+      const isNotSelf = pushParamUser.id !== store.user.id;
+      const isFromCurrentChat = activeChatId === pushParamUser.id && isNotSelf;
+
+      const getChatListOrDetail = (selected: boolean) => {
+        if (selected) {
+          navigate('ConversationScreen', params);
+        }
+
+        if (isFromCurrentChat) {
+          return dispatch(getConversation(activeChatId));
+        }
+
+        return dispatch(getConversations());
+      };
+
       switch (type) {
         case 'new_message':
           if (origin === 'selected') getChatListOrDetail(true);
           if (origin === 'received') getChatListOrDetail(false);
           break;
-        case 'current_appointment':
+        case 'upcoming_appointment':
         case 'start_appointment':
         case 'end_appointment':
-          dispatch(getUpcomingAppointments());
-          navigate('DashboardScreen', params);
+          if (activeScreen.routeName === 'DashboardScreen') {
+            dispatch(getUpcomingAppointments());
+          } else {
+            navigate('DashboardScreen', params);
+          }
+          break;
+        case 'review_appointment':
+        case 'failed_payment':
+          if (activeScreen.routeName === 'HistoryScreen') {
+            dispatch(getFinishedAppointments());
+            dispatch(getPastAppointments());
+          } else {
+            navigate('HistoryScreen', params);
+          }
           break;
         default:
           break;
       }
     };
 
-    pushQueue.current.push(data);
-
-    if (pushQueue.current.length > 1) return;
-
-    setTimeout(() => {
-      if (pushQueue.current.length > 1) routeNotification();
-
-      pushQueue.current = [];
-    }, 1000);
-
-    routeNotification();
-  });
+    Object.values(uniqueNotifications).forEach(
+      (notification) => notification && routeNotification(notification),
+    );
+  }, [debouncedPushQueue]);
 
   return children;
 };

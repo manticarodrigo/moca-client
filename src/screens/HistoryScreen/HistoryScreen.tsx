@@ -29,12 +29,9 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
   const [selectedAppointment, setSelectedAppointment] = useState();
 
   const isTherapist = store.user.type === 'PT';
+  const appointmentParam = navigation.getParam('appointment');
 
-  const sections = useDateSections(
-    store.appointments.past,
-    ({ endTime }) => endTime as unknown as string,
-    true,
-  );
+  const sections = useDateSections(store.appointments.past, ({ endTime }) => endTime, true);
 
   useEffect(() => {
     if (isFocused) {
@@ -42,6 +39,19 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
       dispatch(getPastAppointments());
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (!appointmentParam) return;
+
+    const finished = store.appointments.finished.find(({ id }) => appointmentParam.id === id);
+    const past = store.appointments.past.find(({ id }) => appointmentParam.id === id);
+
+    if (selectedAppointment || (!finished && !past)) return;
+    // eslint-disable-next-line no-undef
+    requestAnimationFrame(() => {
+      setSelectedAppointment(finished || past);
+    });
+  }, [store.appointments.past, store.appointments.finished]);
 
   const onMessageUser = (user: UserState) => {
     navigation.navigate('ConversationScreen', { user });
@@ -53,7 +63,6 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
 
   const onCloseModal = () => setSelectedAppointment(undefined);
 
-
   const composedSections = useMemo(() => {
     const composed = [];
     if (store.appointments.finished.length) {
@@ -64,6 +73,7 @@ const HistoryScreen: NavigationStackScreenComponent = ({ navigation, isFocused }
     }
     return composed.concat(sections);
   }, [store.appointments.finished, sections]);
+
   return (
     <>
       {isTherapist ? (
