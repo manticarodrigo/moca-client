@@ -19,7 +19,7 @@ const cancellationReasons = {
     title: 'Standard Cancellation Policy',
     details: 'For a full refund, cancel at least 24 hours before your session is scheduled to begin. If cancelling within 24 hours of the scheduled session, you will be charged 50% of the agreed-upon session cost.',
   },
-  rescheduling: {
+  reschedule: {
     title: 'Rescheduling',
     details: 'You can reschedule the date or time of your session up to 48 hours before the session is scheduled to start. If you reschedule the session, the cancellation policy is based on the original purchase time and original start date of the experience.',
   },
