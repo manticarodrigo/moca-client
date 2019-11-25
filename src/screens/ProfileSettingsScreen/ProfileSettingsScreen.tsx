@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import * as WebBrowser from 'expo-web-browser';
 
 import { getImage } from '@src/utlities/imagePicker';
 
@@ -29,7 +30,7 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
   const [isChangePasswordModal, setIsChangePasswordModal] = useState(false);
 
 
-  const accountSettings = ['changePassword', 'notifications', 'bookmark', 'inviteFriends'];
+  const accountSettings = ['changePassword', 'notifications', 'inviteFriends'];
   const supportSettings = ['supportAndFeedback', 'frequentQuestions', 'TermsAndConditions', 'join'];
   const followUs = ['instagram', 'twitter', 'facebook'];
 
@@ -50,12 +51,16 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   };
 
+  const onOpenLink = (url: string) => WebBrowser.openBrowserAsync(url);
+
   const handlePress = (type) => {
     switch (type) {
       case 'changePassword':
         return handleChangePassword();
       case 'bookmark':
         return handleBookmarkPress();
+      case 'join':
+        return onOpenLink('https://joinmoca.com');
       default:
         return null;
     }
