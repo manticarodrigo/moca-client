@@ -16,7 +16,7 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
-  type: 'wallet' | 'messages' | 'history' | 'injuries' | 'contact';
+  type: 'wallet' | 'messages' | 'upcoming' | 'history' | 'injuries' | 'contact';
   status?: 'success' | 'error';
   children: JSX.Element;
   onPress: () => void;
@@ -29,6 +29,8 @@ const LinkCard = ({ type, status, children, onPress }: LinkCardProps) => {
         return { icon: <WalletIcon />, title: 'Wallet' };
       case 'messages':
         return { icon: <MessagesIcon />, title: 'Messages' };
+      case 'upcoming':
+        return { icon: <HistoryIcon />, title: 'Upcoming' };
       case 'history':
         return { icon: <HistoryIcon />, title: 'History' };
       case 'injuries':

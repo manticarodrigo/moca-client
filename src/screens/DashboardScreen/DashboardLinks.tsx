@@ -142,6 +142,14 @@ const DashboardLinks = ({ isActivated }: Props) => {
         </LinkCard>
       )}
 
+      {!isTherapist && (
+        <LinkCard type="upcoming" onPress={onPressLink('UpcomingScreen')}>
+          <Text>
+            <Text variant="regularSmall" color="grey">View Future Appointments</Text>
+          </Text>
+        </LinkCard>
+      )}
+
       {(isActivated && lastAppointmentStr) && (
         <LinkCard type="history" onPress={onPressLink('HistoryScreen')}>
           <Text>

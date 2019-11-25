@@ -10,7 +10,8 @@ const useDateSections = <Item extends object>
   (
     items: Item[],
     getItemDate: (item: Item) => string,
-    descending?: boolean,
+    descendingItems?: boolean,
+    descendingSections?: boolean,
   ) => useMemo(
     () => {
       const sectionsMap: SectionMap<Item> = items.reduce((map, item) => {
@@ -30,7 +31,7 @@ const useDateSections = <Item extends object>
           const lastCreatedAt = lastItem && new Date(getItemDate(item));
           const isGreater = lastCreatedAt && createdAt.getTime() > lastCreatedAt.getTime();
 
-          if ((isGreater && descending)) {
+          if ((isGreater && descendingItems)) {
             newData = [...data, item];
           } else {
             newData = [item, ...data];
@@ -52,7 +53,9 @@ const useDateSections = <Item extends object>
 
       // return list of sections sorted by descending date
       return Object.entries(sectionsMap)
-        .sort((a, b) => parseInt(b[0]) - parseInt(a[0]))
+        .sort((a, b) => descendingSections
+          ? parseInt(a[0]) - parseInt(b[0])
+          : parseInt(b[0]) - parseInt(a[0]))
         .map(([_, value]) => value);
     }, [items, getItemDate],
   );

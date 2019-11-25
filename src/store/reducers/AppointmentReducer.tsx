@@ -15,6 +15,7 @@ export type AppointmentState = {
   last: Appointment;
   finished: Appointment[];
   past: Appointment[];
+  future: Appointment[];
 };
 
 function updateUpcomingItem(key: keyof AppointmentState, state, payload) {
@@ -83,6 +84,8 @@ const reducer = (state: AppointmentState, action: AppointmentAction): Appointmen
       return { ...state, finished: action.payload };
     case 'GET_PAST_APPOINTMENTS_SUCCESS':
       return { ...state, past: action.payload };
+    case 'GET_FUTURE_APPOINTMENTS_SUCCESS':
+      return { ...state, future: action.payload };
     case 'UPDATE_APPOINTMENT_SUCCESS':
       return updateUpcomingItem('past', state, action.payload);
     case 'UPDATE_APPOINTMENT_NOTE_SUCCESS':

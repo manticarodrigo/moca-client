@@ -81,6 +81,7 @@ export const initialState: StoreState = {
     upcoming: [],
     last: undefined,
     finished: [],
+    future: [],
     past: [],
   },
 };

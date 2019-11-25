@@ -29,6 +29,7 @@ import AddressScreen from '@src/screens/AddressScreen';
 import QualificationsScreen from '@src/screens/QualificationsScreen';
 import DashboardScreen from '@src/screens/DashboardScreen';
 import HistoryScreen from '@src/screens/HistoryScreen';
+import UpcomingScreen from '@src/screens/UpcomingScreen';
 import SearchScreen from '@src/screens/SearchScreen';
 import ScheduleScreen from '@src/screens/ScheduleScreen';
 import ScheduleDayScreen from '@src/screens/ScheduleDayScreen';
@@ -89,6 +90,7 @@ const AppStack = createSwitchNavigator(
 
       DashboardTab: createStackNavigator({
         DashboardScreen,
+        UpcomingScreen,
         HistoryScreen,
         InjuriesScreen,
         WalletScreen,

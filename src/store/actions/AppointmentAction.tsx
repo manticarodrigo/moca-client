@@ -12,6 +12,7 @@ export type AppointmentAction =
   | { type: 'GET_LAST_APPOINTMENT_SUCCESS'; payload: Appointment[] }
   | { type: 'GET_FINISHED_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'GET_PAST_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
+  | { type: 'GET_FUTURE_APPOINTMENTS_SUCCESS'; payload: Appointment[] }
   | { type: 'UPDATE_APPOINTMENT_SUCCESS'; payload: Appointment }
   | { type: 'UPDATE_APPOINTMENT_NOTE_SUCCESS'; payload: { id: number; note: Appointment['note'] } }
   | { type: 'DELETE_APPOINTMENT_NOTE_IMAGE_SUCCESS'; payload: { appointmentId: number; imageId: number } }
@@ -67,6 +68,14 @@ const getPastAppointments = () => async (dispatch: AppointmentDispatch) => {
 
   // @ts-ignore
   dispatch({ type: 'GET_PAST_APPOINTMENTS_SUCCESS', payload: data });
+};
+
+const getFutureAppointments = () => async (dispatch: AppointmentDispatch) => {
+  const start = new Date().toISOString();
+  const { data } = await api.appointment.appointmentList({ query: { start, hideFinished: true } });
+
+  // @ts-ignore
+  dispatch({ type: 'GET_FUTURE_APPOINTMENTS_SUCCESS', payload: data });
 };
 
 const updateAppointment = (
@@ -160,6 +169,7 @@ export {
   getLastAppointment,
   getFinishedAppointments,
   getPastAppointments,
+  getFutureAppointments,
   updateAppointment,
   updateAppointmentNote,
   deleteAppointmentNoteImage,
