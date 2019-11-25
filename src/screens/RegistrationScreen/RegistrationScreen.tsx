@@ -22,7 +22,9 @@ import FormField from '@src/components/FormField';
 
 import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
 
-type FormFields = Pick<User, 'firstName' | 'lastName' | 'email' | 'password'>;
+type FormFields = Pick<User, 'firstName' | 'lastName' | 'email' | 'password'> & {
+  password2: string;
+};
 
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
@@ -39,12 +41,14 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
       lastName: '',
       email: '',
       password: '',
+      password2: '',
     },
     {
       firstName: { required: true },
       lastName: { required: true },
       email: { required: true, validation: 'email' },
       password: { required: true, validation: 'password' },
+      password2: { required: true },
     },
   );
 
@@ -58,7 +62,12 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
     : isAnyFieldEmpty || !isFormValid;
 
   const onPressSubmit = async () => {
-    const { email, password, firstName, lastName } = fieldValues;
+    const { email, password, password2, firstName, lastName } = fieldValues;
+
+    if (password !== password2) {
+      updateFieldErrors({ password2: 'Password does not match with the first one.' });
+      return;
+    }
 
     if (isFormValid) {
       const { type } = store.registration;
@@ -167,6 +176,13 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
               {...fieldProps.password}
               icon="password"
               placeholder="Password"
+              secureTextEntry
+              returnKeyType="done"
+            />
+            <FormField
+              {...fieldProps.password2}
+              icon="password"
+              placeholder="Confirm Password"
               secureTextEntry
               returnKeyType="done"
             />
