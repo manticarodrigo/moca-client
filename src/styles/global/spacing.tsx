@@ -43,16 +43,27 @@ const _getKeyStyles = (key: string, multiplier: number): ViewStyle => {
   return { [aliases[key]]: size };
 };
 
-export type SpacingProp = { [key in SpacingKey]?: number };
+export type SpacingProps = { [key in SpacingKey]?: number };
 
-export const getStyles = (prop?: SpacingProp): ViewStyle => {
-  if (!prop) { return null; }
+export const getStyles = (props?: SpacingProps): ViewStyle => {
+  if (!props) { return null; }
 
-  const propList = Object.entries(prop);
+  const propList = Object.entries(props);
   const viewStyle = propList.reduce((prev, [key, size]) => ({
     ...prev,
     ..._getKeyStyles(key, size),
   }), {});
 
   return viewStyle;
+};
+
+export const parseProps = (props: SpacingProps & object) => {
+  const { m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl, ...rest } = props;
+  const spacing = { m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl };
+
+  Object.keys(spacing).forEach((key) => {
+    if (!spacing[key]) delete spacing[key];
+  });
+
+  return [spacing, rest];
 };

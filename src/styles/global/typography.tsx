@@ -17,9 +17,9 @@ export const loadFonts = async () => {
   });
 };
 
-const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72];
+const fontSizes = [12, 14, 16, 18, 24, 32, 48, 64, 72, 80];
 
-type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 };
+type TypographySizeIndex = { size?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 };
 type TypographyColor = { color?: keyof typeof Colors };
 type TypographyWeight = { weight?: '300' | '500' | '700' | '900' };
 type TypographyAlign = { align?: TextStyle['textAlign'] };
@@ -27,7 +27,7 @@ type TypographyTransform = { transform?: TextStyle['textTransform'] };
 type TypographyDecoration = { decoration?: TextStyle['textDecorationLine'] };
 type TypographyHeight = { height?: 0 | 22 };
 
-export type TypographyProp =
+export type TypographyProps =
   & TypographySizeIndex
   & TypographyWeight
   & TypographyAlign
@@ -36,8 +36,8 @@ export type TypographyProp =
   & TypographyColor
   & TypographyHeight;
 
-export const getStyles = (prop: TypographyProp): TextStyle => {
-  if (!prop) { return null; }
+export const getStyles = (props: TypographyProps): TextStyle => {
+  if (!props) { return null; }
 
   const {
     color,
@@ -47,7 +47,7 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
     transform,
     decoration,
     height,
-  } = prop;
+  } = props;
 
   return {
     ...(color && { color: Colors[color] }),
@@ -58,4 +58,15 @@ export const getStyles = (prop: TypographyProp): TextStyle => {
     ...(decoration && { textDecorationLine: decoration }),
     ...(height && { lineHeight: height }),
   };
+};
+
+export const parseProps = (props: TypographyProps & object) => {
+  const { weight, size, align, color, decoration, ...rest } = props;
+  const typography = { weight, size, align, color, decoration };
+
+  Object.keys(typography).forEach((key) => {
+    if (!typography[key]) delete typography[key];
+  });
+
+  return [typography, rest];
 };

@@ -1,13 +1,34 @@
 import { ConversationAction } from '@src/store/actions/ConversationAction';
-import { UserSnippet, Message as BadMessage } from '@src/services/openapi';
 
-export type Message = Omit<BadMessage, 'image' | 'content'> & {
-  image: string;
-  content: { text?: string };
+import {
+  Conversation as BadConversation,
+  Message as BadMessage,
+  Address as BadAddress,
+} from '@src/services/openapi';
+
+export type Address = Omit<BadAddress, 'location'> & {
+  location: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
 }
 
-export type Conversation = {
-  user: UserSnippet;
+type AppointmentRequest = Omit<
+  BadMessage['content']['appointmentRequest'], 'startTime' | 'endTime'
+> & {
+  startTime: string;
+  endTime: string;
+}
+
+type MessageContent = Omit<
+  BadMessage['content'], 'appointmentRequest'
+> & AppointmentRequest;
+
+export type Message = Omit<BadMessage, 'content'> & {
+  content: MessageContent;
+}
+
+export type Conversation = BadConversation & {
   lastMessage: Message;
 }
 

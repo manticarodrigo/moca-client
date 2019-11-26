@@ -1,29 +1,38 @@
 import React from 'react';
 
-import { DiagnosisIcon, PinIcon } from '@src/components/icons';
+import useStore from '@src/hooks/useStore';
+
+import { InjuryIcon, ScheduleIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
 import Button from '@src/components/Button';
 
-const ConversationActions = ({ onPressInjury, onPressLocation }) => (
-  <View scroll horizontal row spacing={{ p: 3 }}>
-    <Button
-      variant="primarySmall"
-      icon={<DiagnosisIcon size={0.4} tint="white" />}
-      spacing={{ mr: 2 }}
-      onPress={onPressInjury}
-    >
-      Add Injury Info
-    </Button>
-    <Button
-      variant="primarySmall"
-      icon={<PinIcon size={0.6} tint="white" />}
-      spacing={{ mr: 2 }}
-      onPress={onPressLocation}
-    >
-      Add Location
-    </Button>
-  </View>
-);
+const ConversationActions = ({ onPressAppointment, onPressInjury }) => {
+  const { store } = useStore();
+
+  return (
+    <View scroll horizontal row p={3}>
+      {store.user.type === 'PT' ? (
+        <Button
+          mr={2}
+          icon={<ScheduleIcon />}
+          variant="primarySmall"
+          onPress={onPressAppointment}
+        >
+          Send Appointment
+        </Button>
+      ) : (
+        <Button
+          mr={2}
+          variant="primarySmall"
+          icon={<InjuryIcon size={0.4} tint="white" />}
+          onPress={onPressInjury}
+        >
+          Add Injury Info
+        </Button>
+      )}
+    </View>
+  );
+};
 
 export default ConversationActions;

@@ -4,36 +4,37 @@ import React, { useMemo } from 'react';
 import {
   ArrowRightIcon,
   ContactIcon,
-  DiagnosisIcon,
+  InjuryIcon,
   WalletIcon,
   MessagesIcon,
   HistoryIcon,
 } from '@src/components/icons';
 
-import { SpacingProp, Colors } from '@src/styles';
+import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 type LinkCardProps = {
-  type: 'wallet' | 'messages' | 'history' | 'diagnosis' | 'contact';
-  spacing?: SpacingProp;
+  type: 'wallet' | 'messages' | 'upcoming' | 'history' | 'injuries' | 'contact';
   status?: 'success' | 'error';
   children: JSX.Element;
   onPress: () => void;
 };
 
-const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) => {
+const LinkCard = ({ type, status, children, onPress }: LinkCardProps) => {
   const { icon, title } = useMemo(() => {
     switch (type) {
       case 'wallet':
         return { icon: <WalletIcon />, title: 'Wallet' };
       case 'messages':
         return { icon: <MessagesIcon />, title: 'Messages' };
+      case 'upcoming':
+        return { icon: <HistoryIcon />, title: 'Upcoming' };
       case 'history':
         return { icon: <HistoryIcon />, title: 'History' };
-      case 'diagnosis':
-        return { icon: <DiagnosisIcon />, title: 'Injury' };
+      case 'injuries':
+        return { icon: <InjuryIcon />, title: 'My Injuries' };
       case 'contact':
         return {
           icon: <ContactIcon tint={status === 'success' ? Colors.success : Colors.error} />,
@@ -44,31 +45,31 @@ const LinkCard = ({ type, spacing, status, children, onPress }: LinkCardProps) =
     }
   }, [type, status]);
 
-  const titleVariant = useMemo(() => {
+  const titleColor = useMemo(() => {
     switch (status) {
       case 'success':
-        return 'titleSmallSuccess';
+        return 'success';
       case 'error':
-        return 'titleSmallError';
+        return 'error';
       default:
-        return 'titleSmall';
+        return undefined;
     }
   }, [status]);
 
   return (
-    <View column variant="shadowCard" spacing={spacing}>
+    <View column variant="shadowCard" mb={2}>
 
-      <View row justifyBetween spacing={{ p: 1 }} onPress={onPress}>
+      <View row justifyBetween p={1} onPress={onPress}>
 
         <View row flex={1}>
-          <View column spacing={{ mr: 3 }}>{icon}</View>
+          <View column mr={3} width={48}>{icon}</View>
           <View column flex={1}>
-            <Text variant={titleVariant} spacing={{ mb: 2 }}>{title}</Text>
+            <Text variant="semiBoldLarge" color={titleColor} mb={2}>{title}</Text>
             {children}
           </View>
         </View>
 
-        <View row alignCenter spacing={{ ml: 3 }}>
+        <View row alignCenter ml={3}>
           <ArrowRightIcon />
         </View>
 

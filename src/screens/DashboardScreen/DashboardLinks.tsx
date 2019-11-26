@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
+import { format } from 'date-fns';
 
 import useStore from '@src/hooks/useStore';
 import useProfileStatus from '@src/hooks/useProfileStatus';
@@ -16,6 +17,7 @@ type Props = { isActivated: boolean }
 
 const DashboardLinks = ({ isActivated }: Props) => {
   const { store } = useStore();
+
   const navigation = useNavigation();
   const profilePercent = useProfileStatus(store.user);
 
@@ -38,29 +40,64 @@ const DashboardLinks = ({ isActivated }: Props) => {
     };
   }, [profilePercent]);
 
-  const latestConversation = useMemo(() => {
+  const paymentsStr = useMemo(() => {
+    const { payments = [] } = store.user;
+
+    return payments.length ? (
+      (payments[0].paymentInfo.last4
+        && `**** **** **** **** ${payments[0].paymentInfo.last4}`
+      )
+      || payments[0].paymentInfo.routingNumber
+    ) : 'Set Payment Info';
+  }, [store.user]);
+
+  const lastConversation = useMemo(() => {
     const conversations = store.conversations.list;
 
-    return conversations.find(({ lastMessage }) => lastMessage.type === 'text');
+    if (!conversations.length) return undefined;
+
+    return conversations[0];
   }, [store.conversations.list]);
+
+  const lastAppointmentStr = useMemo(() => {
+    const { last } = store.appointments;
+
+    if (!last) return undefined;
+
+    const { otherParty, endTime } = last;
+
+    return `${otherParty.firstName} ${otherParty.lastName} / ${format(new Date(endTime), 'cccc')}`;
+  }, [store.appointments]);
+
+  const unreadCountTotal = useMemo(
+    // @ts-ignore
+    () => store.conversations.list.reduce((acc, { unreadCount = 0 }) => acc + unreadCount, 0),
+    [store.conversations.list],
+  );
+
+  const lastMessageStr = useMemo(() => {
+    if (!lastConversation || !lastConversation.lastMessage) return undefined;
+    const { text } = lastConversation.lastMessage.content || {};
+
+    return text;
+  }, [lastConversation]);
 
   const onPressLink = (screen: string) => () => navigation.navigate(screen);
 
   return (
-    <View column spacing={{ px: 3, py: 4 }} flex={1} bgColor={bgColor}>
+    <View column flex={1} px={3} py={4} bgColor={bgColor}>
 
       {profilePercent !== 100 && (
         <LinkCard
           type="contact"
           status={profileReady ? 'success' : 'error'}
-          spacing={{ mb: 2 }}
           onPress={onPressLink('ProfileScreen')}
         >
           <View>
-            <Text variant={profileReady ? 'regularSmallSuccess' : 'regularSmallError'}>
+            <Text variant="regularSmall" color={profileReady ? 'success' : 'error'}>
               {profilePercentString}
             </Text>
-            <View variant="progressBar" spacing={{ mt: 2 }}>
+            <View mt={2} variant="progressBar">
               <View variant="progressBarIndicator" style={styles.progressBarIndicator} />
             </View>
           </View>
@@ -68,61 +105,61 @@ const DashboardLinks = ({ isActivated }: Props) => {
       )}
 
       {!isTherapist && (
-        <LinkCard type="diagnosis" spacing={{ mb: 2 }} onPress={onPressLink('ProfileScreen')}>
-          <Text variant="regularSmallGrey">
-            Set my injury
+        <LinkCard type="injuries" onPress={onPressLink('InjuriesScreen')}>
+          <Text variant="regularSmall" color="grey">
+            {store.user.injuries.length ? `${store.user.injuries.length} injuries` : 'Set injuries'}
           </Text>
         </LinkCard>
       )}
 
-      <LinkCard type="wallet" spacing={{ mb: 2 }} onPress={onPressLink('WalletScreen')}>
-        <Text variant="regularSmallGrey">
-          {store.user.payments.length ? (
-            (
-              store.user.payments[0].paymentInfo.last4
-              && `**** **** **** **** ${store.user.payments[0].paymentInfo.last4}`
-            )
-            || store.user.payments[0].paymentInfo.routingNumber
-          ) : 'Set payment info'}
+      <LinkCard type="wallet" onPress={onPressLink('WalletScreen')}>
+        <Text variant="regularSmall" color="grey">
+          {paymentsStr}
         </Text>
       </LinkCard>
 
       {isActivated && (
-        <LinkCard
-          type="messages"
-          spacing={{ mb: 2 }}
-          onPress={onPressLink('ConversationListScreen')}
-        >
+        <LinkCard type="messages" onPress={onPressLink('ConversationListScreen')}>
           <>
-            {latestConversation ? (
+            {lastConversation ? (
               <>
-                <Text variant="regularSmallDark">
-                  {latestConversation.user.firstName}
+                <Text variant="regularSmall" color="dark">
+                  {lastConversation.otherUser.firstName}
                   {' '}
-                  {latestConversation.user.lastName}
+                  {lastConversation.otherUser.lastName}
                 </Text>
                 <Text variant="light" numberOfLines={1}>
-                  {latestConversation.lastMessage.content.text}
+                  {lastMessageStr || 'Appointment Request'}
                 </Text>
-                <NotificationBadge large />
+                <NotificationBadge count={unreadCountTotal} large />
               </>
             ) : (
-              <Text variant="regularSmallDark">
-                No messages were found
+              <Text variant="regularSmall" color="grey">
+                No messages found
               </Text>
             )}
           </>
         </LinkCard>
       )}
 
-      {/* {isActivated && (
-        <LinkCard type="history" spacing={{ mb: 2 }} onPress={onPressLink('HistoryScreen')}>
+      {!isTherapist && (
+        <LinkCard type="upcoming" onPress={onPressLink('UpcomingScreen')}>
           <Text>
-            <Text variant="regularSmallGrey">Last: </Text>
-            <Text variant="boldSmallGrey">Adele Dust / Wed</Text>
+            <Text variant="regularSmall" color="grey">View Future Appointments</Text>
           </Text>
         </LinkCard>
-      )} */}
+      )}
+
+      {(isActivated && lastAppointmentStr) && (
+        <LinkCard type="history" onPress={onPressLink('HistoryScreen')}>
+          <Text>
+            <Text variant="regularSmall" color="grey">Last: </Text>
+            <Text variant="semiBoldLarge" size={1} color="grey">
+              {lastAppointmentStr}
+            </Text>
+          </Text>
+        </LinkCard>
+      )}
 
       {(!isTherapist || isActivated) && <View variant="bottomBounceFill" bgColor="lightGrey" />}
 

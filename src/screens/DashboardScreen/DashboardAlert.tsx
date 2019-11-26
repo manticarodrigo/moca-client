@@ -6,13 +6,19 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 
 const DashboardAlert = () => (
-  <View alignCenter justifyCenter spacing={{ py: 4 }}>
+  <View alignCenter justifyCenter py={4}>
     <BigEnvelopeIcon />
-    <View justifyCenter spacing={{ pt: 4 }}>
-      <Text variant="titleSmallWhite">You’re almost there!</Text>
+    <View justifyCenter pt={4}>
+      <Text variant="semiBoldLarge" color="white">You’re almost there!</Text>
     </View>
     <View justifyCenter>
-      <Text variant="lightTextCenter" spacing={{ px: 4, pt: 3 }}>
+      <Text
+        pt={3}
+        px={4}
+        variant="regularSmall"
+        color="secondaryLighter"
+        align="center"
+      >
         In order to provide quality and safety for
         MOCA’s Patients and Providers, we have sent
         you an email to assist you in completing the

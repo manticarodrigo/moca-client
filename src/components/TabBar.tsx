@@ -8,9 +8,15 @@ const TabBar: typeof BottomTabBar = ({ navigation, ...rest }) => {
   const { state } = navigation;
 
   // filter tabs items
-  const routes = store.user.type === 'PA'
-    ? state.routes.filter((route) => route.routeName !== 'ScheduleTab')
-    : state.routes;
+  let { routes } = state;
+
+  if (store.user.type === 'PA') {
+    routes = state.routes.filter((route) => route.routeName !== 'ScheduleTab');
+  }
+
+  if (store.user.type === 'PT') {
+    routes = state.routes.filter((route) => route.routeName !== 'SearchTab');
+  }
 
   // find the active route index
   const index = routes.findIndex((route) => (
@@ -32,4 +38,4 @@ const TabBar: typeof BottomTabBar = ({ navigation, ...rest }) => {
   );
 };
 
-export default TabBar;
+export default React.memo(TabBar);

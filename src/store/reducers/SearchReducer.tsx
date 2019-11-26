@@ -7,7 +7,10 @@ export type TherapistSearch = Omit<BadTherapistSearch, 'user'> & BadTherapistSea
 export type FilterParams = {
   gender?: 'M' | 'F';
   ailments?: string[];
-  maxPrice?: string;
+  max_price?: string;
+  session_durations?: string[];
+  review_count?: boolean;
+  avg_rating?: boolean;
 }
 
 export type SearchState = TherapistSearch[]

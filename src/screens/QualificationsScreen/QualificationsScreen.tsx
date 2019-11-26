@@ -9,8 +9,9 @@ const QualificationsScreen: NavigationStackScreenComponent = ({ navigation }) =>
 );
 
 QualificationsScreen.navigationOptions = ({ navigationOptions }) => ({
-  title: 'Qualifications',
+  title: 'Preferred Treatment Areas',
   headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle as {},
     color: Colors.primary,
   },
   headerStyle: {

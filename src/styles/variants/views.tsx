@@ -1,5 +1,7 @@
 import { ViewStyle, StyleSheet, Dimensions } from 'react-native';
 
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+
 import * as Spacing from '../global/spacing';
 import * as Shadow from '../global/shadow';
 import * as Borders from '../global/borders';
@@ -7,6 +9,26 @@ import * as Colors from '../global/colors';
 
 const rounded: ViewStyle = {
   ...Borders.primary,
+};
+
+const card: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  ...Borders.primary,
+  backgroundColor: Colors.white,
+};
+
+const cardRight: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  borderTopRightRadius: Spacing.spaceSize[2],
+  borderBottomRightRadius: Spacing.spaceSize[2],
+  backgroundColor: Colors.white,
+};
+
+const cardLeft: ViewStyle = {
+  ...Spacing.getStyles({ p: 3 }),
+  borderTopLeftRadius: Spacing.spaceSize[2],
+  borderBottomLeftRadius: Spacing.spaceSize[2],
+  backgroundColor: Colors.white,
 };
 
 const shadow: ViewStyle = {
@@ -32,6 +54,7 @@ const msgBubble: ViewStyle = {
   ...Spacing.getStyles({ mx: 3, mb: 3, p: 3 }),
   ...Borders.primary,
   minWidth: 60,
+  maxWidth: WINDOW_WIDTH - (Spacing.spaceSize[3] * 2),
   height: 'auto',
 };
 
@@ -124,6 +147,14 @@ const roundedBorderGrey: ViewStyle = {
   ...shadow,
 };
 
+
+const roundedBorderSemiGrey = {
+  ...card,
+  borderWidth: 1,
+  borderColor: Colors.semiGrey,
+  backgroundColor: Colors.whiteTranslucent,
+};
+
 const roundedBorderLeft: ViewStyle = {
   borderTopLeftRadius: 5,
   borderBottomLeftRadius: 5,
@@ -140,14 +171,12 @@ const roundedBorderRight: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
 };
 
-const backdrop: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...Borders.secondary,
+const absoluteFill: ViewStyle = {
   ...StyleSheet.absoluteFillObject,
 };
 
 const selectionScreenBorderImage: ViewStyle = {
-  ...Spacing.getStyles({ pt: 5, pb: 5 }),
+  ...Spacing.getStyles({ py: 5 }),
   borderWidth: 7,
   borderColor: Colors.transparent,
   height: 337,
@@ -183,26 +212,6 @@ const modal: ViewStyle = {
   backgroundColor: Colors.white,
 };
 
-const card: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  ...Borders.primary,
-  backgroundColor: Colors.white,
-};
-
-const cardRight: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  borderTopRightRadius: Spacing.spaceSize[2],
-  borderBottomRightRadius: Spacing.spaceSize[2],
-  backgroundColor: Colors.white,
-};
-
-const cardLeft: ViewStyle = {
-  ...Spacing.getStyles({ p: 3 }),
-  borderTopLeftRadius: Spacing.spaceSize[2],
-  borderBottomLeftRadius: Spacing.spaceSize[2],
-  backgroundColor: Colors.white,
-};
-
 const borderCard: ViewStyle = {
   ...card,
   borderWidth: 2,
@@ -210,6 +219,10 @@ const borderCard: ViewStyle = {
   borderColor: Colors.secondary,
 };
 
+const borderCardDisabled: ViewStyle = {
+  ...card,
+  backgroundColor: Colors.lightGrey,
+};
 
 const shadowCard: ViewStyle = {
   ...Shadow.getStyles({ color: 'primary', blur: 4, alpha: 0.05 }),
@@ -223,45 +236,6 @@ const borderShadowCard: ViewStyle = {
   borderColor: Colors.primary,
 };
 
-const profileSection: ViewStyle = {
-  ...Spacing.getStyles({ mb: 3 }),
-  backgroundColor: Colors.white,
-};
-
-const profileCard: ViewStyle = {
-  ...Spacing.getStyles({ pr: 4 }),
-  width: '100%',
-  height: 80,
-  backgroundColor: Colors.white,
-  alignItems: 'center',
-  borderBottomWidth: 1,
-  borderColor: Colors.secondaryLighter,
-};
-
-const profileCardLast: ViewStyle = {
-  ...profileCard,
-  borderColor: Colors.white,
-};
-
-const profileIconCard: ViewStyle = {
-  ...profileCard,
-  ...Spacing.getStyles({ px: 3 }),
-  width: 56,
-};
-
-const profileData: ViewStyle = {
-  ...Spacing.getStyles({ pt: 3, pr: 4, pb: 4 }),
-  width: '100%',
-  backgroundColor: Colors.white,
-  borderBottomWidth: 1,
-  borderColor: Colors.secondaryLighter,
-};
-
-const profileDataLast: ViewStyle = {
-  ...profileData,
-  borderBottomWidth: 0,
-};
-
 const iconButton: ViewStyle = {
   ...Spacing.getStyles({ p: 2 }),
   ...Shadow.getStyles({ color: 'primary', blur: 2, alpha: 0.08 }),
@@ -273,17 +247,6 @@ const iconButton: ViewStyle = {
   borderWidth: 1,
   borderColor: Colors.secondaryLighter,
   aspectRatio: 1,
-};
-
-const genderButton: ViewStyle = {
-  ...Spacing.getStyles({ m: 1 }),
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: 32,
-  width: 64,
-  borderRadius: 6,
-  borderWidth: 1,
-  borderColor: Colors.secondaryLighter,
 };
 
 const bottomBounceFill: ViewStyle = {
@@ -320,8 +283,21 @@ const notificationBadgeLarge: ViewStyle = {
   borderColor: Colors.errorLighter,
 };
 
+const deleteBadge: ViewStyle = {
+  ...notificationBadge,
+  top: -10,
+  right: 0,
+  width: 30,
+  height: 30,
+  borderRadius: 15,
+  borderWidth: 2,
+};
+
 export {
   rounded,
+  card,
+  cardRight,
+  cardLeft,
   shadow,
   progressBar,
   progressBarIndicator,
@@ -331,35 +307,28 @@ export {
   borderTopAndRight,
   borderBottom,
   borderRight,
-  backdrop,
+  absoluteFill,
   modal,
   therapistView,
   therapistViewPressed,
-  card,
-  cardRight,
-  cardLeft,
   curveBorder,
   curveBorderBottom,
   borderCard,
+  borderCardDisabled,
   shadowCard,
   borderShadowCard,
-  profileCard,
-  profileData,
-  profileSection,
-  profileIconCard,
   iconButton,
-  genderButton,
   bottomBounceFill,
   roundedBorder,
   roundedBorderGrey,
+  roundedBorderSemiGrey,
   roundedBorderLeft,
   roundedBorderRight,
   patientViewPressed,
   patientView,
   notificationBadge,
   notificationBadgeLarge,
-  profileDataLast,
-  profileCardLast,
+  deleteBadge,
   star,
   starFirst,
   starLast,

@@ -15,6 +15,7 @@ import {
 
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
@@ -144,7 +145,6 @@ const BankCardModal = ({ isVisible, onToggle }) => {
 
   return (
     <Modal
-      avoidKeyboard
       propagateSwipe
       marginTop={50}
       bgColor="white"
@@ -158,7 +158,7 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           justifyCenter
           height={50}
         >
-          <Text variant="titleSmallDark">Add New Card</Text>
+          <Text variant="semiBoldLarge" color="dark">Add New Card</Text>
         </View>
         <View
           variant="borderBottom"
@@ -168,31 +168,31 @@ const BankCardModal = ({ isVisible, onToggle }) => {
           height={60}
           width="100%"
         >
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><MasterCardIcon /></View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><VisaIcon /></View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><AmexIcon /></View>
-          <View alignCenter justifyCenter spacing={{ mx: 4 }}><MaestroIcon /></View>
+          <View alignCenter justifyCenter mx={4}><MasterCardIcon /></View>
+          <View alignCenter justifyCenter mx={4}><VisaIcon /></View>
+          <View alignCenter justifyCenter mx={4}><AmexIcon /></View>
+          <View alignCenter justifyCenter mx={4}><MaestroIcon /></View>
         </View>
 
-        <View scroll>
-          <View flex={2} spacing={{ p: 3 }}>
+        <KeyboardAwareScrollView>
+          <View flex={2} p={3}>
             {isTherapist ? (
               <BankFields fields={bankFields} onChangeField={onChangeBankField} />
             ) : (
               <CardFields fields={cardFields} onChangeField={onChangeCardField} />
             )}
             {errorString && (
-              <Text spacing={{ mt: 3 }} variant="errorSmall" typography={{ align: 'center' }}>
+              <Text mt={3} variant="regular" size={1} color="error" align="center">
                 {errorString}
               </Text>
             )}
           </View>
-          <View flex={1} spacing={{ p: 3, pb: 6 }}>
+          <View flex={1} p={3} pb={6}>
             <Button onPress={onFormSubmit}>
               Add Account
             </Button>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </View>
 
     </Modal>

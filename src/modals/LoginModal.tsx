@@ -1,132 +1,146 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
+import { User } from '@src/services/openapi';
 
-import FormField from '@src/components/FormField';
-import View from '@src/components/View';
-import Button from '@src/components/Button';
-import Text from '@src/components/Text';
+import useStore from '@src/hooks/useStore';
+import useFormFields from '@src/hooks/useFormFields';
+
+import { loginUser } from '@src/store/actions/UserAction';
+
 import Modal from '@src/components/Modal';
-
-import { validateEmailAddress } from '@src/utlities/validations';
+import View from '@src/components/View';
+import Text from '@src/components/Text';
+import FormField from '@src/components/FormField';
+import Button from '@src/components/Button';
 
 import InputModal from '@src/modals/InputModal';
+
+import Toast from '@src/components/Toast';
 
 
 type Props = {
   visible: boolean;
-  onLogin: (email: string, password: string) => void;
   onClose: () => void;
 };
 
-const LoginModal = ({ visible, onLogin, onClose }: Props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isPasswordModal, setIsPasswordModal] = useState(false);
+const LoginModal = ({ visible, onClose }: Props) => {
+  const { dispatch } = useStore();
+  const [error, setError] = useState('');
 
-  const emailField = useRef(null);
-  const passwordField = useRef(null);
-  const isButtonDisabled = !((email && password) !== '') || !isEmailValid;
+  const {
+    fieldValues,
+    fieldProps,
+    isAnyFieldEmpty,
+    isFormValid,
+  } = useFormFields<Pick<User, 'email' | 'password'>>(
+    {
+      email: '',
+      password: '',
+    },
+    {
+      email: { required: true, validation: 'email' },
+      password: { required: true, validation: 'password' },
+    },
+  );
 
-  const handleButtonPress = () => {
-    if (validateEmailAddress(email)) {
-      onLogin(email, password);
-    } else {
-      setIsEmailValid(false);
+  const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+
+  const isButtonDisabled = isAnyFieldEmpty || !isFormValid;
+
+  const onPressSubmit = async () => {
+    if (isFormValid) {
+      try {
+        await dispatch(loginUser(fieldValues.email, fieldValues.password));
+      } catch ({ response }) {
+        const { nonFieldErrors } = response.data;
+
+        if (nonFieldErrors && nonFieldErrors.length) {
+          setError(nonFieldErrors[0]);
+        }
+      }
     }
   };
 
+  const toggleForgotPasswordModal = () => setPasswordModalVisible(!passwordModalVisible);
+
   const sumbitForgotPassword = (value: string) => {
     // api
-    setIsPasswordModal(false);
+    toggleForgotPasswordModal();
   };
 
-  const passwordModal = (
-    <InputModal
-      visible={isPasswordModal}
-      title="Recover Password"
-      placeholder="Email"
-      existingValue=""
-      validate={validateEmailAddress}
-      error="Please enter a valid Email"
-      buttonText="Continue"
-      onSubmit={sumbitForgotPassword}
-      onClose={() => setIsPasswordModal(false)}
-    />
-  );
-
   return (
-    <Modal
-      avoidKeyboard
-      marginTop={50}
-      propagateSwipe
-      isVisible={visible}
-      onToggle={onClose}
-    >
-      <View alignCenter>
-        <View row>
-          <View variant="borderBottom" flex={1} height={70} alignCenter justifyCenter>
-            <Text variant="titleSmall">
-              Welcome Back
-            </Text>
-          </View>
-        </View>
-        <View alignCenter spacing={{ mt: 4, mx: 5 }}>
-          <FormField
-            icon="email"
-            ref={emailField}
-            placeholder="Email address"
-            value={email}
-            returnKeyType="next"
-            keyboardType="email-address"
-            onChangeText={(text) => {
-              setEmail(text);
-              setIsEmailValid(true);
-            }}
-            error={!isEmailValid}
-            onSubmitEditing={() => passwordField.current.focus()}
-          />
-          {!isEmailValid
-            && (
-              <Text variant="errorSmall" spacing={{ mt: 1 }}>
-                Please enter a valid Email address
-              </Text>
-            )}
-          <FormField
-            icon="password"
-            secureTextEntry
-            ref={passwordField}
-            placeholder="Password"
-            value={password}
-            returnKeyType="done"
-            onChangeText={(text) => setPassword(text)}
-          />
-          <View row spacing={{ mt: 3 }}>
-            <View flex={1} alignEnd>
-              <Text
-                variant="link"
-                spacing={{ ml: 1 }}
-                onPress={() => setIsPasswordModal(true)}
-              >
-                Forgot Password ?
+    <>
+      <InputModal
+        visible={passwordModalVisible}
+        title="Recover Password"
+        placeholder="Email"
+        existingValue=""
+        validation="email"
+        buttonText="Continue"
+        onSubmit={sumbitForgotPassword}
+        onClose={toggleForgotPasswordModal}
+      />
+      <Modal
+        avoidKeyboard
+        marginTop={50}
+        propagateSwipe
+        isVisible={visible}
+        onToggle={onClose}
+      >
+        <View alignCenter>
+          <View row bgColor="white">
+            <View variant="borderBottom" flex={1} py={4} alignCenter justifyCenter>
+              <Text variant="semiBoldLarge">
+                Welcome Back
               </Text>
             </View>
           </View>
-          <View row spacing={{ mt: 5 }}>
-            <View flex={1}>
-              <Button
-                variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
-                disabled={isButtonDisabled}
-              >
-                Login
-              </Button>
+          <View alignCenter mt={4} mx={5}>
+            <FormField
+              {...fieldProps.email}
+              icon="email"
+              placeholder="Email address"
+              returnKeyType="next"
+              keyboardType="email-address"
+            />
+            <FormField
+              {...fieldProps.password}
+              icon="password"
+              secureTextEntry
+              placeholder="Password"
+              returnKeyType="done"
+            />
+            <View row mt={3}>
+              <View flex={1} alignEnd>
+                <Text
+                  variant="link"
+                  ml={1}
+                  onPress={toggleForgotPasswordModal}
+                >
+                  Forgot Password?
+                </Text>
+              </View>
+            </View>
+            <View row mt={5}>
+              <View flex={1}>
+                <Button
+                  variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
+                  onPress={onPressSubmit}
+                  disabled={isButtonDisabled}
+                >
+                  Login
+                </Button>
+              </View>
             </View>
           </View>
-          {passwordModal}
         </View>
-      </View>
-    </Modal>
+        {!!error && (
+          <Toast error onClose={() => setError('')}>
+            {error}
+          </Toast>
+        )}
+      </Modal>
+    </>
   );
 };
 

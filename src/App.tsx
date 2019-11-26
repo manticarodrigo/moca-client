@@ -1,42 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { registerRootComponent } from 'expo';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { activateKeepAwake } from 'expo-keep-awake';
 
-import storage from '@src/services/storage';
-
-import useStore from '@src/hooks/useStore';
-import { updateUserState } from '@src/store/actions/UserAction';
-
 import StoreProvider from '@src/StoreProvider';
 import NavigationProvider from '@src/NavigationProvider';
+import AppStateHandler from '@src/AppStateHandler';
 
 import { Typography } from '@src/styles';
 
-const AppStateHandler = ({ children }) => {
-  const { store, dispatch } = useStore();
-
-  useEffect(() => {
-    const onMount = async () => {
-      // storage.storeUser('');
-
-      if (!store.user.token) {
-        const local = await storage.retrieveUser() || {};
-
-        dispatch(updateUserState({ ...local, storageReady: true }));
-      }
-    };
-
-    onMount();
-  }, [store.user.token]);
-
-  return children;
-};
-
 const App = () => {
   const [appLoaded, setAppLoaded] = useState(false);
+  const navigationRef = useRef();
 
   useEffect(() => {
     const initialize = async () => {
@@ -49,12 +26,15 @@ const App = () => {
   }, []);
 
   return appLoaded ? (
-    <StoreProvider>
+    <>
       <StatusBar barStyle="light-content" />
-      <AppStateHandler>
-        <NavigationProvider />
-      </AppStateHandler>
-    </StoreProvider>
+
+      <StoreProvider>
+        <AppStateHandler navigatorRef={navigationRef}>
+          <NavigationProvider ref={navigationRef} />
+        </AppStateHandler>
+      </StoreProvider>
+    </>
   ) : null;
 };
 

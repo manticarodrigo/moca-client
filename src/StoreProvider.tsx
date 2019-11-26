@@ -62,9 +62,12 @@ export const initialState: StoreState = {
     gender: 'M',
     type: 'PA',
     addresses: [],
-    prices: [],
     payments: [],
+    prices: [],
+    certifications: [],
     preferredAilments: [],
+    awayDays: [],
+    injuries: [],
   },
   registration: {
     address: {},
@@ -74,7 +77,13 @@ export const initialState: StoreState = {
     list: [],
     map: {},
   },
-  appointments: [],
+  appointments: {
+    upcoming: [],
+    last: undefined,
+    finished: [],
+    future: [],
+    past: [],
+  },
 };
 
 const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
@@ -86,8 +95,10 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
     appointments: appointmentReducer(store.appointments, action as AppointmentAction),
   };
 
+  // console.log(action.type);
+
   if (action.type === 'LOGOUT_USER') {
-    return initialState;
+    return { ...initialState, user: { ...initialState.user, storageReady: true } };
   }
 
   return newState;
@@ -95,7 +106,7 @@ const rootReducer: StoreReducer = (store: StoreState, action: StoreAction) => {
 
 export const StoreContext = createContext<ProviderValue>([initialState, () => null]);
 
-const StoreProvider = ({ children }: { children: JSX.Element[] }) => (
+const StoreProvider = ({ children }: { children: JSX.Element }) => (
   <StoreContext.Provider value={useAsyncReducer(rootReducer, initialState)}>
     {children}
   </StoreContext.Provider>

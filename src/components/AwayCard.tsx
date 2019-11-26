@@ -23,17 +23,17 @@ const AwayCard = ({ dateStart, dateEnd }) => {
   }), [dateStart, dateEnd]);
 
   return (
-    <View column variant="card" spacing={{ p: 0 }}>
+    <View p={0} variant="card">
 
-      <View row justifyBetween alignCenter variant="card" spacing={{ py: 4 }}>
+      <View row justifyBetween alignCenter py={4} variant="card">
 
         <View row>
-          <Text variant="titlePrimaryLarge">{startDayOfMonth}</Text>
-          <View column spacing={{ ml: 2 }}>
-            <Text variant="lightPrimarySmallest">
+          <Text variant="titleLarge">{startDayOfMonth}</Text>
+          <View ml={2}>
+            <Text variant="lightSmallest" color="primary">
               {startMonthYear}
             </Text>
-            <Text variant="regularPrimary">
+            <Text variant="regularSmall" color="primary">
               {startDayOfWeek}
             </Text>
           </View>
@@ -42,12 +42,12 @@ const AwayCard = ({ dateStart, dateEnd }) => {
         <ArrowRightIcon tint="primary" size={1.5} />
 
         <View row>
-          <Text variant="titleGreyLarge">{endDayOfMonth}</Text>
-          <View column spacing={{ ml: 2 }}>
-            <Text variant="lightGreySmallest">
+          <Text variant="title" size={5} color="grey">{endDayOfMonth}</Text>
+          <View ml={2}>
+            <Text variant="lightSmallest" color="grey">
               {endMonthYear}
             </Text>
-            <Text variant="regularGrey">
+            <Text variant="regularSmall" color="grey">
               {endDayOfWeek}
             </Text>
           </View>
@@ -57,8 +57,8 @@ const AwayCard = ({ dateStart, dateEnd }) => {
 
       <View row justifyBetween variant="card" bgColor="warning">
         <NoMessagesIcon />
-        <View row flex={1} spacing={{ px: 3 }}>
-          <Text variant="regularPrimary">
+        <View row flex={1} px={3}>
+          <Text variant="regularSmall" color="primary">
             You are set as away. You will not receive messages or show up in search.
           </Text>
         </View>

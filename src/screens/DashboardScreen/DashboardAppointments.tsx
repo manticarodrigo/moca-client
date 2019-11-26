@@ -1,56 +1,61 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { isToday } from 'date-fns';
-
-import useStore from '@src/hooks/useStore';
+import { UserState } from '@src/store/reducers/UserReducer';
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import AppointmentCard from '@src/components/AppointmentCard';
 
-const DashboardAppointments = ({ isTherapist, onPressAppointment }) => {
-  const { store } = useStore();
+type Props = {
+  isTherapist: boolean;
+  current?: Appointment;
+  next?: Appointment;
+  onPressAppointment: (appointment: Appointment) => void;
+  onPressAppointmentAction: (appointment: Appointment) => void;
+  onMessageUser: (user: UserState) => void;
+}
 
-  const { current, next } = useMemo(() => {
-    if (!store.appointments.length) {
-      return { current: undefined, next: undefined };
-    }
+const DashboardAppointments = ({
+  current,
+  next,
+  isTherapist,
+  onPressAppointment,
+  onPressAppointmentAction,
+  onMessageUser,
+}: Props) => (
+  <View px={3} py={4} bgColor={!isTherapist ? 'blackTranslucent' : null}>
 
-    return {
-      current: store.appointments.find(({ startTime }) => isToday(new Date(startTime))),
-      next: (store.appointments.length > 1 && store.appointments[1]) || (!current && store.appointments[0]),
-    };
-  }, [store.appointments]);
+    {!isTherapist && (
+      <Text mb={3} variant="semiBoldLarge" color="secondaryLight">Appointments</Text>
+    )}
 
-  return (
-    <View column spacing={{ px: 3, py: 4 }} bgColor={!isTherapist ? 'blackTranslucent' : null}>
+    {current && (
+      <View justifyCenter mb={3}>
+        <Text mb={2} variant="semiBoldLarge" color="white">Current</Text>
+        <AppointmentCard
+          current
+          appointment={current}
+          onPressBtn={onPressAppointment}
+          onMessageUser={onMessageUser}
+        />
+      </View>
+    )}
 
-      {!isTherapist && (
-        <Text variant="titleSmallSecondaryLight" spacing={{ mb: 3 }}>Appointments</Text>
-      )}
+    {next && (
+      <View column justifyCenter>
+        <Text mb={2} variant="semiBoldLarge" color="white">Next</Text>
+        <AppointmentCard
+          upcoming
+          appointment={next}
+          onPressBtn={onPressAppointmentAction}
+          onMessageUser={onMessageUser}
+        />
+      </View>
+    )}
 
-      {current && (
-        <View column justifyCenter spacing={{ mb: 3 }}>
-          <Text variant="boldWhite" spacing={{ mb: 2 }}>Current</Text>
-          <AppointmentCard
-            current
-            appointment={current}
-            isTherapist={isTherapist}
-            onPress={onPressAppointment}
-          />
-        </View>
-      )}
-
-      {next && (
-        <View column justifyCenter>
-          <Text variant="boldWhite" spacing={{ mb: 2 }}>Next</Text>
-          <AppointmentCard appointment={next} isTherapist={isTherapist} />
-        </View>
-      )}
-
-      {(!current && !next) && <Text variant="boldWhite">No appointments found.</Text>}
-    </View>
-  );
-};
+    {(!current && !next) && <Text variant="semiBoldLarge" color="white">No appointments found.</Text>}
+  </View>
+);
 
 export default DashboardAppointments;

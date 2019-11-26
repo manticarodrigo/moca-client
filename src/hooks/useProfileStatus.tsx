@@ -10,9 +10,10 @@ const useProfileStatus = (user: UserState) => useMemo(() => {
     // therapist
     bio,
     prices,
-    certDate,
-    licenseNumber,
     operationRadius,
+    licenseNumber,
+    certDate,
+    certifications,
     payments,
   } = user;
 
@@ -27,9 +28,10 @@ const useProfileStatus = (user: UserState) => useMemo(() => {
     if (gender) profilePercent += 5;
     if (bio) profilePercent += 5;
     if (prices.length) profilePercent += 10;
-    if (certDate) profilePercent += 10;
-    if (licenseNumber) profilePercent += 10;
     if (operationRadius) profilePercent += 10;
+    if (licenseNumber) profilePercent += 10;
+    if (certDate) profilePercent += 10;
+    if (certifications.length) profilePercent += 10;
     if (payments) profilePercent += 10;
   }
 

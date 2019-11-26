@@ -8,13 +8,11 @@ import View from '@src/components/View';
 import Text from '@src/components/Text';
 import InputModal from '@src/modals/InputModal';
 
-import { validatePrice } from '@src/utlities/validations';
-
-const sessions = { thirty: '30', fortyfive: '45', sixty: '60' };
+const sessions = { thirty: '30', fourtyfive: '45', sixty: '60' };
 
 const sessionLabels = {
   thirty: '30min',
-  fortyfive: '45min',
+  fourtyfive: '45min',
   sixty: '60min',
   evaluation: 'Evaluation',
 };
@@ -22,13 +20,12 @@ const sessionLabels = {
 export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmit }) => (
   <InputModal
     visible={visible}
-    title={`${sessionLabels[type]} Session Price`}
+    title={type && `${sessionLabels[type]} Session Price`}
     placeholder="Price"
     existingValue={existingValue ? existingValue.toString() : ''}
     maxLength={3}
     keyboardType="number-pad"
-    validate={validatePrice}
-    error="Please enter a valid price"
+    validation="number"
     buttonText="Price"
     buttonActionText
     onSubmit={(value) => onSubmit(type, value)}
@@ -36,10 +33,12 @@ export const PriceModal = ({ visible, type, existingValue = '', onClose, onSubmi
   />
 );
 
-const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
+const ProfilePriceTableCard = ({ readonly, existing, onOpenPriceModal }) => {
   const { store } = useStore();
 
-  const evaluationTariff = store.user.prices.find(
+  const prices = existing || store.user.prices;
+
+  const evaluationTariff = prices.find(
     ({ sessionType }) => sessionType === 'evaluation',
   ) || { price: 0 };
 
@@ -51,38 +50,40 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
   });
 
   return (
-    <View row spacing={{ my: 3 }} bgColor="white">
-      <View spacing={{ p: 3 }}>
+    <View row my={3} bgColor="white">
+      <View p={3}>
         <PriceRateIcon />
       </View>
       <View flex={1}>
-        <View row alignCenter spacing={{ py: 3 }}>
-          <Text variant="boldDark">Price Rate</Text>
+        <View py={3}>
+          <Text variant="semiBoldLarge" color="dark">Price Rate</Text>
+          {!readonly && (prices.length < 2 || !evaluationTariff.price) && (
+            <Text variant="lightSmallest">Evaluation price and one duration price are required.</Text>
+          )}
         </View>
         <View row width="100%" justifyBetween variant="borderBottom">
-          <>
-            {Object.entries(sessions).map(([key, duration]) => {
-              const { price = 0 } = store.user.prices.find(
+          <View row width="100%" pr={3}>
+            {Object.entries(sessions).map(([key, duration], index) => {
+              const { price = 0 } = prices.find(
                 ({ sessionType }) => sessionType === key,
               ) || {};
+
+              const isLast = index === Object.keys(sessions).length - 1;
 
               return (
                 <View
                   key={key}
                   flex={1}
-                  spacing={{ mb: 3 }}
-                  variant="borderRight"
+                  mb={3}
+                  variant={!isLast ? 'borderRight' : null}
                 >
                   <View alignCenter>
-                    <Text variant="regularSmallGrey">
+                    <Text variant="regularSmall" color="grey">
                       {duration}
                       min
                     </Text>
-                    <View
-                      spacing={{ pt: 1 }}
-                      onPress={!readonly && onPressPrice(key, price)}
-                    >
-                      <Text variant="titleSecondaryLarge">
+                    <View pt={1} onPress={!readonly && onPressPrice(key, price)}>
+                      <Text variant="title" size={5} color="secondary">
                         {price ? `$${price}` : status}
                       </Text>
                     </View>
@@ -90,16 +91,16 @@ const ProfilePriceTableCard = ({ readonly, onOpenPriceModal }) => {
                 </View>
               );
             })}
-          </>
+          </View>
         </View>
-        <View row justifyBetween alignCenter spacing={{ py: 3, pr: 5 }}>
-          <Text variant="regularSmallGrey">First time evaluation price</Text>
+        <View row justifyBetween alignCenter py={3} pr={5}>
+          <Text variant="regularSmall" color="grey">First Time Evaluation Price</Text>
           <View
             alignEnd
             onPress={!readonly && onPressPrice('evaluation', evaluationTariff.price)}
           >
-            <Text variant="titleSecondaryLarge">
-              {evaluationTariff.price || status}
+            <Text variant="title" size={5} color="secondary">
+              {evaluationTariff.price ? `$${evaluationTariff.price}` : status}
             </Text>
           </View>
         </View>

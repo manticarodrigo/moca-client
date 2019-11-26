@@ -1,74 +1,75 @@
-import React, { useState, useRef } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import { User } from '@src/services/openapi/api';
 
 import useStore from '@src/hooks/useStore';
-import { updateRegistration } from '@src/store/actions/RegistrationAction';
-import { registerUser } from '@src/store/actions/UserAction';
-import { validateEmailAddress } from '@src/utlities/validations';
+import useFormFields from '@src/hooks/useFormFields';
 
-import TermsOfServiceModal from '@src/modals/TermsOfServiceModal';
+import { registerUser } from '@src/store/actions/UserAction';
+
+import ContentModal from '@src/modals/ContentModal';
+
+import { ToS } from '@src/content';
 
 import { Colors, Views } from '@src/styles';
 
 import View from '@src/components/View';
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
 import FormField from '@src/components/FormField';
-import ModalView from '@src/components/ModalView';
 
 import SecondaryLogoIcon from '@src/components/icons/SecondaryLogo';
+
+type FormFields = Pick<User, 'firstName' | 'lastName' | 'email' | 'password'> & {
+  password2: string;
+};
 
 const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
-  const isPatient = store.registration.type === 'PA';
-
-  const surnameField = useRef(null);
-  const emailField = useRef(null);
-  const passwordField = useRef(null);
-  const medicalIdField = useRef(null);
-
-  const [formFields, setFormFields] = useState<User>({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-  });
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isMediCarePressed, setIsMediCarePressed] = useState(false);
-
-
-  const isAnyFieldEmpty = Object.values(formFields).includes('');
-
-  const isButtonDisabled = isPatient
-    ? (isAnyFieldEmpty || !isMediCarePressed || !isEmailValid)
-    : isAnyFieldEmpty || !isEmailValid;
-
-
-  const TermsOfServiceModalView = (
-    <ModalView
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)}
-      onSwipeComplete={() => setIsModalVisible(false)}
-      handleArrowClick={() => setIsModalVisible(false)}
-    >
-      <TermsOfServiceModal />
-    </ModalView>
+  const {
+    fieldValues,
+    fieldProps,
+    updateFieldErrors,
+    isAnyFieldEmpty,
+    isFormValid,
+  } = useFormFields<FormFields>(
+    {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      password2: '',
+    },
+    {
+      firstName: { required: true },
+      lastName: { required: true },
+      email: { required: true, validation: 'email' },
+      password: { required: true, validation: 'password' },
+      password2: { required: true },
+    },
   );
 
-  const handleButtonPress = async () => {
-    const { email, password, firstName, lastName } = formFields;
+  const isPatient = store.registration.type === 'PA';
 
-    dispatch(updateRegistration({ ...formFields }));
+  const [modalVisible, setModalVisible] = useState<'ToS' | 'Privacy'>();
+  const [isMedicarePressed, setIsMedicarePressed] = useState(false);
 
-    if (email && validateEmailAddress(email)) {
-      setIsEmailValid(true);
+  const isButtonDisabled = isPatient
+    ? (isAnyFieldEmpty || !isMedicarePressed || !isFormValid)
+    : isAnyFieldEmpty || !isFormValid;
 
+  const onPressSubmit = async () => {
+    const { email, password, password2, firstName, lastName } = fieldValues;
+
+    if (password !== password2) {
+      updateFieldErrors({ password2: 'Password does not match with the first one.' });
+      return;
+    }
+
+    if (isFormValid) {
       const { type } = store.registration;
 
       try {
@@ -79,174 +80,162 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
         } else {
           navigation.push('QualificationsScreen');
         }
-      } catch (error) {
-        // console.log(error);
+      } catch ({ response }) {
+        const { user } = response.data;
+
+        const errors: Partial<FormFields> = {};
+        if (user && Array.isArray(user.email) && user.email.length) {
+          const [emailError] = user.email;
+          errors.email = emailError;
+        }
+
+        updateFieldErrors(errors);
       }
-    } else {
-      setIsEmailValid(false);
     }
   };
 
-  const handleMedicareAgreement = () => navigation.push('InvalidMedicareScreen');
+  const onMedicareAgreement = () => navigation.push('InvalidRegistrationScreen');
 
-  const handleMedicareDisagreement = () => setIsMediCarePressed(!isMediCarePressed);
+  const onMedicareDisagreement = () => setIsMedicarePressed(!isMedicarePressed);
 
-  const handlePrivacyPress = () => navigation.navigate('ProfileScreen');
+  const onPressTermsOfService = () => setModalVisible('ToS');
 
-  const handleTermsOfServicePress = () => setIsModalVisible(true);
+  const onPressPrivacy = () => setModalVisible('Privacy');
 
-  const updateFormField = (key: keyof User) => (text: string) => {
-    setFormFields({ ...formFields, [key]: text });
-  };
+  const onCloseModal = () => setModalVisible(undefined);
 
   return (
+    <>
 
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={60}
-    >
-      <View scroll>
-        <View safeArea spacing={{ mt: 4 }} alignCenter>
-          <View alignCenter spacing={{ py: 4, px: 3 }}>
+      <ContentModal
+        visible={modalVisible === 'ToS'}
+        title="Terms of Service"
+        json={ToS}
+        onClose={onCloseModal}
+      />
+      <ContentModal
+        visible={modalVisible === 'Privacy'}
+        title="Privacy Policy"
+        json={ToS}
+        onClose={onCloseModal}
+      />
+
+      <View safeArea>
+        <KeyboardAwareScrollView>
+          <View alignCenter py={5} px={3}>
             <SecondaryLogoIcon />
-            <Text variant="title" spacing={{ mt: 3 }}>Moca is available in your area</Text>
-            <Text variant="regular" spacing={{ mt: 2 }}>
+            <Text variant="title" mt={3}>MOCA is available in your area</Text>
+            <Text variant="regular" mt={2}>
               We need some information to
             </Text>
-            <Text variant="regular" spacing={{ mt: 1, mb: 2 }}>
+            <Text variant="regular" mt={1} mb={2}>
               get you started.
             </Text>
           </View>
           {isPatient && (
             <View width="100%" variant="borderTop">
-              <View row spacing={{ mx: 3, py: 4 }}>
+              <View row py={4} px={3}>
                 <View flex={1}>
-                  <Text variant="title" typography={{ size: 2 }}>
-                    {'Are you currently\n'}
-                    covered by Medicare?
+                  <Text variant="semiBoldLarge">
+                    Are you currently covered by Medicare?
                   </Text>
                 </View>
                 <View row flex={1} justifyEnd>
-                  <Button variant="tertiary" onPress={handleMedicareAgreement}>
+                  <Button mr={2} variant="tertiary" onPress={onMedicareAgreement}>
                     Yes
                   </Button>
-                  <View spacing={{ ml: 3 }}>
-                    <Button
-                      variant={isMediCarePressed ? 'buttonPressed' : 'tertiary'}
-                      onPress={handleMedicareDisagreement}
-                    >
-                      No
-                    </Button>
-                  </View>
+                  <Button
+                    variant={isMedicarePressed ? 'buttonPressed' : 'tertiary'}
+                    onPress={onMedicareDisagreement}
+                  >
+                    No
+                  </Button>
                 </View>
               </View>
             </View>
           )}
-          <View spacing={{ mb: 3, mx: 3 }} alignCenter>
+          <View p={3}>
             <FormField
+              {...fieldProps.firstName}
               placeholder="First Name"
-              value={formFields.firstName}
               returnKeyType="next"
-              onChangeText={updateFormField('firstName')}
-              onSubmitEditing={() => surnameField.current.focus()}
             />
             <FormField
+              {...fieldProps.lastName}
               placeholder="Last Name"
-              value={formFields.lastName}
               returnKeyType="next"
-              onChangeText={updateFormField('lastName')}
-              ref={surnameField}
-              onSubmitEditing={() => {
-                if (isPatient) {
-                  emailField.current.focus();
-                } else {
-                  medicalIdField.current.focus();
-                }
-              }}
             />
             <FormField
+              {...fieldProps.email}
               icon="email"
               placeholder="Email address"
-              value={formFields.email}
               returnKeyType="next"
               keyboardType="email-address"
-              onChangeText={updateFormField('email')}
-              error={!isEmailValid}
-              ref={emailField}
-              onSubmitEditing={() => passwordField.current.focus()}
             />
-            {!isEmailValid
-            && (
-              <Text variant="errorSmall" spacing={{ mt: 1, ml: 5 }}>
-                Please enter a valid Email address
-              </Text>
-            )}
             <FormField
+              {...fieldProps.password}
               icon="password"
               placeholder="Password"
-              value={formFields.password}
               secureTextEntry
               returnKeyType="done"
-              ref={passwordField}
-              onChangeText={updateFormField('password')}
+            />
+            <FormField
+              {...fieldProps.password2}
+              icon="password"
+              placeholder="Confirm Password"
+              secureTextEntry
+              returnKeyType="done"
             />
           </View>
-          <View row spacing={{ mx: 3, pt: 3 }}>
+          <View row p={3}>
             <View flex={1}>
               <Button
                 variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-                onPress={handleButtonPress}
+                onPress={onPressSubmit}
                 disabled={isButtonDisabled}
               >
               Continue
               </Button>
             </View>
           </View>
-          <View spacing={{ mx: 3, pb: 3 }} alignCenter>
-            <View alignCenter row spacing={{ mt: 2 }}>
-              <Text
-                variant="regular"
-                spacing={{ mt: 1 }}
-                typography={{ size: 1 }}
-              >
-                By continuing, I accept the Moca
-              </Text>
-              <Text
-                variant="link"
-                onPress={handleTermsOfServicePress}
-                typography={{ size: 1, color: 'secondary' }}
-                spacing={{ ml: 1, mt: 1 }}
-              >
-              terms of service
+          <View alignCenter p={3}>
+            <View row alignCenter mt={1}>
+              <Text variant="regularSmall">
+                By continuing, I have read and accept MOCA&apos;s
               </Text>
             </View>
-            <View alignCenter row spacing={{ mt: 1, mb: 2 }}>
-              <Text variant="regular" typography={{ size: 1 }}>
-              and have read the
+            <View row alignCenter mt={1}>
+              <Text
+                variant="link"
+                size={1}
+                color="secondary"
+                onPress={onPressTermsOfService}
+              >
+                terms of service
+              </Text>
+              <Text variant="regularSmall">
+                &nbsp;and&nbsp;
               </Text>
               <Text
                 variant="link"
-                onPress={handlePrivacyPress}
-                typography={{ size: 1, color: 'secondary' }}
-                spacing={{ ml: 1 }}
+                size={1}
+                color="secondary"
+                onPress={onPressPrivacy}
               >
-              privacy policy
+                privacy policy.
               </Text>
             </View>
           </View>
-        </View>
-        {TermsOfServiceModalView}
-        <View flex={1} />
+        </KeyboardAwareScrollView>
       </View>
-    </KeyboardAvoidingView>
-
+    </>
   );
 };
 
 RegistrationScreen.navigationOptions = ({ navigationOptions }) => ({
   title: 'Sign Up',
   headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle as {},
     color: Colors.primary,
   },
   headerStyle: {

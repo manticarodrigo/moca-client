@@ -4,9 +4,10 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import { UserTypeEnum } from '@src/services/openapi';
 
 import useStore from '@src/hooks/useStore';
+import { AddAddressForm } from '@src/store/actions/UserAction';
 import { updateRegistration } from '@src/store/actions/RegistrationAction';
 
-import { Colors } from '@src/styles/index';
+import { Colors } from '@src/styles';
 
 import AddressModal from '@src/modals/AddressModal';
 
@@ -23,6 +24,7 @@ type ColorKey = keyof typeof Colors;
 
 const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
+
   const [isAddressModalVisible, setIsAddressModalVisible] = useState(false);
 
   const isPatient = store.registration.type === 'PA';
@@ -50,16 +52,22 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const onCloseAddressModal = () => setIsAddressModalVisible(false);
 
-  const onSubmitAddressModal = (address) => {
+  const onSubmitAddressModal = (address: AddAddressForm) => {
     dispatch(updateRegistration({ address }));
 
-    // TODO: check against moca's available zip codes
-    const isAreaAvailable = () => true;
+    const isAreaAvailable = () => {
+      const normalized = address.state.toLowerCase();
+      if (normalized === 'ut' || normalized === 'utah') {
+        return true;
+      }
+
+      return false;
+    };
 
     if (isAreaAvailable()) {
       navigation.push('RegistrationScreen');
     } else {
-      navigation.push('InvalidZipCodeScreen');
+      navigation.push('InvalidRegistrationScreen', { address });
     }
 
     setIsAddressModalVisible(false);
@@ -68,52 +76,54 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <View safeArea alignCenter>
-        <View spacing={{ mx: 3 }} alignCenter>
+        <View alignCenter mx={3}>
           <ContainedView>
 
-            <View spacing={{ p: 4 }} alignCenter>
+            <View alignCenter p={4}>
               <Text variant="title">Please select your</Text>
               <View alignCenter row>
-                <Text variant="title" typography={{ color: 'secondary' }}>MOCA</Text>
-                <Text variant="title" spacing={{ ml: 1 }}>Profile</Text>
+                <Text variant="title" color="secondary">MOCA</Text>
+                <Text ml={1} variant="title">Profile</Text>
               </View>
             </View>
-            <View flex={1} row alignCenter width="100%" spacing={{ py: 4 }}>
+            <View row alignCenter flex={1} py={4} width="100%">
               <View
-                variant={isPatient ? 'patientViewPressed' : 'patientView'}
+                justifyBetween
                 alignCenter
                 flex={1}
-                justifyBetween
-                onPress={onPressType(UserTypeEnum.PA)}
+                mr={1}
+                variant={isPatient ? 'patientViewPressed' : 'patientView'}
                 bgColor={patientBgColor}
-                spacing={{ mr: 1 }}
+                onPress={onPressType(UserTypeEnum.PA)}
               >
                 <PatientIcon focused={isPatient} />
                 <Text
-                  variant="title"
-                  typography={{ color: patientTextColor, weight: '900' }}
+                  variant="bold"
+                  size={4}
+                  color={patientTextColor}
                 >
                   PATIENT
                 </Text>
               </View>
               <View
-                variant={isTherapist ? 'therapistViewPressed' : 'therapistView'}
+                justifyBetween
                 alignCenter
                 flex={1}
-                justifyBetween
-                onPress={onPressType(UserTypeEnum.PT)}
+                variant={isTherapist ? 'therapistViewPressed' : 'therapistView'}
                 bgColor={therapistBgColor}
+                onPress={onPressType(UserTypeEnum.PT)}
               >
                 <TherapistIcon focused={isTherapist} />
                 <Text
-                  variant="title"
-                  typography={{ color: therapistTextColor, weight: '900' }}
+                  variant="bold"
+                  size={4}
+                  color={therapistTextColor}
                 >
                   THERAPIST
                 </Text>
               </View>
             </View>
-            <View row spacing={{ p: 4 }}>
+            <View row py={4}>
               <Button
                 width="100%"
                 variant={buttonDisabled ? 'primaryDisabled' : 'primary'}
@@ -136,8 +146,16 @@ const SelectionScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-SelectionScreen.navigationOptions = {
-  header: null,
-};
+SelectionScreen.navigationOptions = ({ navigationOptions }) => ({
+  title: null,
+  headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle as {},
+    color: Colors.primary,
+  },
+  headerStyle: {
+    ...navigationOptions.headerStyle as {},
+    backgroundColor: Colors.white,
+  },
+});
 
 export default SelectionScreen;

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React, { useEffect } from 'react';
 import { SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
-import { ConversationState } from '@src/store/reducers/ConversationReducer';
+import { Conversation } from '@src/store/reducers/ConversationReducer';
 import { getConversations } from '@src/store/actions/ConversationAction';
 
 import useStore from '@src/hooks/useStore';
@@ -17,7 +16,7 @@ import Text from '@src/components/Text';
 
 import ConversationListCard from './ConversationListCard';
 
-const ConversationSectionList: SectionList<ConversationState> = SectionList;
+const ConversationSectionList: SectionList<Conversation> = SectionList;
 
 type Props = NavigationStackScreenProps & { isFocused: boolean }
 
@@ -29,7 +28,8 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
 
   const sections = useDateSections(
     store.conversations.list,
-    ({ lastMessage }) => lastMessage.createdAt as unknown as string,
+    // @ts-ignore
+    ({ lastMessage }) => lastMessage ? lastMessage.createdAt : new Date().toISOString(),
   );
 
   useEffect(() => {
@@ -43,28 +43,26 @@ const ConversationListScreen: NavigationStackScreenComponent = ({
   };
 
   return (
-    <View column flex={1} bgColor="lightGrey">
+    <View safeArea flex={1} bgColor="lightGrey">
       {!sections.length ? (
         <View flex={1} justifyCenter alignCenter>
           <NoConversationsIcon />
-          <Text variant="titleSemiGrey" typography={{ align: 'center' }} spacing={{ pt: 4 }}>
+          <Text variant="title" color="semiGrey" align="center" pt={4}>
             You have not started any conversations.
           </Text>
         </View>
       ) : (
         <ConversationSectionList
-          // @ts-ignore
           sections={sections}
           renderItem={({ item }) => (
             <ConversationListCard
-              // @ts-ignore
               conversation={item}
               onPress={handleCardPress}
             />
           )}
           renderSectionHeader={({ section }) => (
-            <View spacing={{ ml: 3, py: 3 }}>
-              <Text typography={{ size: 2, color: 'semiGrey', weight: '500' }}>
+            <View ml={3} py={3}>
+              <Text variant="regular">
                 {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
               </Text>
             </View>

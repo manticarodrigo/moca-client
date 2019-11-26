@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React, { useState } from 'react';
 import { TouchableHighlight } from 'react-native';
+
+import { WINDOW_WIDTH } from '@src/utlities/constants';
 
 import { Colors } from '@src/styles';
 
@@ -13,13 +14,15 @@ import {
   MaleIcon,
   FemaleIcon,
   BothGendersIcon,
+  ArrowDown,
 } from '@src/components/icons';
 
+import KeyboardAwareScrollView from '@src/components/KeyboardAwareScrollView';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
 import FormField from '@src/components/FormField';
-import { Checkbox } from '@src/components/Checkbox';
+import Checkbox from '@src/components/Checkbox';
 
 export const checkboxConfig = {
   sortBy: {
@@ -34,7 +37,7 @@ export const checkboxConfig = {
     title: 'Session Length',
     items: {
       thirty: { title: '30 min' },
-      fortyfive: { title: '45 min' },
+      fourtyfive: { title: '45 min' },
       sixty: { title: '60 min' },
     },
   },
@@ -63,20 +66,24 @@ export type FilterState = {
   ailments: string[];
 }
 
+const initialState = {
+  sortBy: {},
+  sessionLength: {},
+  gender: {},
+  maxPrice: '',
+  ailments: [],
+};
+
 const SearchFilterModal = ({ isVisible, onClose }) => {
-  const [filters, setFilters] = useState<FilterState>({
-    sortBy: {},
-    sessionLength: {},
-    gender: {},
-    maxPrice: '',
-    ailments: [],
-  });
+  const [filters, setFilters] = useState<FilterState>(initialState);
 
   const onPressCheckbox = (section: string, item: string, value: boolean) => {
     setFilters((prevState) => ({
       ...prevState, [section]: { ...prevState[section], [item]: value },
     }));
   };
+
+  const onPressClear = () => setFilters(initialState);
 
   const onChangeMaxPrice = (maxPrice: string) => {
     setFilters((prevState) => ({ ...prevState, maxPrice }));
@@ -98,106 +105,105 @@ const SearchFilterModal = ({ isVisible, onClose }) => {
 
   return (
     <Modal
-      avoidKeyboard
+      hideToggle
       propagateSwipe
-      marginTop={50}
       isVisible={isVisible}
       onToggle={onToggle}
     >
-      <View scroll width="100%" bgColor="white" spacing={{ mb: 6 }}>
-        <>
-          {Object.keys(checkboxConfig).map((sectionKey) => {
-            const section = checkboxConfig[sectionKey];
-            const sectionItems = Object.entries(section.items);
+      <View row justifyBetween alignCenter p={4} width={WINDOW_WIDTH} variant="borderBottom">
+        <Text variant="semiBoldLarge" color="error" onPress={onPressClear}>Clear</Text>
+        <Text variant="title">Filters</Text>
+        <View onPress={onToggle}><ArrowDown large /></View>
+      </View>
+      <KeyboardAwareScrollView>
+        <View safeArea mb={6} width="100%" bgColor="white">
+          <>
+            {Object.keys(checkboxConfig).map((sectionKey) => {
+              const section = checkboxConfig[sectionKey];
+              const sectionItems = Object.entries(section.items);
 
-            return (
-              <View key={sectionKey} variant="borderBottom" height={180}>
-                <Text variant="boldGrey" spacing={{ m: 3 }}>
-                  {checkboxConfig[sectionKey].title}
-                </Text>
-                <View
-                  spacing={{ px: 3 }}
-                  height={100}
-                  variant="shadow"
-                >
-                  <View row flex={1} variant="roundedBorder">
-                    {sectionItems.map(([itemKey, value], index) => {
-                      // @ts-ignore
-                      const { title = '', icon = () => null } = value;
+              return (
+                <View key={sectionKey} variant="borderBottom" height={180}>
+                  <Text m={3} variant="semiBoldLarge" color="grey">
+                    {checkboxConfig[sectionKey].title}
+                  </Text>
+                  <View px={3} height={100} variant="shadow">
+                    <View row flex={1} variant="roundedBorder">
+                      {sectionItems.map(([itemKey, value], index) => {
+                        // @ts-ignore
+                        const { title = '', icon = () => null } = value;
 
-                      const IconComponent = icon;
+                        const IconComponent = icon;
 
-                      const focused = !!filters[sectionKey][itemKey];
+                        const focused = !!filters[sectionKey][itemKey];
 
-                      const handlePress = () => onPressCheckbox(sectionKey, itemKey, !focused);
+                        const handlePress = () => onPressCheckbox(sectionKey, itemKey, !focused);
 
-                      return (
-                        <TouchableHighlight
-                          key={title}
-                          style={{ flex: 1 }}
-                          underlayColor={Colors.secondaryLight}
-                          onPress={handlePress}
-                        >
-                          <View
-                            flex={1}
-                            alignCenter
-                            justifyCenter
-                            spacing={{ p: 3 }}
-                            variant={index < sectionItems.length - 1 ? 'borderRight' : null}
-                            bgColor={focused ? 'secondary' : 'white'}
+                        return (
+                          <TouchableHighlight
+                            key={title}
+                            style={{ flex: 1 }}
+                            underlayColor={Colors.secondaryLight}
+                            onPress={handlePress}
                           >
-                            <IconComponent focused={focused} />
-                            <Text
-                              spacing={icon ? { mt: 2 } : null}
-                              variant={focused ? 'boldWhite' : 'boldSecondary'}
-                              typography={{ align: 'center' }}
-                              numberOfLines={2}
+                            <View
+                              alignCenter
+                              justifyCenter
+                              flex={1}
+                              p={3}
+                              variant={index < sectionItems.length - 1 ? 'borderRight' : null}
+                              bgColor={focused ? 'secondary' : 'white'}
                             >
-                              {title}
-                            </Text>
-                          </View>
-                        </TouchableHighlight>
-                      );
-                    })}
+                              <IconComponent focused={focused} />
+                              <Text
+                                mt={icon ? 2 : undefined}
+                                variant="semiBoldLarge"
+                                color={focused ? 'white' : 'secondary'}
+                                align="center"
+                                numberOfLines={2}
+                              >
+                                {title}
+                              </Text>
+                            </View>
+                          </TouchableHighlight>
+                        );
+                      })}
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
-        </>
-        <View variant="borderBottom" height={180}>
-          <Text variant="boldGrey" spacing={{ m: 3 }}>Desired Cost</Text>
-          <View spacing={{ px: 3 }}>
-            <FormField
-              keyboardType="number-pad"
-              icon="dollar"
-              placeholder="Max Price"
-              value={filters.maxPrice}
-              onChangeText={onChangeMaxPrice}
-            />
+              );
+            })}
+          </>
+          <View variant="borderBottom" height={180}>
+            <Text m={3} variant="semiBoldLarge" color="grey">Desired Cost</Text>
+            <View px={3}>
+              <FormField
+                keyboardType="number-pad"
+                icon="dollar"
+                placeholder="Max Price"
+                value={filters.maxPrice}
+                onChangeText={onChangeMaxPrice}
+              />
+            </View>
+          </View>
+          <View variant="borderBottom">
+            <Text m={3} variant="semiBoldLarge" color="grey">Area(s) of Pain</Text>
+            <View row wrap alignStart px={4}>
+              {qualificationOptions.map((item) => (
+                <View key={item} row alignCenter py={3} width="50%">
+                  <Checkbox
+                    checked={filters.ailments.includes(item)}
+                    onChange={(checked) => onChangeAilment(item, checked)}
+                  />
+                  <Text ml={2} variant="semiBoldLarge" size={1} color="semiGrey">
+                    {item}
+                  </Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-        <View variant="borderBottom">
-          <Text variant="boldGrey" spacing={{ m: 3 }}>Areas(s) of Pain</Text>
-          <View row wrap style={{ alignItems: 'flex-start' }} spacing={{ px: 4 }}>
-            {qualificationOptions.map((item) => (
-              <View
-                key={item}
-                row
-                alignCenter
-                spacing={{ py: 3 }}
-                width="50%"
-              >
-                <Checkbox
-                  checked={filters.ailments.includes(item)}
-                  onChange={(checked) => onChangeAilment(item, checked)}
-                />
-                <Text variant="boldSmallSecondary" spacing={{ ml: 2 }}>{item}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
     </Modal>
   );
 };

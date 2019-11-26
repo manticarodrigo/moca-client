@@ -1,24 +1,27 @@
 import React, { useMemo } from 'react';
 
 import { StyleSheet } from 'react-native';
-import { Spacing, SpacingProp, Colors } from '@src/styles';
+import { Spacing, SpacingProps, Colors } from '@src/styles';
 
 import { ReportIcon, AppointmentIcon, ClockSimpleIcon, DollarIcon } from '@src/components/icons';
 
 import Text from './Text';
 import View from './View';
 
-type TagProps = {
+type TagProps = SpacingProps & {
   placeholder: string | number;
   icon?: 'report' | 'appointment' | 'clock' | 'dollar';
-  type?: 'fill' | 'border' | 'borderLight';
+  type?: 'fill' | 'border' | 'borderLight' | 'warning';
   center?: boolean;
-  spacing?: SpacingProp;
 }
 
-const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagProps) => {
+const Tag = ({ placeholder = '', icon, type = 'border', center, ...restProps }: TagProps) => {
+  const [spacing] = Spacing.parseProps(restProps);
+
   const borderColor = useMemo(() => {
     switch (type) {
+      case 'warning':
+        return Colors.warning;
       case 'fill':
         return Colors.secondary;
       case 'borderLight':
@@ -30,6 +33,7 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagPr
 
   const color = useMemo(() => {
     switch (type) {
+      case 'warning':
       case 'fill':
         return Colors.white;
       case 'borderLight':
@@ -45,7 +49,7 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagPr
       borderRadius: Spacing.spaceSize[5],
       borderWidth: 1,
       borderColor,
-      width: 70,
+      width: type === 'warning' ? 'auto' : 70,
       height: 25,
     },
     text: {
@@ -74,8 +78,8 @@ const Tag = ({ placeholder = '', icon, type = 'border', center, spacing }: TagPr
       justifyCenter={center}
       justifyBetween={!center}
       alignCenter
-      spacing={{ px: 2 }}
-      bgColor={type === 'fill' ? 'secondary' : null}
+      px={2}
+      bgColor={type === 'warning' ? 'warning' : (type === 'fill' && 'secondary') || undefined}
       style={styles.view}
     >
       {iconType}

@@ -1,41 +1,119 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { differenceInMinutes } from 'date-fns';
 
-import { mockImg } from '@src/services/mock';
+import { UserState } from '@src/store/reducers/UserReducer';
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
+
+import ProfileModal from '@src/modals/ProfileModal';
+
+import { ClockIcon, InfoIcon } from '@src/components/icons';
 
 import Image from './Image';
 import View from './View';
 import Text from './Text';
+import Rating from './Rating';
 
-
-type AppointmentHeaderProps = {
-  name: string;
-  appointmentDuration: string;
-  appointmentPrice: number;
+type Props = {
+  minimal?: boolean;
+  current?: boolean;
+  upcoming?: boolean;
+  showInfo?: boolean;
+  isTherapist: boolean;
+  appointment: Appointment;
+  onMessageUser?: (user: UserState) => void;
+  children?: JSX.Element | JSX.Element[];
 }
 
 const AppointmentHeader = ({
-  name, appointmentDuration, appointmentPrice,
+  minimal,
+  current,
+  upcoming,
+  showInfo,
+  isTherapist,
+  appointment,
+  onMessageUser,
+  children,
+}: Props) => {
+  const [profileVisible, setProfileVisible] = useState(false);
 
-}: AppointmentHeaderProps) => (
-  <View row width="100%" variant="borderBottom">
-    <View row spacing={{ m: 3 }} justifyBetween flex={1}>
-      <View row justifyCenter>
-        <View spacing={{ mr: 2 }}>
-          <Image rounded size={60} uri={mockImg} />
+  const { price = '', review, startTime, endTime, otherParty, therapistRating } = appointment || {};
+  const { id, firstName = '', lastName = '', image } = otherParty || {};
+  const { rating } = review || {};
+
+  const { userId, name = '', duration = '' } = useMemo(() => ({
+    name: `${firstName || ''} ${lastName || ''}`,
+    duration: differenceInMinutes(new Date(endTime), new Date(startTime)),
+    userId: id,
+  }), [startTime, endTime, id, firstName, lastName]);
+
+  const toggleProfile = () => setProfileVisible(!profileVisible);
+
+  const handleMessageUser = (user: UserState) => {
+    if (profileVisible) {
+      setProfileVisible(false);
+    }
+
+    onMessageUser(user);
+  };
+
+  return (
+    <>
+      {onMessageUser && (
+        <ProfileModal
+          userId={profileVisible && userId}
+          visible={profileVisible}
+          onMessage={handleMessageUser}
+          onClose={toggleProfile}
+        />
+      )}
+
+      <View row flex={1}>
+        <View onPress={onMessageUser && toggleProfile}>
+          <Image rounded size={48} uri={image} />
+          {showInfo && (
+            <View width={48} height={48} justifyCenter alignCenter>
+              <InfoIcon />
+            </View>
+          )}
         </View>
-        <View spacing={{ mt: 3 }}>
-          <Text variant="titleSmall">
-            {name}
-          </Text>
+        <View pl={3} flex={1}>
+          <View row justifyBetween>
+            <Text variant={upcoming ? 'semiBoldLarge' : 'title'} numberOfLines={2}>
+              {name}
+            </Text>
+            <View row>
+              <ClockIcon />
+              <Text variant="regular" size={1} ml={1}>
+                {`${duration}min`}
+              </Text>
+            </View>
+          </View>
+
+          {!minimal && (
+            <View
+              row
+              justifyEnd={isTherapist}
+              justifyBetween={!isTherapist}
+              py={1}
+            >
+              {!isTherapist && (
+                <Rating
+                  mt={-3}
+                  rating={(current || upcoming) ? parseInt(therapistRating) : rating}
+                />
+              )}
+              <Text variant="titleLarge">
+                {`$${price}`}
+              </Text>
+            </View>
+          )}
+          <>
+            {children}
+          </>
         </View>
       </View>
-    </View>
-    <View justifyCenter spacing={{ mr: 3 }}>
-      <Text variant="regularGrey">{`${appointmentDuration} mins`}</Text>
-      <Text variant="title">{`$${appointmentPrice}`}</Text>
-    </View>
-  </View>
-);
+    </>
+  );
+};
 
-
-export default AppointmentHeader;
+export default React.memo(AppointmentHeader);

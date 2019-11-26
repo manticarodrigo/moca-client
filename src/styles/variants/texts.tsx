@@ -1,55 +1,19 @@
 /* eslint-disable max-len */
 import * as Typography from '../global/typography';
 
-export const link = { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary', decoration: 'underline' }) };
-export const title = { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) };
-export const regular = { ...Typography.getStyles({ color: 'semiGrey', size: 2, weight: '500' }) };
-export const regularDark = { ...Typography.getStyles({ size: 2, weight: '500', color: 'dark' }) };
-export const regularDarker = { ...Typography.getStyles({ size: 2, weight: '900', color: 'dark' }) };
-export const regularPrimaryBold = { ...Typography.getStyles({ size: 3, weight: '900', color: 'primary' }) };
-export const smallDark = { ...Typography.getStyles({ size: 2, weight: '300', color: 'dark' }) };
-export const regularSemiGrey = { ...Typography.getStyles({ size: 2, weight: '500', color: 'semiGrey' }) };
-export const error = { ...Typography.getStyles({ color: 'error', size: 4, weight: '700' }) };
-export const errorSmall = { ...Typography.getStyles({ color: 'error', size: 1, weight: '500' }) };
-export const titleWhite = { ...Typography.getStyles({ size: 4, weight: '700', color: 'white' }) };
-export const titleWhiteBold = { ...Typography.getStyles({ size: 5, weight: '900', color: 'white' }) };
-export const titlePrimary = { ...Typography.getStyles({ size: 4, weight: '700', color: 'primary' }) };
-export const titleSecondary = { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondary' }) };
-export const titleSemiGrey = { ...Typography.getStyles({ size: 4, weight: '700', color: 'semiGrey' }) };
-export const titleSecondaryLight = { ...Typography.getStyles({ size: 4, weight: '700', color: 'secondaryLight' }) };
-export const titlePrimaryLarge = { ...Typography.getStyles({ size: 5, weight: '700', color: 'primary' }) };
-export const titleSecondaryLarge = { ...Typography.getStyles({ size: 5, weight: '700', color: 'secondary' }) };
-export const titleGreyLarge = { ...Typography.getStyles({ size: 5, weight: '700', color: 'grey' }) };
-export const titleSmall = { ...Typography.getStyles({ size: 3, weight: '700', color: 'primary' }) };
-export const titleSmallSecondary = { ...Typography.getStyles({ size: 3, weight: '700', color: 'secondary' }) };
-export const titleSmallWhite = { ...Typography.getStyles({ size: 3, weight: '700', color: 'white' }) };
-export const titleSmallSecondaryLight = { ...Typography.getStyles({ size: 3, weight: '700', color: 'secondaryLight' }) };
-export const titleSmallDark = { ...Typography.getStyles({ size: 3, weight: '700', color: 'dark' }) };
-export const titleDark = { ...Typography.getStyles({ size: 4, weight: '700', color: 'dark' }) };
-export const titleSmallSuccess = { ...Typography.getStyles({ size: 3, weight: '700', color: 'success' }) };
-export const titleSmallError = { ...Typography.getStyles({ size: 3, weight: '700', color: 'error' }) };
-export const boldPrimary = { ...Typography.getStyles({ size: 2, weight: '700', color: 'primary' }) };
-export const boldSecondary = { ...Typography.getStyles({ size: 2, weight: '700', color: 'secondary' }) };
-export const boldWhite = { ...Typography.getStyles({ size: 2, weight: '700', color: 'white' }) };
-export const boldDark = { ...Typography.getStyles({ size: 2, weight: '700', color: 'dark' }) };
-export const boldGrey = { ...Typography.getStyles({ size: 2, weight: '700', color: 'grey' }) };
-export const boldSmallSecondary = { ...Typography.getStyles({ size: 1, weight: '700', color: 'secondary' }) };
-export const boldSmallGrey = { ...Typography.getStyles({ size: 1, weight: '700', color: 'grey' }) };
-export const boldWhiteSmallest = { ...Typography.getStyles({ size: 0, weight: '700', color: 'white' }) };
-export const boldSmallestPrimary = { ...Typography.getStyles({ size: 0, weight: '700', color: 'primary' }) };
-export const boldSmallestSecondaryLight = { ...Typography.getStyles({ size: 0, weight: '700', color: 'secondaryLight' }) };
-export const regularSmall = { ...Typography.getStyles({ size: 1, weight: '500', color: 'semiGrey' }) };
-export const regularSmallGrey = { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) };
-export const regularSmallSuccess = { ...Typography.getStyles({ size: 1, weight: '500', color: 'success' }) };
-export const regularSmallError = { ...Typography.getStyles({ size: 1, weight: '500', color: 'error' }) };
-export const regularSmallDark = { ...Typography.getStyles({ size: 1, weight: '500', color: 'dark' }) };
-export const regularSmallGreyishBrown = { ...Typography.getStyles({ size: 1, weight: '500', color: 'greyishBrown' }) };
-export const regularSmallestPrimary = { ...Typography.getStyles({ size: 0, weight: '500', color: 'primary' }) };
-export const regularPrimary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'primary' }) };
-export const regularSecondary = { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondary' }) };
-export const regularGrey = { ...Typography.getStyles({ size: 1, weight: '500', color: 'grey' }) };
-export const light = { ...Typography.getStyles({ size: 2, weight: '300', color: 'semiGrey' }) };
-export const lightPrimarySmallest = { ...Typography.getStyles({ size: 0, weight: '300', color: 'primary' }) };
-export const lightSecondarySmallest = { ...Typography.getStyles({ size: 0, weight: '300', color: 'secondary' }) };
-export const lightGreySmallest = { ...Typography.getStyles({ size: 0, weight: '300', color: 'grey' }) };
-export const lightTextCenter = { ...Typography.getStyles({ size: 1, weight: '500', color: 'secondaryLighter', align: 'center', height: 22 }) };
+type Props = Typography.TypographyProps;
+
+// base
+export const light: Props = { size: 2, weight: '300', color: 'semiGrey' };
+export const regular: Props = { size: 2, weight: '500', color: 'semiGrey' };
+export const semiBold: Props = { size: 2, weight: '700', color: 'primary' };
+export const bold: Props = { size: 3, weight: '900', color: 'primary' };
+
+// composed
+export const lightSmallest: Props = { ...light, size: 0 };
+export const regularSmall: Props = { ...regular, size: 1 };
+export const regularDark: Props = { ...regular, color: 'dark' };
+export const semiBoldLarge: Props = { ...semiBold, size: 3 };
+export const title: Props = { ...semiBold, size: 4 };
+export const titleLarge: Props = { ...title, size: 5 };
+export const link: Props = { ...semiBold, decoration: 'underline' };

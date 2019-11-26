@@ -11,12 +11,22 @@ const getImage = async (callback: (response: ImagePicker.ImagePickerResult) => v
   const { permissions } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
   const options = [{ title: 'Cancel', action: () => null }];
 
+  const imagePickerOptions: ImagePicker.ImagePickerOptions = {
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 0.5,
+  };
+
+  const _pickCamera = () => ImagePicker.launchCameraAsync(imagePickerOptions);
+  const _pickLibrary = () => ImagePicker.launchImageLibraryAsync(imagePickerOptions);
+
   if (permissions.camera.status === 'granted') {
-    options.unshift({ title: 'Take Photo', action: ImagePicker.launchCameraAsync });
+    options.unshift({ title: 'Take Photo', action: _pickCamera });
   }
 
   if (permissions.cameraRoll.status === 'granted') {
-    options.unshift({ title: 'Photo From Library', action: ImagePicker.launchImageLibraryAsync });
+    options.unshift({ title: 'Photo From Library', action: _pickLibrary });
   }
 
   if (options.length === 1) {

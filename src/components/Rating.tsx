@@ -1,33 +1,19 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { Spacing, SpacingProp } from '@src/styles';
+import { Spacing, SpacingProps } from '@src/styles';
 
-import {
-  StarZeroIcon,
-  StarOneIcon,
-  StarTwoIcon,
-  StarThreeIcon,
-  StarFourIcon,
-  StarFiveIcon,
-} from '@src/components/icons';
+import { StarsIcon } from '@src/components/icons';
 
 import View from './View';
 import Text from './Text';
 
-type RatingProps = {
-  rating: number;
-  spacing?: SpacingProp;
+type RatingProps = SpacingProps & {
+  light?: boolean;
+  rating?: number;
 }
 
-const Rating = ({ rating, spacing }: RatingProps) => {
-  const stars = {
-    0: <StarZeroIcon />,
-    1: <StarOneIcon />,
-    2: <StarTwoIcon />,
-    3: <StarThreeIcon />,
-    4: <StarFourIcon />,
-    5: <StarFiveIcon />,
-  };
+const Rating = ({ light, rating, ...restProps }: RatingProps) => {
+  const [spacing] = Spacing.parseProps(restProps);
 
   const styles = useMemo(() => StyleSheet.create({
     view: { ...Spacing.getStyles(spacing) },
@@ -35,8 +21,10 @@ const Rating = ({ rating, spacing }: RatingProps) => {
 
   return (
     <View row alignCenter style={styles.view}>
-      <Text variant="titleSmallSecondary" spacing={{ m: 1 }}>{rating}</Text>
-      {stars[Math.floor(rating)]}
+      <Text mr={2} variant="semiBoldLarge" color={light ? 'secondaryLighter' : 'secondary'}>
+        {rating ? rating.toFixed(2) : 'N/A'}
+      </Text>
+      <StarsIcon number={rating} />
     </View>
   );
 };

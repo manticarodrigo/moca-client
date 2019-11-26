@@ -6,38 +6,40 @@ import {
   TextInputProps as RNTextInputProps,
 } from 'react-native';
 
-import { Spacing, SpacingProp, Typography, TypographyProp, Colors, Texts } from '@src/styles';
+import { Spacing, SpacingProps, Typography, TypographyProps, Colors, Texts } from '@src/styles';
 
 const variants: { [key: string]: TextStyle } = {
   conversation: {
-    ...Texts.regularGrey,
+    ...Typography.getStyles({ ...Texts.regularSmall, color: 'grey' }),
     height: '100%',
     borderRadius: 24,
     backgroundColor: Colors.lightGrey,
   },
 };
 
-type TextInputProps = RNTextInputProps & {
+type TextInputProps = RNTextInputProps & TypographyProps & SpacingProps & {
   variant?: keyof typeof variants;
-  typography?: TypographyProp;
-  spacing?: SpacingProp;
+  width?: number | string;
 };
 
 const TextInput = ({
   variant,
-  typography,
-  spacing,
-  ...textProps
+  width,
+  ...restProps
 }: TextInputProps, ref: React.Ref<RNTextInput>) => {
+  const [typography, typographyRest] = Typography.parseProps(restProps);
+  const [spacing, spacingRest] = Spacing.parseProps(typographyRest);
+
   const styles = useMemo(() => StyleSheet.create({
     text: {
+      width,
       ...Spacing.getStyles(spacing),
       ...Typography.getStyles(typography),
       ...variants[variant],
     },
-  }), [variant, typography, spacing]);
+  }), [variant, typography, spacing, width]);
 
-  return <RNTextInput ref={ref} style={styles.text} {...textProps} />;
+  return <RNTextInput ref={ref} style={styles.text} {...spacingRest} />;
 };
 
 export default forwardRef(TextInput);

@@ -1,81 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
 
+import api from '@src/services/api';
+import { Review } from '@src/services/openapi';
+
+import { UserState } from '@src/store/reducers/UserReducer';
 
 import View from '@src/components/View';
-import Image from '@src/components/Image';
 import Text from '@src/components/Text';
 import Modal from '@src/components/Modal';
 
-import { mockImg } from '@src/services/mock';
-import { StarsIcon } from '@src/components/icons';
+import Rating from '@src/components/Rating';
 
-const mockReviews = Array.from({ length: 23 }, (v, i) => ({
-  id: i.toString(),
-  username: 'Jane Doe',
-  comment: 'It was very good!',
-  rating: 4,
-}));
-
-
-type ReviewsModalProps = {
-  id?: number;
-  closeInputModal: () => void;
-  isModalVisible: boolean;
+type Props = {
+  therapist: UserState;
+  visible: boolean;
+  onClose: () => void;
 };
 
-const ReviewsModal = (
-  {
-    id,
-    closeInputModal,
-    isModalVisible,
-  }: ReviewsModalProps,
-) => {
-  // eslint-disable-next-line no-shadow
-  const [reviews, setReviews] = useState([]);
+const ReviewsModal = ({ therapist, visible, onClose }: Props) => {
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
-    // fetch reviws by id,
-    setReviews(mockReviews);
-  }, [reviews]);
+    const fetchReviews = async () => {
+      try {
+        const { data } = await api.review.reviewRead(therapist.id.toString());
 
+        setReviews(data);
+      } catch (e) {
+        // console.log(e);
+      }
+    };
+
+    if (visible) {
+      fetchReviews();
+    }
+  }, [visible]);
 
   return (
     <Modal
       propagateSwipe
-      isVisible={isModalVisible}
-      onToggle={() => closeInputModal()}
+      isVisible={visible}
+      onToggle={onClose}
     >
       <View width="100%">
         <View row>
           <View variant="borderBottom" flex={1} height={48} alignCenter justifyCenter>
-            <Text variant="titleSmall">
-              Reviews
+            <Text variant="semiBoldLarge">
+              Review(s)
             </Text>
           </View>
         </View>
         <FlatList
           data={reviews}
-          keyExtractor={(item) => item.id}
+          keyExtractor={({ id }) => id.toString()}
           renderItem={({ item }) => (
             <View row alignCenter>
               <View variant="borderBottom" flex={1} row>
-                <View row spacing={{ ml: 3, my: 3 }}>
-                  <Image rounded size={40} uri={mockImg} />
-                  <View column spacing={{ px: 3, mt: 1 }}>
-                    <Text variant="titleSmall">{item.username}</Text>
-                    <View row alignCenter>
-                      <Text
-                        spacing={{ mr: 2 }}
-                        variant="regularGrey"
-                      >
-                        {item.rating}
-                      </Text>
-                      <StarsIcon number={item.rating} />
-                    </View>
-                    <View width={300}>
-                      <Text variant="regularGrey">{item.comment}</Text>
-                    </View>
+                <View row my={3} ml={3}>
+                  <View mt={1} px={3}>
+                    <Text variant="semiBoldLarge">
+                      {`${item.patient.firstName} ${item.patient.lastName}`}
+                    </Text>
+                    <Rating rating={item.rating} />
+                    <Text mt={1} variant="regularSmall" color="grey">
+                      {item.comment}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -85,10 +75,6 @@ const ReviewsModal = (
       </View>
     </Modal>
   );
-};
-
-ReviewsModal.navigationOptions = {
-  header: null,
 };
 
 export default ReviewsModal;

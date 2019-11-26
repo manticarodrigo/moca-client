@@ -1,8 +1,8 @@
 import React from 'react'
 import Svg, { G, Rect, Path } from 'react-native-svg'
 
-const ArrowDown = () => (
-  <Svg width="19px" height="11px" viewBox="0 0 19 11">
+const ArrowDown = ({ large = false }) => (
+  <Svg width={large ? 25 : 19} height={large ? 15 : 11} viewBox="0 0 19 11">
     <G id="Guide" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
       <G id="Assets" transform="translate(-1071.000000, -624.000000)">
         <G id="arrow-down-light" transform="translate(1068.000000, 618.000000)">

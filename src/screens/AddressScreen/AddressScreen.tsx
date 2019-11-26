@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
-import { addUserAddress, AddAddressForm } from '@src/store/actions/UserAction';
+import { addAddress, updateAddress, AddAddressForm } from '@src/store/actions/UserAction';
 
 import { Views, Spacing, Colors } from '@src/styles';
 
@@ -47,36 +46,42 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
   }, []);
 
-  const onSubmit = (formFields: AddAddressForm) => {
+  const onSubmit = async (formFields: AddAddressForm & { id: number }) => {
     if (isRegistering) {
-      dispatch(addUserAddress(formFields));
-      navigation.navigate('DashboardScreen');
+      try {
+        await dispatch(addAddress(formFields));
+        navigation.navigate('DashboardScreen');
+      } catch (e) {
+        // console.log(e);
+      }
     }
 
     if (isExistingAddress) {
-      // dispatch(updateUser({ address: formFields }));
-      navigation.goBack();
+      try {
+        await dispatch(updateAddress(formFields));
+        navigation.goBack();
+      } catch (e) {
+        // console.log(e);
+      }
     }
 
     if (isAdditionalAddress) {
-      dispatch(addUserAddress(formFields));
-      navigation.goBack();
+      try {
+        await dispatch(addAddress(formFields));
+        navigation.goBack();
+      } catch (e) {
+        // console.log(e);
+      }
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={60}
-    >
-      <AddressForm
-        existingFields={existingFields}
-        isRegistering={isRegistering}
-        submitText={buttonText}
-        onSubmit={onSubmit}
-      />
-    </KeyboardAvoidingView>
+    <AddressForm
+      existingFields={existingFields}
+      isRegistering={isRegistering}
+      submitText={buttonText}
+      onSubmit={onSubmit}
+    />
   );
 };
 
@@ -94,19 +99,17 @@ AddressScreen.navigationOptions = ({ navigation, navigationOptions }) => {
       backgroundColor: Colors.white,
     },
     headerRightContainerStyle: { ...Spacing.getStyles({ pt: 2, pr: 3 }) },
-    headerRight: params.isExistingAddress
-    && !params.isOnlyAddress
-      ? (
-        <View
-          alignCenter
-          onPress={() => {
-            params.handleDelete();
-            navigation.goBack();
-          }}
-        >
-          <BinIconRed />
-        </View>
-      ) : null,
+    headerRight: (params.isExistingAddress && !params.isOnlyAddress) && (
+      <View
+        alignCenter
+        onPress={() => {
+          params.handleDelete();
+          navigation.goBack();
+        }}
+      >
+        <BinIconRed />
+      </View>
+    ),
   };
 };
 

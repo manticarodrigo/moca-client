@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useState, useMemo, useEffect } from 'react';
 import { FlatList } from 'react-native';
-import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import { withNavigationFocus } from 'react-navigation';
+import { NavigationStackScreenComponent, NavigationStackScreenProps } from 'react-navigation-stack';
 
 import useStore from '@src/hooks/useStore';
 import { getSearchResults } from '@src/store/actions/SearchAction';
@@ -9,14 +11,16 @@ import { FilterParams } from '@src/store/reducers/SearchReducer';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 
-import TherapistProfileModal from '@src/modals/TherapistProfileModal';
+import ProfileModal from '@src/modals/ProfileModal';
 
 import SearchField from './SearchField';
 import SearchActiveFilters from './SearchActiveFilters';
 import SearchCard from './SearchCard';
 import SearchFilterModal, { FilterState } from './SearchFilterModal';
 
-const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
+type Props = NavigationStackScreenProps & { isFocused: boolean }
+
+const SearchScreen: NavigationStackScreenComponent = ({ navigation, isFocused }: Props) => {
   const { store, dispatch } = useStore();
   const [searchText, setSearchText] = useState('');
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -47,15 +51,25 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (filters.maxPrice) {
-      params.maxPrice = filters.maxPrice;
+      params.max_price = filters.maxPrice;
     }
 
     if (filters.ailments.length) {
       params.ailments = filters.ailments;
     }
 
-    dispatch(getSearchResults(params));
-  }, [filters]);
+    if (filters.sortBy.highestRated) {
+      params.avg_rating = true;
+    }
+
+    if (filters.sortBy.mostReviews) {
+      params.review_count = true;
+    }
+
+    if (isFocused) {
+      dispatch(getSearchResults(params));
+    }
+  }, [isFocused, filters]);
 
   const onPressTherapist = (id: number) => setSelectedId(id);
 
@@ -85,20 +99,20 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   return (
     <>
-      <TherapistProfileModal
+      <ProfileModal
         visible={!!selectedId}
-        therapistId={selectedId}
-        onPressMessage={onMessageTherapist}
+        userId={selectedId}
+        onMessage={onMessageTherapist}
         onClose={() => setSelectedId(undefined)}
+      />
+      <SearchFilterModal
+        isVisible={filtersVisible}
+        onClose={onSubmitFilters}
       />
       <SearchField
         value={searchText}
         onChangeText={onSearchChange}
         onToggleFilters={onToggleFilters}
-      />
-      <SearchFilterModal
-        isVisible={filtersVisible}
-        onClose={onSubmitFilters}
       />
       <View safeArea flex={1} bgColor="lightGrey">
         <View flex={1}>
@@ -106,9 +120,9 @@ const SearchScreen: NavigationStackScreenComponent = ({ navigation }) => {
             data={filteredResults}
             ListHeaderComponent={(
               <View>
-                <SearchActiveFilters filters={filters} />
+                <SearchActiveFilters filters={filters} onPress={onToggleFilters} />
                 <View alignCenter>
-                  <Text variant="light" spacing={{ pt: 4, p: 3 }}>
+                  <Text pt={4} p={3} variant="light">
                     There are
                     {' '}
                     <Text variant="regular">
@@ -141,4 +155,4 @@ SearchScreen.navigationOptions = {
   headerTitle: 'Search',
 };
 
-export default SearchScreen;
+export default withNavigationFocus(SearchScreen);

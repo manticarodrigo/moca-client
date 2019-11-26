@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import * as WebBrowser from 'expo-web-browser';
+
+import { getImage } from '@src/utlities/imagePicker';
 
 import EditInformationModal from '@src/modals/EditInformationModal';
 import ChangePasswordModal from '@src/modals/ChangePasswordModal';
-import { updateUser, logoutUser } from '@src/store/actions/UserAction';
+import { updateUser, updateUserImage, logoutUser } from '@src/store/actions/UserAction';
 
 
 import View from '@src/components/View';
@@ -12,8 +16,9 @@ import Text from '@src/components/Text';
 import Image from '@src/components/Image';
 import Button from '@src/components/Button';
 import Card from '@src/components/Card';
+import BackButton from '@src/components/BackButton';
 
-import { BackButtonIcon, LogoutIcon } from '@src/components/icons';
+import { LogoutIcon } from '@src/components/icons';
 import { Views, Colors } from '@src/styles';
 
 import useStore from '@src/hooks/useStore';
@@ -21,27 +26,13 @@ import useStore from '@src/hooks/useStore';
 const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
 
-  const [isEditInformationModal, setIsEditInformationModal] = useState(false);
+  const [editInfoModalVisible, setEditInfoModalVisible] = useState(false);
   const [isChangePasswordModal, setIsChangePasswordModal] = useState(false);
 
 
-  const accountSettings = ['changePassword', 'notifications', 'bookmark', 'inviteFriends'];
+  const accountSettings = ['changePassword', 'notifications', 'inviteFriends'];
   const supportSettings = ['supportAndFeedback', 'frequentQuestions', 'TermsAndConditions', 'join'];
   const followUs = ['instagram', 'twitter', 'facebook'];
-
-
-  const sumbitEditInformation = async (userInput) => {
-    if (Object.entries(userInput).length === 0 && userInput.constructor === Object) {
-      setIsEditInformationModal(false);
-    } else {
-      try {
-        await dispatch(updateUser({ ...userInput }));
-        setIsEditInformationModal(false);
-      } catch (error) {
-        // console.log(error);
-      }
-    }
-  };
 
   const sumbitEditPassword = async (password: string) => {
     try {
@@ -60,33 +51,33 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
 
   };
 
+  const onOpenLink = (url: string) => WebBrowser.openBrowserAsync(url);
+
   const handlePress = (type) => {
     switch (type) {
       case 'changePassword':
         return handleChangePassword();
       case 'bookmark':
         return handleBookmarkPress();
+      case 'join':
+        return onOpenLink('https://joinmoca.com');
       default:
         return null;
     }
   };
 
   const onPressLogout = async () => {
-    await dispatch(logoutUser());
-
-    navigation.dangerouslyGetParent().dangerouslyGetParent().dispatch({
-      type: NavigationActions.NAVIGATE,
-      routeName: 'OnboardingScreen',
-    });
+    try {
+      await dispatch(logoutUser());
+    } finally {
+      navigation.dangerouslyGetParent().dangerouslyGetParent().dispatch({
+        type: NavigationActions.NAVIGATE,
+        routeName: 'OnboardingScreen',
+      });
+    }
   };
 
-  const editInformationModal = (
-    <EditInformationModal
-      closeInputModal={() => setIsEditInformationModal(false)}
-      isModalVisible={isEditInformationModal}
-      sumbitEditInformation={(userInput) => sumbitEditInformation(userInput)}
-    />
-  );
+  const toggleEditInfoModal = () => setEditInfoModalVisible(!editInfoModalVisible);
 
   const changePasswordModal = (
     <ChangePasswordModal
@@ -96,83 +87,106 @@ const ProfileSettingsScreen: NavigationStackScreenComponent = ({ navigation }) =
     />
   );
 
-  return (
-    <View safeArea flex={1} bgColor="lightGrey">
+  const onPressImage = () => {
+    getImage((response) => {
+      if (response.cancelled !== false) return;
 
-      <View scroll>
-        <View alignCenter bgColor="white" spacing={{ py: 4 }}>
-          <View alignCenter justifyCenter spacing={{ p: 4 }}>
-            <Image rounded size={120} />
+      dispatch(updateUserImage(response.uri));
+    });
+  };
+
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+
+      <EditInformationModal visible={editInfoModalVisible} onClose={toggleEditInfoModal} />
+
+      <View safeArea flex={1} bgColor="lightGrey">
+
+        <View scroll>
+          <View alignCenter py={4} bgColor="white">
+            <View alignCenter justifyCenter p={4} onPress={onPressImage}>
+              <View variant="rounded" width={120} height={120}>
+                <Image rounded size={120} uri={store.user.image} />
+                <View justifyCenter alignCenter variant="absoluteFill" bgColor="whiteHalfAlpha">
+                  <Text
+                    p={2}
+                    style={{
+                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                      textShadowOffset: { width: 1, height: 1 },
+                      textShadowRadius: 5,
+                    }}
+                    variant="semiBold"
+                    color="white"
+                  >
+                    Edit Photo
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View my={1} variant="borderBottom" width="90%" bgColor="white">
+              <Text variant="light">Name</Text>
+              <Text variant="regularDark" pt={1} pb={2}>{store.user.firstName}</Text>
+            </View>
+            <View my={1} variant="borderBottom" width="90%" bgColor="white">
+              <Text variant="light">Last Name</Text>
+              <Text variant="regularDark" pt={1} pb={2}>{store.user.lastName}</Text>
+            </View>
+            <View my={1} width="90%" bgColor="white">
+              <Text variant="light">Email Address</Text>
+              <Text variant="regularDark" pt={1} pb={2}>{store.user.email}</Text>
+            </View>
+            <Button
+              variant="secondaryShadow"
+              onPress={toggleEditInfoModal}
+            >
+              Edit Information
+            </Button>
           </View>
-          <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
-            <Text variant="light">Name</Text>
-            <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.firstName}</Text>
+          <View justifyCenter p={3} ml={2}>
+            <Text variant="regular">Account</Text>
           </View>
-          <View variant="borderBottom" width="90%" bgColor="white" spacing={{ my: 1 }}>
-            <Text variant="light">Last Name</Text>
-            <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.lastName}</Text>
+          <View>
+            {accountSettings.map((type) => (
+              <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
+            ))}
           </View>
-          <View width="90%" bgColor="white" spacing={{ my: 1 }}>
-            <Text variant="light">Email Address</Text>
-            <Text variant="regularDark" spacing={{ pt: 1, pb: 2 }}>{store.user.email}</Text>
+          <View justifyCenter p={3} ml={2}>
+            <Text variant="regular">Support</Text>
           </View>
-          <Button
-            variant="secondaryShadow"
-            onPress={() => setIsEditInformationModal(true)}
-          >
-            Edit Information
-          </Button>
+          <View>
+            {supportSettings.map((type) => (
+              <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
+            ))}
+          </View>
+          <View justifyCenter p={3} ml={2}>
+            <Text variant="regular">Follow Us</Text>
+          </View>
+          <View>
+            {followUs.map((type) => (
+              <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
+            ))}
+          </View>
+          <View alignCenter p={3}>
+            <Button
+              width="100%"
+              icon={<LogoutIcon />}
+              variant="logout"
+              onPress={onPressLogout}
+            >
+              Logout
+            </Button>
+          </View>
         </View>
-        <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-          <Text variant="regularSemiGrey">Account</Text>
-        </View>
-        <View>
-          {accountSettings.map((type) => (
-            <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
-          ))}
-        </View>
-        <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-          <Text variant="regularSemiGrey">Support</Text>
-        </View>
-        <View>
-          {supportSettings.map((type) => (
-            <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
-          ))}
-        </View>
-        <View justifyCenter spacing={{ p: 3, ml: 2 }}>
-          <Text variant="regularSemiGrey">Follow Us</Text>
-        </View>
-        <View>
-          {followUs.map((type) => (
-            <Card key={type} type={type} onPress={() => handlePress(type)} arrow />
-          ))}
-        </View>
-        <View alignCenter spacing={{ p: 3 }}>
-          <Button
-            width="100%"
-            icon={<LogoutIcon />}
-            variant="logout"
-            onPress={onPressLogout}
-          >
-            Logout
-          </Button>
-        </View>
+        {changePasswordModal}
       </View>
-      {editInformationModal}
-      {changePasswordModal}
-    </View>
+    </>
   );
 };
 
-const SettingsBackButton = () => (
-  <View shadow={{ color: 'secondary', blur: 2, alpha: 0.16 }}>
-    <BackButtonIcon />
-  </View>
-);
-
 ProfileSettingsScreen.navigationOptions = ({ navigationOptions }) => ({
   headerTitle: 'Settings',
-  headerBackImage: SettingsBackButton,
+  headerBackImage: BackButton,
   headerStyle: {
     ...navigationOptions.headerStyle as {},
     ...Views.borderBottom,

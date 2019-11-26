@@ -14,20 +14,19 @@ import {
   Position,
   PositionProp,
   Spacing,
-  SpacingProp,
+  SpacingProps,
   Shadow,
   ShadowProp,
   Colors,
 } from '@src/styles';
 
-type ViewProps = {
+type ViewProps = SpacingProps & {
   style?: ViewStyle | ViewStyle[];
   safeArea?: boolean;
   scroll?: boolean;
   horizontal?: boolean;
   variant?: keyof typeof Views;
   position?: PositionProp;
-  spacing?: SpacingProp;
   shadow?: ShadowProp;
   flex?: number;
   wrap?: boolean;
@@ -37,8 +36,10 @@ type ViewProps = {
   justifyAround?: boolean;
   justifyBetween?: boolean;
   justifyEnd?: boolean;
+  alignStart?: boolean;
   alignCenter?: boolean;
   alignEnd?: boolean;
+  alignStretch?: boolean;
   absoluteFill?: boolean;
   width?: string | number;
   height?: string | number;
@@ -53,7 +54,6 @@ const View = ({
   scroll,
   horizontal,
   variant,
-  spacing,
   position,
   shadow,
   flex,
@@ -64,15 +64,20 @@ const View = ({
   justifyAround,
   justifyBetween,
   justifyEnd,
+  alignStart,
   alignCenter,
   alignEnd,
+  alignStretch,
   absoluteFill,
   width,
   height,
   bgColor,
   children,
   onPress,
+  ...restProps
 }: ViewProps) => {
+  const [spacing] = Spacing.parseProps(restProps);
+
   const ViewType: typeof React.Component = useMemo(() => {
     if (safeArea) return SafeAreaView;
     if (scroll) return ScrollView;
@@ -98,8 +103,11 @@ const View = ({
   ), [justifyCenter, justifyAround, justifyBetween, justifyEnd]);
 
   const alignItems = useMemo(() => (
-    (alignCenter && 'center') || (alignEnd && 'flex-end')
-  ), [alignCenter, alignEnd]);
+    (alignStart && 'flex-start')
+    || (alignCenter && 'center')
+    || (alignEnd && 'flex-end')
+    || (alignStretch && 'stretch')
+  ), [alignStart, alignCenter, alignEnd, alignStretch]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {

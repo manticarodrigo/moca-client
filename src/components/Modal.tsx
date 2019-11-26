@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import RNModal, { ModalProps } from 'react-native-modal';
 
@@ -9,36 +9,20 @@ import { Colors } from '@src/styles';
 
 import View from '@src/components/View';
 
-const ModalScrollViewWrapper = ({ children }) => (
-  <View flex={1} width="100%">
-    <TouchableWithoutFeedback>
-      <TouchableHighlight>
-        {children}
-      </TouchableHighlight>
-    </TouchableWithoutFeedback>
-  </View>
-);
-
-const ModalScrollView = ({ children }) => (
-  <ModalScrollViewWrapper>
-    <View scroll>
-      {children}
-    </View>
-  </ModalScrollViewWrapper>
-);
-
 type Props = ModalProps & {
-  children: JSX.Element | JSX.Element[];
+  hideToggle?: boolean;
   marginTop?: number;
   bgColor?: keyof typeof Colors;
   onToggle: () => void;
+  children: JSX.Element | JSX.Element[];
 };
 
 const Modal = ({
-  children,
+  hideToggle,
   marginTop = 100,
   bgColor = 'white',
   onToggle,
+  children,
   ...modalProps
 }: Props) => {
   const styles = useMemo(() => StyleSheet.create({
@@ -60,9 +44,11 @@ const Modal = ({
       {...modalProps}
     >
       <View variant="modal" alignCenter bgColor={bgColor}>
-        <View alignCenter spacing={{ py: 3 }} onPress={onToggle}>
-          <OpenIcon />
-        </View>
+        {!hideToggle && (
+          <View alignCenter py={3} onPress={onToggle}>
+            <OpenIcon />
+          </View>
+        )}
         <>
           {children}
         </>
@@ -71,9 +57,4 @@ const Modal = ({
   );
 };
 
-export {
-  ModalScrollViewWrapper,
-  ModalScrollView,
-};
-
-export default Modal;
+export default React.memo(Modal);

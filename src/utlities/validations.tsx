@@ -1,25 +1,58 @@
-export const validateZipCode = (userInput: string) => {
-  const regexpNumber = new RegExp('^[+ 0-9]{5}$');
-  return regexpNumber.test(userInput);
+const getPasswordError = (password: string) => {
+  // lowercase letters
+  if (!password.match(/[a-z]/g)) return 'Password must have at least one lowercase letter.';
+  // capital letters
+  if (!password.match(/[A-Z]/g)) return 'Password must have at least one capital letter.';
+  // numbers
+  if (!password.match(/[0-9]/g)) return 'Password must have at least one number.';
+  // length
+  if (password.length < 8) return 'Password must have at least eight characters.';
+
+  return undefined;
 };
 
-export const validateEmailAddress = (email: string) => {
+const getEmailError = (email: string) => {
   // eslint-disable-next-line no-useless-escape
-  const regexpEmail = new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
-  return regexpEmail.test(email);
+  const regexpEmail = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
+  if (!regexpEmail.test(email)) return 'Please enter a valid email address.';
+
+  return undefined;
 };
 
-export const validatePrice = (userInput: string) => {
-  const regexpNumber = new RegExp('^[0-9]+$');
-  return regexpNumber.test(userInput);
+const getZipCodeError = (zipCode: string) => {
+  if (!zipCode.match('^[+ 0-9]{5}$')) return 'Please enter a valid zip code.';
+
+  return undefined;
 };
 
-export const validateServiceArea = (userInput: string) => {
-  const regexpNumber = new RegExp('^[0-9]+$');
-  return regexpNumber.test(userInput);
+const getNumberError = (price: string) => {
+  if (!price.match('^[0-9]+$')) return 'Please enter a valid number.';
+
+  return undefined;
 };
 
-export const validateYearsOfExperience = (userInput: string) => {
-  const regexpNumber = new RegExp('^[0-9]{2}$');
-  return regexpNumber.test(userInput);
+export const getValidationError = (
+  text: string,
+  validation?: 'email' | 'password' | 'zip' | 'number',
+  required?: boolean,
+) => {
+  switch (validation) {
+    case 'email':
+      return getEmailError(text);
+    case 'password':
+      return getPasswordError(text);
+    case 'zip':
+      return getZipCodeError(text);
+    case 'number':
+      return getNumberError(text);
+    default:
+      break;
+  }
+
+  if (required && !text.trim()) {
+    return 'This field is required.';
+  }
+
+  return undefined;
 };

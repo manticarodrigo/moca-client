@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect, forwardRef } from 'react';
 
 import {
-  StyleSheet,
   View,
+  StyleSheet,
   Animated,
   TextInputProps,
   TextInput as RNInput,
@@ -10,50 +10,59 @@ import {
 
 import { ErrorIcon, EmailIcon, EyeIcon, DollarIcon } from '@src/components/icons';
 
-import { Spacing, SpacingProp, Colors, Texts } from '@src/styles';
+import { Spacing, SpacingProps, Colors, Texts, Typography } from '@src/styles';
 
 import Wrapper from '@src/components/View';
 
 import TextInput from './TextInput';
 import Text from './Text';
 
-export type FormFieldProps = TextInputProps & {
+export type Props = TextInputProps & {
   placeholder: string;
   icon?: 'email' | 'password' | 'dollar';
-  value: string;
-  spacing?: SpacingProp;
-  error?: boolean | string;
+  value?: string;
+  error?: string;
+  readonly?: boolean;
+  didBlur?: boolean;
+  spacing?: SpacingProps;
   width?: number | string;
   height?: number | string;
+  onChangeText?: (text: string) => void;
 }
 
 const FormField = ({
   placeholder,
   icon,
   value,
+  error,
+  readonly,
+  multiline,
+  didBlur,
+  spacing,
   width,
   height,
-  spacing,
-  error,
+  onChangeText,
   ...textInputProps
-}: FormFieldProps, ref: React.Ref<RNInput>) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const animatedIsFocused = useMemo(() => new Animated.Value(value === '' ? 0 : 1), [value]);
+}: Props, ref: React.Ref<RNInput>) => {
+  const [focused, setFocused] = useState();
+  const [blurred, setBlurred] = useState();
+
+  const focusedOrFilled = focused || value !== '';
+
+  const shouldShowError = useMemo(() => (focusedOrFilled || blurred) && !!error, [
+    blurred,
+    error,
+    focusedOrFilled,
+  ]);
+
+  const animatedValue = useMemo(() => new Animated.Value(0), []);
 
   useEffect(() => {
-    Animated.timing(animatedIsFocused, {
-      toValue: (isFocused || value !== '') ? 1 : 0,
+    Animated.timing(animatedValue, {
+      toValue: focusedOrFilled ? 1 : 0,
       duration: 200,
     }).start();
-  });
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
+  }, [animatedValue, focusedOrFilled, value]);
 
   const styles = useMemo(() => StyleSheet.create({
     view: {
@@ -64,49 +73,41 @@ const FormField = ({
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: Spacing.spaceSize[2],
-      borderWidth: error ? 1 : null,
-      borderColor: error ? Colors.error : null,
-      margin: 0,
-      marginTop: Spacing.spaceSize[2],
-      paddingRight: Spacing.spaceSize[3],
-      paddingLeft: Spacing.spaceSize[3],
-      backgroundColor: isFocused ? Colors.semiGreyLighter : Colors.lightGrey,
+      borderWidth: shouldShowError ? 1 : null,
+      borderColor: shouldShowError ? Colors.error : null,
+      backgroundColor: focused ? Colors.semiGreyLighter : Colors.lightGrey,
+      ...Spacing.getStyles({ m: 0, mt: 2, px: 3 }),
       ...Spacing.getStyles(spacing),
     },
     text: {
-      ...Texts.regular,
-      color: Colors.dark,
-      paddingTop: 10,
-      fontSize: 16,
+      ...Typography.getStyles(Texts.regular),
       width: '100%',
-      height: 60,
+      height: 'auto',
+      color: Colors.dark,
+      paddingTop: 32,
+      paddingBottom: multiline ? 24 : 10,
     },
-  }), [error, width, height, spacing, isFocused]);
+  }), [shouldShowError, multiline, width, height, spacing, focused]);
 
   const placeholderStyle = {
     position: 'absolute',
-    left: animatedIsFocused.interpolate({
+    left: animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 16],
+      outputRange: [20, 14],
     }),
-    top: animatedIsFocused.interpolate({
+    top: animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 5],
+      outputRange: [22, 8],
     }),
-    fontSize: animatedIsFocused.interpolate({
+    fontSize: animatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: [16, 14],
-    }),
-    fontWeight: animatedIsFocused.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['500', '300'],
     }),
     color: Colors.semiGrey,
   };
 
-
   const renderIcon = useMemo(() => {
-    if (error) {
+    if (shouldShowError) {
       return <ErrorIcon />;
     }
 
@@ -120,13 +121,29 @@ const FormField = ({
       default:
         return null;
     }
-  }, [error, icon]);
+  }, [shouldShowError, icon]);
+
+  const handleFocus = () => {
+    setFocused(true);
+  };
+
+  const handleBlur = () => {
+    setFocused(false);
+    setBlurred(true);
+  };
+
+
+  useEffect(() => {
+    if (didBlur) {
+      setBlurred(true);
+    }
+  }, [didBlur]);
 
   return (
     <>
       <Wrapper row>
         <Wrapper flex={1}>
-          <View style={styles.view}>
+          <View style={styles.view} pointerEvents={readonly ? 'none' : undefined}>
             <Animated.Text style={placeholderStyle}>
               {placeholder}
             </Animated.Text>
@@ -134,8 +151,13 @@ const FormField = ({
               ref={ref}
               style={styles.text}
               value={value}
+              multiline={multiline}
+              editable={!readonly}
+              returnKeyType={multiline ? 'default' : undefined}
+              scrollEnabled={false}
               onFocus={handleFocus}
               onBlur={handleBlur}
+              onChangeText={onChangeText}
               {...textInputProps}
             />
             <View style={{ position: 'absolute', top: 20, right: 20 }}>
@@ -144,9 +166,9 @@ const FormField = ({
           </View>
         </Wrapper>
       </Wrapper>
-      {typeof error === 'string' && (
-        <Text spacing={{ mt: 1 }} variant="errorSmall">
-          Please enter a valid Zip code
+      {shouldShowError && (
+        <Text mt={2} variant="regular" size={1} color="error" align="center" numberOfLines={3}>
+          {error}
         </Text>
       )}
     </>

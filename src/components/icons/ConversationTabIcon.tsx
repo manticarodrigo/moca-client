@@ -7,7 +7,11 @@ import { Colors } from '@src/styles';
 
 const ConversationTabIcon = ({ focused }) => {
   const { store } = useStore();
-  const hasNotification = useMemo(() => !!store.conversations.length, [store.conversations]);
+
+  const hasNotification = useMemo(
+    () => store.conversations.list.some(({ unreadCount }) => !!unreadCount),
+    [store.conversations.list],
+  );
 
   return (
     <Svg width={48} height={48}>

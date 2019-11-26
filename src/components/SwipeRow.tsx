@@ -8,10 +8,10 @@ import View from './View';
 const BinRow = ({ onPress }) => (
   <View
     row
-    flex={1}
-    width="100%"
     alignCenter
-    spacing={{ p: 4 }}
+    flex={1}
+    p={4}
+    width="100%"
     bgColor="error"
     onPress={onPress}
   >

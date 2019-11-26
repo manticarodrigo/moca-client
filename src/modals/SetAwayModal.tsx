@@ -1,177 +1,241 @@
-import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
-import { CalendarList } from 'react-native-calendars';
+import React, { useState, useMemo, useEffect } from 'react';
 import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 
-import { Colors, Texts, Spacing } from '@src/styles';
+import { getDateForString } from '@src/utlities/dates';
 
+import api from '@src/services/api';
+
+import {
+  addAwayPeriod,
+  updateAwayPeriod,
+  deleteAwayPeriod,
+} from '@src/store/actions/UserAction';
+
+import useStore from '@src/hooks/useStore';
+
+import { WINDOW_WIDTH } from '@src/utlities/constants';
+import { Colors } from '@src/styles';
+
+import { BinIconRed } from '@src/components/icons';
+
+import CalendarList from '@src/components/CalendarList';
 import Modal from '@src/components/Modal';
 import View from '@src/components/View';
 import Text from '@src/components/Text';
 import Button from '@src/components/Button';
+import Toast from '@src/components/Toast';
 
 
 type Props = {
-  isVisible: boolean;
-  onToggle: () => void;
-  onSubmit?: (startDay: string, endDay: string) => void;
+  visible: boolean;
+  periodId?: number;
+  onClose: () => void;
 };
 
-const windoWidth = Dimensions.get('window').width;
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
 
-const SetAwayModal = ({ isVisible, onToggle, onSubmit }: Props) => {
-  const [startDay, setStartDay] = useState('');
-  const [endDay, setEndDay] = useState('');
+const initialState = { startDate: '', endDate: '' };
 
-  const changeToDate = (date: string) => new Date(parseISO(date));
+const SetAwayModal = ({ visible, periodId, onClose }: Props) => {
+  const { dispatch } = useStore();
+  const [{ startDate, endDate }, setAwayPeriodState] = useState(initialState);
+  const [toastState, setToastState] = useState<ToastState>();
 
+  useEffect(() => {
+    const fetchAwayDays = async () => {
+      const { data } = await api.user.userTherapistAwayRead(periodId.toString());
+      const start = format(new Date(data.startDate), 'yyyy-MM-dd');
+      const end = format(new Date(data.endDate), 'yyyy-MM-dd');
+      setAwayPeriodState({ startDate: start, endDate: end });
+    };
 
-  let rangeInDays = 0;
-  const markedDates = {};
+    if (visible && periodId) {
+      fetchAwayDays();
+    }
 
-  const isButtonDisabled = !(startDay && endDay);
+    if (!visible) {
+      setAwayPeriodState(initialState);
+    }
+  }, [visible, periodId]);
 
+  const markedDates = useMemo(() => {
+    let daysInRange = 0;
 
-  if (startDay && endDay) {
-    rangeInDays = differenceInDays(changeToDate(endDay), changeToDate(startDay)) + 1;
-    [...Array(rangeInDays)].forEach(
-      (el, i) => {
-        const date = format(addDays(changeToDate(startDay), i), 'yyyy-MM-dd');
-        markedDates[date] = {
+    const datesMap = {};
+
+    if (startDate && endDate) {
+      daysInRange = differenceInDays(parseISO(endDate), parseISO(startDate)) + 1;
+
+      [...Array(daysInRange)].forEach((el, i) => {
+        const date = format(addDays(parseISO(startDate), i), 'yyyy-MM-dd');
+
+        const isFirst = i === 0;
+        const isLast = i === daysInRange - 1;
+
+        datesMap[date] = {
           startingDay: i === 0,
-          color: (i === rangeInDays - 1 || i === 0)
-            ? Colors.secondaryLight : Colors.secondaryLightest,
-          textColor: (i === rangeInDays - 1 || i === 0) ? Colors.white : Colors.grey,
-          endingDay: i === rangeInDays - 1 };
-      },
-    );
-  } else if (startDay) {
-    const date = format(changeToDate(startDay), 'yyyy-MM-dd');
-    markedDates[date] = {
-      startingDay: true,
-      color: Colors.secondaryLight,
-      textColor: 'white',
-    };
-    markedDates[date] = {
-      startingDay: true,
-      color: Colors.secondaryLight,
-      textColor: 'white',
-      endingDay: true,
-    };
-  }
+          color: (isFirst || isLast) ? Colors.secondaryLight : Colors.secondaryLightest,
+          textColor: (isFirst || isLast) ? Colors.white : Colors.grey,
+          endingDay: isLast,
+        };
+      });
+    } else if (startDate) {
+      const date = format(parseISO(startDate), 'yyyy-MM-dd');
 
-
-  const handleDayPress = (day) => {
-    if (!startDay) {
-      setStartDay(day);
-    }
-    if (!endDay && startDay) {
-      if (differenceInDays(changeToDate(day), changeToDate(startDay)) <= 0) {
-        setStartDay(day);
-      } else setEndDay(day);
+      datesMap[date] = {
+        startingDay: true,
+        color: Colors.secondaryLight,
+        textColor: 'white',
+        endingDay: true,
+      };
     }
 
-    if (startDay && endDay) {
-      setStartDay(day);
-      setEndDay('');
+    return datesMap;
+  }, [startDate, endDate]);
+
+  const isButtonDisabled = !(startDate && endDate);
+
+  const onDayPress = ({ dateString }) => {
+    let start = startDate;
+    let end = endDate;
+
+    if (!startDate) {
+      start = dateString;
+    }
+
+    if (!endDate && startDate) {
+      const newIsBeforeStart = differenceInDays(parseISO(dateString), parseISO(startDate)) < 0;
+
+      if (newIsBeforeStart) {
+        start = dateString;
+      } else {
+        end = dateString;
+      }
+    }
+
+    if (startDate && endDate) {
+      start = dateString;
+      end = '';
+    }
+
+    setAwayPeriodState({ startDate: start, endDate: end });
+  };
+
+  const onDeleteAwayPeriod = async () => {
+    try {
+      await dispatch(deleteAwayPeriod(periodId));
+      setToastState({ type: 'success', message: 'Away time has been successfully removed.' });
+      setTimeout(onClose, 2000);
+    } catch {
+      setToastState({ type: 'error', message: 'There was an issue deleting your away time.' });
     }
   };
 
-  const handleButtonPress = () => {
-    onSubmit(startDay, endDay);
+  const onPressSubmit = async () => {
+    const start = getDateForString(startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = getDateForString(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    try {
+      const period = { startDate: start.toISOString(), endDate: end.toISOString() };
+
+      if (!periodId) {
+        await dispatch(addAwayPeriod(period.startDate, period.endDate));
+      } else {
+        await dispatch(updateAwayPeriod(periodId, period));
+      }
+
+      setToastState({
+        type: 'success',
+        message: `Away time has been ${periodId ? 'updated in your' : 'added to your'} calendar.`,
+      });
+      setTimeout(onClose, 2000);
+    } catch ({ response }) {
+      const { data } = response;
+
+      let message = `There was an issue ${periodId ? 'updating' : 'adding'} your away time.`;
+
+      if (data.startDate || data.endDate) {
+        const [errorMessage] = [...(data.startDate || []), ...(data.endDate || [])];
+        message = errorMessage;
+      }
+      setToastState({ type: 'error', message });
+    }
   };
 
   return (
-    <Modal
-      propagateSwipe
-      isVisible={isVisible}
-      onToggle={onToggle}
-    >
-      <View alignCenter spacing={{ pb: 6 }}>
-        <View row>
-          <View variant="borderBottom" flex={1} spacing={{ pb: 3 }} alignCenter justifyCenter>
-            <Text variant="titleSmall">
-              Set Away Days
+    <Modal propagateSwipe isVisible={visible} onToggle={onClose}>
+
+      <View alignCenter pb={6}>
+        <View row justifyBetween={!!periodId} variant="borderBottom">
+          {!!periodId && <View p={4} px={5} />}
+          <View flex={1} p={4} alignCenter justifyCenter>
+            <Text variant="semiBoldLarge">
+              Add Away Days
             </Text>
           </View>
+          {!!periodId && (
+            <View p={4} alignCenter onPress={onDeleteAwayPeriod}><BinIconRed /></View>
+          )}
         </View>
+
         <View alignCenter row variant="borderBottom">
-          <View
-            flex={1}
-            variant="borderRight"
-            spacing={{ p: 3 }}
-          >
-            <Text variant="regularGrey">Start</Text>
+          <View flex={1} p={3} variant="borderRight">
+            <Text variant="regularSmall" color="grey">Start</Text>
             <Text
-              variant={startDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
-              spacing={{ pt: 1 }}
+              variant="semiBoldLarge"
+              color={!startDate ? 'secondaryLight' : undefined}
+              pt={1}
             >
-              {startDay || 'Select Date'}
+              {startDate || 'Select Date'}
             </Text>
           </View>
-          <View
-            flex={1}
-            spacing={{ py: 2, px: 3 }}
-            bgColor="white"
-          >
-            <Text variant="regularGrey">End</Text>
+          <View flex={1} py={2} px={3} bgColor="white">
+            <Text variant="regularSmall" color="grey">End</Text>
             <Text
-              variant={endDay ? 'titleSmall' : 'titleSmallSecondaryLight'}
-              spacing={{ pt: 1 }}
+              variant="semiBoldLarge"
+              color={!endDate ? 'secondaryLight' : undefined}
+              pt={1}
             >
-              {endDay || 'Select Date'}
+              {endDate || 'Select Date'}
             </Text>
           </View>
         </View>
+
         <View flex={1}>
           <CalendarList
-            current={new Date()}
-            minDate={new Date()}
-            onDayPress={(day) => handleDayPress(day.dateString)}
-            markingType="period"
+            onDayPress={onDayPress}
             markedDates={markedDates}
-            calendarHeight={340}
-            theme={{
-              arrowColor: 'white',
-              'stylesheet.calendar.main': {
-                container: {},
-              },
-              'stylesheet.calendar-list.main': {
-                calendar: { backgroundColor: Colors.lightGrey },
-              },
-              'stylesheet.calendar.header': {
-                header: { ...Spacing.getStyles({ pt: 4, px: 2 }), alignItems: 'center' },
-                monthText: { ...Texts.boldPrimary },
-                week: {
-                  ...Spacing.getStyles({ py: 3, px: 4 }),
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                },
-                dayHeader: { ...Texts.regularSmallGreyishBrown, textTransform: 'uppercase' },
-              },
-              'stylesheet.day.period': {
-                text: { ...Texts.regularGrey, marginTop: 7 },
-              },
-            }}
-
-            pastScrollRange={0}
-            futureScrollRange={12}
-            scrollEnabled
-            showScrollIndicator
           />
         </View>
-        <View width={windoWidth} spacing={{ p: 4 }} variant="borderTop">
+
+        <View p={4} width={WINDOW_WIDTH} variant="borderTop">
           <Button
             disabled={isButtonDisabled}
             variant={isButtonDisabled ? 'primaryDisabled' : 'primary'}
-            onPress={handleButtonPress}
+            onPress={onPressSubmit}
           >
-            Submit Days
+            {periodId ? 'Update Days Off' : 'Submit Days Off'}
           </Button>
         </View>
-      </View>
-    </Modal>
 
+      </View>
+
+      {!!toastState && (
+        <Toast
+          schedule={toastState.type === 'success'}
+          error={toastState.type === 'error'}
+          onClose={() => setToastState(undefined)}
+        >
+          {toastState.message}
+        </Toast>
+      )}
+
+    </Modal>
   );
 };
 
