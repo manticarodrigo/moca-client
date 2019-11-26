@@ -8,6 +8,7 @@ import { getFinishedAppointments, getPastAppointments } from '@src/store/actions
 import useStore from '@src/hooks/useStore';
 import useDateSections from '@src/hooks/useDateSections';
 
+import { Colors } from '@src/styles';
 import { ClockIcon, CreditCardIcon } from '@src/components/icons';
 
 import View from '@src/components/View';
@@ -42,6 +43,7 @@ const BillingHistoryTab = ({ visible }) => {
 
   return (
     <BillingSectionList
+      style={{ backgroundColor: Colors.lightGrey }}
       sections={composedSections}
       renderItem={(({ item }) => {
         const { startTime, endTime, otherParty, price } = item;
@@ -51,12 +53,12 @@ const BillingHistoryTab = ({ visible }) => {
         const year = format(startDate, 'yyyy');
 
         const therapist = `${otherParty.firstName} ${otherParty.lastName}`;
-        const duration = `${differenceInMinutes(new Date(endTime), new Date(startTime))} mins`;
+        const duration = `${differenceInMinutes(new Date(endTime), new Date(startTime))}min`;
         const paymentMethod = 'Primary Card';
         const payment = `$${price}`;
 
         return (
-          <View key={item.id} row py={3} variant="borderBottom">
+          <View key={item.id} row py={3} variant="borderBottom" bgColor="white">
             <View column justifyCenter px={3} variant="borderRight">
               <Text variant="light" size={5} color="secondary" align="center">{day}</Text>
               <Text variant="regular" color="secondary">
@@ -83,7 +85,7 @@ const BillingHistoryTab = ({ visible }) => {
         );
       })}
       renderSectionHeader={({ section }) => (
-        <View ml={3} py={3}>
+        <View pl={3} py={3}>
           <Text variant="regular">
             {section.title.charAt(0).toUpperCase() + section.title.slice(1)}
           </Text>
