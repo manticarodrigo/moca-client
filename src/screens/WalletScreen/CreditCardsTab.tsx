@@ -9,7 +9,7 @@ import SwipeRow, { BinRow } from '@src/components/SwipeRow';
 
 import BankCardModal from '@src/modals/BankCardModal';
 
-const CreditCardsTab = () => {
+const CreditCardsTab = ({ visible }) => {
   const { store } = useStore();
   const [modalVisibility, setModalVisiblilty] = useState(false);
 
@@ -20,6 +20,8 @@ const CreditCardsTab = () => {
   const handleModalVisibility = () => setModalVisiblilty(!modalVisibility);
 
   // const onDelete = (index: number) =>
+
+  if (!visible) return null;
 
   return (
     <View width="100%" height="100%" scroll>

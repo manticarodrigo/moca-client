@@ -3,12 +3,13 @@ import { SectionList } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { NavigationStackScreenProps, NavigationStackScreenComponent } from 'react-navigation-stack';
 
-import useStore from '@src/hooks/useStore';
-import useDateSections from '@src/hooks/useDateSections';
-
-import { getFinishedAppointments, getPastAppointments } from '@src/store/actions/AppointmentAction';
 
 import { UserState } from '@src/store/reducers/UserReducer';
+import { Appointment } from '@src/store/reducers/AppointmentReducer';
+import { getFinishedAppointments, getPastAppointments } from '@src/store/actions/AppointmentAction';
+
+import useStore from '@src/hooks/useStore';
+import useDateSections from '@src/hooks/useDateSections';
 
 import View from '@src/components/View';
 import Text from '@src/components/Text';
@@ -16,7 +17,6 @@ import AppointmentCard from '@src/components/AppointmentCard';
 
 import AppointmentModal from '@src/modals/AppointmentModal';
 import ReviewModal from '@src/modals/ReviewModal';
-import { Appointment } from '@src/store/reducers/AppointmentReducer';
 
 type Props = NavigationStackScreenProps & {
   isFocused?: boolean;

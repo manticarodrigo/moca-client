@@ -17,9 +17,10 @@ const WalletScreen = () => {
   const handlePress = (value: string) => setActive(value);
 
   return (
-    <View>
+    <View safeArea flex={1}>
       <SegmentedControl selected={active} options={navOptions} onChange={handlePress} />
-      {active === 'history' ? <BillingHistoryTab /> : <CreditCardsTab />}
+      <BillingHistoryTab visible={active === 'history'} />
+      <CreditCardsTab visible={active === 'accounts'} />
     </View>
   );
 };
