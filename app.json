@@ -25,7 +25,7 @@
     ],
     "packagerOpts": {
       "config": "metro.config.js",
-      "sourceExts": ["js", "jsx", "ts", "tsx", "svg"]
+      "sourceExts": ["js", "jsx", "ts", "tsx", "json", "svg"]
     },
     "ios": {
       "supportsTablet": true
