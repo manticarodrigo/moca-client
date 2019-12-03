@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { useRef, useEffect, useMemo, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Notifications } from 'expo';
@@ -20,6 +20,16 @@ import {
   getPastAppointments,
 } from '@src/store/actions/AppointmentAction';
 
+const showVerifyEmailAlert = () => Alert.alert(
+  'Verify Email',
+  'Please check your inbox for a link to verify ownership of your email address.',
+);
+
+const showLogoutAlert = () => Alert.alert(
+  'Session ended',
+  'To log back login, please use the link below the registration button.',
+);
+
 const AppStateHandler = ({ navigatorRef, children }) => {
   const { store, dispatch } = useStore();
   const [pushQueue, setPushQueue] = useState([]);
@@ -28,8 +38,6 @@ const AppStateHandler = ({ navigatorRef, children }) => {
   const throttling401s = useRef(false);
 
   const navigator = navigatorRef.current;
-
-  const isAuthenticated = useMemo(() => !!(store.user.id && store.user.token), [store.user]);
 
   const navigate = (routeName, params = undefined) => navigator && navigator.dispatch(
     NavigationActions.navigate({ routeName, params }),
@@ -45,12 +53,7 @@ const AppStateHandler = ({ navigatorRef, children }) => {
         NavigationActions.navigate({ routeName: 'OnboardingScreen' }),
       );
 
-      Alert.alert(
-        'Session ended',
-        `You have been logged out.\n\n
-        To log back login, please use the link below the registration button.
-        `,
-      );
+      showLogoutAlert();
 
       setTimeout(() => {
         throttling401s.current = false;
@@ -88,13 +91,13 @@ const AppStateHandler = ({ navigatorRef, children }) => {
     };
 
     const checkAuth = async () => {
-      if (!isAuthenticated) return;
-      onAuthNavigate();
+      if (!store.user.id || !store.user.token) return undefined;
+      if (!store.user.isActive) return showVerifyEmailAlert();
+      return onAuthNavigate();
     };
 
     setTimeout(checkAuth);
-  }, [isAuthenticated, store.user.storageReady]);
-
+  }, [store.user.id, store.user.token, store.user.isActive, store.user.storageReady]);
 
   useEffect(() => {
     if (!IS_IOS) return;
@@ -120,16 +123,23 @@ const AppStateHandler = ({ navigatorRef, children }) => {
     const { index, routes } = navigator.state.nav;
     const activeStack = routes[index];
     const activeTab = activeStack.routes[activeStack.index];
-    const activeScreen = activeTab.routes[activeTab.index];
 
     let activeChatId;
+    let activeScreenName;
 
-    if (activeScreen.routeName === 'ConversationScreen') {
-      const { params = {} } = activeScreen;
-      activeChatId = params.user && params.user.id;
+    if (activeTab.index) {
+      const activeScreen = activeTab.routes[activeTab.index];
+
+      if (activeScreen.routeName === 'ConversationScreen') {
+        const { params = {} } = activeScreen;
+        activeChatId = params.user && params.user.id;
+      }
+
+      activeScreenName = activeScreen.name;
     }
 
     const uniqueNotifications = {
+      email_verified: undefined,
       current_chat: undefined,
       other_chat: undefined,
       current_appointment: undefined,
@@ -145,6 +155,9 @@ const AppStateHandler = ({ navigatorRef, children }) => {
       const isFromCurrentChat = activeChatId === pushParamUser.id && isNotSelf;
 
       switch (type) {
+        case 'email_verified':
+          if (!isNotSelf) uniqueNotifications.email_verified = notification;
+          break;
         case 'new_message':
           if (isFromCurrentChat) uniqueNotifications.current_chat = notification;
           if (!isFromCurrentChat) uniqueNotifications.other_chat = notification;
@@ -186,6 +199,9 @@ const AppStateHandler = ({ navigatorRef, children }) => {
       };
 
       switch (type) {
+        case 'email_verified':
+          dispatch(updateUserState({ ...store.user, isActive: true }));
+          break;
         case 'new_message':
           if (origin === 'selected') getChatListOrDetail(true);
           if (origin === 'received') getChatListOrDetail(false);
@@ -193,7 +209,7 @@ const AppStateHandler = ({ navigatorRef, children }) => {
         case 'upcoming_appointment':
         case 'start_appointment':
         case 'end_appointment':
-          if (activeScreen.routeName === 'DashboardScreen') {
+          if (activeScreenName === 'DashboardScreen') {
             dispatch(getUpcomingAppointments());
           } else {
             navigate('DashboardScreen', params);
@@ -201,7 +217,7 @@ const AppStateHandler = ({ navigatorRef, children }) => {
           break;
         case 'review_appointment':
         case 'failed_payment':
-          if (activeScreen.routeName === 'HistoryScreen') {
+          if (activeScreenName === 'HistoryScreen') {
             dispatch(getFinishedAppointments());
             dispatch(getPastAppointments());
           } else {

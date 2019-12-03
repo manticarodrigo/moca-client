@@ -73,13 +73,7 @@ const RegistrationScreen: NavigationStackScreenComponent = ({ navigation }) => {
       const { type } = store.registration;
 
       try {
-        await dispatch(registerUser({ type, email, password, firstName, lastName }));
-
-        if (isPatient) {
-          navigation.push('AddressScreen', { title: 'Address' });
-        } else {
-          navigation.push('QualificationsScreen');
-        }
+        dispatch(registerUser({ type, email, password, firstName, lastName }));
       } catch ({ response }) {
         const { user } = response.data;
 

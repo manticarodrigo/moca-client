@@ -11,12 +11,19 @@ import BinIconRed from '@src/components/icons/BinIconRed';
 import View from '@src/components/View';
 import BackButton from '@src/components/BackButton';
 import HeaderTitle from '@src/components/HeaderTitle';
+import Toast from '@src/components/Toast';
 
 import AddressForm from './AddressForm';
+
+type ToastState = {
+  type: 'success' | 'error';
+  message: string;
+}
 
 const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { store, dispatch } = useStore();
   const [existingFields, setExistingFields] = useState<AddAddressForm>();
+  const [toastState, setToastState] = useState<ToastState>();
 
   const isAdditionalAddress = navigation.getParam('isAdditionalAddress', false);
   const isExistingAddress = navigation.getParam('isExistingAddress', false);
@@ -52,36 +59,46 @@ const AddressScreen: NavigationStackScreenComponent = ({ navigation }) => {
         await dispatch(addAddress(formFields));
         navigation.navigate('DashboardScreen');
       } catch (e) {
-        // console.log(e);
+        const { data = ['Submission failed.'] } = e.response;
+        setToastState({ type: 'error', message: data[0] });
       }
     }
 
     if (isExistingAddress) {
       try {
         await dispatch(updateAddress(formFields));
-        navigation.goBack();
+        setToastState({ type: 'success', message: 'Update successful.' });
       } catch (e) {
-        // console.log(e);
+        const { data = ['Submission failed.'] } = e.response;
+        setToastState({ type: 'error', message: data[0] });
       }
     }
 
     if (isAdditionalAddress) {
       try {
         await dispatch(addAddress(formFields));
-        navigation.goBack();
+        setToastState({ type: 'success', message: 'Submission successful.' });
       } catch (e) {
-        // console.log(e);
+        const { data = ['Submission failed.'] } = e.response;
+        setToastState({ type: 'error', message: data[0] });
       }
     }
   };
 
   return (
-    <AddressForm
-      existingFields={existingFields}
-      isRegistering={isRegistering}
-      submitText={buttonText}
-      onSubmit={onSubmit}
-    />
+    <>
+      <AddressForm
+        existingFields={existingFields}
+        isRegistering={isRegistering}
+        submitText={buttonText}
+        onSubmit={onSubmit}
+      />
+      {!!toastState && (
+        <Toast error={toastState.type === 'error'} onClose={() => setToastState(undefined)}>
+          {toastState.message}
+        </Toast>
+      )}
+    </>
   );
 };
 

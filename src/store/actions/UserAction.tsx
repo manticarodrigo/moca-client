@@ -63,8 +63,7 @@ const registerUser = (user: User) => async (dispatch: Dispatch<UserAction>) => {
     : api.user.userTherapistCreate;
 
   const { data } = await registerMethod({
-    user: { email, password, firstName, lastName },
-    deviceToken,
+    user: { email, password, firstName, lastName, deviceToken },
   });
 
   // @ts-ignore
