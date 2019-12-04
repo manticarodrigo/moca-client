@@ -48,11 +48,11 @@ const useProfileFields = (
         && `**** **** **** **** ${payments[0].paymentInfo.last4}`
       )
       || payments[0].paymentInfo.routingNumber
-    ) : 'Set Payment Info';
+    ) : (isTherapist && 'Manage wallet') || 'Set Payment Info';
 
     const primaryAddress = addresses.find(({ primary }) => primary) || { street: '' };
 
-    let therapistFirstRows: ProfileSection['rows'] = [
+    const therapistFirstRows: ProfileSection['rows'] = [
       {
         icon: RadiusLocationIcon,
         field: 'operationRadius',
@@ -85,20 +85,6 @@ const useProfileFields = (
         onPress: reviewCount > 0 && onPressField('reviewCount'),
       },
     ];
-
-    // add filters to remove rows on readonly
-    therapistFirstRows = readonly
-      ? therapistFirstRows.filter(({ field }) => {
-        switch (field) {
-          case 'operationRadius':
-            return false;
-          case 'status':
-            return false;
-          default:
-            return true;
-        }
-      })
-      : therapistFirstRows;
 
     const patientFirstRows: ProfileSection['rows'] = [
       {
@@ -137,6 +123,12 @@ const useProfileFields = (
       ? firstRows.filter(({ field }) => {
         switch (field) {
           case 'addresses':
+            return false;
+          case 'operationRadius':
+            return false;
+          case 'status':
+            return false;
+          case 'injuries':
             return false;
           default:
             return true;
@@ -189,7 +181,7 @@ const useProfileFields = (
       {
         icon: CreditCardIcon,
         field: 'payments',
-        title: isTherapist ? 'Payment Information' : 'Payment Method',
+        title: 'Wallet',
         subtitle: paymentsSubtitle,
         onPress: !readonly ? onPressField('payments') : undefined,
       },

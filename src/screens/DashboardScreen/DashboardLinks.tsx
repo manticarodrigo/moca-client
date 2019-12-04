@@ -48,7 +48,7 @@ const DashboardLinks = ({ isActivated }: Props) => {
         && `**** **** **** **** ${payments[0].paymentInfo.last4}`
       )
       || payments[0].paymentInfo.routingNumber
-    ) : 'Set Payment Info';
+    ) : (isTherapist && 'Manage wallet') || 'Manage Payment Info';
   }, [store.user]);
 
   const lastConversation = useMemo(() => {

@@ -21,8 +21,8 @@ import {
 } from '@src/store/actions/AppointmentAction';
 
 const showVerifyEmailAlert = () => Alert.alert(
-  'Verify Email',
-  'Please check your inbox for a link to verify ownership of your email address.',
+  'Unverified Account',
+  'Please check your inbox for a verification link or reach out to support at hello@joinmoca.com.',
 );
 
 const showLogoutAlert = () => Alert.alert(
